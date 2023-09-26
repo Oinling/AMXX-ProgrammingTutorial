@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>cs1.6 amxx编程 入门教程 -- 作者:偶萤蛉(Oinling)</title>
+  
+  <style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+  </style>
+  
+</head>
+
+<body>
+
+<h1>cs1.6 amxx编程 入门教程 -- 作者:偶萤蛉(Oinling)</h1>
+
+<p>更新日期:2023/9/26</p>
+
+<p>amxx插件能修改服务端的游戏规则,实现新的游戏模式.</p>
+
+<p>它让所有进入服务器的玩家在新规则下进行游戏.</p>
+
+<p>出名的有无限复活的死亡竞技插件,会被感染为僵尸的僵尸插件,仿制魔兽3英雄技能的魔兽插件.</p>
+
+<p>amxx插件无法在客户端屏幕绘制图片,那是外挂擅长的事.</p>
+
+<p>外挂擅长在屏幕画各种透视图,用于个人享乐.总有人试图用amxx绘制cf游戏HUD.</p>
+
+<p>有这种需求的应该出门左转学习正经的外挂知识,而不是学习amxx插件.</p>
+
+<p>让amxx做这种事实在是太强人所难了.</p>
+
+<p>amxx插件无法新增新武器,CS限制了武器与子弹的品种数量.</p>
+
+<p>amxx只能以某个武器为原型,更改其功能,使它看起来像新武器,但终究有各种无法实现的功能.</p>
+
+<p>有这种需求的应该出门左转学习c#与unity3d游戏开发.</p>
+
+<p>amxx作用于游戏服务端,为所有玩家服务,而不是游戏客户端.</p>
+
+<p>想要玩单机模式,独自享乐的,应该左转学习unity3d游戏开发.</p>
+
+<p>比起受制于CS的条条框框,最终无法完成目的,不如从零开发新游戏.</p>
+
+<p>unity3d肯定能支持你走到最后,就算没走到最后,那也是你能力不行,而不是程序不行.</p>
+
+<p>本教程用于学习如何给CS1.6安装amxx开发环境,</p>
+
+<p>以及编写源码之前需要了解的名词术语,一些简单的语法.</p>
+
+<p><h1>目录:</h1></p>
+
+<p><a href="#click1">1.下载AMX Mod X</a></p>
+
+<p><a href="#click2">2.安装AMX Mod X</a></p>
+
+<p><a href="#click3">3.编写一个简单的插件源码</a></p>
+
+<p><a href="#click4">4.编程中的常见名词,术语,语法</a></p>
+
+<p><a href="#click4_1">→4.1模块(Module)与头文件(Header File)</a></p>
+
+<p><a href="#click4_2">→4.2:注释(Comment)</a></p>
+
+<p><a href="#click4_3">→4.3:字面量(Literal)</a></p>
+
+<p><a href="#click4_4">→4.4:编译器指令(Compiler Directive)</a></p>
+
+<p><a href="#click4_5">→4.5:符号(Symbol)</a></p>
+
+<p><a href="#click4_6">→4.6:保留词(Reserved Word)</a></p>
+
+<p><a href="#click4_7">→4.7:常量(Constant)</a></p>
+
+<p><a href="#click4_8">→4.8:变量(Variable)</a></p>
+
+<p><a href="#click4_9">→4.9:数组(Array)</a></p>
+
+<p><a href="#click4_10">→4.10:枚举(Enumeration)</a></p>
+
+<p><a href="#click4_11">→4.11:函数(Function)</a></p>
+
+<p><a href="#click4_12">→4.12:参数(Parameter)</a></p>
+
+<p><a href="#click4_13">→4.13:标签(Tag)</a></p>
+
+<p><a href="#click4_14">→4.14:有用与无用的标点符号,以及运算符(Operator)</a></p>
+
+<p><a href="#click4_15">→4.15:代码块(Block)</a></p>
+
+<p><a href="#click4_16">→4.16:控制代码执行流程</a></p>
+
+<p><a href="#click4_17">→4.17:符号作用域,全局变量(Global Variable),全局常量(Global Constant)</a></p>
+
+<p><h1 id="click1">1.下载AMX Mod X:</h1></p>
+
+<p>首先到官方网站下载amxmodx模块:<code><a href="https://www.amxmodx.org/">www.amxmodx.org</a></code></p>
+
+<p>Downloads页面能下载182或更旧的版本:<code><a href="https://www.amxmodx.org/downloads.php">downloads</a></code></p>
+
+<p></p>
+
+<p>Dev-Builds页面能下载190版本(点击windows图案):<code><a href="https://www.amxmodx.org/downloads-new.php">Dev Builds</a></code></p>
+
+<p></p>
+
+<p>182版基础包:<code><a href="https://www.amxmodx.org/release/amxmodx-1.8.2-base-windows.zip">AMX Mod X Base v1.8.2 Windows</a></code></p>
+
+<p>182版反恐精英附加包:<code><a href="https://www.amxmodx.org/release/amxmodx-1.8.2-cstrike-windows.zip">Counter-Strike Addon 1.8.2 Windows</a></code></p>
+
+<p>190-5294版基础包:<code><a href="https://www.amxmodx.org/amxxdrop/1.9/amxmodx-1.9.0-git5294-base-windows.zip">Base Package</a></code></p>
+
+<p>190-5294版反恐精英附加包:<code><a href="https://www.amxmodx.org/amxxdrop/1.9/amxmodx-1.9.0-git5294-cstrike-windows.zip">Counter-Strike</a></code></p>
+
+<p>元模块包(只在Download页面有):<code><a href="https://www.amxmodx.org/release/metamod-1.21.1-am.zip">Metamod v1.21.1-am (all OSes)</a></code></p>
+
+<p>amxx studio编辑器(只在Download页面有):<code><a href="http://sourceforge.net/project/downloading.php?group_id=100470&filename=AMXX_Studio_1.4.3_final.zip">AMX Mod X Studio v1.4.3</a></code></p>
+
+<p>元模块,基础包,反恐精英附加包都是必须的.</p>
+
+<p>高版本的基础包和附加包有更少的bug,更多更强的功能以及更详细的文档注释.</p>
+  
+<p>190版本自带中文,不过某些功能需要正版cs才能使用.</p>
+
+<p>你需要下载正版steam,再从steam平台付费购买正版cs1.6</p>
+
+<p>注意,steam有很多假的官方网站,不要下载错了.</p>
+
+<p>amxx studio编辑器不是必须的,用记事本或任何文本编辑器都可以代替.</p>
+
+<p>amxx studio编辑器可以让写代码更加方便.但这是英文版,中文版请上网查询.</p>
+
+<p>amxx studio自带英文教程.</p>
+  
+<p><h1 id="click2">2.安装AMX Mod X:</h1></p>
+
+<p>打开cs目录下的cstrike文件夹,正常的cstrike文件夹是没有addons文件夹的.</p>
+
+<p>盗版,魔改版除外.这里不讨论如何处理这些奇怪的CS版本.只讲正常CS如何安装AMX Mod X</p>
+
+<p>先将基础包,附加包,元模块包的addons文件夹放进去,</p>
+
+<p>打开cstrike/addons/amxmodx/scripting文件夹</p>
+
+<p>把amxx studio包里的所有文件放进去(如果你下载了它),</p>
+
+<p>开启电脑的"显示已知文件拓展名"功能.不会就上网查"windows系统如何显示文件扩展名".</p>
+
+<p>用记事本或其它文本编辑器打开cstrike/liblist.gam文件</p>
+
+<p>将gamedll, gamedll_linux, gamedll_osx三个参数分别改为:</p>
+
+<p><code>gamedll "addons/metamod/dlls/metamod.dll"
+gamedll_linux "addons/metamod/dlls/metamod.so"
+gamedll_osx "addons/metamod/dlls/metamod.dylib"</code></p>
+
+<p>打开cstrike/addons/metamod文件夹,右键新建一个txt文本文档,改名为plugins.ini</p>
+
+<p>用记事本或其它文本编辑器打开它,写入以下内容并保存:</p>
+
+<p><code>win32 addons/amxmodx/dlls/amxmodx_mm.dll</code></p>
+
+<p>至此,安装完毕.你的CS能够运行amxx插件了.</p>
+  
+<p>用记事本打开这个文件,可以更改插件的一些控制台变量.</p>
+
+<p><code>cstrike/addons/amxmodx/configs/amxx.cfg</code></p>
+
+<p>用记事本打开这个文件,这里面写着各种插件的文件名.</p>
+
+<p><code>cstrike/addons/amxmodx/configs/plugins.ini</code></p>
+
+<p>在文件名左边加上;符号表示关闭这个插件.</p>
+
+<p>删除;符号则表示开启这个插件.</p>
+
+<p>当你制作了新的插件,也需要在这个文件中添加插件文件名才能运行.</p>
+
+<p>amxx插件文件存放在这个文件夹:</p>
+
+<p><code>cstrike/addons/amxmodx/plugins</code></p>
+
+<p>当你制作了新的插件,需要把amxx文件放入这个文件夹才能运行.</p>
+
+<p>amxx插件的sma源码和编译器文件存放在这个文件夹:</p>
+
+<p><code>cstrike/addons/amxmodx/scripting</code></p>
+
+<p>将sma源码文件拖放到amxxpc.exe或compile.exe编译器上就能生成amxx文件.</p>
+
+<p>amxxpc.exe生成的amxx文件在scripting文件夹,</p>
+
+<p>compile.exe生成的amxx文件在scripting/compile文件夹.</p>
+
+<p>sma源码文件可以用记事本或amxx studio之类的文本编辑器创建或编辑.</p>
+
+<p><h1 id="click3">3.编写一个简单的插件源码:</h1></p>
+
+<p>一个基本的sma文件,应该写入以下内容:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+}</code></p>
+
+<p>这就是一个没有任何功能的插件源码.可以被编译器转变为amxx插件.</p>
+
+<p>将插件放置好并开启后,在游戏过程中打开控制台,发送amxx plugins即可看见该插件的运行信息.</p>
+
+<p>如果你在源码中花括号范围内加入这些代码,还能在进入游戏后,将一些额外的文字发送到控制台:</p>
+
+<p><code><span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]How old are you?"</span>);
+<span class="amxx-function">log_amxx</span>(<span class="amxx-string">"[AMXX]怎么老是你?"</span>);</code></p>
+
+<p>如果你想发送中文,需将源码另存为utf8-不带有BOM的编码格式(win7或xp记事本做不到).</p>
+
+<p>发送文字到控制台是检验某个代码片段有没有运行的最简单方法.</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]How old are you?"</span>);
+	<span class="amxx-function">log_amxx</span>(<span class="amxx-string">"[AMXX]怎么老是你?"</span>);
+}</code></p>
+
+<p>花括号范围内的代码是从上到下运行,范围外的就不一定了.总之这段代码会在载入游戏地图之后,</p>
+
+<p>先发送<code><span class="amxx-string">"[AMXX]How old are you?"</span></code>.</p>
+
+<p>再发送<code><span class="amxx-string">"[AMXX]怎么老是你?"</span></code>.</p>
+
+<p>载入地图之后,按下[~]按键呼出控制台,你就可以看见这两段文字.</p>
+
+<p><h1 id="click4">4.编程中的常见名词,术语,语法:</h1></p>
+
+<p><h2 id="click4_1">4.1:模块(Module)与头文件(Header File)</h2></p>
+
+<p>模块是提供特定功能的文件,制作amxx离不开它们的帮助.</p>
+
+<p>制作amxx所使用的模块存放在cstrike/addons/amxmodx/modules文件夹内.</p>
+
+<p>打开cstrike/addons/amxmodx/configs/modules.ini文件,可以添加,开启或关闭特定的模块.</p>
+
+<p>一般来说模块会提供一些拓展名为.inc的文件,称为头文件,以介绍它们的功能.</p>
+
+<p>打开cstrike/addons/amxmodx/scripting/include文件夹,可以看到各种inc文件.</p>
+
+<p>用记事本打开它们就可以看见模块提供的各种功能和介绍.</p>
+
+<p>制作amxx插件时必须要在源码中引用它们,才能使用模块提供的代码.</p>
+
+<p>源码内一般都有<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>></code>这句话,表示引用amxmodx.inc文件的所有内容.</p>
+
+<p>amxmodx.inc自身也引用了大量其它头文件.这些也会一起被插件源码引用.</p>
+
+<p>需要注意,一些远古的头文件不太值得浪费时间研究,比如engine.inc, engine_const.inc, engine_stocks.inc, fun.inc</p>
+
+<p>还有一些跟cs无关的头文件也不需要研究,比如esf开头的头文件,是给cs七龙珠用的.ns开头的头文件,是给物竞天择用的.还有tf,ts开头的头文件.</p>
+
+<p>制作amxx插件常引用的是amxmodx.inc, cstrike.inc, fakemeta.inc, hamsandwich.inc, xs.inc</p>
+
+<p>这些头文件还各自引用了其它的头文件,基本能实现大部分复杂功能.</p>
+
+<p><h2 id="click4_2">4.2:注释(Comment)</h2></p>
+
+<p>注释是用来解释代码功能的文本,其内容不会影响代码功能,因此可以是中文或日语等等.</p>
+
+<p>注释主要有三种.</p>
+
+<p><h3>普通注释(Comment):</h3></p>
+
+<p>普通注释也可被称呼为多行注释,它以<code><span class="amxx-comment">/*</span></code>开始,以<code><span class="amxx-comment">*/</span></code>结束:</p>
+
+<p><code><span class="amxx-comment">/*	这里填写多行注释的第一行内容
+	这里填写多行注释的第二行内容
+	更多内容...*/</span></code></p>
+
+<p><h3>单行注释(Line Comment):</h3></p>
+
+<p>单行注释以<code><span class="amxx-comment">//</span></code>开始,到一行的末尾结束:</p>
+
+<p><code><span class="amxx-comment">// 这里填写单行注释的内容...</span></code></p>
+
+<p><h3>文档注释(Document Comment):</h3></p>
+
+<p>文档注释用于详细描述函数,参数,常量,变量等符号的用途和使用方法.这些概念下面会介绍.</p>
+
+<p>这里先介绍文档注释.文档注释常见于inc文件中,以<code><span class="amxx-comment">/**</span></code>开始,以<code><span class="amxx-comment">*/</span></code>结束:</p>
+
+<p><code><span class="amxx-comment">/**
+ * 这里介绍函数的具体用途.
+ *
+ * @note		这里写注意事项.如果没有,则不需要这样的注意事项
+ *
+ * @param 参数1名称	参数1介绍
+ * @param 参数2名称	参数2介绍
+ *			如果函数无参数,则不需要这样的介绍
+ *
+ * @return		如果函数有返回值,在这里介绍函数的返回值.
+ * @noreturn		如果函数无返回值,写@noreturn即可
+ * @error		介绍导致函数无法正常运作的原因1和后果
+ *			介绍导致函数无法正常运作的原因2和后果
+ *			如果函数必定成功运行,则不需要这样的介绍
+*/</span>
+native <span class="amxx-function">函数</span>(<span class="amxx-symbol">参数1</span>, <span class="amxx-symbol">参数2</span>);
+
+<span class="amxx-comment">/**
+ * 设置当前插件的名称,版本,作者.
+ *
+ * @note		CS的控制台对中文支持不太好,不建议用中文的插件名,版本,作者名
+ *
+ * @param plugin_name	插件的名称
+ * @param version	版本,格式一般是"1.0.0.000000".这四个值的增大有不同含义.
+ *			第1个值表示整体功能大改,与旧版不兼容.第2个值表示小改,向下兼容.第3个值表示修补了bug.第4个值由作者决定,控制版本.
+ * @param author	插件作者的名称
+ *
+ * @return		返回当前插件的索引号
+*/</span>
+native <span class="amxx-function">register_plugin</span>(const <span class="amxx-symbol">plugin_name</span>[], const <span class="amxx-symbol">version</span>[], const <span class="amxx-symbol">author</span>[]);
+
+<span class="amxx-comment">/**
+ * 发送一段文字到游戏控制台.
+ *
+ * @note		使用方法:
+ *			server_print("[AMXX]我今天几岁了? %d 岁或 %d 岁了", 10, 9)
+ *
+ * @param message	要发送的文字.其内可用%b %c %d %i %u %f %X %x %a %s %L %l %N %n %% 等格式占位符.
+ *			格式占位符用于在一段文字中预留位置,以便使用后续参数来填充这些位置.
+ *			上述例子中的格式占位符分别表示用后续参数填充自身.
+ *			%b能将一个值的二进制表现形式填充自身.AMX Mod X 1.8.2或低版本不存在这个格式占位符.
+ *			%c能将一个值的字符表现形式填充自身.
+ *			%d和%i完全相同,能将一个值的int32表现形式填充自身.
+ *			%u能将一个值的uint32表现形式填充自身.
+ *			%f能将一个值的float表现形式填充自身.
+ *			%X能将一个值的大写十六进制表现形式填充自身.
+ *			%x能将一个值的小写十六进制表现形式填充自身.
+ *			%a能将一个值当做字符串指针,获取该字符串填充自身.
+ *			%s能将一个数组当做字符串,填充自身.
+ *			%L和%l完全相同,需要两个参数,一个是为谁翻译,一个是用于获取翻译的字符串键值.AMX Mod X 1.8.2或低版本不存在%l.
+ *			%N能将一个值当做玩家的实体编号,将该玩家的名字,userid,steamId,游戏中所选队名填充自身.AMX Mod X 1.8.2或低版本不存在这个格式占位符.
+ *			%n能将一个值当做玩家的实体编号,将该玩家的名字填充自身.AMX Mod X 1.8.2或低版本不存在这个格式占位符.
+ *			%%能将%符号填充自身.
+ * @param ...		按照顺序填写格式占位符所需的参数
+ *
+ * @return		返回实际发送的字节数量
+*/</span>
+native <span class="amxx-function">server_print</span>(const <span class="amxx-symbol">message</span>[], ...);</code></p>
+
+<p><h2 id="click4_3">4.3:字面量(Literal)</h2></p>
+
+<p>字面量(Literal)是源代码中一个固定值的表示法,是常量值的静态表示.</p>
+
+<p>它们左右通常有标点符号或空白字符将它们包裹.</p>
+
+<p><h3>整数(Integer)字面量:</h3></p>
+
+<p>整数是指没有小数点的数值.</p>
+
+<p><code><span class="amxx-number">123					<span class="amxx-comment">// 用十进制表示一个数值</span>
+-123
+1000_8888_9999				<span class="amxx-comment">// 数值中间或末尾可以有下划线</span>
+-2147483648				<span class="amxx-comment">// 这是整数能表示的最小值</span>
+2147483647				<span class="amxx-comment">// 这是整数能表示的最大值</span>
+0b010					<span class="amxx-comment">// 0b开头是用二进制表示一个数值,0b010等于2</span>
+0b1001_0001				<span class="amxx-comment">// 二进制最多可以有32个位,一般可用于表示32种状态的开启或关闭</span>
+-0b10000000000000000000000000000000	<span class="amxx-comment">// 这是最小值-2147483648</span>
+0b11111111111111111111111111111111	<span class="amxx-comment">// 这是最大值2147483647</span>
+0xFF					<span class="amxx-comment">// 0x开头是用十六进制表示一个数值,0xFF等于255</span>
+0xABCDEF				<span class="amxx-comment">// 主要用于表示一些很长的数字,十六进制可缩短长度</span>
+-0x80000000				<span class="amxx-comment">// 这是最小值-2147483648</span>
+0x80000000				<span class="amxx-comment">// 这是最小值-2147483648,比最大值大n的数字,直接等于最低值+n-1</span>
+0x7FFFFFFF</span>				<span class="amxx-comment">// 这是最大值2147483647</span></code></p>
+
+<p><h3>浮点数(Floating Point)字面量:</h3></p>
+
+<p>浮点数是指拥有小数点的数值.</p>
+
+<p><code><span class="amxx-number">-97.0
+865.343
+1000.0
+88_89.965
+888_999.0659</span></code></p>
+
+<p><h3>字符(Char)字面量:</h3></p>
+
+<p>字符也是整数,只不过用了不同的表示方法.</p>
+
+<p>字符字面量则是一段被<code><span class="amxx-string">' '</span></code>包裹的文本.</p>
+
+<p><code><span class="amxx-string"> ' ' </span></code>内不能填写中文,日文,全角字符等超过1字节的字符.</p>
+
+<p><code><span class="amxx-string">'0'</span>		<span class="amxx-comment">// 这是字符0,等于十进制整数中的48</span>
+<span class="amxx-string">'1'</span>		<span class="amxx-comment">// 这是字符1,等于十进制整数中的49</span>
+<span class="amxx-string">'2'</span>		<span class="amxx-comment">// 这是字符2,等于十进制整数中的50</span>
+<span class="amxx-string">'A'</span>		<span class="amxx-comment">// 这是字符A,等于十进制整数中的65</span>
+<span class="amxx-string">'a'</span>		<span class="amxx-comment">// 这是字符a,等于十进制整数中的97</span>
+<span class="amxx-string">'^a'</span>		<span class="amxx-comment">// 这是控制字符中的蜂鸣字符,ascii编码中的不可见字符称为控制字符</span>
+<span class="amxx-string">'^r'</span>		<span class="amxx-comment">// 这是控制字符中的回车符,按下回车键可能同时输入1个回车符和1个换行符</span>
+<span class="amxx-string">'^n'</span>		<span class="amxx-comment">// 这是控制字符中的换行符,按下回车键可能输入1个换行符</span>
+<span class="amxx-string">'^t'</span>		<span class="amxx-comment">// 这是控制字符中的制表符,按下TAB按键可能输入1个制表符</span>
+<span class="amxx-string">'	'</span>	<span class="amxx-comment">// 这也是制表符,但是你看不见它</span>
+<span class="amxx-string">'^127'</span>		<span class="amxx-comment">// 这是十进制转义字符,表示ascii编码中第127个字符,等于整数127</span>
+<span class="amxx-string">'^x7F'</span>		<span class="amxx-comment">// 这是十六进制转义字符,表示ascii编码中第127个字符,等于整数127</span></code></p>
+
+<p><h3>字符串(String)字面量:</h3></p>
+
+<p>字符串是由多个字符组成的.</p>
+
+<p>而字符串字面量是一段被<code><span class="amxx-string"> " " </span></code>包裹的文本.</p>
+
+<p><code><span class="amxx-string"> " " </span></code>内可以是中文或日文.</p>
+
+<p>如果使用了中文,日文,全角符号,想要在游戏中正确显示,需要把源码另存为utf8-不带有BOM的编码格式.</p>
+
+<p>当然,游戏的控制台是不怎么能显示中文的,改编码也没用.不过其它地方是可以的.</p>
+
+<p><code><span class="amxx-string">"Hello world"</span>
+<span class="amxx-string">"这是一段字符串"</span>
+<span class="amxx-string">"012Aa^a^r^n^t^127^x7F"</span>
+<span class="amxx-string">"这里面的127 8.8 a不属于整数/浮点数/字符字面量"</span></code></p>
+
+<p><h2 id="click4_4">4.4:编译器指令(Compiler Directive)</h2></p>
+
+<p>也些人称呼为预处理指令(Preprocessor Directive).</p>
+
+<p>以<code><span class="amxx-directive"> # </span></code>开头的一行文字就是编译器指令.</p>
+
+<p>如果以一个<code> \ </code>符号结尾,那么下一行也是指令的一部分.</p>
+
+<p>以下是可用的指令名称:</p>
+
+<p><code><span class="amxx-directive">assert define else elseif emit endif endinput endscrpt error file if include line pragma tryinclude undef</span></code></p>
+
+<p>常见指令:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>		<span class="amxx-comment">/* 从这一行开始,引用cstrike.inc文件的所有内容 */</span>
+<span class="amxx-directive">#define</span> <span class="amxx-symbol">PLUGIN_NAME</span> <span class="amxx-string">"My Plugin"</span>	<span class="amxx-comment">/* 从这一行开始,将源码中所有的PLUGIN_NAME替换为"My Plugin" */</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// register_plugin是引用了amxmodx.inc之后才能在这里使用.圆括号内的PLUGIN_NAME会被替换</span>
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-symbol">PLUGIN_NAME</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+}</code></p>
+
+<p><h2 id="click4_5">4.5:符号(Symbol)</h2></p>
+
+<p>在AMXX插件脚本中,符号是拥有特殊功能,状态,或存有值的字段.可细分为保留词与自定义符号两大类.</p>
+
+<p>符号指的不是标点符号,分隔符号,运算符号,不可见的空白符号,也不包括注释,字面量,编译器指令.</p>
+
+<p>符号字段通常不超过31个字符.第一个字符必须是"<code><span class="amxx-symbol">_ @ a至z A至Z</span></code>"四者之一.剩下的可以是"<code><span class="amxx-symbol">_ @ a至z A至Z 0至9</span></code>"五者之一.</p>
+
+<p>amxx插件的源码中,需要先定义一个符号,然后才能使用这个符号.</p>
+
+<p>由编程语言定义的符号称为保留词,而自定义符号不能与保留词重名.</p>
+
+<p>当你使用未定义的符号,通常会报错:某某行有未定义的某某符号.</p>
+
+<p>比如,aaaa符号不存在,但你在第16行使用了aaaa符号,那么编译插件时会看见报错:undefined symbol "aaaa" on line 16.</p>
+
+<p>以下的<code>stock forward native static public new</code>都是符号(保留词).</p>
+
+<p>以下的<code><span class="amxx-symbol">@var <span class="amxx-function">test test2 test3</span> static_cell_var <span class="amxx-tag">Float:</span> static_float_var <span class="amxx-function">plugin_init</span> var2 _value@32A break@</span></code>都是自定义符号.</p>
+
+<p><code>stock <span class="amxx-symbol">@var</span> = <span class="amxx-number">6</span>;
+forward <span class="amxx-function">test</span>();
+native <span class="amxx-function">test2</span>();
+stock <span class="amxx-function">test3</span>()
+{
+	static <span class="amxx-symbol">static_cell_var</span>, <span class="amxx-tag">Float:</span><span class="amxx-symbol">static_float_var</span>;
+}​
+public <span class="amxx-function">plugin_init</span>()
+{
+	new <span class="amxx-symbol">var2</span>, <span class="amxx-symbol">_value@32A</span>, <span class="amxx-symbol">break@</span>;
+	<span class="amxx-symbol">break@</span> = <span class="amxx-symbol">@var</span> + <span class="amxx-function">test2</span>() + <span class="amxx-function">test3</span>();
+}</code></p>
+
+<p><h2 id="click4_6">4.6:保留词(Reserved Word)</h2></p>
+
+<p>保留词是符号的一种,有些人会称呼为关键字或关键词(Keyword).</p>
+
+<p>保留词提供了编程最基本的功能.是AMX Mod X预留的,有固定作用的符号.</p>
+
+<p>以下是必需了解的保留词:</p>
+
+<p><code>break case const continue default do else enum for forward if native new public return sizeof static stock switch while</code></p>
+
+<p>其中有一些不需要太过在意的保留词,制作amxx插件几乎不会用到它们:</p>
+
+<p><code>assert char defined exit goto operator sleep state tagof</code></p>
+
+<p>它们可以细分为:</p>
+
+<p>用于给自定义符号添加额外信息的说明符(Specifier):</p>
+
+<p><code>const enum forward native new public static stock</code></p>
+
+<p>用于控制代码执行流程的控制流语句(Control flow statement):</p>
+
+<p><code>break case continue default do else for if return switch while goto state assert exit sleep</code></p>
+
+<p>与数值运算相关的运算关键词(Operator keyword):</p>
+
+<p><code>sizeof char defined tagof operator</code></p>
+
+<p><h2 id="click4_7">4.7:常量(Constant)</h2></p>
+
+<p>常量是自定义符号的一种,能储存另一个常量或字面量所表示的数值.常量储存的数值一般不能更改(不绝对).</p>
+
+<p>使用<code><span class="amxx-directive">#define</span> enum const</code>声明一个符号,使该符号与某个字面量或其它常量绑定,该符号就称为常量.</p>
+
+<p>声明常量通常是为了让一些固定数值拥有名字,以便确认该数值的用途.</p>
+
+<p>比如,一个功能是根据等级将玩家跳跃高度设置为45,50或55.那么可以在插件顶部声明这3个常量,以跳跃高度的英文作为常量名称.</p>
+
+<p>开发者每次打开源码,只要看见这些名称,就知道其对应的数值可能是用于设置跳跃高度.</p>
+
+<p>但是,自定义符号的名称是可以随便写的,仅观察名称不能确认实际用途.需要根据上下文,看该符号是否真的被用于做某事.</p>
+
+<p>这些是用<code><span class="amxx-directive">#define</span> enum const</code>声明常量的简单示例:</p>
+
+<p><code><span class="amxx-directive">#define			</span><span class="amxx-symbol">d宏定义锟斤拷</span>	<span class="amxx-number">0b_1000_1000_1000</span>	<span class="amxx-comment">// <span class="amxx-symbol">d宏定义锟斤拷</span>	是一个无地址常量(可在编译期间通过重定义进行更改)</span>
+enum			<span class="amxx-enumname">eA</span>		{ <span class="amxx-symbol">eA_A</span>=<span class="amxx-number">10</span>, <span class="amxx-symbol">eA_B</span>=<span class="amxx-number">11</span> }	<span class="amxx-comment">// <span class="amxx-symbol">eA eA_A eA_B</span>	是三个无地址常量(改不了)</span>
+const			<span class="amxx-symbol">cA</span>		= <span class="amxx-number">2184</span>;			<span class="amxx-comment">// <span class="amxx-symbol">cA</span>		是一个无地址常量(改不了)</span>
+const			<span class="amxx-symbol">cB</span>		= <span class="amxx-number">2184</span> - <span class="amxx-number">184</span>;		<span class="amxx-comment">// <span class="amxx-symbol">cB</span>		是一个无地址常量(改不了)</span>
+public const		<span class="amxx-tag">bool:</span><span class="amxx-symbol">cC</span>		= <span class="amxx-symbol">true</span> && <span class="amxx-symbol">false</span>;	<span class="amxx-comment">// <span class="amxx-symbol">cC</span>		是一个有地址常量</span>
+public stock const	<span class="amxx-tag">bool:</span><span class="amxx-symbol">cD</span>		= <span class="amxx-symbol">true</span> || <span class="amxx-symbol">false</span>;	<span class="amxx-comment">// <span class="amxx-symbol">cD</span>		是一个有地址常量</span>
+static const		<span class="amxx-tag">any:</span><span class="amxx-symbol">cE</span>		= <span class="amxx-symbol">true</span>;			<span class="amxx-comment">// <span class="amxx-symbol">cE</span>		是一个有地址常量</span>
+static stock const	<span class="amxx-tag">any:</span><span class="amxx-symbol">cF</span>;					<span class="amxx-comment">// <span class="amxx-symbol">cF</span>		是一个有地址常量</span>
+new const		<span class="amxx-tag">Float:</span><span class="amxx-symbol">cG</span>	= <span class="amxx-number">2048.0</span>		<span class="amxx-comment">// <span class="amxx-symbol">cG</span>		是一个有地址常量</span>
+new stock const		<span class="amxx-tag">Float:</span><span class="amxx-symbol">cH</span>;				<span class="amxx-comment">// <span class="amxx-symbol">cH</span>		是一个有地址常量</span>
+public <span class="amxx-function">function</span>(const	<span class="amxx-symbol">text</span>[]) { }				<span class="amxx-comment">// <span class="amxx-symbol">text</span>		是一个可能有地址也可能无地址的常量</span></code></p>
+
+<p>编译器内置了一些常量(头文件内定义的不算):</p>
+
+<p><code><span class="amxx-symbol">true		</span><span class="amxx-comment">// 带有bool:标签的常量值1,用于表示真,对,是,好,允许,开启,正确,非0							</span>
+<span class="amxx-symbol">false		</span><span class="amxx-comment">// 带有bool:标签的常量值0,用于表示假,错,否,坏,禁止,关闭,错误,0							</span>
+<span class="amxx-symbol">EOS		</span><span class="amxx-comment">// 带有_:标签的常量值0,用于表示字符串中的终止符.阅读字符串中的字符时,遇到它就该停止阅读				</span>
+<span class="amxx-symbol">cellbits	</span><span class="amxx-comment">// 带有_:标签的常量值32,用于表示整数拥有多少个位.AMXX的脚本语言只支持int32一种数据类型,其它数据类型都是用标签模仿的	</span>
+<span class="amxx-symbol">cellmin		</span><span class="amxx-comment">// 带有_:标签的常量值-2147483648,用于表示整数的最小值.再低就从最大值开始降低						</span>
+<span class="amxx-symbol">cellmax		</span><span class="amxx-comment">// 带有_:标签的常量值2147483647,用于表示整数的最大值.再高就从最小值开始升高						</span>
+<span class="amxx-symbol">charbits	</span><span class="amxx-comment">// 带有_:标签的常量值8,用于表示字符拥有多少个位									</span>
+<span class="amxx-symbol">charmin 	</span><span class="amxx-comment">// 带有_:标签的常量值0,用于表示字符的最低值.同时也是终止符								</span>
+<span class="amxx-symbol">charmax		</span><span class="amxx-comment">// 带有_:标签的常量值254,用于表示字符的最高值.之所以不是255,可能因为255对应键盘的Delete删除键,不是一个可见字符		</span>
+<span class="amxx-symbol">ucharmax	</span><span class="amxx-comment">// 带有_:标签的常量值16777215,意义不明,这可能是个历史遗留的计算错误							</span>
+<span class="amxx-symbol">debug		</span><span class="amxx-comment">// 带有_:标签的常量值0 1 2之一,表示该插件被编译时使用了哪些调试选项							</span>
+<span class="amxx-symbol">__Pawn		</span><span class="amxx-comment">// 带有_:标签的常量值,表示该插件被编译时,使用的编译器的版本								</span>
+<span class="amxx-symbol">__LINE__	</span><span class="amxx-comment">// 带有_:标签的常量值,表示它在源码中处于第几行.这是AMXX182或低版本没有的常量(这玩意在不同的行里表现不同,属于是变量了)	</span></code></p>
+
+<p><h2 id="click4_8">4.8:变量(Variable)</h2></p>
+
+<p>变量是自定义符号的一种,能储存字面量或另一个自定义符号所表示的数值,变量储存的数值可以被更改.</p>
+
+<p>声明变量通常是为了让游戏根据不同情况做出不同反应.</p>
+
+<p>比如,一个功能是根据等级将玩家跳跃高度设置为45,50或55.那么等级就是变量,一个会变化的数字.</p>
+
+<p>一般而言,变量名称是与其用途相关的英文单词.</p>
+
+<p>但是,自定义符号的名称是可以随便写的,仅观察名称不能确认实际用途.需要根据上下文,看该符号是否真的被用于做某事.</p>
+
+<p>以下是一些使用说明符声明变量的方法:</p>
+
+<p><code>new <span class="amxx-symbol">aaa</span> = <span class="amxx-number">0b1001</span>;
+stock <span class="amxx-symbol">bbb</span> = <span class="amxx-number">0xFF</span>;
+forward <span class="amxx-function">functionA</span>();
+native <span class="amxx-function">functionB</span>();
+<span class="amxx-function">functionC</span>(<span class="amxx-symbol">abc</span>)
+{
+	static <span class="amxx-symbol">ccc</span> = <span class="amxx-number">15</span>;
+}
+stock <span class="amxx-function">functionD</span>()
+{
+}
+public <span class="amxx-function">functionE</span>()
+{
+}</code></p>
+
+<p>(上面定义的变量: <code><span class="amxx-symbol">aaa bbb</span> <span class="amxx-function">functionA functionB functionC</span> <span class="amxx-symbol">abc ccc</span> <span class="amxx-function">functionD functionE</span></code>)</p>
+
+<p>类似<code><span class="amxx-function">functionA...E</span></code>这样的定义方式,只要右边有圆括号,左边拥有<code>stock forward native public static</code>等关键字或下方有<code> { } </code>,则是函数.只允许出现在花括号外界,函数只允许在花括号外界定义.<p>
+
+<p><h2 id="click4_9">4.9:数组(Array)</h2></p>
+
+<p>数组是自定义符号的一种.存有多个值的变量或常量被称为数组.</p>
+
+<p>数组并不仅仅只能储存数值,还可以储存其它数组.数组内储存的对象通常被称为元素.</p>
+
+<p>字符串是数组的一种.其最后一个字符之后有至少一个元素的值为0.比如<code><span class="amxx-string">"000"</span></code>等于<code>{ <span class="amxx-string">'0'</span>, <span class="amxx-string">'0'</span>, <span class="amxx-string">'0'</span>, <span class="amxx-number">0</span> }</code>或<code>{ <span class="amxx-number">48</span>, <span class="amxx-number">48</span>, <span class="amxx-number">48</span>, <span class="amxx-number">0</span> }</code>.</p>
+
+<p>数组有静态与动态的区别,静态数组的元素只能查改,数量无法改变.动态数组的元素可以增删查改.这里只介绍静态数组.</p>
+
+<p>每个元素都有一个编号,这种编号被称为索引,索引从0开始.</p>
+
+<p>开发者需要做到看见"索引"就联想到数组.索引等于数据的地址.类似的还有指针,句柄,也是数据地址.</p>
+
+<p>假设一个数组拥有3个元素,这三个元素的索引就是0,1,2.</p>
+
+<p>在声明自定义符号时,如果在它右边加上方括号,便表示该符号是一个数组(函数除外):</p>
+
+<p><code>public <span class="amxx-function">function</span>(const <span class="amxx-symbol">text</span>[], <span class="amxx-symbol">array</span>[<span class="amxx-number">3</span>], <span class="amxx-tag">Float:</span><span class="amxx-symbol">coord</span>[<span class="amxx-number">3</span>])
+{
+	new <span class="amxx-symbol">aaa</span>[<span class="amxx-number">3</span>], <span class="amxx-tag">Float:</span><span class="amxx-symbol">bbb</span>[<span class="amxx-number">3</span>];
+	new <span class="amxx-symbol">ccc</span>[<span class="amxx-symbol">5</span>] = { <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span> };
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">ddd</span>[<span class="amxx-number">5</span>] = <span class="amxx-tag">Float:</span>{ <span class="amxx-number">0.0</span>, <span class="amxx-number">1.0</span>, <span class="amxx-number">2.0</span>, <span class="amxx-number">3.0</span>, <span class="amxx-number">4.0</span> };
+	static const <span class="amxx-symbol">eee</span>[] = <span class="amxx-string">"一个存有字符串的常量数组"</span>;
+	return <span class="amxx-symbol">eee</span>;	<span class="amxx-comment">// 将function符号定义为和eee一样的数组</span>
+}</code></p>
+
+<p>声明数组时,方括号内的数字表示它可以存放多少个元素,也就是它的尺寸或容量.如果不填,则由=右边的字面量决定容量.</p>
+
+<p>举个例子,声明数组变量<code><span class="amxx-symbol">variables</span></code>,储存了3个默认元素.它是一个尺寸为3的数组.</p>
+
+<p><code>new <span class="amxx-tag">Float:</span><span class="amxx-symbol">variables</span>[] = { <span class="amxx-number">6.0</span>, <span class="amxx-number">7.0</span>, <span class="amxx-number">8.0</span> };</code></p>
+
+<p>如果要修改它的第一个元素,可以这么做(必须是变量类型的数组):</p>
+
+<p><code>public <span class="amxx-function">function</span>()
+{
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">variables</span>[] = { <span class="amxx-number">6.0</span>, <span class="amxx-number">7.0</span>, <span class="amxx-number">8.0</span> };
+	<span class="amxx-symbol">variables</span>[<span class="amxx-number">0</span>] = <span class="amxx-number">999.0</span>;	<span class="amxx-comment">// 访问索引号为0的元素,也就是第1个元素,将它的值(6.0),改为999.0</span>
+}</code></p>
+
+<p>如果你想在游戏中打印数组中的某个元素,可以试着这么做:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">variables</span>[] = { <span class="amxx-number">6.0</span>, <span class="amxx-number">7.0</span>, <span class="amxx-number">8.0</span> };
+	<span class="amxx-symbol">variables</span>[<span class="amxx-number">0</span>] = <span class="amxx-number">999.0</span>;	<span class="amxx-comment">// 访问索引号为0的元素,也就是第1个元素,将它的值(6.0),改为999.0</span>
+	<span class="amxx-comment">// 用第1,第2个元素填充格式占位符的位置,游戏控制台中会显示它们储存的值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]variables[0] == %f variables[1] = %f"</span>, <span class="amxx-symbol">variables</span>[<span class="amxx-number">0</span>], <span class="amxx-symbol">variables</span>[<span class="amxx-number">1</span>]);
+}</code></p>
+
+<p>在声明数组时,方括号的数量表示数组的维度.</p>
+
+<p>三维数组的元素是二维数组.</p>
+
+<p>二维数组的元素是一维数组.</p>
+
+<p>一维数组的元素是单值.</p>
+
+<p>字符串是一维数组.其储存的每个字符都是单值.</p>
+
+<p>如下定义一个拥有2个字符串元素的二维数组:</p>
+
+<p><code><span class="amxx-comment">// 1个尺寸为2的二维数组内,存放2个一维数组</span>
+new const <span class="amxx-symbol">texts</span>[<span class="amxx-number">2</span>][] = { <span class="amxx-string">"aaaa"</span>, <span class="amxx-string">"bbbb"</span> };</code></p>
+
+<p>定义一个三维数组:</p>
+
+<p><code><span class="amxx-comment">// 尺寸为2的三维数组包含2个尺寸为3的二维数组,每个二维数组各自包含3个尺寸为4的一维数组,每个一维数组各自包含4个单值,这个三维数组总共包含24个单值</span>
+new <span class="amxx-symbol">array</span>[<span class="amxx-number">2</span>][<span class="amxx-number">3</span>][<span class="amxx-number">4</span>] =
+{
+	{
+		{ <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span>, <span class="amxx-number">7</span> },
+		{ <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span> },
+		{ <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span> }
+	},
+	{
+		{ <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span>, <span class="amxx-number">7</span> },
+		{ <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span> },
+		{ <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span> }
+	}
+};</code></p>
+
+<p>试着打印多维数组的某些元素:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	new const <span class="amxx-symbol">texts</span>[][] = { <span class="amxx-string">"aaaa"</span>, <span class="amxx-string">"bbbb"</span> };
+	new <span class="amxx-symbol">array</span>[<span class="amxx-number">2</span>][<span class="amxx-number">3</span>][<span class="amxx-number">4</span>] =
+	{
+		{
+			{ <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span>, <span class="amxx-number">7</span> },
+			{ <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span> },
+			{ <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span> }
+		},
+		{
+			{ <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span>, <span class="amxx-number">7</span> },
+			{ <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span> },
+			{ <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span>, <span class="amxx-number">5</span> }
+		}
+	};
+	<span class="amxx-comment">// 打印texts的第2个元素,array的第2个元素的第3个元素的第4个元素.</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]texts[1]=%s, array[1][2][3]=%d"</span>, <span class="amxx-symbol">texts</span>[<span class="amxx-number">1</span>], <span class="amxx-symbol">array</span>[<span class="amxx-number">1</span>][<span class="amxx-number">2</span>][<span class="amxx-number">3</span>]);
+}</code></p>
+
+<p><h2 id="click4_10">4.10:枚举(Enumeration)</h2></p>
+
+<p>枚举是用<code>enum</code>说明符声明多个常量,分为枚举名称和枚举成员,枚举名称,枚举成员名称都是自定义的.成员数量也是自定义的.</p>
+
+<p>以下<code><span class="amxx-enumname">Name</span></code>是枚举名称,可以没有.<code><span class="amxx-symbol">Var1 Var2 Var3</span></code>是枚举成员:</p>
+
+<p><code>enum <span class="amxx-enumname">Name</span>
+{
+​	<span class="amxx-symbol">Var1</span> = <span class="amxx-number">1</span>,
+​	<span class="amxx-symbol">Var2</span> = <span class="amxx-number">2</span>,
+​	<span class="amxx-symbol">Var3</span>
+}</code></p>
+
+<p>枚举有点像是数组,包含多个值.但由于它的每个值都有名字,有了名字更好辨认其用途.</p>
+
+<p>没有枚举名称的枚举成员,其意义只在于它有个名字,和一般的常量没什么不同.</p>
+
+<p>而有枚举名称的枚举成员,它们比其它常量多了一个特征,枚举的名称便是这些成员的标签.</p>
+
+<p>数值携带的标签会改变它们的行为,如果两个不同标签的数值相互运算,编译器可能会警告或报错.这里暂不介绍标签,下面再说.</p>
+
+<p>枚举名称既是常量也是标签.一般来说,它存的值是最后一个成员的值+1.</p>
+
+<p>枚举成员的值可以不填,如果不填,第一个成员的值是0.一般来说,其它成员是上一个成员的值+1</p>
+
+<p><h2 id="click4_11">4.11:函数(Function)</h2></p>
+
+<p>函数是自定义符号的一种,它是一种特殊的变量.</p>
+
+<p>函数会利用参数计算出结果,称为返回值(return value),反馈给调用者.</p>
+
+<p>函数的运行过程也可以对游戏造成各种影响.比如调用其它函数,更改玩家生命值.</p>
+
+<p>插件依靠函数实现各种效果,最终改变服务器的游戏规则.</p>
+
+<p>在源码或头文件中,花括号的外界可以用<code>forward native static public stock</code>说明符声明函数.</p>
+
+<p>它们声明的函数被称为:<code>预声明函数 本机函数 静态函数 公共函数 备用函数</code>.</p>
+
+<p>若不使用这些说明符,直接声明函数,并且函数名称不以<code><span class="amxx-symbol">@</span></code>开头,则称为:<code>私有函数</code>.</p>
+
+<p>若不使用这些说明符,且函数名称以<code><span class="amxx-symbol">@</span></code>开头,则是:<code>公共函数</code>.</p>
+
+<p>函数的花括号外,不能调用任何函数.只能声明(定义)函数.</p>
+
+<p>因为外面的代码是编译插件时才会运行,游戏过程中永远不会运行.</p>
+
+<p>函数的圆括号部分被称为参数列表.定义函数时,也可以定义计算所需参数.</p>
+
+<p>调用函数时(将函数写在其它函数花括号内,称为调用),必须在圆括号内填入相同标签和类型的参数,否则可能导致编译器警告或报错.</p>
+
+<p>如果没有定义参数标签,则默认为<code><span class="amxx-tag"> _: </span></code>标签,即整数型.如果没定义参数尺寸为,则为单值类型,即只有一个值,不是数组.</p>
+
+<p><h3>预声明函数:</h3></p>
+
+<p>预声明函数还可以叫转发函数,前向函数,前置声明函数.</p>
+
+<p>预声明函数是模块或插件制作的接口函数.并在头文件中声明.</p>
+
+<p>这种函数没有实际的功能,因此没有花括号.插件无法调用它,但可以帮它实现具体的功能.</p>
+
+<p>只要将其引用到自己的源码中,再用<code>public</code>说明符声明一个相同的公共函数即可.</p>
+
+<p>提供预声明函数的模块或插件会在某一时刻调用这个同名的公共函数,执行你编写的代码.</p>
+
+<p>比如amxmodx.inc提供的预声明函数:</p>
+
+<p><code><span class="amxx-comment">/**
+ * 将在服务器启动后被调用一次.
+ *
+ * @note	这是插件初始化的好地方,在这个函数里可以添加控制台变量,命令或事件钩子,
+ *		或是定义需要反复使用的数据结构,或生成和加载其它所需的配置.
+ *
+ * @noreturn
+ */</span>
+forward <span class="amxx-function">plugin_init</span>();</code></p>
+
+<p>在你的插件源码中声明同样名称的公共函数:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>	<span class="amxx-comment">// 引用相当于将amxmodx.inc的全部内容抄入此处,包括forward plugin_init();在内.因此能为其制作实际功能.</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 这里面的代码,将会在服务器启动后执行一次</span>
+}</code></p>
+
+<p>amxmodx.inc也提供了一些可以创建,执行,销毁预声明函数的本机函数:</p>
+
+<p><code>native <span class="amxx-function">CreateMultiForward</span>(const <span class="amxx-symbol">forward_handle</span>[], <span class="amxx-symbol">stop_type</span>, ...);
+native <span class="amxx-function">ExecuteForward</span>(<span class="amxx-symbol">forward_handle</span>, &<span class="amxx-symbol">ret</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">any:</span>...);
+native <span class="amxx-function">DestroyForward</span>(<span class="amxx-symbol">forward_handle</span>);</code></p>
+
+<p><h3>本机函数:</h3></p>
+
+<p>本机函数也是模块或插件制作的接口函数.同样在头文件中声明.</p>
+
+<p>模块或插件已经实现了它的具体功能,因此头文件中的声明并没有花括号,其它插件可以引用头文件并调用这些函数.</p>
+
+<p>amxmodx.inc提供了一个让插件可以创建本机函数的本机函数,可以给其它插件使用:</p>
+
+<p><code>native <span class="amxx-function">register_native</span>(const <span class="amxx-symbol">name</span>[], const <span class="amxx-symbol">handler</span>[], <span class="amxx-symbol">style</span> = <span class="amxx-number">0</span>);</code></p>
+
+<p><h3>公共函数:</h3></p>
+
+<p>公共函数由开发者自己设计,在你的插件源码中声明公共函数,可以被其它模块或插件调用.除非有这个需求,否则不应该这么做.</p>
+
+<p>有些本机函数会要求开发者为其提供固定格式的公共函数.它们会在某一刻调用这个公共函数,将一些数据输送过来:</p>
+
+<p><code>native <span class="amxx-function">CreateMultiForward</span>(const <span class="amxx-symbol">forward_handle</span>[], <span class="amxx-symbol">stop_type</span>, ...);
+native <span class="amxx-function">register_native</span>(const <span class="amxx-symbol">name</span>[], const <span class="amxx-symbol">handler</span>[], <span class="amxx-symbol">style</span> = <span class="amxx-number">0</span>);
+native <span class="amxx-function">register_event</span>(const <span class="amxx-symbol">event</span>[], const <span class="amxx-symbol">function</span>[], const <span class="amxx-symbol">flags</span>[], const <span class="amxx-symbol">cond</span>[] = <span class="amxx-string">""</span>, ...);
+native <span class="amxx-function">register_forward</span>(<span class="amxx-symbol">_forwardType</span>, const <span class="amxx-symbol">_function</span>[], <span class="amxx-symbol">_post</span> = <span class="amxx-number">0</span>);
+native <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHam</span>(<span class="amxx-tag">Ham:</span><span class="amxx-symbol">function</span>, const <span class="amxx-symbol">EntityClass</span>[], const <span class="amxx-symbol">Callback</span>[], <span class="amxx-symbol">Post</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-symbol">specialbot</span> = <span class="amxx-symbol">false</span>);</code></p>
+
+<p>你应该像这样声明公共函数:</p>
+
+<p><code>public <span class="amxx-tag">标签:</span><span class="amxx-function">函数名称</span>(<span class="amxx-symbol">0或多个参数</span>)
+{	<span class="amxx-comment">// 花括号范围内的代码,被称为函数体或代码块
+	// return的作用是设置函数计算结果(称为返回值),并退出函数,回到原先调用当前函数的位置.
+	// 可以不写return和返回值,或只写return.不设定返回值则表示使用默认值:0.
+	// 如果写了return,由于return会停止函数运行,因此,若return下方还有代码,不会被执行.</span>
+	return <span class="amxx-symbol">返回值</span>;
+}	<span class="amxx-comment">// 函数体出口,一旦被执行就会回到调用当前函数的位置.并以0作为函数计算结果.</span></code></p>
+
+<p><h3>备用函数:</h3></p>
+
+<p>备用函数一般是为了提供一些能反复利用的复杂功能,它在头文件中被实现具体功能.任由各种插件调用.</p>
+
+<p>它不属于任何模块或插件,但是它会利用各个模块或插件提供的本机函数实现各种功能.</p>
+
+<p>这是fakemeta_util.inc提供的一个备用函数:</p>
+
+<p><code><span class="amxx-comment">/**
+ * 计算指定坐标是否在指定实体的视锥范围内.它可以在一定程度上判断实体能否看见指定坐标.
+ *
+ * @note	点积是在2维中执行的,使指定实体的视椎体无限高.
+ *
+ * @param index	实体的索引
+ * @param point	要参与计算的坐标
+ *
+ * @return	如果坐标在视椎体范围内,函数返回true(真),否则返回false(假)
+ * @error	如果实体索引指向一个无效实体,则会在游戏控制台打印错误报告
+*/</span>
+stock <span class="amxx-tag">bool:</span><span class="amxx-function">fm_is_in_viewcone</span>(<span class="amxx-symbol">index</span>, const <span class="amxx-tag">Float:</span><span class="amxx-symbol">point</span>[<span class="amxx-number">3</span>])
+{
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">angles</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">pev</span>(<span class="amxx-symbol">index</span>, <span class="amxx-symbol">pev_angles</span>, <span class="amxx-symbol">angles</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-symbol">EngFunc_MakeVectors</span>, <span class="amxx-symbol">angles</span>);
+	<span class="amxx-function">global_get</span>(<span class="amxx-symbol">glb_v_forward</span>, <span class="amxx-symbol">angles</span>);
+	<span class="amxx-symbol">angles</span>[<span class="amxx-number">2</span>] = <span class="amxx-number">0.0</span>;
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">origin</span>[<span class="amxx-number">3</span>], <span class="amxx-tag">Float:</span><span class="amxx-symbol">diff</span>[<span class="amxx-number">3</span>], <span class="amxx-tag">Float:</span><span class="amxx-symbol">norm</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">pev</span>(<span class="amxx-symbol">index</span>, <span class="amxx-symbol">pev_origin</span>, <span class="amxx-symbol">origin</span>);
+	<span class="amxx-function">xs_vec_sub</span>(<span class="amxx-symbol">point</span>, <span class="amxx-symbol">origin</span>, <span class="amxx-symbol">diff</span>);
+	<span class="amxx-symbol">diff</span>[<span class="amxx-number">2</span>] = <span class="amxx-number">0.0</span>;
+	<span class="amxx-function">xs_vec_normalize</span>(<span class="amxx-symbol">diff</span>, <span class="amxx-symbol">norm</span>);
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">dot</span>, <span class="amxx-tag">Float:</span><span class="amxx-symbol">fov</span>;
+	<span class="amxx-symbol">dot</span> = <span class="amxx-function">xs_vec_dot</span>(<span class="amxx-symbol">norm</span>, <span class="amxx-symbol">angles</span>);
+	<span class="amxx-function">pev</span>(<span class="amxx-symbol">index</span>, <span class="amxx-symbol">pev_fov</span>, <span class="amxx-symbol">fov</span>);
+	if (<span class="amxx-symbol">dot</span> >= <span class="amxx-function">floatcos</span>(<span class="amxx-symbol">fov</span> * <span class="amxx-symbol">M_PI</span> / <span class="amxx-number">360</span>)) return <span class="amxx-symbol">true</span>;
+	return <span class="amxx-symbol">false</span>;
+}</code></p>
+
+<p>一般而言,不应该修改花括号内的代码.除非这是你自己写的代码.你可以创建一个头文件,储存自己制作的备用函数.</p>
+
+<p>你应该像这样制作备用函数:</p>
+
+<p><code>stock <span class="amxx-tag">标签:</span><span class="amxx-function">函数名称</span>(<span class="amxx-symbol">0或多个参数</span>)
+{	<span class="amxx-comment">// 花括号范围内的代码,被称为函数体或代码块
+	// return的作用是设置函数计算结果(称为返回值),并退出函数,回到原先调用当前函数的位置.
+	// 可以不写return和返回值,或只写return.不设定返回值则表示使用默认值:0.
+	// 如果写了return,由于return会停止函数运行,因此,若return下方还有代码,不会被执行.</span>
+	return <span class="amxx-symbol">返回值</span>;
+}	<span class="amxx-comment">// 函数体出口,一旦被执行就会回到调用当前函数的位置.并以0作为函数计算结果.</span></code></p>
+
+<p><h3>私有函数:</h3></p>
+
+<p>私有函数由开发者自己设计,在插件源码中声明私有函数后,其它模块或插件都无法访问它.</p>
+
+<p>你应该像这样制作私有函数:</p>
+
+<p><code><span class="amxx-tag">标签:</span><span class="amxx-function">函数名称</span>(<span class="amxx-symbol">0或多个参数</span>)
+{	<span class="amxx-comment">// 花括号范围内的代码,被称为函数体或代码块
+	// return的作用是设置函数计算结果(称为返回值),并退出函数,回到原先调用当前函数的位置.
+	// 可以不写return和返回值,或只写return.不设定返回值则表示使用默认值:0.
+	// 如果写了return,由于return会停止函数运行,因此,若return下方还有代码,不会被执行.</span>
+	return <span class="amxx-symbol">返回值</span>;
+}	<span class="amxx-comment">// 函数体出口,一旦被执行就会回到调用当前函数的位置.并以0作为函数计算结果.</span></code></p>
+
+<p><h3>调用自定义的函数,打印它的计算结果(返回值):</h3></p>
+
+<p>使用这段代码,载入游戏地图后可以在控制台看见<code><span class="amxx-function">server_print</span></code>打印其它函数的计算结果:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	new <span class="amxx-symbol">aaaa</span>[<span class="amxx-number">3</span>];		<span class="amxx-comment">// 声明尺寸为3的aaaa数组变量</span>
+	<span class="amxx-symbol">aaaa</span> = <span class="amxx-function">cccc</span>();		<span class="amxx-comment">// 调用cccc函数,将cccc函数的返回值存入aaaa变量</span>
+	new <span class="amxx-symbol">bbbb</span> = <span class="amxx-function">dddd</span>();	<span class="amxx-comment">// 声明bbbb变量,调用dddd函数,将dddd的返回值存入bbbb变量</span>
+	<span class="amxx-comment">// 调用server_print函数,将一段文字发送到游戏控制台</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]aaaa=[%d %d %d], bbbb=%d"</span>, <span class="amxx-symbol">aaaa</span>[<span class="amxx-number">0</span>], <span class="amxx-symbol">aaaa</span>[<span class="amxx-number">1</span>], <span class="amxx-symbol">aaaa</span>[<span class="amxx-number">2</span>], <span class="amxx-symbol">bbbb</span>);
+	<span class="amxx-comment">// 函数也可以直接用作另一个函数的参数</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]dddd=%d"</span>, <span class="amxx-function">dddd</span>());
+}
+<span class="amxx-function">cccc</span>()
+{
+	new <span class="amxx-symbol">ffff</span>[<span class="amxx-number">3</span>] = { <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span> };
+	return <span class="amxx-symbol">ffff</span>;
+}
+<span class="amxx-function">dddd</span>()
+{
+	return <span class="amxx-number">12</span>;
+}</code></p>
+
+<p><h3>静态函数:</h3></p>
+
+<p>静态函数比私有函数更加私有,它仅限当前文件可以访问,任何引用当前文件的外部文件,都无法调用它.</p>
+
+<p>只需要在私有函数的名字左边加上<code>static </code>便能让它变成静态私有函数.</p>
+
+<p><h2 id="click4_12">4.12:参数(Parameter)</h2></p>
+
+<p>参数是自定义符号的一种.可以理解为:参数是参与计算的数值.</p>
+
+<p>声明函数时,函数的圆括号部分称为参数列表,用于声明函数所需参数.想使用这个函数就需要按设定填写符合要求的参数.</p>
+
+<p>函数的内部代码可以根据参数执行不同的代码.返回不同的计算结果.</p>
+
+<p>调用者传入的实际数值或符号称为实参(Actual Parameter或Argument),而函数声明中定义的参数名称被称为形参(Formal Parameter).</p>
+
+<p>native函数,stock函数,static函数,私有函数都可以为形参定义默认值,表示调用该函数时可以不填写这个参数,使用默认值.</p>
+
+<p>使用这段代码,在游戏中载入地图后,可以在控制台看到两次调用函数时,都给了它哪些实参.</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-comment">// 声明私有函数,并设定它需要4个参数(参数名字可自定义)
+// 第1个参数(参数a)被设定默认值为2,如果不填,则会使用默认值.没有默认值的参数则必须填写.</span>
+<span class="amxx-function">function</span>(<span class="amxx-symbol">a</span> = <span class="amxx-number">2</span>, <span class="amxx-symbol">b</span>, <span class="amxx-symbol">c</span>, <span class="amxx-symbol">d</span>)
+{
+	<span class="amxx-comment">// 打印这个函数的参数,看看外界传入了什么实参.</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]a = %d, b = %d, c = %d, d = %d"</span>, <span class="amxx-symbol">a</span>, <span class="amxx-symbol">b</span>, <span class="amxx-symbol">c</span>, <span class="amxx-symbol">d</span>);
+	<span class="amxx-comment">// 这个函数没有设定返回值,因此使用0作为默认返回值,向下运行至"}"符号退出函数</span>
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(.<span class="amxx-symbol">plugin_name</span> = <span class="amxx-string">"插件名"</span>, .<span class="amxx-symbol">version</span> = <span class="amxx-string">"1.0.0.0"</span>, .<span class="amxx-symbol">author</span> = <span class="amxx-string">"作者"</span>);
+	<span class="amxx-comment">/* "."符号可以访问函数的参数,这里是分别访问c d b参数,将它们设置为4 5 3,
+	* 唯独没有访问a参数.a参数将使用默认值2.于是,2 3 4 5就是此次调用函数所传递的实参,
+	* 这些实参会进入函数内部,用形参a b c d表示它们.函数内部代码执行完毕后,回到此处,继续向下执行代码. */</span>
+	<span class="amxx-function">function</span>(.<span class="amxx-symbol">c</span> = <span class="amxx-number">4</span>, .<span class="amxx-symbol">d</span> = <span class="amxx-number">5</span>, .<span class="amxx-symbol">b</span> = <span class="amxx-number">3</span>);
+	<span class="amxx-comment">/* 不需要"."符号也可以设置参数值,但这种情况下必须按照参数顺序填写它的值,这也是最常见的调用方法</span>
+	<span class="amxx-comment">* 从左到右设置a b c d四个参数的值 */</span>
+	<span class="amxx-function">function</span>(<span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span>);
+}</code></p>
+
+<p>参数按照传递方式可以分为传值与传引用.即值参数(Value Parameter)与引用参数(Reference Parameter).</p>
+
+<p>一般情况下,形参是实参的副本,函数可以更改形参的值,而不会影响实参.</p>
+
+<p>若想将变量传入函数,让函数更改它,可在定义函数的参数时,在参数左边加上<code> & </code>符号.像这样:</p>
+
+<p><code>public <span class="amxx-function">function</span>(&<span class="amxx-symbol">parameter</span>)
+{
+	<span class="amxx-symbol">parameter</span> = <span class="amxx-number">5</span>;
+}</code></p>
+
+<p>拥有<code> & </code>符号的单值参数被称为引用参数.而没有<code> & </code>符号的单值参数就是值参数.</p>
+
+<p>另外,数组参数默认为引用参数,不允许添加<code> & </code>符号.也就是说,函数内修改数组形参,等于直接修改数组实参.</p>
+
+<p>一般而言,给数组参数左边加上<code>const</code>说明符,表示函数绝对不会更改它,反之则必定更改它.</p>
+
+<p>加上<code>const</code>的数组参数像这样:</p>
+
+<p><code>public <span class="amxx-function">function</span>(const <span class="amxx-symbol">parameter</span>[])
+{	<span class="amxx-comment">// 函数内部修改parameter会报错</span>
+}</code></p>
+
+<p>简单地说,有<code> & </code>符号的单值参数,或无<code>const</code>说明符的数组参数,函数必定更改它们.否则,不用担心传入的实参被更改.</p>
+
+<p>注意:同时拥有<code> const & </code>符号的单值参数,函数能通过地址更改有地址常量的值.是危险的.</p>
+
+<p>这是让自定义函数更改参数内容的示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-function">function</span>(<span class="amxx-symbol">valueParameter</span>, &<span class="amxx-symbol">referenceParameter</span>, <span class="amxx-symbol">array</span>[<span class="amxx-number">3</span>], const &<span class="amxx-symbol">referenceConstant</span>)
+{
+	<span class="amxx-symbol">valueParameter</span> = <span class="amxx-number">1</span>;				<span class="amxx-comment">// 此行为只会改变形参,不会更改实参的值</span>
+	<span class="amxx-symbol">referenceParameter</span> = <span class="amxx-number">2</span>;				<span class="amxx-comment">// 此行为等于更改实参的值</span>
+	<span class="amxx-symbol">array</span>[<span class="amxx-number">0</span>] = <span class="amxx-symbol">array</span>[<span class="amxx-number">1</span>] = <span class="amxx-symbol">array</span>[<span class="amxx-number">2</span>] = <span class="amxx-number">3</span>;		<span class="amxx-comment">// 此行为等于更改实参的值</span>
+	<span class="amxx-function">setarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">0</span>, <span class="amxx-number">4</span>);				<span class="amxx-comment">// 此行为...不太好</span>
+	return <span class="amxx-symbol">valueParameter</span>;
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(.<span class="amxx-symbol">plugin_name</span> = <span class="amxx-string">"插件名"</span>, .<span class="amxx-symbol">version</span> = <span class="amxx-string">"1.0.0.0"</span>, .<span class="amxx-symbol">author</span> = <span class="amxx-string">"作者"</span>);
+	new <span class="amxx-symbol">vArg</span>, <span class="amxx-symbol">refArg</span>, <span class="amxx-symbol">array</span>[<span class="amxx-number">3</span>];			<span class="amxx-comment">// 定义3个默认值为0的变量</span>
+	new const <span class="amxx-symbol">refConst</span>;				<span class="amxx-comment">// 定义1个默认值为0的常量</span>
+	<span class="amxx-comment">// 让自定义函数试着修改这些变量与常量</span>
+	<span class="amxx-function">function</span>(.<span class="amxx-symbol">valueParameter</span> = <span class="amxx-symbol">vArg</span>, .<span class="amxx-symbol">referenceParameter</span> = <span class="amxx-symbol">refArg</span>, .<span class="amxx-symbol">array</span> = <span class="amxx-symbol">array</span>, .<span class="amxx-symbol">referenceConstant</span> = <span class="amxx-symbol">refConst</span>);
+	<span class="amxx-comment">// 函数运行完毕后,把这些变量常量打印出来,看看是否依然为0呢?</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]vArg = %d"</span>,			<span class="amxx-symbol">vArg</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]refArg = %d"</span>,		<span class="amxx-symbol">refArg</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]array = [%d %d %d]"</span>,	<span class="amxx-symbol">array</span>[<span class="amxx-number">0</span>], <span class="amxx-symbol">array</span>[<span class="amxx-number">1</span>], <span class="amxx-symbol">array</span>[<span class="amxx-number">2</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]refConst = %d"</span>,		<span class="amxx-symbol">refConst</span>);
+}</code></p>
+
+<p>进入游戏,载入地图,打开控制台后,你将看见以下打印内容:</p>
+
+<p><code><span class="amxx-number">[AMXX]vArg = 0
+[AMXX]refArg = 2
+[AMXX]array = [3 3 3]
+[AMXX]refConst = 4</span></code></p>
+
+<p><h2 id="click4_13">4.13:标签(Tag)</h2></p>
+
+<p>在其它编程语言中,数值拥有值类型,比如int32整型,float单精浮点型,bool布尔型.但AMXX插件中只有cell类型,也就是int32.</p>
+
+<p>所有数值,不管它看起来像什么,本质上都是一个整数.但给它添加标签,可以更改它的计算方式,模仿其它值类型的计算效果.</p>
+
+<p>标签是以:符号结尾的符号,它的右边还会伴随其它字面量或符号.标签除了用于表示数值的用途和计算方式,还能改变数据交互的行为.</p>
+
+<p>一般标签有<code><span class="amxx-tag">any: bool: _: Float:</span></code>四种.</p>
+
+<p>它们分别表示:<code><span class="amxx-tag">无标签(任意标签) 布尔标签 整数标签 浮点标签</span></code>.</p>
+
+<p>定义新标签的方法很多,选择任意一个传递数据的左边写上标签名和 : 符号,就算是定义了一个新标签.</p>
+
+<p>除此以外,枚举名称可以作为标签使用.常常配合函数的参数使用.表示函数仅允许某一类常量作为参数.</p>
+
+<p>声明变量常量时,可以在左边加上标签.能在一定程度上表示它的用途.</p>
+
+<p>定义函数时,可以在函数左边加上标签.能在一定程度上表示返回值的用途.</p>
+
+<p>在定义数组尺寸时,可以在尺寸左边加上标签.表示访问元素时需要使用带有相同标签的索引.</p>
+
+<p>在定义数组尺寸时,可以将枚举名称当做尺寸.使其变成枚举结构体.用枚举成员访问元素,让该元素转变为枚举成员所定义的结构.</p>
+
+<p>定义函数参数时,可以在参数左边加上标签,表示调用函数需要使用什么样的参数.如果把标签不同的值当做参数,除非该值是<code><span class="amxx-tag">any:</span></code>标签,否则会触发编译器警告或报错:标签不匹配.</p>
+
+<p>在调用字面量,变量,常量时,可以在其左边加上标签.表示更换其标签.</p>
+
+<p><h3>无标签(任意标签):</h3></p>
+
+<p>定义变量常量时给它加上<code><span class="amxx-tag">any:</span></code>标签后,它就能与任意不同标签的数值做运算.计算方式和<code><span class="amxx-tag">_:</span></code>一样</p>
+
+<p>不论数组需要带有什么标签的索引,还是函数需要带有什么标签的参数,都可用一个字面量,变量,常量,以<code><span class="amxx-tag">any:</span></code>去掉标签,充当索引或参数(一般是为了逃避编译器警告).</p>
+
+<p><h3>布尔标签:</h3></p>
+
+<p>一个带有<code><span class="amxx-tag">bool:</span></code>标签的常量变量,只允许存放<code><span class="amxx-symbol">true</span></code>或<code><span class="amxx-symbol">false</span></code>作为它的值.表示真或假,是与非.<code><span class="amxx-symbol">false</span></code>实际上等于0,<code><span class="amxx-symbol">true</span></code>对应1,但任何非0数都可以表示真.</p>
+
+<p>参数带有<code><span class="amxx-tag">bool:</span></code>标签时,需要你填写<code><span class="amxx-symbol">true</span></code>或<code><span class="amxx-symbol">false</span></code>,或带有布尔标签的常量变量作为参数.一般来说,表示开启或关闭函数的某个分支功能.</p>
+
+<p><h3>整数标签:</h3></p>
+
+<p><code><span class="amxx-tag">_:</span></code>标签表示不带有小数点的数值,定义常量变量时默认带有<code><span class="amxx-tag">_:</span></code>标签,所以不需要写.</p>
+
+<p>所以它一般只被用于更换常量变量的标签.避免编译器警告.</p>
+
+<p>AMXX插件的整数,字符,字符串字面量,都带有_:标签.</p>
+
+<p><h3>浮点标签:</h3></p>
+
+<p>AMXX插件的浮点数字面量,也就是带有小数点的数值,本质上是带有<code><span class="amxx-tag">Float:</span></code>标签的整数.</p>
+
+<p>使用格式占位符%d即可将浮点数的实际整数值发送到游戏控制台.当然,一般还是用%f发送它的浮点值.</p>
+
+<p>浮点数可以与整数做计算,但浮点数必须在左边,才能计算出正确的浮点数结果.计算时会将右边的整数转变为浮点数.</p>
+
+<p>整数在左边,会与浮点数的实际整数值做计算,而这个值基本上是数十亿左右,肯定算不出你想要的值.</p>
+
+<p>仅限AMXX1.8.2或低版本,AMXX1.9.0的整数不论在浮点数左边还是右边,计算结果都没问题.</p>
+
+<p><h3>尝试使用各种标签,制作自定义的标签:</h3></p>
+
+<p>试着制作一个对参数有特殊需求的函数:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+enum <span class="amxx-enumname">CPeople</span>			<span class="amxx-comment">// 定义一个枚举结构体:人</span>
+{
+<span class="amxx-symbol">	CP_Name</span>[<span class="amxx-number">32</span>],		<span class="amxx-comment">// 称呼</span>
+<span class="amxx-symbol">	CP_Gender</span>[<span class="amxx-number">8</span>],		<span class="amxx-comment">// 性别</span>
+<span class="amxx-symbol">	CP_Age</span>,			<span class="amxx-comment">// 年龄</span>
+<span class="amxx-symbol">	Float</span>:<span class="amxx-symbol">CP_Height</span>,	<span class="amxx-comment">// 身高</span>
+}
+enum <span class="amxx-enumname">CPeopleVar</span>			<span class="amxx-comment">// 定义另一个枚举,这里用于表示"人"有哪些属性可更改</span>
+{
+	<span class="amxx-symbol">CPV_Arg</span>,
+	<span class="amxx-symbol">CPV_Height</span>,
+}
+<span class="amxx-comment">// 该函数对外界传入的参数有特殊需求:
+// 参数1必须是尺寸为CPeople的一维数组
+// 参数2必须是标签为CPeopleVar的单值
+// 参数3必须是标签为any的单值(也就是允许任意标签)</span>
+<span class="amxx-function">function</span>(<span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPeople</span>], <span class="amxx-tag">CPeopleVar:</span><span class="amxx-symbol">index</span>, <span class="amxx-tag">any:</span><span class="amxx-symbol">newValue</span>)
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]称呼:	%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Name</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]性别:	%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Gender</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]年龄:	%d"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Age</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]身高:	%f"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Height</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]正在更改 人 的%d号属性..."</span>, <span class="amxx-symbol">index</span>);
+	if (<span class="amxx-symbol">index</span> == <span class="amxx-symbol">CPV_Arg</span>)		<span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Age</span>] = <span class="amxx-symbol">newValue</span>;
+	if (<span class="amxx-symbol">index</span> == <span class="amxx-symbol">CPV_Height</span>)	<span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Height</span>] = <span class="amxx-symbol">newValue</span>;
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]已更改 人 的%d号属性:"</span>, <span class="amxx-symbol">index</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]称呼:	%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Name</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]性别:	%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Gender</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]年龄:	%d"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Age</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]身高:	%f"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CP_Height</span>]);
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(.<span class="amxx-symbol">plugin_name</span> = <span class="amxx-string">"插件名"</span>, .<span class="amxx-symbol">version</span> = <span class="amxx-string">"1.0.0.0"</span>, .<span class="amxx-symbol">author</span> = <span class="amxx-string">"作者"</span>);
+	<span class="amxx-comment">// 声明一维数组people,原本它储存单值元素.但有了枚举结构体,它的行为改变了</span>
+	new <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPeople</span>] = { <span class="amxx-string">"锟斤拷烫烫烫屯屯屯"</span>, <span class="amxx-string">"它们"</span>, <span class="amxx-number">12</span>, <span class="amxx-number">165.0</span> };
+	<span class="amxx-function">function</span>(.<span class="amxx-symbol">people</span> = <span class="amxx-symbol">people</span>, .<span class="amxx-symbol">index</span> = <span class="amxx-symbol">CPV_Height</span>, .<span class="amxx-symbol">newValue</span> = <span class="amxx-number">200.0</span>);
+	<span class="amxx-function">function</span>(.<span class="amxx-symbol">people</span> = <span class="amxx-symbol">people</span>, .<span class="amxx-symbol">index</span> = <span class="amxx-symbol">CPV_Arg</span>, .<span class="amxx-symbol">newValue</span> = <span class="amxx-number">20</span>);
+}</code></p>
+
+<p>如果你制作了一个函数,需要一些固定的常量作为参数.应该尽量以枚举名称作为形参的标签,再以枚举成员作为实参.</p>
+
+<p>这能让编译器检查参数的标签是否匹配,不匹配就会触发警告或报错.</p>
+
+<p>哪怕过了几年,你已经忘了该函数需要填什么参数,看见参数的标签后就会知道该去寻找这个枚举.</p>
+
+<p><h2 id="click4_14">4.14:有用与无用的标点符号,以及运算符(Operator)</h2></p>
+
+<p><h3>有用的:</h3></p>
+
+<p><code>~!@#%^&*()_+-={}[]|\:;"'<>,.?/</code></p>
+
+<p><h3>无用的:</h3></p>
+
+<p> ` $ 以及所有全角符号</p>
+
+<p>无用符号除非被写在字符字面量、字符串字面量、注释中,否则往哪写都会导致编译器报错.</p>
+
+<p>而有用符号,只要被正确使用就不会报错.</p>
+
+<p><h3>运算符:</h3></p>
+
+<p>运算符是指能够计算出值的符号,比如加减乘除.</p>
+
+<p><code> + - * / % = ~ ^ & | ! < > ? :
+ ++ += -- -= *= /= %= == ^= && &= || |= != <= << <<= >= >> >>= >>> >>>=
+ .. ... :: </code></p>
+
+<p>运算符可以简单分为省略号运算符、一、二、三元运算符四种.表示使用它们需要多少个操作数.</p>
+
+<p><code> :: </code>是个意义不明的运算符.找不到相关信息.</p>
+
+<p><h3>省略号运算符:</h3></p>
+
+<p><code> .. </code>插在左常量与右常量中间.比如<code><span class="amxx-number">1</span> .. <span class="amxx-number">10</span></code>表示1至10.它仅能用作<code>case</code>保留词的表达式:</p>
+
+<p><code>case <span class="amxx-number">1</span> .. <span class="amxx-number">10</span>:
+{
+<span class="amxx-comment">	// 代码</span>
+}</code></p>
+
+<p><code> ... </code>有两种用途,一是让编译器自动计算一维数组字面量的元素值,二是设定一个函数可以拥有不同数量的参数.</p>
+
+<p>这里只介绍第二种用法:在声明本机函数,静态函数,私有函数,备用函数时,可将它作为最后一个参数使用.</p>
+
+<p>表示从该位置起,函数允许接受任意数量的参数,不限制参数是单值还是数组,并且这些参数全都是引用参数.函数能更改它们的值.</p>
+
+<p>本机函数内默认使用<code><span class="amxx-function">get_patam get_array get_string</span></code>等函数提取这种参数数据.</p>
+
+<p>备用函数,静态函数,私有函数和某特殊本机函数,用<code><span class="amxx-function">getarg numargs</span></code>等函数提取参数数据.</p>
+
+<p><code><span class="amxx-comment">// 设置该函数可以接受任意数量带有Float:标签的参数.</span>
+stock <span class="amxx-function">func</span>(<span class="amxx-tag">Float:</span>...)
+{
+<span class="amxx-comment">	// 函数接收到多少个参数</span>
+	new <span class="amxx-symbol">num</span> = <span class="amxx-function">numargs</span>();
+<span class="amxx-comment">	// 获取第一个参数(0在这里表示第一个参数的索引号),由于getarg函数带有_:标签,需要用Float:强制更换</span> 
+	new <span class="amxx-tag">Float:</span><span class="amxx-symbol">a</span> = <span class="amxx-tag">Float:</span><span class="amxx-function">getarg</span>(<span class="amxx-number">0</span>);
+}</code></p>
+
+<p><h3>一元运算符:</h3></p>
+
+<p><code> - ~ ! ++ -- </code>是需要一个左值或一个右值作为操作数的运算符.</p>
+
+<p><code> - </code>的计算结果是将右值从十进制层面取反(正变负,负变正).</p>
+
+<p><code><span class="amxx-comment">// 将a的值和-a的计算结果发送到控制台.</span>
+new <span class="amxx-tag">Float:</span><span class="amxx-symbol">a</span> = <span class="amxx-number">1.6</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]a=%f -a=%f"</span>, <span class="amxx-symbol">a</span>, -<span class="amxx-symbol">a</span>);</code></p>
+
+<p><code> ~ </code>的计算结果是将右值在二进制层面取反(32个位的1变0,0变1).</p>
+
+<p><code><span class="amxx-comment">// 将a的值和~a的计算结果以二进制格式发送到控制台(AMXX1.8.2或更低版本不支持%b格式占位符).</span>
+new <span class="amxx-symbol">a</span> = <span class="amxx-number">0b01010101</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]a=%08b ~a=%08b"</span>, <span class="amxx-symbol">a</span>, ~<span class="amxx-symbol">a</span>);</code></p>
+
+<p><code> ! </code>与右值计算,如果右值是0则得出1,否则得出0(计算结果带有<code><span class="amxx-tag">bool:</span></code>标签).</p>
+
+<p><code><span class="amxx-comment">// 将a的值和!a的计算结果发送到控制台.</span>
+new <span class="amxx-symbol">a</span> = <span class="amxx-number">1</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]a=%d !a=%d"</span>, <span class="amxx-symbol">a</span>, !<span class="amxx-symbol">a</span>);</code></p>
+
+<p><code> ++ </code>使左变量或右变量增加1.这是个神奇的运算符,任何人都该亲自试试这些代码的效果.</p>
+
+<p><code> ++ </code>在左则拥有运算的最高优先级,在右则拥有最低优先级.因此函数接受参数时得到的是不同的值:先运算者,函数接收到计算完毕后的值.后运算者,函数接收到计算之前的值.</p>
+
+<p><code><span class="amxx-comment">// 将a的值, ++a和a++的计算结果发送到控制台.</span>
+new <span class="amxx-symbol">a</span> = <span class="amxx-number">1</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]老a=%d"</span>, <span class="amxx-symbol">a</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]++a=%d"</span>, ++<span class="amxx-symbol">a</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]新a=%d"</span>, <span class="amxx-symbol">a</span>);
+<span class="amxx-symbol">a</span> = <span class="amxx-number">1</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]老a=%d"</span>, <span class="amxx-symbol">a</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]a++=%d"</span>, <span class="amxx-symbol">a</span>++);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]新a=%d"</span>, <span class="amxx-symbol">a</span>);</code></p>
+
+<p><code> -- </code>使左变量或右变量减少1.和<code> ++ </code>类似.</p>
+
+<p>一元运算符在数值左边时,比其它任何运算符都要优先运算.如果多个一元运算符同时出现在某个值的左边,从右往左算.</p>
+
+<p><h3>二元运算符:</h3></p>
+
+<p><code> * / % + - << >> >>> & ^ | < <= > >= == != && || = += -= *= /= %= &= ^= |= <<= >>= >>>= </code></p>
+
+<p>这些都是需要一个左值和一个右值才能使用的运算符,比如<code><span class="amxx-symbol">a</span> = <span class="amxx-number">1</span></code>中的<code> = </code>就需要左边的<code><span class="amxx-symbol"> a </span></code>和右边的1.表示将1存入变量<code><span class="amxx-symbol"> a </span></code>.</p>
+
+<p><code> * </code>和<code> / </code>就是数学课上教的乘和除.在复合算式中<code> = </code>的优先级很低,而<code> * </code>和<code> / </code>的优先级很高,比如<code><span class="amxx-symbol">a</span> = <span class="amxx-number">5</span> * <span class="amxx-number">6</span></code>会先计算<code><span class="amxx-number">5</span> * <span class="amxx-number">6</span></code>得出30,再计算<code><span class="amxx-symbol">a</span> = <span class="amxx-number">30</span></code>.</p>
+
+<p><code> - </code>运算符可以是一元运算符和二元运算符,作为一元运算符,它的优先级很高,超过<code> * / </code>运算符.作为二元运算符,它的优先级与<code> + </code>运算符一样.使两个值相减或相加.</p>
+
+<p><code> % </code>详情上网查阅求余运算符或取模运算符,取左值除以右值的余数.</p>
+
+<p><code> << >> >>> </code>详情上网查阅位运算. AMX Mod X 1.9.0 可以试着打印它们的运算结果:</p>
+
+<p><code>new <span class="amxx-symbol">a</span> = <span class="amxx-number">0b00000000000000000000000010001001</span>;	<span class="amxx-comment">// 这个值等于137,只是写法不同.用%d可以显示它,但用%b更适合观看它的变化规律.</span>
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]a << 1 = %032b, a << 2 = %032b, a << 3 = %032b, a << 4 = %032b"</span>, <span class="amxx-symbol">a</span> << <span class="amxx-number">1</span>, <span class="amxx-symbol">a</span> << <span class="amxx-number">2</span>, <span class="amxx-symbol">a</span> << <span class="amxx-number">3</span>, <span class="amxx-symbol">a</span> << <span class="amxx-number">4</span>);</code></p>
+
+<p><code> & ^ | </code>详情上网查阅位运算. AMX Mod X 1.9.0 可以试着打印它们的运算结果:</p>
+
+<p><code>new <span class="amxx-symbol">a</span> = <span class="amxx-number">0b10001000</span>;
+new <span class="amxx-symbol">b</span> = <span class="amxx-number">0b10101010</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%08b = a"</span>, <span class="amxx-symbol">a</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%08b = b"</span>, <span class="amxx-symbol">b</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%08b = a & b(保留ab同位上的1)"</span>, <span class="amxx-symbol">a</span> & <span class="amxx-symbol">b</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%08b = a ^^ b(保留ab异位上的1)"</span>, <span class="amxx-symbol">a</span> ^ <span class="amxx-symbol">b</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%08b = a | b(保留ab各位上的1)"</span>, <span class="amxx-symbol">a</span> | <span class="amxx-symbol">b</span>);	<span class="amxx-comment">// |的优先级比另外两个低</span></code></p>
+
+<p><code> < <= > >= == != </code>这些比较运算符用于比较两个值的大小关系.分别为:小于 小于等于 大于 大于等于 等于 不等于.</p>
+
+<p>它们的计算结果为1或0,表示对与错,确认与否认,是与不是.因此计算结果带有<span class="amxx-tag">bool:</span>标签.</p>
+
+<p><code>new <span class="amxx-tag">bool:</span><span class="amxx-symbol">a</span> = <span class="amxx-number">1</span> < <span class="amxx-number">5</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]1 < 5 = %d  : 1是否小于5"</span>, <span class="amxx-symbol">a</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]5 > 5 = %d  : 5是否大于5"</span>, <span class="amxx-number">5</span> > <span class="amxx-number">5</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]5 >= 5 = %d : 5是否大于等于5"</span>, <span class="amxx-number">5</span> >= <span class="amxx-number">5</span>);
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]5 != 5 = %d : 5是否不等于5"</span>, <span class="amxx-number">5</span> != <span class="amxx-number">5</span>);	<span class="amxx-comment">// ==和!=的优先级比另外四个低</span>
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]5 == 5 = %d : 5是否等于5"</span>, <span class="amxx-number">5</span> == <span class="amxx-number">5</span>);		<span class="amxx-comment">// ==和!=的优先级比另外四个低</span></code></p>
+
+<p><code> && || </code>用于表示"而且"与"或者".即: "左值为真 而且 右值为真"  "左值为真 或者 右值为真".</p>
+
+<p><code> && </code>的左值与右值都不等于0时,则计算结果为1.带有<code><span class="amxx-tag">bool:</span></code>标签.</p>
+
+<p><code> || </code>的左值或右值不等于0时,则计算结果为1.带有<code><span class="amxx-tag">bool:</span></code>标签.</p>
+
+<p>它们常被用于<code>if</code>保留词的条件表达式,判断左右两个函数是否满足条件.</p>
+
+<p><code> = += -= *= /= %= &= ^= |= <<= >>= >>>= </code>这些都是赋值运算符,和上面的运算符差不多,只不过计算结束后,结果会存入<code><span class="amxx-symbol">左变量</span></code>.</p>
+
+<p><h3>三元运算符:</h3></p>
+
+<p><code> ? : </code>需要3个操作数.</p>
+
+<p>它的语法:<code><span class="amxx-symbol"> a</span> ? <span class="amxx-symbol">b</span> : <span class="amxx-symbol">c</span></code> 表示当<code><span class="amxx-symbol"> a </span></code>不等于0时,计算结果为<code><span class="amxx-symbol"> b </span></code>,否则为<code><span class="amxx-symbol"> c </span></code>.</p>
+
+<p><h3>按优先级排列它们:</h3></p>
+
+<p>优先级1:<code>		( ) 			<span class="amxx-comment">// 括号最优先</span>	</code></p>
+
+<p>优先级2:<code>		- ~ ! ++ -- 		<span class="amxx-comment">// 前置自增自减</span>	</code></p>
+
+<p>优先级3:<code>		* /					</code></p>
+
+<p>优先级4:<code>		%					</code></p>
+
+<p>优先级5:<code>		+ -					</code></p>
+
+<p>优先级6:<code>		<< >> >>>				</code></p>
+
+<p>优先级7:<code>		& | ^					</code></p>
+
+<p>优先级8:<code>		< <= > >= == !=				</code></p>
+
+<p>优先级9:<code>		&& ||					</code></p>
+
+<p>优先级10:<code>	? :					</code></p>
+
+<p>优先级11:<code>	..					</code></p>
+
+<p>优先级12:<code>	= += -= *= /= %= &= ^= |= <<= >>= >>>=	</code></p>
+
+<p>优先级13:<code>	...					</code></p>
+
+<p>优先级14:<code>	++ --			<span class="amxx-comment">// 后置自增自减</span>	</code></p>
+
+<p>出现多个同级别运算符时,除了一元运算符和赋值运算符,都从左往右算.</p>
+
+<p><h2 id="click4_15">4.15:代码块(Block)</h2></p>
+
+<p>被花括号包裹的代码被称呼为代码块.</p>
+
+<p>一般情况下,代码块内部的代码要比<code> { </code>所在行多出一个制表符(也叫缩进).</p>
+
+<p>假如<code> { </code>和<code> } </code>所在的行,左边都是1个制表符,则内部的每一行代码要有2个制表符.</p>
+
+<p>制表符也就是[Q]键左边的[Tab]键,一般情况下能展现出1至8个空格的长度.</p>
+
+<p>按照这个规则编写代码,我们可以非常直观的看出一句代码属于哪个代码块:</p>
+
+<p><code>public <span class="amxx-function">plugin_init</span>()
+{	<span class="amxx-comment">// 进入第一层
+	// 由于上一个 { 所在的行,的左边拥有0个制表符,因此内部每一行代码左边至少有1个制表符</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]正在执行第一层的代码"</span>);
+	if (<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>));
+	{	<span class="amxx-comment">// 进入第二层
+		// 由于上一个 { 所在的行,的左边拥有1个制表符,因此内部每一行代码左边至少有2个制表符</span>
+		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]正在执行第二层的代码"</span>);
+		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]即将退出第二层"</span>);
+	}	<span class="amxx-comment">// 退出第二层</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]即将退出第一层"</span>);
+}	<span class="amxx-comment">// 退出第一层</span></code></p>
+
+<p><code> { </code>和<code> } </code>分别被称为代码块的入口和出口.</p>
+
+<p><h2 id="click4_16">4.16:控制代码执行流程</h2></p>
+
+<p>函数的代码块称呼为函数体.一般情况下,函数体内的代码从左到右运行,从上到下运行.</p>
+
+<p>代码块内的<code> ; </code>符号表示一句代码已经结束.虽然可以不写,但若每一句代码都以<code> ; </code>结尾,可以让编译器准确报告错误行数.</p>
+
+<p>由于运算符的优先级各自不同,因此并不总是从左到右运行.</p>
+
+<p><code>break case continue default else for if return switch while goto</code>这些保留词也能在函数体内控制代码运行顺序.</p>
+
+<p>接下来介绍<code>if else return</code>在函数体内的使用方法.其它的以后再说.</p>
+
+<p><code>if else</code>是配套的,其完整格式是:</p>
+
+<p><code>if (<span class="amxx-comment">/* 在这里写入条件表达式,也就是一些有可能等于true或false,非0或0的运算式 */</span>)
+{
+	<span class="amxx-comment">// 如果if的条件表达式不等于0或true,便会进入if的代码块内部执行代码.
+	// 执行完毕后,会退出if的代码块,跳过else的代码块,执行else代码块下方的代码</span>
+}
+else
+{
+	<span class="amxx-comment">// 只要if的条件表达式等于0或false,便会跳过if的代码块,进入else的代码块内部执行代码.
+	// 执行完毕后,会退出else的代码块,执行else代码块下方的代码
+	// 如果没有在这里写代码的需求,可以不写else和它的代码块.else只是if的附属品.
+	// 如果不写,而if的条件表达式等于0或false,if的代码块内容会被跳过.</span>
+}
+<span class="amxx-comment">// 下方的代码...可以没有</span></code></p>
+
+<p>简单的说,<code>if</code>的圆括号内计算结果若为0,则进入<code>else</code>的代码块执行代码.否则进入<code>if</code>的代码块.</p>
+
+<p>代码块内可以嵌套使用<code>if else</code>语句:</p>
+
+<p><code>if (<span class="amxx-comment">/* 条件1 */</span>)
+{
+	<span class="amxx-comment">// 内层的if else语句,仅在外层条件计算结果不为0或false时执行</span>
+	if (<span class="amxx-comment">/* 条件2 */</span>)
+	{
+	}
+	else
+	{
+		<span class="amxx-comment">// 是否执行取决于同一层内的上一个if条件.</span>
+	}
+	<span class="amxx-comment">// 下方的代码...可以没有,不管有没有,完事后继续向下执行</span>
+}
+<span class="amxx-comment">// 继续向下执行</span></code></p>
+
+<p>不仅是<code>if</code>的代码块,<code>else</code>的代码块同样可以嵌套使用<code>if else</code>语句:</p>
+
+<p><code>else	<span class="amxx-comment">// else所属的if条件计算结果为0或false时,才会跳过if代码块,进入else内部</span>
+{
+	if (<span class="amxx-comment">/* 条件 */</span>)
+	{
+	}
+	else
+	{
+	}
+}</code></p>
+
+<p><code>else</code>代码块内嵌套的<code>if else</code>代码可以简化,应尽可能代替嵌套的做法:</p>
+
+<p><code>else if	(<span class="amxx-comment">/* 条件 */</span>)
+{
+}
+else
+{
+}</code></p>
+
+<p>建议亲自测试变量的不同数值,查看最终触发的代码:</p>
+
+<p><code><span class="amxx-comment">// 试试设定3岁,6岁,9岁,18岁.
+// 猜猜控制台会显示什么?测试结果是否与猜测的一致?</span>
+new <span class="amxx-symbol">howOldAreYou</span> = <span class="amxx-number">3</span>;
+if (<span class="amxx-symbol">howOldAreYou</span> < <span class="amxx-number">5</span>)
+{
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]我猜你的年龄小于5岁"</span>);
+}
+else if (<span class="amxx-symbol">howOldAreYou</span> < <span class="amxx-number">9</span>)
+{
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]我猜你的年龄小于9岁"</span>);
+}
+else if (<span class="amxx-symbol">howOldAreYou</span> < <span class="amxx-number">18</span>)
+{
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]我猜你的年龄小于18岁"</span>);
+}
+else
+{
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]我猜你的年龄大于或等于18岁"</span>);
+}</code></p>
+
+<p><code>return</code>用于设置函数计算结果,并退出函数,返回到调用函数的位置.其完整格式是:</p>
+
+<code>return <span class="amxx-symbol">返回值</span>	<span class="amxx-comment">// 常量,变量,数组,都是可以的.</span></code>
+
+<p>返回值必须与函数拥有相同的标签,否则会触发编译器警告.</p>
+
+<p>返回值不是必须填写的.不填写等于将函数计算结果设为无标签的0,不会触发警告.</p>
+
+<p>函数体内可用有多层代码块,每个代码块内都可以使用<code>return</code>退出函数,一旦退出,<code>return</code>下一行的代码就不可能执行,所以,不要把同一层的代码写在<code>return</code>下方.</p>
+
+<p>函数体内,如果某个代码块中的<code>return</code>带有返回值,则其它代码块的<code>return</code>也必须填写返回值.</p>
+
+<p>到游戏中测验所学知识,猜猜游戏中会显示哪些文字:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+<span class="amxx-function">	register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+<span class="amxx-comment">	// 将各种数值作为参数,将函数返回值发送到控制台:"你几岁了? 我猜你年龄小于xx岁"</span>
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(-<span class="amxx-number">99</span>));
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">4</span>));
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">9</span>));
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">14</span>));
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">19</span>));
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">24</span>));
+}
+public <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-symbol">age</span>)
+{
+	new <span class="amxx-symbol">result</span>[<span class="amxx-number">64</span>];
+	if (<span class="amxx-symbol">age</span> < <span class="amxx-number">0</span>)
+	{
+		<span class="amxx-symbol">result</span> = <span class="amxx-string">"你的年龄是负数?"</span>;
+		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]满足特殊条件,提前退出函数.age参数=%d"</span>, <span class="amxx-symbol">age</span>);
+		return <span class="amxx-symbol">result</span>; <span class="amxx-comment">// 满足某些特殊条件则提前退出函数,不要再执行下方代码.返回到被plugin_init函数调用的位置</span>
+	}
+	if (<span class="amxx-symbol">age</span> < <span class="amxx-number">5</span>)
+	{
+<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 5 years old."</span>;
+	}
+	else if (<span class="amxx-symbol">age</span> < <span class="amxx-number">10</span>)
+	{
+<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 10 years old."</span>;
+	}
+	else if (<span class="amxx-symbol">age</span> < <span class="amxx-number">15</span>)
+	{
+<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 15 years old."</span>;
+	}
+	else if (<span class="amxx-symbol">age</span> < <span class="amxx-number">20</span>)
+	{
+<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 20 years old."</span>;
+	}
+	else
+	{
+<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're over 19 years old."</span>;
+	}
+<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]按正常流程退出函数.age参数=%d"</span>, <span class="amxx-symbol">age</span>);
+	return <span class="amxx-symbol">result</span>; <span class="amxx-comment">// 若年龄非负数,都会在这里退出函数,返回到被plugin_init函数调用的位置</span>
+}</code></p>
+
+<p><h2 id="click4_17">4.17:符号作用域,全局变量(Global Variable),全局常量(Global Constant)</h2></p>
+
+<p>需要注意,在函数体内声明符号无法在函数体外使用.而函数体外声明的返回可以在任意函数体内使用.</p>
+
+<p>因此,函数体外的自定义符号被称为全局变量,全局常量,或函数.</p>
+
+<p>在函数体内自定义的符号被称为局部变量或局部常量.</p>
+
+<p>全局变量和常量能实现多个函数之间的数据交流.</p>
+
+<p>如果某个代码块内声明了局部变量或常量,那么它包裹的其它代码块,即便没有包裹局部变量或常量的声明,也能调用它们.</p>
+
+<p>能调用变量,常量的区域,就叫做它们的作用域.</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+new <span class="amxx-symbol">globalVariable</span>;	<span class="amxx-comment">// 声明一个全局变量</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	new <span class="amxx-symbol">localVariable</span>;	<span class="amxx-comment">// 声明一个局部变量</span>
+	if (<span class="amxx-symbol">globalVariable</span> == <span class="amxx-symbol">localVariable</span>)	<span class="amxx-comment">// 全局变量globalVariable在任何函数体内都可以使用</span>
+	{
+		new <span class="amxx-symbol">localVariable2</span>;	<span class="amxx-comment">// 声明一个更深层的局部变量</span>
+		<span class="amxx-symbol">localVariable2</span> = <span class="amxx-symbol">localVariable</span>;	<span class="amxx-comment">// 内层可以调用外层声明的变量localVariable</span>
+	}
+	else
+	{
+		<span class="amxx-comment">// 这里不能调用localVariable2,虽然深度相同,但不在同一分支</span>
+		return <span class="amxx-symbol">localVariable</span>; <span class="amxx-comment">// 内层可以调用外层声明的变量localVariable</span>
+	}
+	<span class="amxx-comment">// 外层无法使用内层声明的局部变量localVariable2</span>
+}</code></p>
+
+<p>在插件运行期间,全局变量永久存在.而局部变量,一旦退出代码块就会被销毁.</p>
+
+<p><code>{	<span class="amxx-comment">// 代码块入口</span>
+	new <span class="amxx-symbol">localVariable</span>;	<span class="amxx-comment">// 声明一个局部变量</span>
+}	<span class="amxx-comment">// 代码块出口,删除内部所有局部变量</span></code></p>
+
+<p>本篇教程已结束.</p>
+
+<p>其余内容:暂无</p>
+
+</body>
+</html>
