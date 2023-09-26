@@ -1,0 +1,1055 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 基础教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,190,248);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+	}
+	.amxx-keyword {
+		color: rgb(0,0,255);
+		font-weight: bold;
+	}
+	.amxx-identifier {
+		color: rgb(153,51,255);
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+</style>
+</head>
+<body>
+
+<h1>cs1.6 amxx编程 基础教程 -- 作者:偶萤蛉(Oinling)</h1>
+
+<h1>目录:</h1>
+
+<a href="#click1">1.如何用AMXX插件实现自己想要的功能</a>
+
+<p></p>
+
+<a href="#click11">→1.1:对象(Object)</a>
+
+<p></p>
+
+<a href="#click12">→1.2:实体(Entity)</a>
+
+<p></p>
+
+<a href="#click13">→1.3:事件(Event)与挂钩(Hook)</a>
+
+<p></p>
+
+<a href="#click14">→1.4:选择事件</a>
+
+<p></p>
+
+<a href="#click2">2:实战训练</a>
+
+<p></p>
+
+<a href="#click21">→2.1:添加挂钩,拦截事件</a>
+
+<p></p>
+
+<a href="#click22">→2.2:检查实体属性状态</a>
+
+<p></p>
+
+<a href="#click23">→2.3:修改实体属性</a>
+
+<p></p>
+
+<a href="#click24">→2.4:强制执行事件</a>
+
+<p></p>
+
+<a href="#click3">3:杂谈</a>
+
+<p></p>
+
+<a href="#click31">→3.1:详细查看相关模块文档</a>
+
+<p></p>
+
+<a href="#click32">→3.2:给接口添加详细注释</a>
+
+<p></p>
+
+<a href="#click33">→3.3:理解位标志运算</a>
+
+<p></p>
+
+<a href="#click34">→3.4:合理使用条件判断</a>
+
+<p></p>
+
+<h2 id="click1">1:如何用AMXX插件实现自己想要的功能</h2>
+
+<p>简单来说,开发者需要明确自己的操作对象,对接一个合适的事件,在挂钩目标函数内修改相关属性或行为.</p>
+
+<p>想要用AMXX实现自己想要的功能,首先得了解四个重要的抽象概念:</p>
+
+<p>对象(Object) 实体(Entity) 事件(Event) 挂钩(Hook)</p>
+
+<h3 id="click11">1.1:对象(Object)</h3>
+
+<p>在面向对象编程中,对象拥有属性(数据)和方法(函数),对象是面向对象编程中的一个基本概念.</p>
+
+<p>对象属性用于存储对象的状态,方法用来定义对象的行为和操作.</p>
+
+<p>我们可以借用这一概念,将万物视作对象,以此了解自己想做什么.</p>
+
+<p>比如标识符是一个对象,拥有名称,储存的值,Tag标签,被什么保留词声明等等.</p>
+
+<p>比如数组是一个对象,一个数组拥有长度,表示内部储存了多少个值,</p>
+
+<p>动态数组甚至会有拥有增删查改方法,以某种规律排列元素的方法,或更改容量的方法.</p>
+
+<p>cs1.6游戏中的实体是实打实的对象.拥有属性与方法,属性用于存储各种状态,方法用于定义各种行为.</p>
+
+<p>比如游戏中的玩家是一个对象,拥有名称,移动速度,等属性.还有攻击行为,跳跃行为,奔跑行为等等.</p>
+
+<p>大部分时候,amxx插件都被用于更改玩家相关的属性与行为.</p>
+
+<p>对象拥有指针(类似入门教程中介绍的数组索引),表示其数据储存在计算机的某个位置.是数据的地址.</p>
+
+<p>而游戏中所有实体(包括玩家)的指针都被储存在一个数组中,可以称呼为实体数组,或实体列表.</p>
+
+<p>一个对象将另一个对象存入自己的某个属性是非常常见的.</p>
+
+<p>比如玩家有一个属性就是储存当前使用的武器,还有一个属性储存数组,数组内储存自身拥有的所有武器.</p>
+
+<p>将所有相同类型的对象存入数组中,可以让开发者非常方便的进行统一管理.</p>
+
+<p>amxx便通过索引访问实体数组中的实体,而这种索引也被叫做实体索引.</p>
+
+<h3 id="click12">1.2:实体(Entity)</h3>
+
+<p>游戏中,实体包含:玩家,人质,武器,道具,门,按钮,水,电梯,载具,气泡,玻璃,雷电,激光,烟雾,光源.</p>
+
+<p>看不见的,可得见的,可碰触的,不可碰触的,几乎都是实体.</p>
+
+<p>实体被储存在一个数组中,amxx可以通过实体索引访问数组中的实体,查改实体属性.也可以增删实体.</p>
+
+<p>实体被划分为多个类型,不同的类型拥有通用属性,也有其类型专属的属性.</p>
+
+<p><span class="amxx-string">cstrike</span>模块的相关头文件,提供了一些针对CS玩家实体的接口函数,可查改玩家小部分专属属性.</p>
+
+<p><span class="amxx-string">fakemeta</span>模块的相关头文件,提供了大量接口函数,可查改实体通用,专属属性.增删实体.</p>
+
+<p><span class="amxx-string">hamsandwich</span>模块的相关头文件,提供了些许接口函数,可查改实体某一类专属属性.</p>
+
+<h3 id="click13">1.3:事件(Event)与挂钩(Hook)</h3>
+
+<p>游戏中所发生的每件事,玩家的每个行为,都是由函数实现的,而执行这些函数可以视作触发事件.</p>
+
+<p>amxx自身携带的种种模块,将一部分事件封装为对象,可通过<span class="amxx-keyword">forward native</span>接口函数访问.</p>
+
+<p>可以在它们触发前后,执行各种函数,给事件附加种种影响.或者在某一刻强行触发事件.</p>
+
+<p>能被抽象为事件的函数,拥有前置挂钩(Pre Hook)和后置挂钩(Post Hook)两种挂钩.</p>
+
+<p>前置挂钩基本上都可以利用挂钩目标函数的返回值阻止事件,或通过一些<span class="amxx-keyword">native</span>函数更改事件参数和事件返回值.</p>
+
+<p>后置挂钩不能阻止事件,但依然有可能更改事件参数和返回值.</p>
+
+<p>一个事件通常可以添加多个挂钩,每个事件和挂钩都对应一个目标函数.</p>
+
+<p>一般情况下,即便事件被阻止也依然会触发所有后置挂钩.</p>
+
+<p>执行事件,实际上就是执行事件的目标函数.注册事件,说的就是给事件添加挂钩.</p>
+
+<p>执行事件的目标函数之前,会先调用所有前置挂钩的目标函数.</p>
+
+<p>执行事件的目标函数之后,会调用所有后置挂钩的目标函数.</p>
+
+<p>这些钩子目标函数,事件目标函数都是在同一帧(时间)内按照不同顺序执行:</p>
+
+<p>执行所有前置挂钩的目标函数→执行事件的目标函数→执行所有后置挂钩的目标函数.</p>
+
+<p>事件或挂钩，都是对某种特殊函数对象的抽象化称呼,挂钩的目标函数本身也可以事件化.</p>
+
+<p>开发者必须把钩子的目标函数设定为公共函数,才能被实现本机函数的插件或模块访问,调用.</p>
+
+<p>稍微介绍一下<span class="amxx-string">amxmodx.inc</span>的常用<span class="amxx-keyword">forward</span>函数(详情查阅inc文件或上网查询):</p>
+
+<code><span class="amxx-comment">// 在调用plugin_precache之前被调用,实现它,可制作native接口函数</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">plugin_natives</span>();
+<span class="amxx-comment">// 在调用plugin_init之前被调用,实现它,可缓存额外的资源文件(模型,音效,图片),让插件可以使用更多资源</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">plugin_precache</span>();
+<span class="amxx-comment">// 在启动服务器之后被调用,实现它,可以为插件的数据进行初始化,或添加各种钩子</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">plugin_init</span>();
+<span class="amxx-comment">// 在玩家信息变更后被调用,比如模型,名称变更</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">client_infochanged</span>(<span class="amxx-identifier">id</span>);
+<span class="amxx-comment">// 在玩家开始连接服务端之后被调用(未进入服务端)</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">client_connect</span>(<span class="amxx-identifier">id</span>);
+<span class="amxx-comment">// 在玩家退出服务器之前,之后被调用(被踢或主动退出的区别)</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">client_disconnected</span>(<span class="amxx-identifier">id</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">drop</span>, <span class="amxx-identifier">message</span>[], <span class="amxx-identifier">maxlen</span>);
+<span class="amxx-comment">// 在玩家彻底退出服务器,实体都被删掉后被调用.(如果只是断线,有回归的可能)</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">client_remove</span>(<span class="amxx-identifier">id</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">drop</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">message</span>[]);
+<span class="amxx-comment">// 在玩家发送命令到客户端前被调用</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">client_command</span>(<span class="amxx-identifier">id</span>);
+<span class="amxx-comment">// 在玩家进入服务器之后被调用(文件资源下载完毕)</span>
+<span class="amxx-keyword">forward</span> <span class="amxx-function">client_putinserver</span>(<span class="amxx-identifier">id</span>);
+</code>
+
+<p>很多头文件都声明了<span class="amxx-keyword">forward</span>函数,各有各的用途,没事多看看.</p>
+
+<p>稍微介绍一下常用于为事件添加挂钩的<span class="amxx-keyword">native</span>函数(详情查阅inc文件或上网查询):</p>
+
+<p>下面是来自<span class="amxx-string">amxmodx.inc</span>的挂钩函数:</p>
+
+<code><span class="amxx-comment">// 当插件调用指定的native函数(name)时触发目标函数(handler),用于实现native函数的具体功能,同一个native函数仅允许一个挂钩.后来者无效</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_native</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">name</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">handler</span>[], <span class="amxx-identifier">style</span> = <span class="amxx-number">0</span>);
+<span class="amxx-comment">// 当服务端发送指定消息(event)时触发目标函数(function),比如击杀消息</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_event</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">event</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">function</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">flags</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">cond</span>[] = <span class="amxx-string">""</span>, ...);
+<span class="amxx-comment">// 当服务端发送指定日志消息(用...参数描述你想监听的消息)时触发目标函数(function),比如回合结束消息</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_logevent</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">argsnum</span>, ...);
+<span class="amxx-comment">// 当客户端玩家发送指定客户端命令(client_cmd)时触发目标函数(function),不存在的命令也可,能用于实现新命令</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_clcmd</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">client_cmd</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">flags</span> = -<span class="amxx-number">1</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">info</span>[] = <span class="amxx-string">""</span>, <span class="amxx-identifier">FlagManager</span> = -<span class="amxx-number">1</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">info_ml</span> = <span class="amxx-identifier">false</span>);
+<span class="amxx-comment">// 当客户端玩家发送指定服务端命令(server_cmd)时触发目标函数(function),不存在的命令也可,能用于实现新命令</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_srvcmd</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">server_cmd</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">flags</span> = -<span class="amxx-number">1</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">info</span>[] = <span class="amxx-string">""</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">info_ml</span> = <span class="amxx-identifier">false</span>);
+<span class="amxx-comment">// 当一个老式菜单索引(menuid)所指的菜单的选项被选中时触发目标函数(function)</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_menucmd</span>(<span class="amxx-identifier">menuid</span>, <span class="amxx-identifier">keys</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">function</span>[]);
+</code>
+
+<p>下面是来自<span class="amxx-string">fakemeta.inc</span>的用于添加挂钩,强制触发事件的函数:</p>
+
+<code><span class="amxx-comment">// 当一个fakemeta所封装的游戏事件被触发,在它触发之前或之后触发目标函数(由_post参数控制前后)</span>
+<span class="amxx-comment">// _forwardType是事件索引,可选的值被封装为以FM_作为前缀名的枚举常量保存于fakemeta_const.inc</span>
+<span class="amxx-comment">// function是目标函数</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_forward</span>(<span class="amxx-identifier">_forwardType</span>,<span class="amxx-keyword">const</span> <span class="amxx-identifier">_function</span>[],<span class="amxx-identifier">_post</span>=<span class="amxx-number">0</span>);
+<span class="amxx-comment">// 强行执行fakemeta所封装的指定事件</span>
+<span class="amxx-comment">// type是事件索引,可选的值被封装为以EngFunc_作为前缀名的枚举常量保存于fakemeta_const.inc</span>
+<span class="amxx-comment">// ...是执行事件所需参数</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">engfunc</span>(<span class="amxx-identifier">type</span>,<span class="amxx-tag">any:</span>...);
+<span class="amxx-comment">// 强行执行fakemeta所封装的指定事件</span>
+<span class="amxx-comment">// type是事件索引,可选的值被封装为以DLLFunc_作为前缀名的枚举常量保存于fakemeta_const.inc</span>
+<span class="amxx-comment">// ...是执行事件所需参数</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">dllfunc</span>(<span class="amxx-identifier">type</span>,<span class="amxx-tag">any:</span>...);
+</code>
+
+<p>下面是来自<span class="amxx-string">hamsandwich.inc</span>的用于添加挂钩,强制触发事件的函数:</p>
+
+<code><span class="amxx-comment">// 当一个hamsandwich所封装的游戏事件被某一类实体触发,在它触发之前或之后触发目标函数(由Post参数控制前后)</span>
+<span class="amxx-comment">// function是事件索引,可选的值被封装为枚举常量保存于ham_const.inc</span>
+<span class="amxx-comment">// EntityClass是实体类名</span>
+<span class="amxx-comment">// Callback是目标函数</span>
+<span class="amxx-keyword">native</span> <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHam</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">EntityClass</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">Callback</span>[], <span class="amxx-identifier">Post</span>=<span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">specialbot</span> = <span class="amxx-identifier">false</span>);
+<span class="amxx-comment">// 和RegisterHam类似,只不过实体类名换成了实体索引,这是因为某些实体没有amxx能获取的类名,比如Bot</span>
+<span class="amxx-keyword">native</span> <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHamFromEntity</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, <span class="amxx-identifier">EntityId</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">Callback</span>[], <span class="amxx-identifier">Post</span>=<span class="amxx-number">0</span>);
+<span class="amxx-comment">// 强行执行hamsandwich所封装的事件</span>
+<span class="amxx-comment">// function是事件索引,可选的值被名为Ham的枚举封装于ham_const.inc</span>
+<span class="amxx-comment">// ...是执行事件所需参数</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">ExecuteHam</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, <span class="amxx-identifier">this</span>, <span class="amxx-tag">any:</span>...);
+<span class="amxx-comment">// 和ExecuteHam类似,唯一不同是能够触发hamsandwich的钩子</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">ExecuteHamB</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, <span class="amxx-identifier">this</span>, <span class="amxx-tag">any:</span>...);
+</code>
+
+<p>下面是来自<span class="amxx-string">message.inc</span>的用于添加挂钩,强制触发事件的函数:</p>
+
+<code><span class="amxx-comment">// 当服务端发送消息索引(iMsgId)所指消息时触发目标函数(szFunction),比如击杀消息</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_message</span>(<span class="amxx-identifier">iMsgId</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">szFunction</span>[]);
+<span class="amxx-comment">// 强制发送消息(由message_begin函数指定消息)</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">message_end</span>();
+<span class="amxx-comment">// 强制发送消息(由emessage_begin函数指定消息),并触发钩子</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">emessage_end</span>();
+</code>
+
+<h3 id="click14">1.4:选择事件</h3>
+
+<p>如果你想给消息相关的事件添加挂钩,</p>
+
+<p>比如右上角击杀消息,回合开始/结束消息,视锥体范围变更消息,选队消息,弹药量hud刷新消息,</p>
+
+<p>进度条,炸弹掉落消息,生成尸体动画,伤害类型hud,雾天,屏幕着色,屏幕震动等等.</p>
+
+<p>应该详细参阅<span class="amxx-function">register_event register_logevent register_message</span>函数的注释,</p>
+
+<p>并上网查阅有哪些消息可以挂钩.头文件中并没有提供这些消息的具体名称,</p>
+
+<p>你可以在amxmodx官方论坛询问:<a href="https://forums.alliedmods.net/">amxmodx官方论坛</a></p>
+
+<p>如果你想给实体行为添加挂钩,</p>
+
+<p>比如实体资源文件缓存,诞生,重生,被触发(开门,玻璃碎裂,电梯上升,按压机关),</p>
+
+<p>被射击,受伤,被疗伤,被击杀,流血,被添加到玩家武器列表,思考,武器被拔出,武器被丢弃,</p>
+
+<p>武器执行主要攻击,武器执行次要攻击等等.应该详细查阅<span class="amxx-string">hamsandwich ham_const</span>头文件内容</p>
+
+<p>如果你无所谓给某一类实体添加挂钩,应详细查阅<span class="amxx-string">fakemeta fakemeta_const</span>头文件.</p>
+
+<p>它们没有注释,建议前往amxmodx官网或论坛查询相关解释.</p>
+
+<p>cs相关事件,比如购买武器,道具.应详细参阅<span class="amxx-string">cstrike cstrike_const</span>头文件.</p>
+
+<p>如果你能背诵并默写inc文档全文那就再好不过了.</p>
+
+<p>没事多看看<span class="amxx-string">amxmodx cstrike fakemeta hamsandwich</span>这几个头文件,</p>
+
+<p>以及它们引用的其他头文件,以及引用的文件所引用的文件.</p>
+
+<p>这些文件提供的接口函数足以完成绝大部分工作.</p>
+
+<h2 id="click2">2:实战训练</h2>
+
+<p>接下来的教程内容,如果出现了不认识含义的函数或参数,应该自行查阅代码引用的头文件,以及头文件引用的头文件.</p>
+
+<p>即便有些函数或常量没有注释,也应前往官网或论坛查询.</p>
+
+<p>建议复习入门教程中的<code> & </code>运算,<code> ! </code>运算,控制代码执行流程,并查阅<span class="amxx-string">hlsdk_const</span>头文件.</p>
+
+<h3 id="click21">2.1:添加挂钩,拦截事件</h3>
+
+<p>这段代码的两个功能:</p>
+
+<p>给玩家预思考事件添加前置挂钩,可以看到控制台正在狂刷的文本,每一个玩家实体都在不断触发这个事件(建议让bot参与测试).</p>
+
+<p>给实体受伤事件添加前置挂钩,并使用钩子专属返回值拦截跌落受伤事件.</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">hamsandwich</span>>
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-comment">// FM_PlayerPreThink是fakemeta_const.inc中的一个枚举常量,对应玩家预思考事件,是用于添加挂钩的事件索引.</span>
+	<span class="amxx-comment">// CS1.6一般都是每秒大约刷新100次屏幕画面,而玩家也会随着这个频率,每秒触发100次预思考事件(bot大约每秒25次).</span>
+	<span class="amxx-comment">// 玩家预思考事件很实用,在这里可以实时检查玩家的属性变化,或修改玩家属性.</span>
+	<span class="amxx-comment">// 只要将它用作register_forward函数的第1个参数,我们就能为玩家预思考事件添加挂钩.</span>
+	<span class="amxx-comment">// 挂钩的目标函数会接收指定事件的所有参数,充当自己的参数.</span>
+	<span class="amxx-comment">// 玩家预思考事件只有1个事件参数,就是思考者(玩家的实体索引).</span>
+	<span class="amxx-function">register_forward</span>(<span class="amxx-identifier">FM_PlayerPreThink</span>, <span class="amxx-string">"PlayerPreThink_PreHook"</span>, <span class="amxx-number">1</span>);
+	<span class="amxx-comment">// Ham_TakeDamage是ham_const.inc中Ham枚举的成员,对应实体受伤事件,是用于添加挂钩的事件索引.</span>
+	<span class="amxx-comment">// 任何实体只要受伤便会触发受伤事件,但不包括某些直接修改生命值的情况.</span>
+	<span class="amxx-comment">// 实体受伤事件的挂钩常常被用于修改伤害值,阻止受伤,统计伤害量等等.</span>
+	<span class="amxx-comment">// 只要将它用作RegisterHam函数的第1个参数,我们就能为实体受伤事件添加挂钩.</span>
+	<span class="amxx-comment">// RegisterHam函数的第2个参数,用于设定实体原始类名,只有原始类名与其相同,才能触发钩子的目标函数.</span>
+	<span class="amxx-comment">// 1.8.2或低版本amxx并没有第4个参数,该参数用于支持bot这种没有类名的玩家实体.</span>
+	<span class="amxx-comment">// 实体受伤事件会将自身所有参数(受害者,加害者,攻击者,伤害值,伤害类型位标志)传递给钩子的目标函数.</span>
+	<span class="amxx-function">RegisterHam</span>(<span class="amxx-identifier">Ham_TakeDamage</span>, <span class="amxx-string">"player"</span>, <span class="amxx-string">"PlayerTakeDamage_PreHook"</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">true</span>);
+}
+<span class="amxx-comment">// PlayerPreThink_PreHook会接收1个来自玩家预思考事件的参数:玩家实体索引</span>
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PreHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"实体索引为%d的玩家,触发了一次预思考事件"</span>, <span class="amxx-identifier">playerEntId</span>);
+}
+<span class="amxx-comment">// PlayerTakeDamage_PreHook会接收5个来自实体受伤事件的参数:受害者,加害者,攻击者,伤害值,伤害类型位标志</span>
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerTakeDamage_PreHook</span>(<span class="amxx-identifier">victimEntId</span>, <span class="amxx-identifier">inflictorEntId</span>, <span class="amxx-identifier">attackerEntId</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">damage</span>, <span class="amxx-identifier">damageFlags</span>)
+{
+	<span class="amxx-comment">// 如果保留同位上的1之后不为0,则设定钩子目标函数的计算结果为拥有阻止事件功能的宏定义常量HAM_SUPERCEDE,并提前退出函数</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">damageFlags</span> & <span class="amxx-identifier">DMG_FALL</span>)
+	{
+		<span class="amxx-keyword">return</span> <span class="amxx-identifier">HAM_SUPERCEDE</span>;
+	}
+	<span class="amxx-keyword">return</span> <span class="amxx-identifier">HAM_IGNORED</span>;
+}
+</code>
+
+<h3 id="click22">2.2:检查实体属性状态</h3>
+
+<p>实体拥有不少属性都是以二进制形式储存状态,这使得一个属性能储存多个状态,节约空间.</p>
+
+<p>比如<span class="amxx-identifier">pev_button pev_oldbuttons</span>对应的按键状态位标志,总共可为16个按键储存按下或抬起的状态.</p>
+
+<p>比如<span class="amxx-identifier">pev_flags</span>对应的实体状态位标志,总共可为32种实体状态储存缺乏或拥有的状态.</p>
+
+<p>它们都是int类型的属性,我们可以从<span class="amxx-function">pev</span>函数的返回值得到它们,</p>
+
+<p>通过下面的代码,便可以观察玩家按下按键时,按键状态发生了改变.或者玩家蹲下,游泳,落地,攀爬梯子导致实体状态改变:</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-function">register_forward</span>(<span class="amxx-identifier">FM_PlayerPreThink</span>, <span class="amxx-string">"PlayerPreThink_PostHook"</span>, <span class="amxx-number">1</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PostHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-comment">// 如果思考者不是活的玩家,退出函数</span>
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-comment">// 以二进制形式显示pev函数的返回值,显示16位,32位</span>
+	<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]按键状态:%016b, 实体状态:%032b"</span>, <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_button</span>), <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flags</span>));
+}
+</code>
+
+<h3 id="click23">2.3:修改实体属性</h3>
+
+<span class="amxx-identifier">pev_velocity</span>实体速度是一个非常值得修改的属性,速度有方向(移动方向)和大小(移动速度),可以开发非常多的玩法.
+
+<p>比如,接下来的代码是展示如何制作一个高跳插件.</p>
+
+<p>如果在此基础上对xy轴速度进行一定程度的放大,就能变成远跳插件.</p>
+
+<p>如果不检查玩家是否在地上,就能变成空中多重跳插件.</p>
+
+<p>再降低上升高度,还能称呼为扑翼鸟插件.</p>
+
+<p>再删除检查上次按键状态条件,把上升高度降低到2至5左右.可以变成火箭飞行兵插件的核心功能.</p>
+
+<p>如果仅留下检查玩家死活的条件,再将速度方向改为向前,还能变成无足鸟无限向前飞插件的核心功能.</p>
+
+<p>如果仅删除检查玩家是否浮空的条件,再给予玩家指向视线前方的大速度,能变成蜘蛛侠插件的核心功能.</p>
+
+<p>求生之路的smoke僵尸舌头可以把敌人拉向自己,其实是让受害者的速度强制转向攻击者,并保持一个固定大小.</p>
+
+<p>通过下面的代码,可以让玩家在地面按下跳跃键的瞬间获得一个足以让自己上升100高度的速度:</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>
+<span class="amxx-keyword">new</span> <span class="amxx-keyword">const</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">gJumpHeight</span>	= <span class="amxx-number">100.0</span>;	<span class="amxx-comment">// 跳跃高度(cs默认跳跃高度为45.0)</span>
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-function">register_forward</span>(<span class="amxx-identifier">FM_PlayerPreThink</span>, <span class="amxx-string">"PlayerPreThink_PostHook"</span>, <span class="amxx-number">1</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PostHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-comment">// 如果玩家的实体状态中不含有FL_ONGROUND(在地上)状态,退出函数</span>
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flags</span>) & <span class="amxx-identifier">FL_ONGROUND</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-comment">// 如果上一次思考时,按钮状态不含有IN_JUMP(跳跃键) 而且 这一次思考中按钮状态含有IN_JUMP</span>
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_oldbuttons</span>) & <span class="amxx-identifier">IN_JUMP</span>) && <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_button</span>) & <span class="amxx-identifier">IN_JUMP</span>)
+	{
+		<span class="amxx-comment">// 说明检测到玩家按下跳跃键的瞬间</span>
+		<span class="amxx-comment">// pev_velocity属性代表实体在x, y, z三个轴上的速度,</span>
+		<span class="amxx-comment">// 如果从上往下看,x轴负数代表西边,正数代表东边,y轴负数代表南边,正数代表北边,Z轴负数代表下方,正数代表上方.</span>
+		<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">velocity</span>[<span class="amxx-number">3</span>];
+		<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_velocity</span>, <span class="amxx-identifier">velocity</span>);		<span class="amxx-comment">// 获取实体的速度</span>
+		<span class="amxx-identifier">velocity</span>[<span class="amxx-number">2</span>] = <span class="amxx-function">floatsqroot</span>(<span class="amxx-identifier">gJumpHeight</span> * <span class="amxx-number">2.0</span> * <span class="amxx-number">800.0</span>);	<span class="amxx-comment">// 更改z轴速度,使其能让玩家在默认重力下跳跃到gJumpHeight所指的高度</span>
+		<span class="amxx-function">set_pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_velocity</span>, <span class="amxx-identifier">velocity</span>);		<span class="amxx-comment">// 将修改好后的速度,储存到玩家的pev_velocity属性中</span>
+	}
+}
+</code>
+
+<h3 id="click24">2.4:强制执行事件</h3>
+
+<p>接下来的代码是展示如何强制发送消息给客户端,这也会触发对应的消息事件.</p>
+
+<p>cs1.6的消息机制,是服务端发送一小段数据就能让客户端自动执行一些比较复杂的工作.服务端并不清楚客户端做了什么事情.</p>
+
+<p>消息机制基本上用于让客户端播放3D特效,更改屏幕HUD内容.<span class="amxx-string">message_const</span>头文件中提供了58种消息的索引(<span class="amxx-identifier">SVC_</span>开头的宏定义常量).</p>
+
+<p>如果想了解更多可用的消息品种,自己想办法,上网查询(像<span class="amxx-string">"ScreenShake"</span>这种消息,AMXX并没有提供参考).</p>
+
+<p>通过下面的代码,可以让玩家在地面按下跳跃键的瞬间显示一个冲击波,并让自己屏幕持续抖动:</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>
+<span class="amxx-keyword">new</span> <span class="amxx-identifier">gSprId_ShockWave</span>;	<span class="amxx-comment">// 全局变量</span>
+<span class="amxx-keyword">new</span> <span class="amxx-identifier">gMsgId_ScreenShake</span>;	<span class="amxx-comment">// 全局变量</span>
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-comment">// 缓存震荡波精灵图标,将其模型文件索引(bsp mdl spr都是模型文件)储存到全局变量,以便后续使用</span>
+	<span class="amxx-identifier">gSprId_ShockWave</span> = <span class="amxx-function">precache_model</span>(<span class="amxx-string">"sprites/shockwave.spr"</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-function">register_forward</span>(<span class="amxx-identifier">FM_PlayerPreThink</span>, <span class="amxx-string">"PlayerPreThink_PostHook"</span>, <span class="amxx-number">1</span>);
+	<span class="amxx-comment">// 获取"ScreenShake"消息(屏幕抖动)的索引,储存到全局变量,以便后续使用</span>
+	<span class="amxx-identifier">gMsgId_ScreenShake</span> = <span class="amxx-function">get_user_msgid</span>(<span class="amxx-string">"ScreenShake"</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PostHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flags</span>) & <span class="amxx-identifier">FL_ONGROUND</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_oldbuttons</span>) & <span class="amxx-identifier">IN_JUMP</span>) && <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_button</span>) & <span class="amxx-identifier">IN_JUMP</span>)
+	{
+		<span class="amxx-keyword">new</span> <span class="amxx-identifier">origin</span>[<span class="amxx-number">3</span>], <span class="amxx-identifier">axis</span>[<span class="amxx-number">3</span>];
+		<span class="amxx-function">get_user_origin</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">origin</span>);
+		<span class="amxx-identifier">axis</span>[<span class="amxx-number">0</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">0</span>];
+		<span class="amxx-identifier">axis</span>[<span class="amxx-number">1</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">1</span>];
+		<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-number">350</span>;	<span class="amxx-comment">// 350表示冲击波每秒扩散距离</span>
+		<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-number">10</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">72</span>);
+		<span class="amxx-function">SendMessage_ScreenShake</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-number">15.999</span>, <span class="amxx-number">1.5</span>, <span class="amxx-number">15.999</span>);
+	}
+}
+<span class="amxx-comment">// 这个函数用于指定一个坐标,显示一个持续扩大的光环.</span>
+<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">position</span>[<span class="amxx-number">3</span>], <span class="amxx-keyword">const</span> <span class="amxx-identifier">axis</span>[<span class="amxx-number">3</span>],
+						<span class="amxx-identifier">spriteId</span>,		<span class="amxx-comment">// 光环需要精灵图标,这里填写精灵图标的模型文件索引</span>
+						<span class="amxx-identifier">startingFrame</span> = <span class="amxx-number">0</span>,	<span class="amxx-comment">// 从哪一帧开始播放,这里填写帧索引</span>
+						<span class="amxx-identifier">frameRate</span> = <span class="amxx-number">10</span>,		<span class="amxx-comment">// 每秒播放多少帧</span>
+						<span class="amxx-identifier">life</span> = <span class="amxx-number">1</span>,		<span class="amxx-comment">// 光环持续事件,1表示光环持续存在0.1秒,10表示持续1秒</span>
+						<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">1</span>,		<span class="amxx-comment">// 光环高度(宽度),可参考玩家高度72,宽度32</span>
+						<span class="amxx-identifier">noise</span> = <span class="amxx-number">0</span>,		<span class="amxx-comment">// 光环扭曲程度</span>
+						<span class="amxx-identifier">red</span> = <span class="amxx-number">255</span>,		<span class="amxx-comment">// 光环红色浓度</span>
+						<span class="amxx-identifier">green</span> = <span class="amxx-number">255</span>,		<span class="amxx-comment">// 光环绿色浓度</span>
+						<span class="amxx-identifier">blue</span> = <span class="amxx-number">255</span>,		<span class="amxx-comment">// 光环蓝色浓度</span>
+						<span class="amxx-identifier">brightness</span> = <span class="amxx-number">255</span>,	<span class="amxx-comment">// 光环颜色明亮程度</span>
+						<span class="amxx-identifier">scrollSpeed</span> = <span class="amxx-number">0</span>)	<span class="amxx-comment">// 光环滚动速度</span>
+{
+	<span class="amxx-comment">// emessage_,ewrite_,message_,write_系列函数,是一套用于执行发送消息事件的函数.emessage_begin和ewrite系列函数用于设定事件相关属性.</span>
+	<span class="amxx-comment">// MSG_PVS用于需要填写坐标的临时实体消息,一旦使用它,就必须填写emessage_begin或message_begin函数的第三个参数.</span>
+	<span class="amxx-comment">// SVC_TEMPENTITY是消息索引,对应的消息用于命令客户端创建临时实体,这种实体有客户端自行控制,服务端无法知道客户端做了什么,也无法察觉或操控这些实体.</span>
+	<span class="amxx-function">emessage_begin</span>(<span class="amxx-identifier">MSG_PVS</span>, <span class="amxx-identifier">SVC_TEMPENTITY</span>, <span class="amxx-identifier">position</span>);
+	<span class="amxx-comment">// 输入第一个事件参数,当消息索引是SVC_TEMPENTITY时,第一个参数表示要创建的临时实体是什么类型</span>
+	<span class="amxx-comment">// message_const.inc详细介绍了每一种临时实体类型.以及接下来需要填写的参数</span>
+	<span class="amxx-comment">// 参数有coord, short, byte等多种值类型.我只知道这里的byte和short的取值范围是0~255 0~65535</span>
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">TE_BEAMCYLINDER</span>);	
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">position</span>[<span class="amxx-number">0</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">position</span>[<span class="amxx-number">1</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">position</span>[<span class="amxx-number">2</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">axis</span>[<span class="amxx-number">0</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">axis</span>[<span class="amxx-number">1</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>]);
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-identifier">spriteId</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">startingFrame</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">frameRate</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">life</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">lineWidth</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">noise</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">red</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">green</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">blue</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">brightness</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">scrollSpeed</span>);
+	<span class="amxx-comment">// 填写完毕后就可以执行事件了</span>
+	<span class="amxx-function">emessage_end</span>();
+}
+<span class="amxx-comment">// 这个函数用于指定一个客户端玩家,令其屏幕抖动(抖动幅度,持续时间,持续频率)</span>
+<span class="amxx-function">SendMessage_ScreenShake</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">amplitude</span> = <span class="amxx-number">0.0</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">duration</span> = <span class="amxx-number">0.0</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">frequency</span> = <span class="amxx-number">0.0</span>)
+{
+	<span class="amxx-function">emessage_begin</span>(<span class="amxx-identifier">MSG_ONE_UNRELIABLE</span>, <span class="amxx-identifier">gMsgId_ScreenShake</span>, .<span class="amxx-identifier">player</span> = <span class="amxx-identifier">playerEntId</span>);
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-function">floatround</span>((<span class="amxx-number">1</span> << <span class="amxx-number">12</span>) * <span class="amxx-identifier">amplitude</span>));	<span class="amxx-comment">// short值类型的取值范围是0~65535,多了没用</span>
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-function">floatround</span>((<span class="amxx-number">1</span> << <span class="amxx-number">12</span>) * <span class="amxx-identifier">duration</span>));
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-function">floatround</span>((<span class="amxx-number">1</span> << <span class="amxx-number">12</span>) * <span class="amxx-identifier">frequency</span>));
+	<span class="amxx-function">emessage_end</span>();
+}
+</code>
+
+<p>对于上述例子中,两种发送消息的方式.可以简单封装成一个函数,函数内部自动计算合适的参数.调用起来更加方便.</p>
+
+<p>下面代码中出现的函数,在头文件中都有注释.这里就不介绍了.</p>
+
+<code><span class="amxx-function">PlayerShockWave</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">duration</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">range</span>)
+{
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">origin</span>[<span class="amxx-number">3</span>], <span class="amxx-identifier">axis</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">get_user_origin</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">origin</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">0</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">0</span>];
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">1</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">1</span>];
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">life1</span> = <span class="amxx-function">floatround</span>(<span class="amxx-identifier">duration</span> * <span class="amxx-number">10.0</span>);	<span class="amxx-comment">// 1 life 等于 0.1 秒,他们的比值是10比1.因此duration得乘以10才能转变为可用的life</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">life2</span> = <span class="amxx-function">max</span>(<span class="amxx-identifier">life1</span> - <span class="amxx-number">1</span>, <span class="amxx-number">1</span>);			<span class="amxx-comment">// 第二个震荡波的生命周期比第一个少了0.1秒</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">life3</span> = <span class="amxx-function">max</span>(<span class="amxx-identifier">life1</span> - <span class="amxx-number">2</span>, <span class="amxx-number">1</span>);			<span class="amxx-comment">// 第三个震荡波的生命周期比第一个少了0.2秒(只是示例罢了,这些计算方法可自行更改)</span>
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-function">floatround</span>(<span class="amxx-identifier">range</span> / (<span class="amxx-number">0.1</span> * <span class="amxx-identifier">life1</span>));	<span class="amxx-comment">// 自动计算震荡波的覆盖范围</span>
+	<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-identifier">life1</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">36</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-function">floatround</span>(<span class="amxx-identifier">range</span> / (<span class="amxx-number">0.1</span> * <span class="amxx-identifier">life2</span>));
+	<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-identifier">life2</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">48</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-function">floatround</span>(<span class="amxx-identifier">range</span> / (<span class="amxx-number">0.1</span> * <span class="amxx-identifier">life3</span>));
+	<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-identifier">life3</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">64</span>);
+	<span class="amxx-function">SendMessage_ScreenShake</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-number">15.999</span>, <span class="amxx-identifier">duration</span>, <span class="amxx-number">15.999</span>);
+}
+</code>
+
+<p>接下来的代码是展示如何制作一个践踏伤害插件.</p>
+
+<p>在某一个合适的时机,利用<span class="amxx-function">ExecuteHamB</span>强制执行<span class="amxx-identifier">Ham_TakeDamage</span>事件,使某个实体受伤.</p>
+
+<p>并利用<span class="amxx-function">engfunc</span>强制执行<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>事件,使某个坐标播放声音.</p>
+
+<p>这都是很实用的功能,制作自定义技能时总会用到.</p>
+
+<p>如果有看不懂的函数和参数,应该查阅头文件中的函数注释,或是常量注释.</p>
+
+<p>如果对于数组不理解,应该复习入门教程中的数组章节.</p>
+
+<p>如果还是不能理解,建议让bot参与注释,并使用<span class="amxx-function">client_print</span>函数将实体索引与数组中的数据打印给0号实体观看.</p>
+
+<p>通过下面的代码,可以让玩家在降落时造成伤害:</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">hamsandwich</span>>
+<span class="amxx-directive">#define</span> <span class="amxx-identifier">dSndFilePath</span>	<span class="amxx-string">"garg/gar_stomp1.wav"</span>	<span class="amxx-comment">// 将接下来代码中出现的dSndFilePath全部替换为cs1.6/valve/sound/声音文件地址</span>
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">precache_sound</span>(<span class="amxx-identifier">dSndFilePath</span>);		<span class="amxx-comment">// 缓存声音文件,只要该文件存在,接下来可以在游戏中播放它.</span>
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-function">RegisterHam</span>(<span class="amxx-identifier">Ham_Player_PostThink</span>, <span class="amxx-string">"player"</span>, <span class="amxx-string">"PlayerPostThink_PostHook"</span>, <span class="amxx-number">1</span>, <span class="amxx-identifier">true</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPostThink_PostHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-comment">// 声明静态常量:CBaseMonster类实体的专属属性-下次攻击的冷却时间-的属性索引,</span>
+	<span class="amxx-comment">// 玩家实体是CBasePlayer类,属于CBaseMonster的一个子类型,因此继承了这些属性.</span>
+	<span class="amxx-comment">// AMXX的头文件中并没有定义这些属性具体的值.只能自己上网查找:<a href="https://wiki.alliedmods.net/CBaseMonster_(CS)">CBaseMonster_(CS)</a></span>
+	<span class="amxx-keyword">static</span> <span class="amxx-keyword">const</span> <span class="amxx-identifier">m_flNextAttack</span> = <span class="amxx-number">83</span>;
+	<span class="amxx-function">set_pdata_float</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">m_flNextAttack</span>, <span class="amxx-number">2.0</span>);				<span class="amxx-comment">// 除非玩家客户端与服务器失联超过2秒,否则将不间断的获得2秒攻击冷却时间.永远无法开枪.</span>
+	<span class="amxx-comment">// 声明静态数组变量,这两个数组内储存的值不会因为函数退出就重置为0.</span>
+	<span class="amxx-comment">// 并且CS1.6最多只支持32个玩家,33的尺寸足以让每一名思考者都拥有自己的位置,用于储存数据.</span>
+	<span class="amxx-comment">// 思考者的实体索引将被用于访问数组中的数据.</span>
+	<span class="amxx-comment">// 这两个数组的用途:思考者脚下实体记录器, 思考者跌落速度记录器</span>
+	<span class="amxx-keyword">static</span> <span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-number">33</span>], <span class="amxx-tag">Float:</span><span class="amxx-identifier">fallVelocity</span>[<span class="amxx-number">33</span>];
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flags</span>) & <span class="amxx-identifier">FL_ONGROUND</span>))
+	{
+		<span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-identifier">playerEntId</span>] = -<span class="amxx-number">1</span>;					<span class="amxx-comment">// 浮空时,重置思考者的脚下实体记录器</span>
+		<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flFallVelocity</span>, <span class="amxx-identifier">fallVelocity</span>[<span class="amxx-identifier">playerEntId</span>]);	<span class="amxx-comment">// 浮空时,时刻记录思考者跌落速度</span>
+		<span class="amxx-keyword">return</span>;									<span class="amxx-comment">// 浮空则提前退出函数</span>
+	}
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">currentGroundEntId</span> = <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_groundentity</span>);			<span class="amxx-comment">// 获取思考者脚下实体</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">currentGroundEntId</span> == <span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-identifier">playerEntId</span>])				<span class="amxx-comment">// 如果上一刻与此刻的脚下实体索引相同</span>
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-identifier">playerEntId</span>] = <span class="amxx-identifier">currentGroundEntId</span>;				<span class="amxx-comment">// 不同则登记当前脚下实体索引,下一次思考便无法通过上面的条件检测了.除非利用浮空重置.</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">damage</span> = <span class="amxx-identifier">fallVelocity</span>[<span class="amxx-identifier">playerEntId</span>] / <span class="amxx-number">5.0</span>;				<span class="amxx-comment">// 将跌落速度除以5,当做践踏伤害.这点没必要在意,伤害想怎么写都行,这只是示例.</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">damage</span> < <span class="amxx-number">1.0</span>)								<span class="amxx-comment">// 如果伤害低于1</span>
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">takeDamage</span>;
+	<span class="amxx-function">pev</span>(<span class="amxx-identifier">currentGroundEntId</span>, <span class="amxx-identifier">pev_takedamage</span>, <span class="amxx-identifier">takeDamage</span>);				<span class="amxx-comment">// 获取脚下实体的受伤模式</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">takeDamage</span> == <span class="amxx-identifier">DAMAGE_NO</span>)							<span class="amxx-comment">// 如果脚下实体处于无敌模式(比如某些不能打碎但可以被C4爆破的箱子)</span>
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-comment">// 强制执行受伤事件,思考者充当攻击者和加害者,对脚下实体造成震动与碎尸类型的伤害</span>
+	<span class="amxx-function">ExecuteHamB</span>(<span class="amxx-identifier">Ham_TakeDamage</span>, <span class="amxx-identifier">currentGroundEntId</span>, <span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">damage</span>, <span class="amxx-identifier">DMG_SHOCK</span> | <span class="amxx-identifier">DMG_ALWAYSGIB</span>);
+	<span class="amxx-comment">// 强制执行播放声音事件,fakemeta模块的engfunc dllfunc函数执行事件并不会触发挂钩的目标函数.</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">flOrigin</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_origin</span>, <span class="amxx-identifier">flOrigin</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">flOrigin</span>, <span class="amxx-identifier">dSndFilePath</span>, <span class="amxx-identifier">VOL_NORM</span>, <span class="amxx-identifier">ATTN_NORM</span>, <span class="amxx-number">0</span>, <span class="amxx-number">200</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">flOrigin</span>, <span class="amxx-identifier">dSndFilePath</span>, <span class="amxx-identifier">VOL_NORM</span>, <span class="amxx-identifier">ATTN_NORM</span>, <span class="amxx-number">0</span>, <span class="amxx-number">180</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">flOrigin</span>, <span class="amxx-identifier">dSndFilePath</span>, <span class="amxx-identifier">VOL_NORM</span>, <span class="amxx-identifier">ATTN_NORM</span>, <span class="amxx-number">0</span>, <span class="amxx-number">140</span>);
+}
+</code>
+
+<p>有关更改事件参数与返回值的内容还没讲,不过这些看看<span class="amxx-string">fakemeta</span>和<span class="amxx-string">hamsandwich</span>头文件中的函数注释就能知道.</p>
+
+<p>上面的各种代码示例可以合并为一个以高跳践踏为玩法的插件,看看就好.本篇教程到此结束:</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">hamsandwich</span>>
+<span class="amxx-directive">#define</span> <span class="amxx-identifier">dSndFilePath</span>	<span class="amxx-string">"garg/gar_stomp1.wav"</span>
+<span class="amxx-keyword">new</span> <span class="amxx-keyword">const</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">gJumpHeight</span>	= <span class="amxx-number">200.0</span>;	<span class="amxx-comment">// 跳跃高度(cs默认跳跃高度为45.0)</span>
+<span class="amxx-keyword">new</span> <span class="amxx-identifier">gSprId_ShockWave</span>;
+<span class="amxx-keyword">new</span> <span class="amxx-identifier">gMsgId_ScreenShake</span>;
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-identifier">gSprId_ShockWave</span> = <span class="amxx-function">precache_model</span>(<span class="amxx-string">"sprites/shockwave.spr"</span>);
+	<span class="amxx-function">precache_sound</span>(<span class="amxx-identifier">dSndFilePath</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-function">register_forward</span>(<span class="amxx-identifier">FM_PlayerPreThink</span>, <span class="amxx-string">"PlayerPreThink_PostHook"</span>, <span class="amxx-number">1</span>);
+	<span class="amxx-function">RegisterHam</span>(<span class="amxx-identifier">Ham_TakeDamage</span>, <span class="amxx-string">"player"</span>, <span class="amxx-string">"PlayerTakeDamage_PreHook"</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">true</span>);
+	<span class="amxx-function">RegisterHam</span>(<span class="amxx-identifier">Ham_Player_PostThink</span>, <span class="amxx-string">"player"</span>, <span class="amxx-string">"PlayerPostThink_PostHook"</span>, <span class="amxx-number">1</span>, <span class="amxx-identifier">true</span>);
+	<span class="amxx-identifier">gMsgId_ScreenShake</span> = <span class="amxx-function">get_user_msgid</span>(<span class="amxx-string">"ScreenShake"</span>);
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PostHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flags</span>) & <span class="amxx-identifier">FL_ONGROUND</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_oldbuttons</span>) & <span class="amxx-identifier">IN_JUMP</span>) && <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_button</span>) & <span class="amxx-identifier">IN_JUMP</span>)
+	{
+		<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">velocity</span>[<span class="amxx-number">3</span>];
+		<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_velocity</span>, <span class="amxx-identifier">velocity</span>);
+		<span class="amxx-identifier">velocity</span>[<span class="amxx-number">2</span>] = <span class="amxx-function">floatsqroot</span>(<span class="amxx-identifier">gJumpHeight</span> * <span class="amxx-number">2.0</span> * <span class="amxx-number">800.0</span>);
+		<span class="amxx-function">set_pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_velocity</span>, <span class="amxx-identifier">velocity</span>);
+	}
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerTakeDamage_PreHook</span>(<span class="amxx-identifier">victimEntId</span>, <span class="amxx-identifier">inflictorEntId</span>, <span class="amxx-identifier">attackerEntId</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">damage</span>, <span class="amxx-identifier">damageFlags</span>)
+{
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">damageFlags</span> & <span class="amxx-identifier">DMG_FALL</span>)
+	{
+		<span class="amxx-keyword">return</span> <span class="amxx-identifier">HAM_SUPERCEDE</span>;
+	}
+	<span class="amxx-keyword">return</span> <span class="amxx-identifier">HAM_IGNORED</span>;
+}
+<span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPostThink_PostHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">static</span> <span class="amxx-keyword">const</span> <span class="amxx-identifier">m_flNextAttack</span> = <span class="amxx-number">83</span>;
+	<span class="amxx-function">set_pdata_float</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">m_flNextAttack</span>, <span class="amxx-number">2.0</span>);
+	<span class="amxx-keyword">static</span> <span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-number">33</span>], <span class="amxx-tag">Float:</span><span class="amxx-identifier">fallVelocity</span>[<span class="amxx-number">33</span>];
+	<span class="amxx-keyword">if</span> (!(<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flags</span>) & <span class="amxx-identifier">FL_ONGROUND</span>))
+	{
+		<span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-identifier">playerEntId</span>] = -<span class="amxx-number">1</span>;
+		<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_flFallVelocity</span>, <span class="amxx-identifier">fallVelocity</span>[<span class="amxx-identifier">playerEntId</span>]);
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">currentGroundEntId</span> = <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_groundentity</span>);
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">currentGroundEntId</span> == <span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-identifier">playerEntId</span>])
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-identifier">lastGroundEntId</span>[<span class="amxx-identifier">playerEntId</span>] = <span class="amxx-identifier">currentGroundEntId</span>;
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">duration</span> = <span class="amxx-identifier">fallVelocity</span>[<span class="amxx-identifier">playerEntId</span>] / <span class="amxx-number">700.0</span>;	<span class="amxx-comment">// 用跌落速度除以700作为震荡波持续时间</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">range</span> = <span class="amxx-identifier">fallVelocity</span>[<span class="amxx-identifier">playerEntId</span>] * <span class="amxx-number">0.15</span>;	<span class="amxx-comment">// 用跌落速度乘以0.15作为震荡波扩散范围</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">damage</span> = <span class="amxx-identifier">fallVelocity</span>[<span class="amxx-identifier">playerEntId</span>] / <span class="amxx-number">5.0</span>;
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">duration</span> < <span class="amxx-number">0.1</span> || <span class="amxx-identifier">range</span> < <span class="amxx-number">18.0</span> || <span class="amxx-identifier">damage</span> < <span class="amxx-number">1.0</span>)
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-function">PlayerShockWave</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">duration</span>, <span class="amxx-identifier">range</span>);
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">takeDamage</span>;
+	<span class="amxx-function">pev</span>(<span class="amxx-identifier">currentGroundEntId</span>, <span class="amxx-identifier">pev_takedamage</span>, <span class="amxx-identifier">takeDamage</span>);
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">takeDamage</span> == <span class="amxx-identifier">DAMAGE_NO</span>)
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	<span class="amxx-function">ExecuteHamB</span>(<span class="amxx-identifier">Ham_TakeDamage</span>, <span class="amxx-identifier">currentGroundEntId</span>, <span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">damage</span>, <span class="amxx-identifier">DMG_SHOCK</span> | <span class="amxx-identifier">DMG_ALWAYSGIB</span>);
+	<span class="amxx-keyword">if</span> (<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">currentGroundEntId</span>))			<span class="amxx-comment">// 如果思考者脚下实体受伤后,是个活的玩家,给它一点屏幕抖动效果</span>
+	{
+		<span class="amxx-function">SendMessage_ScreenShake</span>(<span class="amxx-identifier">currentGroundEntId</span>, <span class="amxx-number">15.999</span>, <span class="amxx-identifier">duration</span>, <span class="amxx-number">15.999</span>);
+	}
+}
+<span class="amxx-function">PlayerShockWave</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">duration</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">range</span>)
+{
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">origin</span>[<span class="amxx-number">3</span>], <span class="amxx-identifier">axis</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">get_user_origin</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">origin</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">0</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">0</span>];
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">1</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">1</span>];
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">life1</span> = <span class="amxx-function">floatround</span>(<span class="amxx-identifier">duration</span> * <span class="amxx-number">10.0</span>);
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">life2</span> = <span class="amxx-function">max</span>(<span class="amxx-identifier">life1</span> - <span class="amxx-number">1</span>, <span class="amxx-number">1</span>);
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">life3</span> = <span class="amxx-function">max</span>(<span class="amxx-identifier">life1</span> - <span class="amxx-number">2</span>, <span class="amxx-number">1</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-function">floatround</span>(<span class="amxx-identifier">range</span> / (<span class="amxx-number">0.1</span> * <span class="amxx-identifier">life1</span>));
+	<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-identifier">life1</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">36</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-function">floatround</span>(<span class="amxx-identifier">range</span> / (<span class="amxx-number">0.1</span> * <span class="amxx-identifier">life2</span>));
+	<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-identifier">life2</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">48</span>);
+	<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>] = <span class="amxx-identifier">origin</span>[<span class="amxx-number">2</span>] + <span class="amxx-function">floatround</span>(<span class="amxx-identifier">range</span> / (<span class="amxx-number">0.1</span> * <span class="amxx-identifier">life3</span>));
+	<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-identifier">origin</span>, <span class="amxx-identifier">axis</span>, <span class="amxx-identifier">gSprId_ShockWave</span>, .<span class="amxx-identifier">life</span> = <span class="amxx-identifier">life3</span>, .<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">64</span>);
+	<span class="amxx-function">SendMessage_ScreenShake</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-number">15.999</span>, <span class="amxx-identifier">duration</span>, <span class="amxx-number">15.999</span>);
+	<span class="amxx-keyword">new</span> <span class="amxx-tag">Float:</span><span class="amxx-identifier">flOrigin</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_origin</span>, <span class="amxx-identifier">flOrigin</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">flOrigin</span>, <span class="amxx-identifier">dSndFilePath</span>, <span class="amxx-identifier">VOL_NORM</span>, <span class="amxx-identifier">ATTN_NORM</span>, <span class="amxx-number">0</span>, <span class="amxx-number">200</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">flOrigin</span>, <span class="amxx-identifier">dSndFilePath</span>, <span class="amxx-identifier">VOL_NORM</span>, <span class="amxx-identifier">ATTN_NORM</span>, <span class="amxx-number">0</span>, <span class="amxx-number">180</span>);
+	<span class="amxx-function">engfunc</span>(<span class="amxx-identifier">EngFunc_EmitAmbientSound</span>, <span class="amxx-number">0</span>, <span class="amxx-identifier">flOrigin</span>, <span class="amxx-identifier">dSndFilePath</span>, <span class="amxx-identifier">VOL_NORM</span>, <span class="amxx-identifier">ATTN_NORM</span>, <span class="amxx-number">0</span>, <span class="amxx-number">140</span>);
+}
+<span class="amxx-function">SendMessage_BeamCyclinder</span>(<span class="amxx-keyword">const</span> <span class="amxx-identifier">position</span>[<span class="amxx-number">3</span>], <span class="amxx-keyword">const</span> <span class="amxx-identifier">axis</span>[<span class="amxx-number">3</span>], <span class="amxx-identifier">spriteId</span>,
+						<span class="amxx-identifier">startingFrame</span> = <span class="amxx-number">0</span>,
+						<span class="amxx-identifier">frameRate</span> = <span class="amxx-number">10</span>,
+						<span class="amxx-identifier">life</span> = <span class="amxx-number">1</span>,
+						<span class="amxx-identifier">lineWidth</span> = <span class="amxx-number">1</span>,
+						<span class="amxx-identifier">noise</span> = <span class="amxx-number">0</span>,
+						<span class="amxx-identifier">red</span> = <span class="amxx-number">255</span>,
+						<span class="amxx-identifier">green</span> = <span class="amxx-number">255</span>,
+						<span class="amxx-identifier">blue</span> = <span class="amxx-number">255</span>,
+						<span class="amxx-identifier">brightness</span> = <span class="amxx-number">255</span>,
+						<span class="amxx-identifier">scrollSpeed</span> = <span class="amxx-number">0</span>)
+{
+	<span class="amxx-function">emessage_begin</span>(<span class="amxx-identifier">MSG_PVS</span>, <span class="amxx-identifier">SVC_TEMPENTITY</span>, <span class="amxx-identifier">position</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">TE_BEAMCYLINDER</span>);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">position</span>[<span class="amxx-number">0</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">position</span>[<span class="amxx-number">1</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">position</span>[<span class="amxx-number">2</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">axis</span>[<span class="amxx-number">0</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">axis</span>[<span class="amxx-number">1</span>]);
+	<span class="amxx-function">ewrite_coord</span>(<span class="amxx-identifier">axis</span>[<span class="amxx-number">2</span>]);
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-identifier">spriteId</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">startingFrame</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">frameRate</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">life</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">lineWidth</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">noise</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">red</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">green</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">blue</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">brightness</span>);
+	<span class="amxx-function">ewrite_byte</span>(<span class="amxx-identifier">scrollSpeed</span>);
+	<span class="amxx-function">emessage_end</span>();
+}
+<span class="amxx-function">SendMessage_ScreenShake</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">amplitude</span> = <span class="amxx-number">0.0</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">duration</span> = <span class="amxx-number">0.0</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">frequency</span> = <span class="amxx-number">0.0</span>)
+{
+	<span class="amxx-function">emessage_begin</span>(<span class="amxx-identifier">MSG_ONE_UNRELIABLE</span>, <span class="amxx-identifier">gMsgId_ScreenShake</span>, .<span class="amxx-identifier">player</span> = <span class="amxx-identifier">playerEntId</span>);
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-function">floatround</span>((<span class="amxx-number">1</span> << <span class="amxx-number">12</span>) * <span class="amxx-identifier">amplitude</span>));
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-function">floatround</span>((<span class="amxx-number">1</span> << <span class="amxx-number">12</span>) * <span class="amxx-identifier">duration</span>));
+	<span class="amxx-function">ewrite_short</span>(<span class="amxx-function">floatround</span>((<span class="amxx-number">1</span> << <span class="amxx-number">12</span>) * <span class="amxx-identifier">frequency</span>));
+	<span class="amxx-function">emessage_end</span>();
+}
+</code>
+
+<h2 id="click3">3:杂谈</h2>
+
+<h3 id="click31">3.1:详细查看相关模块文档</h3>
+
+<p><span class="amxx-string">fakemeta</span>和<span class="amxx-string">hamsandwich</span>都是非常重要的模块,提供了相当丰富的功能.</p>
+
+<p>因此我在这里,为它们写了一些中文注释.</p>
+
+<code><span class="amxx-comment">/**
+ * 通过预设的事件索引.为事件添加挂钩.
+ *
+ * @param _forwardType	要挂钩的事件的预设索引,请参阅fakemeta_const.inc中FM_开头的枚举成员,它们便是用于访问对应事件所需的事件索引.
+ *			(新手们不要学它这种不设定枚举名称的做法.完全浪费了枚举的存在意义.)
+ *			(如果不是有注释,谁能猜到这个参数该填什么东西.)
+ *			(如果那些FM_枚举常量拥有一个枚举名称作为tag标签,这个参数也使用了tag标签,)
+ *			(就算没有注释,我们也能在看见标签的那一刻明白,该去寻找这个枚举,从而找到相关参数)
+ * @param _function	挂钩目标函数名称
+ * @param _post		填0表示添加前置挂钩,否则表示添加后置挂钩.
+ *			(新手们不要学它这种不设定参数tag标签的做法.)
+ *			(如果不是有注释,谁能猜到这个参数该填什么东西.)
+ *			(这种只有真假,是非,是否,对错两种选择的参数,应该设定bool:标签.)
+ *			(即便没有注释,我们也能在看见bool:标签的那一刻明白,该填true或false.)
+ *
+ * @return		返回0表示函数运行失败;
+ *			否则返回挂钩的索引.可作为unregister_forward函数的参数,删除挂钩
+ *			(一个成熟的开发者应该为这种返回值和专享函数的参数添加自定义标签,)
+ *			(这样一来,我们一看见返回值的特殊标签就会知道该去寻找专享函数)
+ * @error		当使用了不存在的事件索引(毕竟新手乱填完全有可能),抛出错误报告
+ *			当使用了不存在的挂钩目标函数(名称错误),抛出错误报告
+*/</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">register_forward</span>(<span class="amxx-identifier">_forwardType</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">_function</span>[], <span class="amxx-identifier">_post</span>=<span class="amxx-number">0</span>);
+</code>
+
+<code><span class="amxx-comment">/**
+ * 通过预设的事件索引,为某一类实体添加事件挂钩.
+ *
+ * @note		使用方法:
+ *			RegisterHam(Ham_TakeDamage, "player", "player_hurt");
+ *
+ * @param function	要挂钩的事件的预设索引,请参阅ham_const.inc中的Ham枚举成员(这才一是个成熟的开发者应有的设计)
+ * @param EntityClass	实体的原始类名
+ * @param callback	挂钩目标函数名称
+ * @param post		填0表示添加前置挂钩,否则表示添加后置挂钩(一个成熟的开发者应该为这种参数添加bool:标签)
+ * @param specialbot	填true则对没有"player"类名的机器人实体生效,填false则不生效.
+ *			(这才一是个成熟的开发者应有的设计,)
+ *			(AMX Mod X 1.8.2或低版没有这个参数)
+ *
+ * @return 		返回0表示函数运行失败;
+ *			否则返回挂钩的索引.用EnableHamForward/DisableHamForward函数可以开启或关闭挂钩.
+ *			(函数返回带有HamHook标签的值,而开启/关闭挂钩的函数需要带有HamHook标签的值作为参数,)
+ *			(HamHook并不是一个自定义枚举,也不是已经存在的tag标签,但依然是允许的,编译器会自动添加这个标签,)
+ *			(这种标签不像枚举标签拥有成员,而开启/关闭挂钩的函数并不需要枚举成员,因此用这种方法创建新的Tag,)
+ *			(这才一是个成熟的开发者应有的设计)
+ * @error		当使用了不存在的事件索引(比如给某个不相关的值添加Ham标签用作参数1),抛出错误报告
+ *			当使用了不存在的实体原始类名(名称错误),抛出错误报告
+ *			当使用了不存在的挂钩目标函数(名称错误),抛出错误报告
+*/</span>
+<span class="amxx-keyword">native</span> <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHam</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, <span class="amxx-keyword">const</span> <span class="amxx-identifier">EntityClass</span>[], <span class="amxx-keyword">const</span> <span class="amxx-identifier">Callback</span>[], <span class="amxx-identifier">Post</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">specialbot</span> = <span class="amxx-identifier">false</span>);
+</code>
+
+<code><span class="amxx-comment">/**
+ * 获取实体属性储存的数据.不论实体是哪一种类型,都拥有的通用属性.
+ *
+ * @note		函数能够返回带有整数型的数据,用引用参数输出浮点型或字符串型数据.
+ *			这里的引用参数指的是...符号所在位置的参数(以及后续填写的参数).
+ *			当你填写一个变量作为参数,变量本体会被输入函数内部,函数内部可以更改它的值.
+ *			(更多有关于引用参数的教学内容,敬请期待)
+ *
+ *
+ * @param entityId	实体索引
+ * @param propertyId	属性索引,请查阅fakemeta_const.inc中以pev_开头的枚举常量.
+ *			以start和end,begin和end结尾的枚举常量不可用,它们用于表示两者之间的属性是什么值类型.
+ *			
+ * @param ...		根据propertyId所指的属性值类型,需要填写不同数量,不同类型的参数:
+ *			属性总共有以下值类型string,edict,float,int,byte,bytearray,vecarray,string2,edict2类型
+ *			
+ *			string和string2需要用1个带有_:标签,尺寸不明的静态数组变量,和1个代表允许填写多少字节的常量,填入...位置,储存属性值.
+ *			像这样:
+ *			new text[32]
+ *			pev(entityId, pev_****, text, sizeof(text) - 1)
+ *			另外,由于实体相关的字符串都被一个全局字符串列表储存,当我们想比较它的属性是否等于某个字符串时,
+ *			通过检查两个字符串的索引是否相等,可避免逐一比较字符串数组中的每一个字节.
+ *			对于字符串类型的属性,你可以选择获取字符串的索引.有以下两种方法:
+ * 			1: 通过返回值获取实体类名的索引
+ *			new classNameStrId = pev(entityId, pev_classname)
+ * 			2: 通过引用参数获取实体类名的索引,和类名
+ * 			new classNameStrId, classname[32]
+ *			pev(entityId, pev_classname, classNameStrId, classname, sizeof(className) - 1)
+ *
+ *			float需要用1个带有Float:标签的变量作为引用参数,填入...位置,储存属性值
+ *			bytearray中的pev_controller需要1个带有_:标签,尺寸为4的静态数组变量作为引用参数,填入...位置,储存属性值
+ *			bytearray中的pev_blender需要1个带有_:标签,尺寸为2的静态数组变量作为引用参数,填入...位置,储存属性值
+ *			vecarray需要1个带有Float:标签,尺寸为3的静态数组变量作为引用参数,填入...位置,储存属性值
+ *			其余的都是通过都是通过pev函数的返回值获取
+ *			
+ * @return		返回整数型属性值
+ * @error		如果实体索引无效,抛出一个错误报告,函数运行失败.
+ *			如果属性索引无效,抛出一个错误报告,函数运行失败.
+ *			如果参数数量,类型填写错误,抛出一个错误报告,函数运行失败.
+*/</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">pev</span>(<span class="amxx-identifier">entityId</span>, <span class="amxx-identifier">propertyId</span>, <span class="amxx-tag">any:</span>...);
+</code>
+
+<code><span class="amxx-comment">/**
+ * 设置实体属性.
+ *
+ * @note		设置字符串数据将通过AllocString自动增加到全局字符串列表(列表尺寸有限,用多了会炸).
+ *			如果你已经用AllocString将其加入列表,应使用set_pev_string_ptr函数代替set_pev函数,以避免重复增加.
+ *
+ * @param entityId	实体索引
+ * @param propertyId	属性索引,请查阅fakemeta_const.inc中以pev_开头的枚举常量.
+ *
+ * @noreturn
+ * @error		如果实体索引无效,抛出一个错误报告,函数运行失败.
+ *			如果属性索引无效,抛出一个错误报告,函数运行失败.
+ *			如果参数数量,类型填写错误,抛出一个错误报告,函数运行失败.
+*/</span>
+<span class="amxx-keyword">native</span> <span class="amxx-function">set_pev</span>(<span class="amxx-identifier">entityId</span>, <span class="amxx-identifier">propertyId</span>, <span class="amxx-tag">any:</span>...);
+</code>
+
+<h3 id="click32">3.2:给接口添加详细注释</h3>
+
+<p><span class="amxx-string">fakemeta</span>模块的作者将注释写得稀碎,很多没说清楚.我补全了注释内容,但无法确认上面的注释是完全正确的.</p>
+
+<p>所以大家看看就好,不用往脑子里记.至少教程中用到的部分是正确的.</p>
+
+<p><span class="amxx-string">fakemeta_const.inc</span>提供了各种枚举常量,可用作某些函数的参数,强制执行某些事件,给事件挂钩,查改实体属性.</p>
+
+<p>因此<span class="amxx-string">fakemeta</span>模块非常重要,可惜它提供的枚举常量大部分都没有注释.让一代又一代的开发者浪费大量时间研究它们的真正用途.</p>
+
+<p>新手们不要学他这种偷懒的做法.老手也不要学.</p>
+
+<p>如果有一天制作了自己的接口函数,一定要给自己制作的接口函数,相关参数的常量写上详细的文档注释.</p>
+
+<h3 id="click33">3.3:理解位标志运算</h3>
+
+<p>在<span class="amxx-string">hlsdk_const.inc</span>文件中,你可以看到很多宏定义常量,它们很多都是位标志.</p>
+
+<p>比如<span class="amxx-identifier">pev_button</span>相关的,<span class="amxx-identifier">IN_</span>开头的常量.除了<span class="amxx-identifier">IN_CANCEL</span>和<span class="amxx-identifier">IN_RUN</span>,其它都对应了一个客户端命令,和命令绑定的按键.</p>
+
+<code><span class="amxx-directive">#define</span> <span class="amxx-identifier">IN_ATTACK</span> (<span class="amxx-number">1</span><<<span class="amxx-number">0</span>)	<span class="amxx-comment">// 表示二进制的0000000000000001,对应+attack命令,一般情况下绑定的是鼠标左键.</span>
+
+<span class="amxx-directive">#define</span> <span class="amxx-identifier">IN_JUMP</span> (<span class="amxx-number">1</span><<<span class="amxx-number">1</span>)		<span class="amxx-comment">// 表示二进制的0000000000000010,对应+jump命令,一般情况下绑定的是空格键.</span>
+
+<span class="amxx-directive">#define</span> <span class="amxx-identifier">IN_DUCK</span> (<span class="amxx-number">1</span><<<span class="amxx-number">2</span>)		<span class="amxx-comment">// 表示二进制的0000000000000100,对应+duck命令,一般情况下绑定的是Ctrl键.</span>
+
+<span class="amxx-directive">#define</span> <span class="amxx-identifier">IN_ALT1</span> (<span class="amxx-number">1</span><<<span class="amxx-number">14</span>)		<span class="amxx-comment">// 表示二进制的0100000000000000,对应+alt1命令,一般情况下没有绑定按键.</span>
+</code>
+
+<p>圆括号中的1<code><<</code>14表示将0000000000000001向左移动14个位,停留在从右往左数第15个位.也就是<span class="amxx-number">0100000000000000.</span></p>
+
+<p>假如按键同时按住<span class="amxx-identifier">IN_ATTACK</span>和<span class="amxx-identifier">IN_JUMP</span>对应的按键,则按键状态中储存的是0001<code> & </code>0010,也就是0011(对应十进制的1<code> + </code>2<code> = </code>3).</p>
+
+<p>将按键状态属性所储存的值,和单一按键标志进行<code> & </code>运算,计算结果保留同位上的1.如果等于该按键标志,说明玩家正按着这个按键.</p>
+
+<p>比如玩家正按着<span class="amxx-identifier">IN_ATTACK</span>和<span class="amxx-identifier">IN_JUMP</span>,按键状态为0011,与<span class="amxx-identifier">IN_JUMP</span>进行<code> & </code>运算, 0011<code> & </code>0010保留同位上的1,等于0010,等于<span class="amxx-identifier">IN_JUMP</span>.</p>
+
+<p>简单的说,每当实体按住一个按键,该按键对应的位置就会变为1,否则变为<span class="amxx-number">0.</span></p>
+
+<h3 id="click34">3.4:合理使用条件判断</h3>
+
+<p><span class="amxx-identifier">pev_button pev_oldbuttons</span>分别代表此次与上次预思考事件中,实体的按键状态.</p>
+
+<p>配合使用,可检查按钮的四个状态:按下瞬间,按住时,松开瞬间,未使用:</p>
+
+<code><span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PreHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	
+	<span class="amxx-comment">// 将此次函数计算结果保存下来,可避免重复使用函数进行计算</span>
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">oldButtons</span> = <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_oldbuttons</span>);
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">buttons</span> = <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_button</span>);
+	
+	<span class="amxx-comment">// 注:&的优先级高于&&,因此左右两边的&运算会先执行</span>
+	
+	<span class="amxx-comment">// 如果 上次不含有IN_USE状态 且 此次含有IN_USE状态</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">oldButtons</span> & <span class="amxx-identifier">IN_USE</span> == <span class="amxx-number">0</span> && <span class="amxx-identifier">buttons</span> & <span class="amxx-identifier">IN_USE</span>)
+	{
+		<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]E键被按下"</span>);
+	}
+	<span class="amxx-comment">// 如果 上次含有IN_USE状态 且 此次含有IN_USE状态</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">oldButtons</span> & <span class="amxx-identifier">IN_USE</span> && <span class="amxx-identifier">buttons</span> & <span class="amxx-identifier">IN_USE</span>)
+	{
+		<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]E键一直被按压"</span>);
+	}
+	<span class="amxx-comment">// 如果 上次含有IN_USE状态 且 此次不含有IN_USE状态</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">oldButtons</span> & <span class="amxx-identifier">IN_USE</span> && <span class="amxx-identifier">buttons</span> & <span class="amxx-identifier">IN_USE</span> == <span class="amxx-number">0</span>)
+	{
+		<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]E键被松开"</span>);
+	}
+	<span class="amxx-comment">// 如果 上次不含有IN_USE状态 且 此次不含有IN_USE状态</span>
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">oldButtons</span> & <span class="amxx-identifier">IN_USE</span> == <span class="amxx-number">0</span> && <span class="amxx-identifier">buttons</span> & <span class="amxx-identifier">IN_USE</span> == <span class="amxx-number">0</span>)
+	{
+		<span class="amxx-comment">//client_print(playerEntId, print_chat, "[AMXX]E键未被使用");</span>
+	}
+}
+</code>
+
+<p>灵活使用<span class="amxx-keyword">else</span>可以避免重复执行相同的条件表达式,还能省略** == 0的运算.</p>
+
+<code><span class="amxx-keyword">public</span> <span class="amxx-function">PlayerPreThink_PreHook</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-keyword">if</span> (!<span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>))
+	{
+		<span class="amxx-keyword">return</span>;
+	}
+	
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">oldButtons</span> = <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_oldbuttons</span>);
+	<span class="amxx-keyword">new</span> <span class="amxx-identifier">buttons</span> = <span class="amxx-function">pev</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">pev_button</span>);
+	
+	<span class="amxx-keyword">if</span> (<span class="amxx-identifier">oldButtons</span> & <span class="amxx-identifier">IN_USE</span>)
+	{
+		<span class="amxx-keyword">if</span> (<span class="amxx-identifier">buttons</span> & <span class="amxx-identifier">IN_USE</span>)
+		{
+			<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]E键一直被按压"</span>);
+		}
+		<span class="amxx-keyword">else</span>
+		{
+			<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]E键被松开"</span>);
+		}
+	}
+	<span class="amxx-keyword">else</span>
+	{
+		<span class="amxx-keyword">if</span> (<span class="amxx-identifier">buttons</span> & <span class="amxx-identifier">IN_USE</span>)
+		{
+			<span class="amxx-function">client_print</span>(<span class="amxx-identifier">playerEntId</span>, <span class="amxx-identifier">print_chat</span>, <span class="amxx-string">"[AMXX]E键被按下"</span>);
+		}
+		<span class="amxx-keyword">else</span>
+		{
+			<span class="amxx-comment">//client_print(playerEntId, print_chat, "[AMXX]E键未被使用");</span>
+		}
+	}
+}
+</code>
+
+</body>
+</html>
