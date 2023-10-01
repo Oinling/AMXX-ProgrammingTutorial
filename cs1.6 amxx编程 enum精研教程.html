@@ -45,7 +45,7 @@
 		color: rgb(93,20,10);
 		font-weight: normal;
 	}
-	.amxx-identifier {
+	.amxx-symbol {
 		color: rgb(153,51,255);
 		font-weight: normal;
 	}
@@ -107,20 +107,20 @@
 
 <p><h1 id="click1">1:enum声明枚举常量的语法格式</h1></p>
 
-<p><code>enum <span class="amxx-tag">枚举标签</span> <span class="amxx-identifier">枚举名称</span> 增值法
+<p><code>enum <span class="amxx-tag">枚举标签</span> <span class="amxx-symbol">枚举名称</span> 增值法
 枚举体入口
-	<span class="amxx-tag">元素标签</span> <span class="amxx-identifier">枚举成员名称1</span> <span class="amxx-number">元素尺寸</span> 初始化表达式,
-	<span class="amxx-tag">元素标签</span> <span class="amxx-identifier">枚举成员名称2</span> <span class="amxx-number">元素尺寸</span> 初始化表达式,
-	<span class="amxx-tag">元素标签</span> <span class="amxx-identifier">枚举成员名称3</span> <span class="amxx-number">元素尺寸</span> 初始化表达式,
+	<span class="amxx-tag">元素标签</span> <span class="amxx-symbol">枚举成员名称1</span> <span class="amxx-number">元素尺寸</span> 初始化表达式,
+	<span class="amxx-tag">元素标签</span> <span class="amxx-symbol">枚举成员名称2</span> <span class="amxx-number">元素尺寸</span> 初始化表达式,
+	<span class="amxx-tag">元素标签</span> <span class="amxx-symbol">枚举成员名称3</span> <span class="amxx-number">元素尺寸</span> 初始化表达式,
 枚举体出口;</code></p>
 
 <p>参考:</p>
 
-<p><code>enum <span class="amxx-tag">CsTeams:</span> <span class="amxx-identifier">Example</span> (+= <span class="amxx-number">2</span>)
+<p><code>enum <span class="amxx-tag">CsTeams:</span> <span class="amxx-symbol">Example</span> (+= <span class="amxx-number">2</span>)
 {
-	<span class="amxx-tag">any:</span>	<span class="amxx-identifier">Eg1</span> [<span class="amxx-number">3</span>] = <span class="amxx-number">0</span>,
-	<span class="amxx-tag">bool:</span>	<span class="amxx-identifier">Eg2</span> [<span class="amxx-number">3</span>] = <span class="amxx-number">2</span>,
-	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">Eg3</span> [<span class="amxx-number">3</span>] = <span class="amxx-number">2</span> + <span class="amxx-number">2</span>,
+	<span class="amxx-tag">any:</span>	<span class="amxx-symbol">Eg1</span> [<span class="amxx-number">3</span>] = <span class="amxx-number">0</span>,
+	<span class="amxx-tag">bool:</span>	<span class="amxx-symbol">Eg2</span> [<span class="amxx-number">3</span>] = <span class="amxx-number">2</span>,
+	<span class="amxx-tag">Float:</span>	<span class="amxx-symbol">Eg3</span> [<span class="amxx-number">3</span>] = <span class="amxx-number">2</span> + <span class="amxx-number">2</span>,
 };</code></p>
 
 <p><h1 id="click2">2:enum表达式详解</h1></p>
@@ -227,7 +227,7 @@
 
 <p><h2 id="click3_1">3.1:枚举标签</h2></p>
 
-<p>在以下代码中,由于设定了枚举标签为<span class="amxx-tag">Float:</span>,因此<span class="amxx-identifier">Example</span>和<span class="amxx-identifier">Eg1</span>所储存的值带有<span class="amxx-tag">Float:</span>标签.</p>
+<p>在以下代码中,由于设定了枚举标签为<span class="amxx-tag">Float:</span>,因此<span class="amxx-symbol">Example</span>和<span class="amxx-symbol">Eg1</span>所储存的值带有<span class="amxx-tag">Float:</span>标签.</p>
 
 <p><span class="amxx-function">float</span>函数要求参数1带有<span class="amxx-tag">_:</span>标签,因此会触发Tag mismatch警告(标签不匹配).</p>
 
@@ -236,11 +236,11 @@
 <p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
 public <span class="amxx-function">plugin_init</span>()
 {
-	enum <span class="amxx-tag">Float:</span><span class="amxx-identifier">Example</span> { <span class="amxx-identifier">Eg1</span> }
-	<span class="amxx-function">float</span>(<span class="amxx-identifier">Example</span>);
-	<span class="amxx-function">float</span>(<span class="amxx-identifier">Eg1</span>);
-	<span class="amxx-function">floatround</span>(<span class="amxx-identifier">Example</span>);
-	<span class="amxx-function">floatround</span>(<span class="amxx-identifier">Eg1</span>);
+	enum <span class="amxx-tag">Float:</span><span class="amxx-symbol">Example</span> { <span class="amxx-symbol">Eg1</span> }
+	<span class="amxx-function">float</span>(<span class="amxx-symbol">Example</span>);
+	<span class="amxx-function">float</span>(<span class="amxx-symbol">Eg1</span>);
+	<span class="amxx-function">floatround</span>(<span class="amxx-symbol">Example</span>);
+	<span class="amxx-function">floatround</span>(<span class="amxx-symbol">Eg1</span>);
 }</code></p>
 
 <p>填写了枚举标签后,编译器不会创建一个与枚举名称同名的标签.因此枚举名称失去标签的作用.</p>
@@ -265,15 +265,15 @@ public <span class="amxx-function">plugin_init</span>()
 	<span class="amxx-comment">// 用enum声明一个无地址常量:Example1</span>
 	enum <span class="amxx-enumname">Example1</span> { }
 	<span class="amxx-comment">// 对数组进行初始化,{}内可以填写Example1作为字面量.</span>
-	new <span class="amxx-tag">Example1:</span><span class="amxx-identifier">array1</span>[<span class="amxx-number">1</span>] = { <span class="amxx-identifier">Example1</span> };
+	new <span class="amxx-tag">Example1:</span><span class="amxx-symbol">array1</span>[<span class="amxx-number">1</span>] = { <span class="amxx-symbol">Example1</span> };
 	
 	<span class="amxx-comment">// 声明一个有地址常量:Example2</span>
-	new const <span class="amxx-identifier">Example2</span> = <span class="amxx-number">6</span>;
+	new const <span class="amxx-symbol">Example2</span> = <span class="amxx-number">6</span>;
 	<span class="amxx-comment">// 编译器报错:初始化表达式必须是常量表达式.Example2不是一个真正的常量</span>
-	new <span class="amxx-identifier">array2</span>[<span class="amxx-number">1</span>] = { <span class="amxx-identifier">Example2</span> };
+	new <span class="amxx-symbol">array2</span>[<span class="amxx-number">1</span>] = { <span class="amxx-symbol">Example2</span> };
 	
 	<span class="amxx-comment">// 此代码用于消除编译器警告:array1和array2未被使用</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">""</span>, <span class="amxx-identifier">array1</span>, <span class="amxx-identifier">array2</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">""</span>, <span class="amxx-symbol">array1</span>, <span class="amxx-symbol">array2</span>);
 }</code></p>
 
 <p>进入游戏载入地图后,在控制台观察以下代码的表现,可看出不同常量的效率差异.</p>
@@ -286,38 +286,38 @@ public <span class="amxx-function">plugin_init</span>()
 	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"const"</span>, <span class="amxx-number">300</span>);
 	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"enum"</span>, <span class="amxx-number">300</span>);
 }
-static <span class="amxx-function">LoopTest</span>(const <span class="amxx-identifier">specifier</span>[], <span class="amxx-identifier">numberOfCycles</span>)
+static <span class="amxx-function">LoopTest</span>(const <span class="amxx-symbol">specifier</span>[], <span class="amxx-symbol">numberOfCycles</span>)
 {
-	new <span class="amxx-identifier">counter</span>, <span class="amxx-identifier">counter2</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">timer</span>, <span class="amxx-tag">Array:</span><span class="amxx-identifier">array</span> = <span class="amxx-function">ArrayCreate</span>(<span class="amxx-number">1</span>, <span class="amxx-identifier">numberOfCycles</span>);
+	new <span class="amxx-symbol">counter</span>, <span class="amxx-symbol">counter2</span>, <span class="amxx-tag">Float:</span><span class="amxx-symbol">timer</span>, <span class="amxx-tag">Array:</span><span class="amxx-symbol">array</span> = <span class="amxx-function">ArrayCreate</span>(<span class="amxx-number">1</span>, <span class="amxx-symbol">numberOfCycles</span>);
 	
 	<span class="amxx-directive">#define</span> <span class="amxx-di">_循环访问constant</span>\
-	for (<span class="amxx-identifier">counter</span> = <span class="amxx-identifier">numberOfCycles</span>; <span class="amxx-identifier">counter</span>--;)\
+	for (<span class="amxx-symbol">counter</span> = <span class="amxx-symbol">numberOfCycles</span>; <span class="amxx-symbol">counter</span>--;)\
 	{\
-		<span class="amxx-identifier">counter2</span> = -<span class="amxx-number">500000</span>;\
-		<span class="amxx-identifier">timer</span> = <span class="amxx-function">float</span>(<span class="amxx-function">tickcount</span>());\
-		while (<span class="amxx-identifier">counter2</span>)\
-		<span class="amxx-identifier">counter2</span> = <span class="amxx-identifier">counter2</span> + 1</span> + <span class="amxx-identifier">constant</span> + <span class="amxx-identifier">constant</span> + <span class="amxx-identifier">constant</span> + <span class="amxx-identifier">constant</span>;\
-		<span class="amxx-function">ArrayPushCell</span>(<span class="amxx-identifier">array</span>, <span class="amxx-function">float</span>(<span class="amxx-function">tickcount</span>()) - <span class="amxx-identifier">timer</span>);\
+		<span class="amxx-symbol">counter2</span> = -<span class="amxx-number">500000</span>;\
+		<span class="amxx-symbol">timer</span> = <span class="amxx-function">float</span>(<span class="amxx-function">tickcount</span>());\
+		while (<span class="amxx-symbol">counter2</span>)\
+		<span class="amxx-symbol">counter2</span> = <span class="amxx-symbol">counter2</span> + 1</span> + <span class="amxx-symbol">constant</span> + <span class="amxx-symbol">constant</span> + <span class="amxx-symbol">constant</span> + <span class="amxx-symbol">constant</span>;\
+		<span class="amxx-function">ArrayPushCell</span>(<span class="amxx-symbol">array</span>, <span class="amxx-function">float</span>(<span class="amxx-function">tickcount</span>()) - <span class="amxx-symbol">timer</span>);\
 	}
 	
-	if (<span class="amxx-function">equal</span>(<span class="amxx-identifier">specifier</span>, <span class="amxx-string">"enum"</span>))
+	if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"enum"</span>))
 	{
-		enum <span class="amxx-tag">_:</span><span class="amxx-identifier">constant</span> { }	<span class="amxx-comment">// 无地址常量</span>
+		enum <span class="amxx-tag">_:</span><span class="amxx-symbol">constant</span> { }	<span class="amxx-comment">// 无地址常量</span>
 		<span class="amxx-di">_循环访问constant</span>
 	}
-	else if (<span class="amxx-function">equal</span>(<span class="amxx-identifier">specifier</span>, <span class="amxx-string">"const"</span>))
+	else if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"const"</span>))
 	{
-		const <span class="amxx-identifier">constant</span> = <span class="amxx-number">0</span>;	<span class="amxx-comment">// 无地址常量</span>
+		const <span class="amxx-symbol">constant</span> = <span class="amxx-number">0</span>;	<span class="amxx-comment">// 无地址常量</span>
 		<span class="amxx-di">_循环访问constant</span>
 	}
-	else if (<span class="amxx-function">equal</span>(<span class="amxx-identifier">specifier</span>, <span class="amxx-string">"static"</span>))
+	else if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"static"</span>))
 	{
-		static const <span class="amxx-identifier">constant</span>;	<span class="amxx-comment">// 有地址常量</span>
+		static const <span class="amxx-symbol">constant</span>;	<span class="amxx-comment">// 有地址常量</span>
 		<span class="amxx-di">_循环访问constant</span>
 	}
-	else if (<span class="amxx-function">equal</span>(<span class="amxx-identifier">specifier</span>, <span class="amxx-string">"new"</span>))
+	else if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"new"</span>))
 	{
-		new const <span class="amxx-identifier">constant</span>;	<span class="amxx-comment">// 有地址常量</span>
+		new const <span class="amxx-symbol">constant</span>;	<span class="amxx-comment">// 有地址常量</span>
 		<span class="amxx-di">_循环访问constant</span>
 	}
 	else
@@ -326,13 +326,13 @@ static <span class="amxx-function">LoopTest</span>(const <span class="amxx-ident
 		return;
 	}
 	
-	<span class="amxx-identifier">timer</span> = <span class="amxx-number">0.0</span>;
-	for (<span class="amxx-identifier">counter</span> = <span class="amxx-identifier">numberOfCycles</span>; <span class="amxx-identifier">counter</span>--;) <span class="amxx-identifier">timer</span> += <span class="amxx-tag">Float:</span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-identifier">array</span>, <span class="amxx-identifier">counter</span>);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%s常量200万*%d次,总共消耗%.1f秒"</span>, <span class="amxx-identifier">specifier</span>, <span class="amxx-identifier">numberOfCycles</span>, <span class="amxx-identifier">timer</span> / <span class="amxx-number">1000.0</span>);
-	<span class="amxx-identifier">timer</span> /= <span class="amxx-function">float</span>(<span class="amxx-identifier">numberOfCycles</span>);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%s常量,平均每200万次消耗%f毫秒"</span>, <span class="amxx-identifier">specifier</span>, <span class="amxx-identifier">timer</span>);
+	<span class="amxx-symbol">timer</span> = <span class="amxx-number">0.0</span>;
+	for (<span class="amxx-symbol">counter</span> = <span class="amxx-symbol">numberOfCycles</span>; <span class="amxx-symbol">counter</span>--;) <span class="amxx-symbol">timer</span> += <span class="amxx-tag">Float:</span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-symbol">array</span>, <span class="amxx-symbol">counter</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%s常量200万*%d次,总共消耗%.1f秒"</span>, <span class="amxx-symbol">specifier</span>, <span class="amxx-symbol">numberOfCycles</span>, <span class="amxx-symbol">timer</span> / <span class="amxx-number">1000.0</span>);
+	<span class="amxx-symbol">timer</span> /= <span class="amxx-function">float</span>(<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%s常量,平均每200万次消耗%f毫秒"</span>, <span class="amxx-symbol">specifier</span>, <span class="amxx-symbol">timer</span>);
 	
-	<span class="amxx-function">ArrayDestroy</span>(<span class="amxx-identifier">array</span>);
+	<span class="amxx-function">ArrayDestroy</span>(<span class="amxx-symbol">array</span>);
 }</code></p>
 
 <p>测试结果会受很多因素影响,比如服务器性能,插件加载的其他代码等,所以需要多次测试.以下结果仅供参考:</p>
@@ -346,7 +346,7 @@ static <span class="amxx-function">LoopTest</span>(const <span class="amxx-ident
 [AMXX]访问enum常量200万*300次,总共消耗2.1秒
 [AMXX]访问enum常量,平均每200万次消耗7.099999毫秒</span></code></p>
 
-<p>在以下代码中,由于省略了枚举标签和枚举名称,因此<span class="amxx-identifier">Eg1</span>所储存的值默认为<span class="amxx-tag">_:</span>标签.</p>
+<p>在以下代码中,由于省略了枚举标签和枚举名称,因此<span class="amxx-symbol">Eg1</span>所储存的值默认为<span class="amxx-tag">_:</span>标签.</p>
 
 <p><span class="amxx-function">float</span>函数要求参数1带有<span class="amxx-tag">_:</span>标签,因此不会触发Tag mismatch警告(标签不匹配).</p>
 
@@ -355,35 +355,35 @@ static <span class="amxx-function">LoopTest</span>(const <span class="amxx-ident
 <p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
 public <span class="amxx-function">plugin_init</span>()
 {
-	enum { <span class="amxx-identifier">Eg1</span> }
-	<span class="amxx-function">float</span>(<span class="amxx-identifier">Eg1</span>);
-	<span class="amxx-function">floatround</span>(<span class="amxx-identifier">Eg1</span>);
+	enum { <span class="amxx-symbol">Eg1</span> }
+	<span class="amxx-function">float</span>(<span class="amxx-symbol">Eg1</span>);
+	<span class="amxx-function">floatround</span>(<span class="amxx-symbol">Eg1</span>);
 }</code></p>
 
 <p>这种省略了枚举名称的声明方式,称为匿名枚举.</p>
 
-<p>在以下代码中,由于省略了枚举标签,因此<span class="amxx-identifier">Example Eg1 Eg2</span>所储存的值都是<span class="amxx-tag">Example:</span>标签.</p>
+<p>在以下代码中,由于省略了枚举标签,因此<span class="amxx-symbol">Example Eg1 Eg2</span>所储存的值都是<span class="amxx-tag">Example:</span>标签.</p>
 
 <p><span class="amxx-function">GetPropertyValue</span>函数要求参数1带有<span class="amxx-tag">Example:</span>标签,并根据该参数返回不同的值.</p>
 
 <p>因此<span class="amxx-function">GetPropertyValue</span><code>(<span class="amxx-number">192</span>)</code>将会触发Tag mismatch警告(标签不匹配).</p>
 
 <p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
-enum <span class="amxx-enumname">Example</span> { <span class="amxx-identifier">Eg1</span>, <span class="amxx-identifier">Eg2</span> }
+enum <span class="amxx-enumname">Example</span> { <span class="amxx-symbol">Eg1</span>, <span class="amxx-symbol">Eg2</span> }
 public <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-identifier">Eg1</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-identifier">Eg2</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-identifier">Example</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-symbol">Eg1</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-symbol">Eg2</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-symbol">Example</span>));
 	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s"</span>, <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-number">192</span>));
 }
-static <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-tag">Example:</span><span class="amxx-identifier">propertyId</span>)
+static <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-tag">Example:</span><span class="amxx-symbol">propertyId</span>)
 {
-	new <span class="amxx-identifier">info</span>[<span class="amxx-number">32</span>];
-	if (<span class="amxx-identifier">propertyId</span> == <span class="amxx-identifier">Eg1</span>) return <span class="amxx-identifier">info</span> = <span class="amxx-string">"身高180"</span>;
-	if (<span class="amxx-identifier">propertyId</span> == <span class="amxx-identifier">Eg2</span>) return <span class="amxx-identifier">info</span> = <span class="amxx-string">"腰围180"</span>;
-	if (<span class="amxx-identifier">propertyId</span> == <span class="amxx-identifier">Example</span>) return <span class="amxx-identifier">info</span> = <span class="amxx-string">"大错误"</span>;
-	return <span class="amxx-identifier">info</span> = <span class="amxx-string">"极为严重的错误"</span>;
+	new <span class="amxx-symbol">info</span>[<span class="amxx-number">32</span>];
+	if (<span class="amxx-symbol">propertyId</span> == <span class="amxx-symbol">Eg1</span>) return <span class="amxx-symbol">info</span> = <span class="amxx-string">"身高180"</span>;
+	if (<span class="amxx-symbol">propertyId</span> == <span class="amxx-symbol">Eg2</span>) return <span class="amxx-symbol">info</span> = <span class="amxx-string">"腰围180"</span>;
+	if (<span class="amxx-symbol">propertyId</span> == <span class="amxx-symbol">Example</span>) return <span class="amxx-symbol">info</span> = <span class="amxx-string">"大错误"</span>;
+	return <span class="amxx-symbol">info</span> = <span class="amxx-string">"极为严重的错误"</span>;
 }</code></p>
 
 <p>进入游戏载入地图后,将会在控制台看见以下四行文本:</p>
@@ -419,63 +419,63 @@ static <span class="amxx-function">GetPropertyValue</span>(<span class="amxx-tag
 
 <p><code>(<<= <span class="amxx-number">1</span>)</code>能二进制层面,让每个成员的值左移1个位,右边补一个0.</p>
 
-<p>比如<span class="amxx-identifier">Bf_Burn</span>的值0b_0001,也就是十进制的1,左移1个位后变为0b_0010.</p>
+<p>比如<span class="amxx-symbol">Bf_Burn</span>的值0b_0001,也就是十进制的1,左移1个位后变为0b_0010.</p>
 
 <p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
 enum <span class="amxx-enumname">Buff</span> (<<= <span class="amxx-number">0b_0000_0000_0001</span>)
 {
-	<span class="amxx-identifier">Bf_None</span>,	<span class="amxx-comment">// 没有buff</span>
-	<span class="amxx-identifier">Bf_Burn</span> = <span class="amxx-number">1</span>,	<span class="amxx-comment">// 燃烧buff</span>
-	<span class="amxx-identifier">Bf_Cold</span>,	<span class="amxx-comment">// 寒冷buff</span>
-	<span class="amxx-identifier">Bf_Frozen</span>,	<span class="amxx-comment">// 冻结buff</span>
-	<span class="amxx-identifier">Bf_Poison</span>,	<span class="amxx-comment">// 中毒buff</span>
-	<span class="amxx-identifier">Bf_Hypoxia</span>,	<span class="amxx-comment">// 缺氧buff</span>
-	<span class="amxx-identifier">Bf_Blind</span>,	<span class="amxx-comment">// 失明buff</span>
-	<span class="amxx-identifier">Bf_SpeedUp</span>,	<span class="amxx-comment">// 加速buff</span>
-	<span class="amxx-identifier">Bf_Rage</span>,	<span class="amxx-comment">// 狂暴buff</span>
-	<span class="amxx-identifier">Bf_SuperArmor</span>,	<span class="amxx-comment">// 霸体buff</span>
-	<span class="amxx-identifier">Bf_MImmunity</span>,	<span class="amxx-comment">// 免疫魔法buff</span>
-	<span class="amxx-identifier">Bf_PImmunity</span>,	<span class="amxx-comment">// 免疫物攻buff</span>
+	<span class="amxx-symbol">Bf_None</span>,	<span class="amxx-comment">// 没有buff</span>
+	<span class="amxx-symbol">Bf_Burn</span> = <span class="amxx-number">1</span>,	<span class="amxx-comment">// 燃烧buff</span>
+	<span class="amxx-symbol">Bf_Cold</span>,	<span class="amxx-comment">// 寒冷buff</span>
+	<span class="amxx-symbol">Bf_Frozen</span>,	<span class="amxx-comment">// 冻结buff</span>
+	<span class="amxx-symbol">Bf_Poison</span>,	<span class="amxx-comment">// 中毒buff</span>
+	<span class="amxx-symbol">Bf_Hypoxia</span>,	<span class="amxx-comment">// 缺氧buff</span>
+	<span class="amxx-symbol">Bf_Blind</span>,	<span class="amxx-comment">// 失明buff</span>
+	<span class="amxx-symbol">Bf_SpeedUp</span>,	<span class="amxx-comment">// 加速buff</span>
+	<span class="amxx-symbol">Bf_Rage</span>,	<span class="amxx-comment">// 狂暴buff</span>
+	<span class="amxx-symbol">Bf_SuperArmor</span>,	<span class="amxx-comment">// 霸体buff</span>
+	<span class="amxx-symbol">Bf_MImmunity</span>,	<span class="amxx-comment">// 免疫魔法buff</span>
+	<span class="amxx-symbol">Bf_PImmunity</span>,	<span class="amxx-comment">// 免疫物攻buff</span>
 }
 public <span class="amxx-function">plugin_init</span>()
 {
 	<span class="amxx-comment">// 注意,AMXX 1.8.2或低版本无法使用%b按照二进制形式打印文本.</span>
 	
 	<span class="amxx-comment">// 打印结果:	[AMXX]0000 0b_0000_0000_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_None</span>, <span class="amxx-identifier">Bf_None</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_None</span>, <span class="amxx-symbol">Bf_None</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0001 0b_0000_0000_0001</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Burn</span>, <span class="amxx-identifier">Bf_Burn</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Burn</span>, <span class="amxx-symbol">Bf_Burn</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0002 0b_0000_0000_0010</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Cold</span>, <span class="amxx-identifier">Bf_Cold</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Cold</span>, <span class="amxx-symbol">Bf_Cold</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0004 0b_0000_0000_0100</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Frozen</span>, <span class="amxx-identifier">Bf_Frozen</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Frozen</span>, <span class="amxx-symbol">Bf_Frozen</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0008 0b_0000_0000_1000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Poison</span>, <span class="amxx-identifier">Bf_Poison</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Poison</span>, <span class="amxx-symbol">Bf_Poison</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0016 0b_0000_0001_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Hypoxia</span>, <span class="amxx-identifier">Bf_Hypoxia</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Hypoxia</span>, <span class="amxx-symbol">Bf_Hypoxia</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0032 0b_0000_0010_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Blind</span>, <span class="amxx-identifier">Bf_Blind</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Blind</span>, <span class="amxx-symbol">Bf_Blind</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0064 0b_0000_0100_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_SpeedUp</span>, <span class="amxx-identifier">Bf_SpeedUp</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_SpeedUp</span>, <span class="amxx-symbol">Bf_SpeedUp</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0128 0b_0000_1000_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_Rage</span>, <span class="amxx-identifier">Bf_Rage</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_Rage</span>, <span class="amxx-symbol">Bf_Rage</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0256 0b_0001_0000_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_SuperArmor</span>, <span class="amxx-identifier">Bf_SuperArmor</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_SuperArmor</span>, <span class="amxx-symbol">Bf_SuperArmor</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]0512 0b_0010_0000_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_MImmunity</span>, <span class="amxx-identifier">Bf_MImmunity</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_MImmunity</span>, <span class="amxx-symbol">Bf_MImmunity</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]1024 0b_0100_0000_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Bf_PImmunity</span>, <span class="amxx-identifier">Bf_PImmunity</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Bf_PImmunity</span>, <span class="amxx-symbol">Bf_PImmunity</span>);
 	<span class="amxx-comment">// 打印结果:	[AMXX]2048 0b_1000_0000_0000</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">Buff</span>, <span class="amxx-identifier">Buff</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">Buff</span>, <span class="amxx-symbol">Buff</span>);
 	
 	<span class="amxx-comment">// 打印结果:	[AMXX]0011 0b_0000_0000_1011</span>
-	new <span class="amxx-tag">Buff:</span><span class="amxx-identifier">IHaveMultipleBuffs</span> = <span class="amxx-identifier">Bf_Burn</span> | <span class="amxx-identifier">Bf_Cold</span> | <span class="amxx-identifier">Bf_Poison</span>;
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-identifier">IHaveMultipleBuffs</span>, <span class="amxx-identifier">IHaveMultipleBuffs</span>);
+	new <span class="amxx-tag">Buff:</span><span class="amxx-symbol">IHaveMultipleBuffs</span> = <span class="amxx-symbol">Bf_Burn</span> | <span class="amxx-symbol">Bf_Cold</span> | <span class="amxx-symbol">Bf_Poison</span>;
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%04d %012b"</span>, <span class="amxx-symbol">IHaveMultipleBuffs</span>, <span class="amxx-symbol">IHaveMultipleBuffs</span>);
 }</code></p>
 
 <p>进入游戏,载入地图后,可以看见这些枚举常量的十进制,二进制对应的数值.</p>
 
-<p>第一个成员<span class="amxx-identifier">Bf_None</span>默认为0,除非写上初始化表达式,比如第二个成员<span class="amxx-identifier">Bf_Burn</span>被设为1,二进制是0b_0001.</p>
+<p>第一个成员<span class="amxx-symbol">Bf_None</span>默认为0,除非写上初始化表达式,比如第二个成员<span class="amxx-symbol">Bf_Burn</span>被设为1,二进制是0b_0001.</p>
 
 <p>增值法<code>(<<= <span class="amxx-number">1</span>)</code>成功使其余成员的值等于上一个成员的左移.</p>
 
@@ -493,13 +493,13 @@ public <span class="amxx-function">plugin_init</span>()
 
 <p>若使用二进制,则可以用一个变量表示32种状态(AMXX仅支持32位整数).</p>
 
-<p>代码中的<span class="amxx-identifier">IHaveMultipleBuffs</span>是<span class="amxx-identifier">Bf_Burn</span> <span class="amxx-identifier">Bf_Cold</span> <span class="amxx-identifier">Bf_Poison</span>进行"按位或运算"的结果.</p>
+<p>代码中的<span class="amxx-symbol">IHaveMultipleBuffs</span>是<span class="amxx-symbol">Bf_Burn</span> <span class="amxx-symbol">Bf_Cold</span> <span class="amxx-symbol">Bf_Poison</span>进行"按位或运算"的结果.</p>
 
-<p>观察它的二进制数值,可以看见右端的1011,实际上就是<span class="amxx-identifier">Bf_Burn</span>的0001,<span class="amxx-identifier">Bf_Cold</span>的0010,<span class="amxx-identifier">Bf_Poison</span>的1000.</p>
+<p>观察它的二进制数值,可以看见右端的1011,实际上就是<span class="amxx-symbol">Bf_Burn</span>的0001,<span class="amxx-symbol">Bf_Cold</span>的0010,<span class="amxx-symbol">Bf_Poison</span>的1000.</p>
 
 <p>使用"按位与运算",便可确认一个变量或常量是否含有某个位:</p>
 
-<p><code>if (<span class="amxx-identifier">IHaveMultipleBuffs</span> & <span class="amxx-identifier">Bf_Burn</span>)
+<p><code>if (<span class="amxx-symbol">IHaveMultipleBuffs</span> & <span class="amxx-symbol">Bf_Burn</span>)
 {
 	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]IHaveMultipleBuffs含有Bf_Burn"</span>)
 }
@@ -510,18 +510,18 @@ else
 
 <p>使用"按位或运算",便可添加状态(按照或运算的特性,已有状态不会重复添加):</p>
 
-<p><code><span class="amxx-identifier">IHaveMultipleBuffs</span> |= <span class="amxx-identifier">Bf_MImmunity</span>;
+<p><code><span class="amxx-symbol">IHaveMultipleBuffs</span> |= <span class="amxx-symbol">Bf_MImmunity</span>;
 <span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]变量IHaveMultipleBuffs添加了(魔法免疫)状态"</span>);
 
-<span class="amxx-identifier">IHaveMultipleBuffs</span> |= <span class="amxx-identifier">Bf_Burn</span> | <span class="amxx-identifier">Bf_Cold</span> | <span class="amxx-identifier">Bf_Poison</span>;
+<span class="amxx-symbol">IHaveMultipleBuffs</span> |= <span class="amxx-symbol">Bf_Burn</span> | <span class="amxx-symbol">Bf_Cold</span> | <span class="amxx-symbol">Bf_Poison</span>;
 <span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]变量IHaveMultipleBuffs添加了(燃烧,寒冷,剧毒)状态"</span>);</code></p>
 
 <p>使用"按位或运算"和"按位取反",便可删除状态(按照或运算的特性,不会重复删除不存在的状态):</p>
 
-<p><code><span class="amxx-identifier">IHaveMultipleBuffs</span> &= ~<span class="amxx-identifier">Bf_MImmunity</span>;
+<p><code><span class="amxx-symbol">IHaveMultipleBuffs</span> &= ~<span class="amxx-symbol">Bf_MImmunity</span>;
 <span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]变量IHaveMultipleBuffs删除了Bf_MImmunity(魔法免疫)状态"</span>);
 
-<span class="amxx-identifier">IHaveMultipleBuffs</span> &= ~(<span class="amxx-identifier">Bf_Burn</span> | <span class="amxx-identifier">Bf_Cold</span> | <span class="amxx-identifier">Bf_Poison</span>);
+<span class="amxx-symbol">IHaveMultipleBuffs</span> &= ~(<span class="amxx-symbol">Bf_Burn</span> | <span class="amxx-symbol">Bf_Cold</span> | <span class="amxx-symbol">Bf_Poison</span>);
 <span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]变量IHaveMultipleBuffs删除了(燃烧,寒冷,剧毒)状态"</span>);</code></p>
 
 <p>匿名枚举同样可以设定增值法.但失去了标签检查,会让开发者或第三方使用者产生疑惑.</p>
@@ -554,37 +554,37 @@ else
 
 enum
 {
-	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">Eg1_float</span>,	<span class="amxx-comment">// Eg1_float在增值法作用下,存有常量0</span>
-	<span class="amxx-tag">Array:</span>	<span class="amxx-identifier">Eg2_array</span>,	<span class="amxx-comment">// Eg2_array在增值法作用下,存有常量1</span>
+	<span class="amxx-tag">Float:</span>	<span class="amxx-symbol">Eg1_float</span>,	<span class="amxx-comment">// Eg1_float在增值法作用下,存有常量0</span>
+	<span class="amxx-tag">Array:</span>	<span class="amxx-symbol">Eg2_array</span>,	<span class="amxx-comment">// Eg2_array在增值法作用下,存有常量1</span>
 }
 
-stock <span class="amxx-identifier">gArray1</span>[<span class="amxx-number">2</span>];	<span class="amxx-comment">// 声明整数型数组</span>
-stock <span class="amxx-tag">Float:</span><span class="amxx-identifier">gValueFloat</span>, <span class="amxx-tag">Array:</span><span class="amxx-identifier">gValueArray</span>;
+stock <span class="amxx-symbol">gArray1</span>[<span class="amxx-number">2</span>];	<span class="amxx-comment">// 声明整数型数组</span>
+stock <span class="amxx-tag">Float:</span><span class="amxx-symbol">gValueFloat</span>, <span class="amxx-tag">Array:</span><span class="amxx-symbol">gValueArray</span>;
 
 public <span class="amxx-function">plugin_init</span>()
 {
 	<span class="amxx-comment">// 将0号元素赋值为浮点数512.5,会被编译器警告:标签不匹配.因为gArray1是整数型数组</span>
-	<span class="amxx-identifier">gArray1</span>[<span class="amxx-number">0</span>]		= <span class="amxx-number">512.5</span>;
+	<span class="amxx-symbol">gArray1</span>[<span class="amxx-number">0</span>]		= <span class="amxx-number">512.5</span>;
 	<span class="amxx-comment">// 用Eg1_float代替0号索引,不被警告.因为Eg1_float带有元素标签Float:</span>
-	<span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg1_float</span>]	= <span class="amxx-number">512.5</span>;
+	<span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg1_float</span>]	= <span class="amxx-number">512.5</span>;
 	
 	<span class="amxx-comment">// 将1号元素赋值为Invalid_Array,会被编译器警告:标签不匹配.因为gArray1是整数型数组</span>
-	<span class="amxx-identifier">gArray1</span>[<span class="amxx-number">1</span>]		= <span class="amxx-identifier">Invalid_Array</span>;
+	<span class="amxx-symbol">gArray1</span>[<span class="amxx-number">1</span>]		= <span class="amxx-symbol">Invalid_Array</span>;
 	<span class="amxx-comment">// 用Eg2_array代替1号索引,不被警告.因为Eg2_array带有元素标签Array:</span>
-	<span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg2_array</span>]	= <span class="amxx-identifier">Invalid_Array</span>;
+	<span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg2_array</span>]	= <span class="amxx-symbol">Invalid_Array</span>;
 	
 	<span class="amxx-comment">// 注:Invalid_Array是一个拥有Array:标签的常量.</span>
 	<span class="amxx-comment">// 注:AMXX1.8.2或低版本有bug.因此,上面元素的赋值表达式依然会被警告</span>
 	
 	<span class="amxx-comment">// 用浮点型变量储存0号元素值,会被编译器警告.因为gArray1是整数型数组</span>
-	<span class="amxx-identifier">gValueFloat</span>	= <span class="amxx-identifier">gArray1</span>[<span class="amxx-number">0</span>];
+	<span class="amxx-symbol">gValueFloat</span>	= <span class="amxx-symbol">gArray1</span>[<span class="amxx-number">0</span>];
 	<span class="amxx-comment">// 用Eg1_float代替0号索引,不被警告.因为Eg1_float带有元素标签Float:</span>
-	<span class="amxx-identifier">gValueFloat</span>	= <span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg1_float</span>];
+	<span class="amxx-symbol">gValueFloat</span>	= <span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg1_float</span>];
 	
 	<span class="amxx-comment">// 用Array型变量储存1号元素值,会被编译器警告.因为gArray1是整数型数组</span>
-	<span class="amxx-identifier">gValueArray</span>	= <span class="amxx-identifier">gArray1</span>[<span class="amxx-number">1</span>];
+	<span class="amxx-symbol">gValueArray</span>	= <span class="amxx-symbol">gArray1</span>[<span class="amxx-number">1</span>];
 	<span class="amxx-comment">// 用Eg2_array代替1号索引,不被警告.因为Eg2_array带有元素标签Array:</span>
-	<span class="amxx-identifier">gValueArray</span>	= <span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg2_array</span>];
+	<span class="amxx-symbol">gValueArray</span>	= <span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg2_array</span>];
 }</code></p>
 
 <p>元素标签可让数组储存多种不同类型的元素数值.</p>
@@ -601,27 +601,27 @@ public <span class="amxx-function">plugin_init</span>()
 
 enum <span class="amxx-enumname">Example</span>
 {
-	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">Eg1_float</span>,
-	<span class="amxx-tag">Array:</span>	<span class="amxx-identifier">Eg2_array</span>,
+	<span class="amxx-tag">Float:</span>	<span class="amxx-symbol">Eg1_float</span>,
+	<span class="amxx-tag">Array:</span>	<span class="amxx-symbol">Eg2_array</span>,
 }
 
 <span class="amxx-comment">// 不被警告.编译器承认其内2个元素使用Float:与Array:标签</span>
-stock <span class="amxx-identifier">gArray1</span>[<span class="amxx-enumname">Example</span>] = { <span class="amxx-number">5.55</span>, <span class="amxx-identifier">Invalid_Array</span> };
+stock <span class="amxx-symbol">gArray1</span>[<span class="amxx-enumname">Example</span>] = { <span class="amxx-number">5.55</span>, <span class="amxx-symbol">Invalid_Array</span> };
 <span class="amxx-comment">// 触发2个警告,编译器认为其内2个元素应使用_:标签</span>
-stock <span class="amxx-identifier">gArray2</span>[<span class="amxx-number">2</span>] = { <span class="amxx-number">5.55</span>, <span class="amxx-identifier">Invalid_Array</span> };
+stock <span class="amxx-symbol">gArray2</span>[<span class="amxx-number">2</span>] = { <span class="amxx-number">5.55</span>, <span class="amxx-symbol">Invalid_Array</span> };
 
 <span class="amxx-comment">// 无关内容:</span>
 public <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray1 = [ %.2f, %d ]"</span>, <span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg1_float</span>], <span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg2_array</span>]);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray2 = [ %.2f, %d ]"</span>, <span class="amxx-identifier">gArray2</span>[<span class="amxx-number">0</span>], <span class="amxx-identifier">gArray2</span>[<span class="amxx-number">1</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray1 = [ %.2f, %d ]"</span>, <span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg1_float</span>], <span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg2_array</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray2 = [ %.2f, %d ]"</span>, <span class="amxx-symbol">gArray2</span>[<span class="amxx-number">0</span>], <span class="amxx-symbol">gArray2</span>[<span class="amxx-number">1</span>]);
 }</code></p>
 
 <p>声明数组时将枚举名称作为容量,开发者或第三方人员在访问元素时,会自然而然的去查阅并使用相关枚举成员.</p>
 
 <p>填写无关的数值作为索引,会触发警告.使访问者在编译时意识到自己的错误,这减少了运行时出错的概率.</p>
 
-<p>AMXX的头文件中有大量反面教材,各种宏定义常量,比如<span class="amxx-identifier">CSW_*</span>系列常量,<span class="amxx-identifier">ADMIN_*</span>系列常量.各种匿名枚举,比如<span class="amxx-identifier">print_*</span>系列常量.</p>
+<p>AMXX的头文件中有大量反面教材,各种宏定义常量,比如<span class="amxx-symbol">CSW_*</span>系列常量,<span class="amxx-symbol">ADMIN_*</span>系列常量.各种匿名枚举,比如<span class="amxx-symbol">print_*</span>系列常量.</p>
 
 <p>它们都是默认使用<span class="amxx-tag">_:</span>标签,相关函数的返回值,函数的参数,统统使用<span class="amxx-tag">_:</span>标签.</p>
 
@@ -639,21 +639,21 @@ public <span class="amxx-function">plugin_init</span>()
 
 enum <span class="amxx-enumname">Example</span>
 {
-	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">Eg1_float</span>,
-	<span class="amxx-tag">Array:</span>	<span class="amxx-identifier">Eg2_array</span>,
+	<span class="amxx-tag">Float:</span>	<span class="amxx-symbol">Eg1_float</span>,
+	<span class="amxx-tag">Array:</span>	<span class="amxx-symbol">Eg2_array</span>,
 }
 
 <span class="amxx-comment">// 容量的标签被省略时,默认为_:标签</span>
-stock <span class="amxx-identifier">gArray1</span>[<span class="amxx-number">2</span>];
+stock <span class="amxx-symbol">gArray1</span>[<span class="amxx-number">2</span>];
 <span class="amxx-comment">// 以Example:作为容量标签(注:初始化触发2个警告.或许是bug,或者,强制更改2的标签本身属于违规行为,正常应该直接填写Example而不是Example:2)</span>
-stock <span class="amxx-identifier">gArray2</span>[<span class="amxx-tag">Example:</span><span class="amxx-number">2</span>] = { <span class="amxx-number">5.5</span>, <span class="amxx-identifier">Invalid_Array</span> };
+stock <span class="amxx-symbol">gArray2</span>[<span class="amxx-tag">Example:</span><span class="amxx-number">2</span>] = { <span class="amxx-number">5.5</span>, <span class="amxx-symbol">Invalid_Array</span> };
 
 public <span class="amxx-function">plugin_init</span>()
 {
 	<span class="amxx-comment">// 被警告,因为gArray1的容量标签是_:</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray1[0] = %.2f"</span>, <span class="amxx-identifier">gArray1</span>[<span class="amxx-identifier">Eg1_float</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray1[0] = %.2f"</span>, <span class="amxx-symbol">gArray1</span>[<span class="amxx-symbol">Eg1_float</span>]);
 	<span class="amxx-comment">// 不被警告,因为gArray2的容量标签是Example:</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray2[0] = %d"</span>, <span class="amxx-identifier">gArray2</span>[<span class="amxx-identifier">Eg2_array</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gArray2[0] = %d"</span>, <span class="amxx-symbol">gArray2</span>[<span class="amxx-symbol">Eg2_array</span>]);
 }</code></p>
 
 <p><h2 id="click3_5">3.5:枚举成员名称</h2></p>
@@ -667,19 +667,19 @@ public <span class="amxx-function">plugin_init</span>()
 <span class="amxx-comment">// 多个成员重名,不会被警告或触发报错</span>
 enum <span class="amxx-enumname">Example1</span>
 {
-	<span class="amxx-identifier">Eg1</span>,
-	<span class="amxx-identifier">Eg1</span>,
-	<span class="amxx-identifier">Eg1</span>,
-	<span class="amxx-identifier">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
 }
 
 <span class="amxx-comment">// 与其它枚举的成员重名,不会被警告或触发报错</span>
 enum <span class="amxx-enumname">Example2</span>
 {
-	<span class="amxx-identifier">Eg1</span>,
-	<span class="amxx-identifier">Eg1</span>,
-	<span class="amxx-identifier">Eg1</span>,
-	<span class="amxx-identifier">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
+	<span class="amxx-symbol">Eg1</span>,
 }
 
 <span class="amxx-comment">// 无关内容:</span>
@@ -696,44 +696,44 @@ public <span class="amxx-function">plugin_init</span>() { }</code></p>
 <span class="amxx-comment">// 枚举结构体:设定"人"的数据结构</span>
 enum <span class="amxx-enumname">CPeople</span>
 {
-	<span class="amxx-identifier">CPName</span>[<span class="amxx-number">32</span>],		<span class="amxx-comment">// 数组用中32个元素表示"人"的姓名</span>
-	<span class="amxx-identifier">CPBirthDate</span>[<span class="amxx-number">32</span>],	<span class="amxx-comment">// 数组用中32个元素表示"人"的出生日期</span>
-	<span class="amxx-identifier">CPGender</span>[<span class="amxx-number">16</span>],		<span class="amxx-comment">// 数组用中16个元素表示"人"的性别</span>
-	<span class="amxx-identifier">CPHeight</span>[<span class="amxx-number">22</span>],		<span class="amxx-comment">// 数组用中22个元素表示"人"的身高</span>
-	<span class="amxx-identifier">CPWeight</span>[<span class="amxx-number">22</span>],		<span class="amxx-comment">// 数组用中22个元素表示"人"的体重</span>
+	<span class="amxx-symbol">CPName</span>[<span class="amxx-number">32</span>],		<span class="amxx-comment">// 数组用中32个元素表示"人"的姓名</span>
+	<span class="amxx-symbol">CPBirthDate</span>[<span class="amxx-number">32</span>],	<span class="amxx-comment">// 数组用中32个元素表示"人"的出生日期</span>
+	<span class="amxx-symbol">CPGender</span>[<span class="amxx-number">16</span>],		<span class="amxx-comment">// 数组用中16个元素表示"人"的性别</span>
+	<span class="amxx-symbol">CPHeight</span>[<span class="amxx-number">22</span>],		<span class="amxx-comment">// 数组用中22个元素表示"人"的身高</span>
+	<span class="amxx-symbol">CPWeight</span>[<span class="amxx-number">22</span>],		<span class="amxx-comment">// 数组用中22个元素表示"人"的体重</span>
 }
 
 public <span class="amxx-function">plugin_init</span>()
 {
-	new <span class="amxx-identifier">people</span>[<span class="amxx-enumname">CPeople</span>] = { <span class="amxx-string">"李华"</span>, <span class="amxx-string">"9:56 2023/9/23"</span>, <span class="amxx-string">"武装直升机"</span>, <span class="amxx-string">"3米"</span>, <span class="amxx-string">"5000公斤"</span> };
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的姓名:%s"</span>, <span class="amxx-identifier">people</span>[<span class="amxx-identifier">CPName</span>]);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的出生日期:%s"</span>, <span class="amxx-identifier">people</span>[<span class="amxx-identifier">CPBirthDate</span>]);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的性别:%s"</span>, <span class="amxx-identifier">people</span>[<span class="amxx-identifier">CPGender</span>]);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的身高:%s"</span>, <span class="amxx-identifier">people</span>[<span class="amxx-identifier">CPHeight</span>]);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的体重:%s"</span>, <span class="amxx-identifier">people</span>[<span class="amxx-identifier">CPWeight</span>]);
+	new <span class="amxx-symbol">people</span>[<span class="amxx-enumname">CPeople</span>] = { <span class="amxx-string">"李华"</span>, <span class="amxx-string">"9:56 2023/9/23"</span>, <span class="amxx-string">"武装直升机"</span>, <span class="amxx-string">"3米"</span>, <span class="amxx-string">"5000公斤"</span> };
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的姓名:%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPName</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的出生日期:%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPBirthDate</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的性别:%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPGender</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的身高:%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPHeight</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]某人的体重:%s"</span>, <span class="amxx-symbol">people</span>[<span class="amxx-symbol">CPWeight</span>]);
 }</code></p>
 
-<p>以上代码看起来像是把一维数组<span class="amxx-identifier">people</span>升维至二维数组.但那只是表象.</p>
+<p>以上代码看起来像是把一维数组<span class="amxx-symbol">people</span>升维至二维数组.但那只是表象.</p>
 
 <p>从第2个枚举成员开始,每个成员的值等于上一个成员的值+元素尺寸.</p>
 
-<p><span class="amxx-identifier">CPName</span>的值是0,元素尺寸是32,因此<span class="amxx-identifier">CPBirthDate</span>的值是0+32.</p>
+<p><span class="amxx-symbol">CPName</span>的值是0,元素尺寸是32,因此<span class="amxx-symbol">CPBirthDate</span>的值是0+32.</p>
 
-<p>如此一来枚举名称<span class="amxx-identifier">CPeople</span>的值为32+32+16+22+22,即124.而<code>new <span class="amxx-identifier">people</span>[<span class="amxx-enumname">CPeople</span>]</code>实际上是声明了尺寸为124的一维数组.</p>
+<p>如此一来枚举名称<span class="amxx-symbol">CPeople</span>的值为32+32+16+22+22,即124.而<code>new <span class="amxx-symbol">people</span>[<span class="amxx-enumname">CPeople</span>]</code>实际上是声明了尺寸为124的一维数组.</p>
 
 <p>枚举名称作为数组的容量使用,能够改变数组初始化表达式的数据分配规则.</p>
 
-<p><span class="amxx-identifier">people</span>数组的0至31号元素被用于储存<span class="amxx-string">"李华"</span>.</p>
+<p><span class="amxx-symbol">people</span>数组的0至31号元素被用于储存<span class="amxx-string">"李华"</span>.</p>
 
-<p><span class="amxx-identifier">people</span>数组的32至63号元素被用于储存<span class="amxx-string">"9:56 2023/9/23"</span>.</p>
+<p><span class="amxx-symbol">people</span>数组的32至63号元素被用于储存<span class="amxx-string">"9:56 2023/9/23"</span>.</p>
 
-<p><span class="amxx-identifier">people</span>数组的64至79号元素被用于储存<span class="amxx-string">"武装直升机"</span>.</p>
+<p><span class="amxx-symbol">people</span>数组的64至79号元素被用于储存<span class="amxx-string">"武装直升机"</span>.</p>
 
-<p><span class="amxx-identifier">people</span>数组的80至101号元素被用于储存<span class="amxx-string">"3米"</span>.</p>
+<p><span class="amxx-symbol">people</span>数组的80至101号元素被用于储存<span class="amxx-string">"3米"</span>.</p>
 
-<p><span class="amxx-identifier">people</span>数组的102至123号元素被用于储存<span class="amxx-string">"5000公斤"</span>.</p>
+<p><span class="amxx-symbol">people</span>数组的102至123号元素被用于储存<span class="amxx-string">"5000公斤"</span>.</p>
 
-<p>虽然<span class="amxx-identifier">people</span>数组中依然拥有124个元素,但用枚举成员作为索引访问<span class="amxx-identifier">people</span>数组时,可以将<span class="amxx-identifier">people</span>数组视作拥有5个元素.</p>
+<p>虽然<span class="amxx-symbol">people</span>数组中依然拥有124个元素,但用枚举成员作为索引访问<span class="amxx-symbol">people</span>数组时,可以将<span class="amxx-symbol">people</span>数组视作拥有5个元素.</p>
 
 <p>这种情况下,枚举成员的元素尺寸,实际上就是这5个元素的尺寸.</p>
 
@@ -741,26 +741,26 @@ public <span class="amxx-function">plugin_init</span>()
 
 <p>若字符串的字节数小于元素尺寸,多出来的部分全部默认储存0.</p>
 
-<p><span class="amxx-identifier">people</span>数组能表现出二维数组的特性,可以拥有2对方括号.</p>
+<p><span class="amxx-symbol">people</span>数组能表现出二维数组的特性,可以拥有2对方括号.</p>
 
 <p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
 
 <span class="amxx-comment">// 枚举结构体:设定"数组包"的数据结构</span>
 enum <span class="amxx-enumname">CArray</span>
 {
-	<span class="amxx-identifier">CA1</span>,		<span class="amxx-comment">// 数组用中1个元素表示"数组包"的第1个包</span>
-	<span class="amxx-identifier">CA2</span>[<span class="amxx-number">1</span>],		<span class="amxx-comment">// 数组用中1个元素表示"数组包"的第2个包</span>
-	<span class="amxx-identifier">CA3</span>[<span class="amxx-number">2</span>],		<span class="amxx-comment">// 数组用中2个元素表示"数组包"的第3个包</span>
-	<span class="amxx-identifier">CA4</span>[<span class="amxx-number">3</span>],		<span class="amxx-comment">// 数组用中3个元素表示"数组包"的第4个包</span>
+	<span class="amxx-symbol">CA1</span>,		<span class="amxx-comment">// 数组用中1个元素表示"数组包"的第1个包</span>
+	<span class="amxx-symbol">CA2</span>[<span class="amxx-number">1</span>],		<span class="amxx-comment">// 数组用中1个元素表示"数组包"的第2个包</span>
+	<span class="amxx-symbol">CA3</span>[<span class="amxx-number">2</span>],		<span class="amxx-comment">// 数组用中2个元素表示"数组包"的第3个包</span>
+	<span class="amxx-symbol">CA4</span>[<span class="amxx-number">3</span>],		<span class="amxx-comment">// 数组用中3个元素表示"数组包"的第4个包</span>
 }
 
 public <span class="amxx-function">plugin_init</span>()
 {
-	new <span class="amxx-identifier">array</span>[<span class="amxx-enumname">CArray</span>] = { <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, { <span class="amxx-number">3</span>, <span class="amxx-number">4</span> }, <span class="amxx-string">"56"</span> };
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA1数组包的值:%d"</span>, <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA1</span>]);						<span class="amxx-comment">// 元素尺寸小于2,表现为单值</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA2数组包的值:[ %d ]"</span>, <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA2</span>]);						<span class="amxx-comment">// 元素尺寸小于2,表现为单值</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA3数组包的值:[ %d, %d ]"</span>, <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA3</span>][<span class="amxx-number">0</span>], <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA3</span>][<span class="amxx-number">1</span>]);			<span class="amxx-comment">// 元素尺寸大于1,表现为二维数组</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA4数组包的值:[ %c, %c, %d ]"</span>, <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA4</span>][<span class="amxx-number">0</span>], <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA4</span>][<span class="amxx-number">1</span>], <span class="amxx-identifier">array</span>[<span class="amxx-identifier">CA4</span>][<span class="amxx-number">2</span>]);	<span class="amxx-comment">// 元素尺寸大于1,表现为二维数组</span>
+	new <span class="amxx-symbol">array</span>[<span class="amxx-enumname">CArray</span>] = { <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, { <span class="amxx-number">3</span>, <span class="amxx-number">4</span> }, <span class="amxx-string">"56"</span> };
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA1数组包的值:%d"</span>, <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA1</span>]);						<span class="amxx-comment">// 元素尺寸小于2,表现为单值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA2数组包的值:[ %d ]"</span>, <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA2</span>]);						<span class="amxx-comment">// 元素尺寸小于2,表现为单值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA3数组包的值:[ %d, %d ]"</span>, <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA3</span>][<span class="amxx-number">0</span>], <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA3</span>][<span class="amxx-number">1</span>]);			<span class="amxx-comment">// 元素尺寸大于1,表现为二维数组</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]CA4数组包的值:[ %c, %c, %d ]"</span>, <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA4</span>][<span class="amxx-number">0</span>], <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA4</span>][<span class="amxx-number">1</span>], <span class="amxx-symbol">array</span>[<span class="amxx-symbol">CA4</span>][<span class="amxx-number">2</span>]);	<span class="amxx-comment">// 元素尺寸大于1,表现为二维数组</span>
 }</code></p>
 
 <p>打印结果为:</p>
@@ -786,14 +786,14 @@ public <span class="amxx-function">plugin_init</span>()
 
 enum <span class="amxx-enumname">Example</span>
 {
-	<span class="amxx-identifier">Eg1</span> = <span class="amxx-number">1024</span>,	<span class="amxx-comment">// 可行的,无警告或报错</span>
-	<span class="amxx-identifier">Eg2</span> = <span class="amxx-number">0b10</span>,	<span class="amxx-comment">// 可行的,无警告或报错</span>
-	<span class="amxx-identifier">Eg3</span> = <span class="amxx-number">0x1F</span>,	<span class="amxx-comment">// 可行的,无警告或报错</span>
-	<span class="amxx-identifier">Eg4</span> = <span class="amxx-number">3.5</span>,	<span class="amxx-comment">// 可行的,无警告或报错(枚举体内无标签检查),浮点数自动转变为指针1080033280</span>
-	<span class="amxx-identifier">Eg5</span> = <span class="amxx-tag">_:</span><span class="amxx-number">5.0</span>,	<span class="amxx-comment">// 可行的,无警告或报错,浮点数手动转变为指针1084227584</span>
-	<span class="amxx-identifier">Eg6</span> = <span class="amxx-tag">_:</span><span class="amxx-number">1.5</span> + <span class="amxx-number">5</span>,<span class="amxx-comment">// 得到1069547525</span>
-	<span class="amxx-identifier">Eg7</span> = <span class="amxx-number">1</span> + <span class="amxx-number">2.0</span>,	<span class="amxx-comment">// 报错,浮点运算无法在编译时进行</span>
-	<span class="amxx-identifier">Eg8</span> = <span class="amxx-number">1.0</span> + <span class="amxx-number">5</span>,	<span class="amxx-comment">// 报错,浮点运算无法在编译时运行</span>
+	<span class="amxx-symbol">Eg1</span> = <span class="amxx-number">1024</span>,	<span class="amxx-comment">// 可行的,无警告或报错</span>
+	<span class="amxx-symbol">Eg2</span> = <span class="amxx-number">0b10</span>,	<span class="amxx-comment">// 可行的,无警告或报错</span>
+	<span class="amxx-symbol">Eg3</span> = <span class="amxx-number">0x1F</span>,	<span class="amxx-comment">// 可行的,无警告或报错</span>
+	<span class="amxx-symbol">Eg4</span> = <span class="amxx-number">3.5</span>,	<span class="amxx-comment">// 可行的,无警告或报错(枚举体内无标签检查),浮点数自动转变为指针1080033280</span>
+	<span class="amxx-symbol">Eg5</span> = <span class="amxx-tag">_:</span><span class="amxx-number">5.0</span>,	<span class="amxx-comment">// 可行的,无警告或报错,浮点数手动转变为指针1084227584</span>
+	<span class="amxx-symbol">Eg6</span> = <span class="amxx-tag">_:</span><span class="amxx-number">1.5</span> + <span class="amxx-number">5</span>,<span class="amxx-comment">// 得到1069547525</span>
+	<span class="amxx-symbol">Eg7</span> = <span class="amxx-number">1</span> + <span class="amxx-number">2.0</span>,	<span class="amxx-comment">// 报错,浮点运算无法在编译时进行</span>
+	<span class="amxx-symbol">Eg8</span> = <span class="amxx-number">1.0</span> + <span class="amxx-number">5</span>,	<span class="amxx-comment">// 报错,浮点运算无法在编译时运行</span>
 }
 
 <span class="amxx-comment">// 无关内容:</span>
