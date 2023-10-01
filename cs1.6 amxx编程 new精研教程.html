@@ -316,6 +316,13 @@ new static stock const gStaticStockConstant = 222;
 // 数据存于堆中的公共备用常量(实在没什么应用场景.大型插件可能会用到)
 new public stock const gPublicStockConstant = 222;
 
+总结:
+
+new说明符最特殊的一点是:"在函数体内,可将运行时表达式用作初始化表达式".
+
+当new被用于函数体外,则失去这一特性.
+
+在函数体外,使用new只会增加该符号被访问所消耗的时间.没任何好处.
 
 </code>
 </body>
