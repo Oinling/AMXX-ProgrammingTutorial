@@ -257,94 +257,159 @@ public <span class="amxx-function">plugin_init</span>()
 
 <p>在编译时就能确定无地址常量的值,运行时不需要加载标识符,因此效率更高.</p>
 
-<p>以下代码用于展示它们的区别:</p>
+<p>以下代码用于展示各种变量,常量声明在效率上的差异.可看到单纯用const或enum声明的无地址常量消耗时间更少:</p>
 
 <p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
 public <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-comment">// 用enum声明一个无地址常量:Example1</span>
-	enum <span class="amxx-enumname">Example1</span> { }
-	<span class="amxx-comment">// 对数组进行初始化,{}内可以填写Example1作为字面量.</span>
-	new <span class="amxx-tag">Example1:</span><span class="amxx-symbol">array1</span>[<span class="amxx-number">1</span>] = { <span class="amxx-symbol">Example1</span> };
-	
-	<span class="amxx-comment">// 声明一个有地址常量:Example2</span>
-	new const <span class="amxx-symbol">Example2</span> = <span class="amxx-number">6</span>;
-	<span class="amxx-comment">// 编译器报错:初始化表达式必须是常量表达式.Example2不是一个真正的常量</span>
-	new <span class="amxx-symbol">array2</span>[<span class="amxx-number">1</span>] = { <span class="amxx-symbol">Example2</span> };
-	
-	<span class="amxx-comment">// 此代码用于消除编译器警告:array1和array2未被使用</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">""</span>, <span class="amxx-symbol">array1</span>, <span class="amxx-symbol">array2</span>);
-}</code></p>
-
-<p>进入游戏载入地图后,在控制台观察以下代码的表现,可看出不同常量的效率差异.</p>
-
-<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
-public <span class="amxx-function">plugin_init</span>()
-{
-	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new"</span>, <span class="amxx-number">300</span>);
-	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"static"</span>, <span class="amxx-number">300</span>);
-	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"const"</span>, <span class="amxx-number">300</span>);
-	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"enum"</span>, <span class="amxx-number">300</span>);
+	<span class="amxx-comment">// 循环次数</span>
+	const <span class="amxx-symbol">numberOfCycles</span> = <span class="amxx-number">10000000</span>;
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new"</span>,				<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new public"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new public stock"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new public stock const"</span>,	<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new static"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new static stock"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new static stock const"</span>,	<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new stock"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new stock const"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"new const"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"public"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"public stock"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"public stock const"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"static"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"static stock"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"static stock const"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"stock"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"stock const"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"const"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"enum"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"enum member"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local const"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local enum"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local enum member"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local new"</span>,			<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local new const"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local static"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
+	<span class="amxx-function">LoopTest</span>(<span class="amxx-string">"local static const"</span>,		<span class="amxx-symbol">numberOfCycles</span>);
 }
-static <span class="amxx-function">LoopTest</span>(const <span class="amxx-symbol">specifier</span>[], <span class="amxx-symbol">numberOfCycles</span>)
+
+new			<span class="amxx-symbol">v1</span>;
+new public		<span class="amxx-symbol">v2</span>;
+new public stock	<span class="amxx-symbol">v3</span>;
+new public stock const	<span class="amxx-symbol">v4</span>;
+new static		<span class="amxx-symbol">v5</span>;
+new static stock	<span class="amxx-symbol">v6</span>;
+new static stock const	<span class="amxx-symbol">v7</span>;
+new stock		<span class="amxx-symbol">v8</span>;
+new stock const		<span class="amxx-symbol">v9</span>;
+new const		<span class="amxx-symbol">v10</span>;
+public			<span class="amxx-symbol">v11</span>;
+public stock		<span class="amxx-symbol">v12</span>;
+public stock const	<span class="amxx-symbol">v13</span>;
+static			<span class="amxx-symbol">v14</span>;
+static stock		<span class="amxx-symbol">v15</span>;
+static stock const	<span class="amxx-symbol">v16</span>;
+stock			<span class="amxx-symbol">v17</span>;
+stock const		<span class="amxx-symbol">v18</span>;
+const			<span class="amxx-symbol">v19</span> = <span class="amxx-number">0</span>;				<span class="amxx-comment">// 无地址常量</span>
+enum		<span class="amxx-tag">_:</span>	<span class="amxx-symbol">v20</span> (+=<span class="amxx-number">0</span>) { <span class="amxx-symbol">v21</span> }			<span class="amxx-comment">// 无地址常量</span>
+static stock <span class="amxx-function">LoopTest</span>(const <span class="amxx-symbol">specifier</span>[], <span class="amxx-symbol">numberOfCycles</span>)
 {
-	new <span class="amxx-symbol">counter</span>, <span class="amxx-symbol">counter2</span>, <span class="amxx-tag">Float:</span><span class="amxx-symbol">timer</span>, <span class="amxx-tag">Array:</span><span class="amxx-symbol">array</span> = <span class="amxx-function">ArrayCreate</span>(<span class="amxx-number">1</span>, <span class="amxx-symbol">numberOfCycles</span>);
-	
-	<span class="amxx-directive">#define</span> <span class="amxx-di">_循环访问constant</span>\
-	for (<span class="amxx-symbol">counter</span> = <span class="amxx-symbol">numberOfCycles</span>; <span class="amxx-symbol">counter</span>--;)\
+	<span class="amxx-directive">#define</span> <span class="amxx-function">g循环访问全局符号</span>(%<span class="amxx-number">1</span>,%<span class="amxx-number">2</span>)\
+	if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, %<span class="amxx-number">1</span>))\
 	{\
-		<span class="amxx-symbol">counter2</span> = -<span class="amxx-number">500000</span>;\
-		<span class="amxx-symbol">timer</span> = <span class="amxx-function">float</span>(<span class="amxx-function">tickcount</span>());\
-		while (<span class="amxx-symbol">counter2</span>)\
-		<span class="amxx-symbol">counter2</span> = <span class="amxx-symbol">counter2</span> + 1</span> + <span class="amxx-symbol">constant</span> + <span class="amxx-symbol">constant</span> + <span class="amxx-symbol">constant</span> + <span class="amxx-symbol">constant</span>;\
-		<span class="amxx-function">ArrayPushCell</span>(<span class="amxx-symbol">array</span>, <span class="amxx-function">float</span>(<span class="amxx-function">tickcount</span>()) - <span class="amxx-symbol">timer</span>);\
+		<span class="amxx-symbol">counter</span> = <span class="amxx-symbol">numberOfCycles</span>;\
+		<span class="amxx-symbol">timer</span> = <span class="amxx-function">tickcount</span>();\
+		while (<span class="amxx-symbol">counter</span>--) <span class="amxx-symbol">counter</span> +=\
+		%<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> +\
+		%<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> +\
+		%<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> +\
+		%<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> +\
+		%<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span> + %<span class="amxx-number">2</span>;\
+		<span class="amxx-symbol">timer</span> = <span class="amxx-function">tickcount</span>() - <span class="amxx-symbol">timer</span>;\
+		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%024s符号%d*50次,消耗%d毫秒"</span>, <span class="amxx-symbol">specifier</span>, <span class="amxx-symbol">numberOfCycles</span>, <span class="amxx-symbol">timer</span>);\
+		return;\
+	}
+	<span class="amxx-directive">#define</span> <span class="amxx-function">l循环访问局部符号</span>(%<span class="amxx-number">1</span>,%<span class="amxx-number">2</span>,%<span class="amxx-number">3</span>)\
+	if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, %<span class="amxx-number">1</span>))\
+	{\
+		%<span class="amxx-number">2</span>;\
+		<span class="amxx-symbol">counter</span> = <span class="amxx-symbol">numberOfCycles</span>;\
+		<span class="amxx-symbol">timer</span> = <span class="amxx-function">tickcount</span>();\
+		while (<span class="amxx-symbol">counter</span>--) <span class="amxx-symbol">counter</span> +=\
+		%<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> +\
+		%<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> +\
+		%<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> +\
+		%<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> +\
+		%<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span> + %<span class="amxx-number">3</span>;\
+		<span class="amxx-symbol">timer</span> = <span class="amxx-function">tickcount</span>() - <span class="amxx-symbol">timer</span>;\
+		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%-24s符号%d*50次,消耗%d毫秒"</span>, <span class="amxx-symbol">specifier</span>, <span class="amxx-symbol">numberOfCycles</span>, <span class="amxx-symbol">timer</span>);\
+		return;\
 	}
 	
-	if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"enum"</span>))
-	{
-		enum <span class="amxx-tag">_:</span><span class="amxx-symbol">constant</span> { }	<span class="amxx-comment">// 无地址常量</span>
-		<span class="amxx-di">_循环访问constant</span>
-	}
-	else if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"const"</span>))
-	{
-		const <span class="amxx-symbol">constant</span> = <span class="amxx-number">0</span>;	<span class="amxx-comment">// 无地址常量</span>
-		<span class="amxx-di">_循环访问constant</span>
-	}
-	else if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"static"</span>))
-	{
-		static const <span class="amxx-symbol">constant</span>;	<span class="amxx-comment">// 有地址常量</span>
-		<span class="amxx-di">_循环访问constant</span>
-	}
-	else if (<span class="amxx-function">equal</span>(<span class="amxx-symbol">specifier</span>, <span class="amxx-string">"new"</span>))
-	{
-		new const <span class="amxx-symbol">constant</span>;	<span class="amxx-comment">// 有地址常量</span>
-		<span class="amxx-di">_循环访问constant</span>
-	}
-	else
-	{
-		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]仅支持用new或static声明局部的有地址常量"</span>);
-		return;
-	}
-	
-	<span class="amxx-symbol">timer</span> = <span class="amxx-number">0.0</span>;
-	for (<span class="amxx-symbol">counter</span> = <span class="amxx-symbol">numberOfCycles</span>; <span class="amxx-symbol">counter</span>--;) <span class="amxx-symbol">timer</span> += <span class="amxx-tag">Float:</span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-symbol">array</span>, <span class="amxx-symbol">counter</span>);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%s常量200万*%d次,总共消耗%.1f秒"</span>, <span class="amxx-symbol">specifier</span>, <span class="amxx-symbol">numberOfCycles</span>, <span class="amxx-symbol">timer</span> / <span class="amxx-number">1000.0</span>);
-	<span class="amxx-symbol">timer</span> /= <span class="amxx-function">float</span>(<span class="amxx-symbol">numberOfCycles</span>);
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]访问%s常量,平均每200万次消耗%f毫秒"</span>, <span class="amxx-symbol">specifier</span>, <span class="amxx-symbol">timer</span>);
-	
-	<span class="amxx-function">ArrayDestroy</span>(<span class="amxx-symbol">array</span>);
+	static <span class="amxx-symbol">counter</span>, <span class="amxx-symbol">timer</span>;
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new"</span>,				<span class="amxx-symbol">v1</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new public"</span>,			<span class="amxx-symbol">v2</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new public stock"</span>,		<span class="amxx-symbol">v3</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new public stock const"</span>,	<span class="amxx-symbol">v4</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new static"</span>,			<span class="amxx-symbol">v5</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new static stock"</span>,		<span class="amxx-symbol">v6</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new static stock const"</span>,	<span class="amxx-symbol">v7</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new stock"</span>,			<span class="amxx-symbol">v8</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new stock const"</span>,		<span class="amxx-symbol">v9</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"new const"</span>,			<span class="amxx-symbol">v10</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"public"</span>,			<span class="amxx-symbol">v11</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"public stock"</span>,		<span class="amxx-symbol">v12</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"public stock const"</span>,		<span class="amxx-symbol">v13</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"static"</span>,			<span class="amxx-symbol">v14</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"static stock"</span>,		<span class="amxx-symbol">v15</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"static stock const"</span>,		<span class="amxx-symbol">v16</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"stock"</span>,			<span class="amxx-symbol">v17</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"stock const"</span>,			<span class="amxx-symbol">v18</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"const"</span>,			<span class="amxx-symbol">v19</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"enum"</span>,			<span class="amxx-symbol">v20</span>)
+	<span class="amxx-function">g循环访问全局符号</span>(<span class="amxx-string">"enum member"</span>,			<span class="amxx-symbol">v21</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local const"</span>,		const		<span class="amxx-symbol">localSymbol</span>=<span class="amxx-number">0</span>,			<span class="amxx-symbol">localSymbol</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local enum"</span>,		enum		<span class="amxx-enumname">localSymbol</span>{},			<span class="amxx-symbol">localSymbol</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local enum member"</span>,	enum 		<span class="amxx-tag">_:</span><span class="amxx-symbol">localSymbol</span>(+=<span class="amxx-number">0</span>){<span class="amxx-symbol">lS_member</span>},	<span class="amxx-symbol">lS_member</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local new"</span>,		new		<span class="amxx-symbol">localSymbol</span>,			<span class="amxx-symbol">localSymbol</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local new const"</span>,	new const	<span class="amxx-symbol">localSymbol</span>,			<span class="amxx-symbol">localSymbol</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local static"</span>,	static		<span class="amxx-symbol">localSymbol</span>,			<span class="amxx-symbol">localSymbol</span>)
+	<span class="amxx-function">l循环访问局部符号</span>(<span class="amxx-string">"local static const"</span>,	static const	<span class="amxx-symbol">localSymbol</span>,			<span class="amxx-symbol">localSymbol</span>)
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]%s不是有效的声明方式"</span>, <span class="amxx-symbol">specifier</span>);
 }</code></p>
 
 <p>测试结果会受很多因素影响,比如服务器性能,插件加载的其他代码等,所以需要多次测试.以下结果仅供参考:</p>
 
-<p><code><span class="amxx-note">[AMXX]访问new常量200万*300次,总共消耗2.2秒
-[AMXX]访问new常量,平均每200万次消耗7.650000毫秒
-[AMXX]访问static常量200万*300次,总共消耗2.2秒
-[AMXX]访问static常量,平均每200万次消耗7.513333毫秒
-[AMXX]访问const常量200万*300次,总共消耗2.1秒
-[AMXX]访问const常量,平均每200万次消耗7.139999毫秒
-[AMXX]访问enum常量200万*300次,总共消耗2.1秒
-[AMXX]访问enum常量,平均每200万次消耗7.099999毫秒</span></code></p>
+<p><code><span class="amxx-note">[AMXX]访问new                     符号10000000*50次,消耗554毫秒
+[AMXX]访问new public              符号10000000*50次,消耗550毫秒
+[AMXX]访问new public stock        符号10000000*50次,消耗546毫秒
+[AMXX]访问new public stock const  符号10000000*50次,消耗549毫秒
+[AMXX]访问new static              符号10000000*50次,消耗548毫秒
+[AMXX]访问new static stock        符号10000000*50次,消耗556毫秒
+[AMXX]访问new static stock const  符号10000000*50次,消耗549毫秒
+[AMXX]访问new stock               符号10000000*50次,消耗555毫秒
+[AMXX]访问new stock const         符号10000000*50次,消耗548毫秒
+[AMXX]访问new const               符号10000000*50次,消耗549毫秒
+[AMXX]访问public                  符号10000000*50次,消耗546毫秒
+[AMXX]访问public stock            符号10000000*50次,消耗547毫秒
+[AMXX]访问public stock const      符号10000000*50次,消耗552毫秒
+[AMXX]访问static                  符号10000000*50次,消耗550毫秒
+[AMXX]访问static stock            符号10000000*50次,消耗553毫秒
+[AMXX]访问static stock const      符号10000000*50次,消耗551毫秒
+[AMXX]访问stock                   符号10000000*50次,消耗550毫秒
+[AMXX]访问stock const             符号10000000*50次,消耗546毫秒
+<span class="amxx-string">[AMXX]访问const                   符号10000000*50次,消耗134毫秒
+[AMXX]访问enum                    符号10000000*50次,消耗132毫秒
+[AMXX]访问enum member             符号10000000*50次,消耗132毫秒
+[AMXX]访问local const             符号10000000*50次,消耗134毫秒
+[AMXX]访问local enum              符号10000000*50次,消耗134毫秒
+[AMXX]访问local enum member       符号10000000*50次,消耗133毫秒</span>
+[AMXX]访问local new               符号10000000*50次,消耗566毫秒
+[AMXX]访问local new const         符号10000000*50次,消耗554毫秒
+[AMXX]访问local static            符号10000000*50次,消耗543毫秒
+[AMXX]访问local static const      符号10000000*50次,消耗548毫秒</span></code></p>
 
 <p>在以下代码中,由于省略了枚举标签和枚举名称,因此<span class="amxx-symbol">Eg1</span>所储存的值默认为<span class="amxx-tag">_:</span>标签.</p>
 
