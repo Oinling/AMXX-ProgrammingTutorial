@@ -1,7 +1,7 @@
 <!DOCTYPE html><html>
 <head>
 <meta charset="utf-8">
-<title>cs1.6 amxx编程 public精研教程 -- 作者:偶萤蛉(Oinling)</title>
+<title>cs1.6 amxx编程 static精研教程 -- 作者:偶萤蛉(Oinling)</title>
 <style>
 	code {
 		white-space: pre;
@@ -57,80 +57,101 @@
 </head>
 <body>
 
-<h1>cs1.6 amxx编程 public精研教程 -- 作者:偶萤蛉(Oinling)</h1>
+<h1>cs1.6 amxx编程 static精研教程 -- 作者:偶萤蛉(Oinling)</h1>
 
 <h1>目录:</h1>
 
 <code>
-1:public的语法格式
-2:public声明函数详解
-2.1:public
-2.2:标签
-2.3:函数名称
-2.4:参数列表
-2.5:函数体
-3:public声明变量详解
+1:static的语法格式
+2:static声明函数详解
+2.1:说明符1
+2.2:static
+2.3:说明符3
+2.4:说明符4
+2.5:标签
+2.6:函数名称
+2.7:参数列表
+2.8:函数体
+3:static声明变量详解
 3.1:说明符1
-3.2:public
+3.2:static
 3.3:说明符3
 3.4:说明符4
 3.5:标签
 3.6:变量名称
 3.7:维度列表
 3.8:初始化表达式
-4:实例-public的基本使用方法
+4:实例-static的基本使用方法
 4.1:声明函数
 4.2:声明变量
 4.3:与其它说明符一起使用
-4.3.1:public const公共常量
-4.3.2:public stock公共备用变量
-4.3.3:new public公共变量
-4.3.4:public stock const公共备用常量
+4.3.1:static const静态常量
+4.3.2:static stock静态备用变量
+4.3.3:new static静态变量
+4.3.4:static stock const静态备用常量
 4.4:总结
 
-1:public的语法格式
+1:static的语法格式
 
-说明符1 public 说明符3 说明符4 标签 函数或变量名称 参数或维度列表 函数体或初始化表达式;
+说明符1 static 说明符3 说明符4 标签 函数或变量名称 参数或维度列表 函数体或初始化表达式;
 
 参考:
 
-/*无*/	public	/*无*/	/*无*/	bool: customFunction	(param1, param2, param3)	{}
+/*无*/	static	stock	/*无*/	bool: customFunction	(param1, param2, param3)	{}
 
-new	public	stock	const	bool: customSymbol	[2][2][2][2]			=true;
+new	static	stock	const	bool: customSymbol	[2][2][2][2]			=true;
 
-public通常用于声明"公共函数".但也可以用于声明"公共变量".
+static可用于声明"静态函数"或"静态变量".
 
-声明变量时,public可以与new stock const说明符同时存在.
+声明函数时,static可以与stock说明符同时存在.
 
-public是2号位的说明符,只有1号位的new能写在public左边.3号位的stock,4号位的const必须写在public的右边.
+声明变量时,static可以与new stock const说明符同时存在.
 
-public说明符有以下特性:
+static是2号位的说明符,只有1号位的new能写在static左边.3号位的stock,4号位的const必须写在static的右边.
 
-1:仅允许在函数体外使用.
+static说明符有以下特性:
 
-2:可声明函数或变量.
+1:可声明函数或变量.
 
-3:被声明的函数或变量可被其它文件,插件,模块访问.
+2:被声明的函数或全局变量,仅当前文件可访问.其它文件,插件,模块都无法访问.
 
-4:被声明的变量不能是数组.在AMXX1.8.2以上版本已移除此特性.
+3:被声明的局部变量,不会被销毁.因此,下次进入代码块,依然能访问变量最后一次储存的值.
 
-相对其它说明符,public的第3与第4个特性是独一无二的.
+相对其它说明符,static的第2与第3个特性是独一无二的.
 
-public的特性拥有仅次于new的优先级.
+static的特性拥有仅次于new的优先级.
 
 同时使用多个说明符时,若与其它说明符的某些特性有冲突,以高优先级的为主.
 
-2:public声明函数详解
+2:static声明函数详解
 
-2.1:public
+2.1:说明符1
 
-public说明符写在函数体外.可用于声明公共函数.
+声明函数时,不允许填写说明符1.因为new作为唯一的1号位说明符,不能用于声明函数.
 
-调用公共函数的代码,可以写在声明函数的代码上面.
+2.2:static
+
+static说明符写在函数体外.可用于声明静态函数.
+
+调用静态函数的代码,可以写在声明函数的代码上面.
 
 不像声明变量的时候,仅允许把调用变量的代码写在声明的代码下面.
 
-2.2:标签
+2.3:说明符3
+
+说明符3是可省略的.
+
+说明符3只能写stock,这是唯一的3号位说明符.
+
+若填写stock,编译器不会警告符号(函数)未被调用.
+
+若符号(函数)未被调用,则编译时,不会将符号(函数)写入amxx文件,不会占用内存空间.
+
+2.4:说明符4
+
+声明函数时,不允许填写说明符4.因为const作为唯一的4号位说明符,不能用于声明函数.
+
+2.5:标签
 
 标签是可省略的.
 
@@ -138,7 +159,7 @@ public说明符写在函数体外.可用于声明公共函数.
 
 若省略标签,则默认该函数返回值使用 _: 标签.
 
-2.3:函数名称
+2.6:函数名称
 
 函数名称是自定义的,命名时应遵从符号命名规则.
 
@@ -154,23 +175,23 @@ public说明符写在函数体外.可用于声明公共函数.
 
 不得与保留词或用户声明的其它符号重名.
 
-2.4:参数列表
+2.7:参数列表
 
 参数列表必须以 ( ) 符号作为出入口.其内可填入多个参数.
 
-参数列表用于声明函数正确运作所需的参数.参数的数量没有限制.但不允许有默认值.
+参数列表用于声明函数正确运作所需的参数.参数的数量没有限制.且允许有默认值.
 
 每个参数需要用 , 符号隔开.
 
-2.5:函数体
+2.8:函数体
 
 函数体可以使用 { } 符号作为出入口.其内可填入多条语句.
 
 若省略 { } 符号,则仅允许填写1条语句.且允许以 ; 符号结尾(检查分号模式下,必须以 ; 符号结尾).
 
-每个public仅允许声明一个函数.因此函数体结尾不允许用 , 符号连续声明函数.
+每个static仅允许声明一个函数.因此函数体结尾不允许用 , 符号连续声明函数.
 
-3:public声明变量详解
+3:static声明变量详解
 
 3.1:说明符1
 
@@ -178,21 +199,21 @@ public说明符写在函数体外.可用于声明公共函数.
 
 说明符1只能写new,这是唯一的1号位说明符.
 
+但函数体内不允许同时使用new static声明变量.它们的特性有冲突.
+
 new的特性是:"在函数体内,可将运行时表达式用作变量的初始化表达式".
 
-而public只能在函数体外使用.
+目前看来,在函数体外同时使用new static与单独使用static并没有什么不同.
 
-目前看来,填写new并没有什么附加作用.
+3.2:static
 
-3.2:public
-
-public说明符仅可写在函数体外.可用于声明公共变量.
+static说明符仅可写在函数体外.可用于声明静态变量.
 
 调用变量的代码,不能写在声明变量的代码上面.
 
 不像声明函数,调用函数的代码,可以写在声明函数的代码上面.
 
-public声明的变量拥有地址,可通过地址查改变量的值.
+static声明的变量拥有地址,可通过地址查改变量的值.
 
 3.3:说明符3
 
@@ -238,8 +259,6 @@ public声明的变量拥有地址,可通过地址查改变量的值.
 
 3.7:维度列表
 
-AMXX1.8.3以下版本中,public说明符不允许声明数组变量.
-
 维度列表是可省略的.
 
 声明每个变量都可在右边填写维度列表(方括号).表示该变量的数据结构.
@@ -264,7 +283,7 @@ A的每个元素都是3维数组,每个3维数组的元素数量都是3,
 
 1维数组的每个元素都是数值,因此每个1维数组都拥有5个数值.
 
-方括号中的数值必须是字面量或无地址的常量,像public声明的有地址变量是不允许填入维度列表的.
+方括号中的数值必须是字面量或无地址的常量,像static声明的有地址变量是不允许填入维度列表的.
 
 方括号中的数值是可省略的.省略时,编译器会根据初始化表达式决定具体数量(这种情况下不允许省略初始化表达式).
 
@@ -286,26 +305,26 @@ A的每个元素都是3维数组,每个3维数组的元素数量都是3,
 
 通常情况下是可以省略 ; 符号的.但在检查分号模式下不允许省略 ; 符号.
 
-4:实例-public的基本使用方法
+4:实例-static的基本使用方法
 
 4.1:声明函数
 
 // 最普通的声明方式(没有参数,没有设定函数返回值.函数默认返回0)
-public function1()
+static function1()
 {
 }
 
-// 声明返回值固定为1的公共函数
-public function2() return 1;
+// 声明返回值固定为1的静态函数
+static function2() return 1;
 
-// 声明带有标签的公共函数
-public Float:function3() return 15.0;
+// 声明带有标签的静态函数
+static Float:function3() return 15.0;
 
-// 声明返回值由参数决定的公共函数
-public function4(p1, p2, p3) return p1 + p2 + p3;
+// 声明返回值由参数决定的静态函数
+static function4(p1, p2, p3) return p1 + p2 + p3;
 
-// 声明返回值为数组的公共函数
-public function5(p1)
+// 声明返回值为数组的静态函数
+static function5(p1)
 {
 	static array[32];
 	switch (p1)
@@ -317,40 +336,31 @@ public function5(p1)
 	return array;
 }
 
-若不是必须让外界访问,则不应该用public声明函数.
+public声明的函数能被外界访问,而static则不同,仅允许当前文件访问.
 
-除非你已考虑到如何处理该函数被外界访问可能造成的后果,
+若希望当前插件的每个引用文件中都能访问自定义函数,则不应该使用任何说明符.
 
-否则,声明函数时应该删除说明符(声明私有函数).
-
-或使用static stock说明符(声明静态或备用函数).
-
-注意:若声明没有说明符的函数时,函数名第1个字符为 @ 符号.那么这个函数也是公共函数.
-
-// @function6是一个公共函数
-@functon6() { }
-
-在amxmodx.inc文件中提供了callfunc_*系列函数,用于调用各个插件的公共函数.
+没有说明符的函数,若函数名第1个字符不是 @ 符号,则是私有函数.仅允许当前插件访问.
 
 4.2:声明变量
 
 // 最普通的声明方式(未填写初始化表达式,因此变量的值为0)
-public gVariable1;
+static gVariable1;
 
 // 连续声明多个变量,并初始化
-public gVariable2 = 2, gVariable3 = 3, gVariable4 = 100;
+static gVariable2 = 2, gVariable3 = 3, gVariable4 = 100;
 
 // 声明带有标签的变量
-public bool:gVariable5 = true, Float:gVariable6 = 222.0;
+static bool:gVariable5 = true, Float:gVariable6 = 222.0;
 
 // 声明拥有维度列表的变量,这是尺寸为4的1维数组,拥有4个值为0的元素(仅AMXX1.8.3以上版本支持)
-public gVariable7[4];
+static gVariable7[4];
 
 // 声明尺寸由初始化表达式决定的1维数组变量,拥有4个元素,因此尺寸为4
-public gVariable8[] = { 1, 2, 3, 4 };
+static gVariable8[] = { 1, 2, 3, 4 };
 
 // 声明尺寸为5的3维数组变量,并设定其内2维数组的尺寸为2,1维数组的尺寸为3
-public Float:gVariable9[5][2][3] =
+static Float:gVariable9[5][2][3] =
 {
 	{
 		{ 1.0, 2.0, 3.0 },
@@ -376,9 +386,9 @@ public Float:gVariable9[5][2][3] =
 
 4.3:与其它说明符一起使用
 
-4.3.1:public const公共常量
+4.3.1:static const静态常量
 
-同时使用public const,则所声明的符号是是有地址的公共常量.
+同时使用static const,则所声明的符号是是有地址的公共常量.
 
 去除const的特性:
 
@@ -391,12 +401,12 @@ public Float:gVariable9[5][2][3] =
 
 "声明的常量不能被运算符更改".
 
-// 声明一个有地址的公共常量,不能被运算符更改.
-public const gPublicConstant = 222;
+// 声明一个有地址的静态常量,不能被运算符更改.
+static const gStaticConstant = 222;
 
-4.3.2:public stock公共备用变量
+4.3.2:static stock静态备用变量
 
-同时使用public stock,则声明的变量是公共备用变量.
+同时使用static stock,则声明的变量是静态备用变量.
 
 去除stock的特性:
 
@@ -407,59 +417,32 @@ public const gPublicConstant = 222;
 "说明符仅允许在函数体外使用",
 "不警告符号未被使用,不将未被使用的符号编译到amxx文件".
 
-// 声明一个公共备用变量,接下来的代码中并未调用它,则不被写入amxx文件,因此不会触发警告:"gPublicStock符号从未被使用"
-public stock gPublicStock = 222;
+// 声明一个静态备用变量,接下来的代码中并未调用它,则不被写入amxx文件,因此不会触发警告:"gStaticStock符号从未被使用"
+static stock gStaticStock = 222;
 
-4.3.3:new public公共变量
+4.3.3:new static静态变量
 
-目前看来,同时使用new public与单独使用public没什么不同.
+目前看来,同时使用new static与单独使用static没什么不同.
 
 new说明符允许将运行时表达式用作变量的初始化表达式.
 
 但在函数体外无法表现出这个特性.AMXX不支持在函数体外运行函数.
 
-因此,目前看来,同时使用new public并没有什么用处.
+因此,目前看来,同时使用new static并没有什么用处.
 
-// 声明一个公共变量,可被其它文件,插件,模块访问
-new static gNewPublic = 222;
+// 声明一个静态变量,仅当前文件可以访问它
+new static gNewStatic = 222;
 
-4.3.4:public stock const公共备用常量
+4.3.4:static stock const静态备用常量
 
-同时使用public stock const,则所声明的符号是公共备用常量.
+同时使用static stock const,则所声明的符号是静态备用常量.
 
 继承stock与const的特性,使被声明的符号不能被运算符更改.并且在未被使用情况下,不会被编译到amxx文件中.
 
-// 声明一个公共备用常量
-public stock const gPublicStockConstant = 222;
-
-在AMXX1.8.2以上版本中,amxconst.inc文件内便声明了这种有地址常量.
-
-虽然编译时该常量的值为0,但插件运行后,由模块更改它的值.
-
-插件访问这个常量得到的是被更改后的值.
-
-// 服务器最大客户端数量,由模块设定这个常量的值.
-public stock const MaxClients;
-
-在amxmodx.inc文件中提供了get_xvar_* set_xvar_*系列函数.
-
-外界可用这些函数,查改公共变量或常量.
+// 声明一个静态备用常量
+static stock const gStaticStockConstant = 222;
 
 4.4:总结
-
-使用public声明函数,是希望该函数由外界调用.
-
-比如用于添加挂钩的register_forward RegisterHam函数,会要求开发者填写公共函数名称.
-
-然后,fakemeta hamsandwich模块会在合适的时机,调用开发者提供的公共函数.
-
-使用public声明变量或常量,本应该是希望由外界进行查改.
-
-然而AMXX设计者提供的查改函数只能通过变量名称进行访问,
-
-无法区分不同插件的同名公共变量.这一点可能是设计者考虑不周.
-
-导致公共变量的应用场景几乎没有.
 
 </code>
 </body>
