@@ -14,32 +14,36 @@
 		color: rgb(0,0,0);
 		font-weight: normal;
 	}
-	.amxx-enumname {
-		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
-		-webkit-background-clip: text;
-		color: transparent;
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
 	}
-	.amxx-ds {
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
 		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
 		-webkit-background-clip: text;
 		color: transparent;
-		font-weight: normal;
-	}
-	.amxx-number {
-		color: rgb(0,0,0);
-		font-weight: normal;
-	}
-	.amxx-comment {
-		color: rgb(63,159,63);
 		font-weight: normal;
 	}
 	.amxx-string {
 		color: rgb(193,61,41);
 		font-weight: normal;
 	}
-	.amxx-directive {
-		color: rgb(111,111,107);
+	.amxx-number {
+		color: rgb(0,0,0);
 		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
 	}
 	.amxx-tag {
 		color: rgb(93,20,10);
@@ -49,407 +53,401 @@
 		color: rgb(153,51,255);
 		font-weight: normal;
 	}
-	.amxx-function {
-		color: rgb(113,31,195);
-		font-weight: bold;
-	}
 </style>
 </head>
 <body>
 
-<h1>cs1.6 amxx编程 static精研教程 -- 作者:偶萤蛉(Oinling)</h1>
+<p><h1>cs1.6 amxx编程 static精研教程 -- 作者:偶萤蛉(Oinling)</h1></p>
 
-<h1>目录:</h1>
+<p><h1>目录:</h1></p>
 
-<code>
-1:static的语法格式
-2:static声明函数详解
-2.1:说明符1
-2.2:static
-2.3:说明符3
-2.4:说明符4
-2.5:标签
-2.6:函数名称
-2.7:参数列表
-2.8:函数体
-3:static声明变量详解
-3.1:说明符1
-3.2:static
-3.3:说明符3
-3.4:说明符4
-3.5:标签
-3.6:变量名称
-3.7:维度列表
-3.8:初始化表达式
-4:实例-static的基本使用方法
-4.1:声明函数
-4.2:声明变量
-4.3:与其它说明符一起使用
-4.3.1:static const静态常量
-4.3.2:static stock静态备用变量
-4.3.3:new static静态变量
-4.3.4:static stock const静态备用常量
-4.4:总结
+<p><a href="#click1">1:static的语法格式</a></p>
+<p><a href="#click2">2:static声明函数详解</a></p>
+<p><a href="#click2.1">2.1:说明符1</a></p>
+<p><a href="#click2.2">2.2:static</a></p>
+<p><a href="#click2.3">2.3:说明符3</a></p>
+<p><a href="#click2.4">2.4:说明符4</a></p>
+<p><a href="#click2.5">2.5:标签</a></p>
+<p><a href="#click2.6">2.6:函数名称</a></p>
+<p><a href="#click2.7">2.7:参数列表</a></p>
+<p><a href="#click2.8">2.8:函数体</a></p>
+<p><a href="#click3">3:static声明变量详解</a></p>
+<p><a href="#click3.1">3.1:说明符1</a></p>
+<p><a href="#click3.2">3.2:static</a></p>
+<p><a href="#click3.3">3.3:说明符3</a></p>
+<p><a href="#click3.4">3.4:说明符4</a></p>
+<p><a href="#click3.5">3.5:标签</a></p>
+<p><a href="#click3.6">3.6:变量名称</a></p>
+<p><a href="#click3.7">3.7:维度列表</a></p>
+<p><a href="#click3.8">3.8:初始化表达式</a></p>
+<p><a href="#click4">4:实例-static的基本使用方法</a></p>
+<p><a href="#click4.1">4.1:声明函数</a></p>
+<p><a href="#click4.2">4.2:声明变量</a></p>
+<p><a href="#click4.3">4.3:与其它说明符一起使用</a></p>
+<p><a href="#click4.3.1">4.3.1:static const静态常量</a></p>
+<p><a href="#click4.3.2">4.3.2:static stock静态备用变量</a></p>
+<p><a href="#click4.3.3">4.3.3:new static静态变量</a></p>
+<p><a href="#click4.3.4">4.3.4:static stock const静态备用常量</a></p>
+<p><a href="#click4.4">4.4:总结</a></p>
 
-1:static的语法格式
+<p><h1 id="click1">1:static的语法格式</h1></p>
 
-说明符1 static 说明符3 说明符4 标签 函数或变量名称 参数或维度列表 函数体或初始化表达式;
+<p><code>说明符1 static 说明符3 说明符4 <span class="amxx-tag">标签</span> <span class="amxx-symbol">函数或变量名称</span> <span class="amxx-number">参数或维度列表</span> 函数体或初始化表达式;</code></p>
 
-参考:
+<p>参考:</p>
 
-/*无*/	static	stock	/*无*/	bool: customFunction	(param1, param2, param3)	{}
+<p><code>/*无*/	static	stock	/*无*/	<span class="amxx-tag">bool:</span> <span class="amxx-function">customFunction</span>	(<span class="amxx-symbol">param1</span>, <span class="amxx-symbol">param2</span>, <span class="amxx-symbol">param3</span>)	{}
 
-new	static	stock	const	bool: customSymbol	[2][2][2][2]			=true;
+new	static	stock	const	<span class="amxx-tag">bool:</span> <span class="amxx-symbol">customSymbol</span>	[<span class="amxx-number">2</span>][<span class="amxx-number">2</span>][<span class="amxx-number">2</span>][<span class="amxx-number">2</span>]			=<span class="amxx-symbol">true</span>;</code></p>
 
-static可用于声明"静态函数"或"静态变量".
+<p><code>static</code>可用于声明"静态函数"或"静态变量".</p>
 
-声明函数时,static可以与stock说明符同时存在.
+<p>声明函数时,<code>static</code>可以与<code>stock</code>说明符同时存在.</p>
 
-声明变量时,static可以与new stock const说明符同时存在.
+<p>声明变量时,<code>static</code>可以与<code>new stock const</code>说明符同时存在.</p>
 
-static是2号位的说明符,只有1号位的new能写在static左边.3号位的stock,4号位的const必须写在static的右边.
+<p><code>static</code>是2号位的说明符,只有1号位的<code>new</code>能写在<code>static</code>左边.3号位的<code>stock</code>,4号位的<code>const</code>必须写在<code>static</code>的右边.</p>
 
-static说明符有以下特性:
+<p><code>static</code>说明符有以下特性:</p>
 
-1:可声明函数或变量.
+<p><h2>1:可声明函数或变量.</h2></p>
 
-2:被声明的函数或全局变量,仅当前文件可访问.其它文件,插件,模块都无法访问.
+<p><h2>2:被声明的函数或全局变量,仅当前文件可访问.其它文件,插件,模块都无法访问.</h2></p>
 
-3:被声明的局部变量,不会被销毁.因此,下次进入代码块,依然能访问变量最后一次储存的值.
+<p><h2>3:被声明的局部变量,不会被销毁.因此,下次进入代码块,依然能访问变量最后一次储存的值.</h2></p>
 
-相对其它说明符,static的第2与第3个特性是独一无二的.
+<p>相对其它说明符,<code>static</code>的第2与第3个特性是独一无二的.</p>
 
-static的特性拥有仅次于new的优先级.
+<p><code>static</code>的特性拥有仅次于<code>new</code>的优先级.</p>
 
-同时使用多个说明符时,若与其它说明符的某些特性有冲突,以高优先级的为主.
+<p>同时使用多个说明符时,若与其它说明符的某些特性有冲突,以高优先级的为主.</p>
 
-2:static声明函数详解
+<p><h1 id="click2">2:static声明函数详解</h1></p>
 
-2.1:说明符1
+<p><h2 id="click2.1">2.1:说明符1</h2></p>
 
-声明函数时,不允许填写说明符1.因为new作为唯一的1号位说明符,不能用于声明函数.
+<p>声明函数时,不允许填写说明符1.因为<code>new</code>作为唯一的1号位说明符,不能用于声明函数.</p>
 
-2.2:static
+<p><h2 id="click2.2">2.2:static</h2></p>
 
-static说明符写在函数体外.可用于声明静态函数.
+<p><code>static</code>说明符写在函数体外.可用于声明静态函数.</p>
 
-调用静态函数的代码,可以写在声明函数的代码上面.
+<p>调用静态函数的代码,可以写在声明函数的代码上面.</p>
 
-不像声明变量的时候,仅允许把调用变量的代码写在声明的代码下面.
+<p>不像声明变量的时候,仅允许把调用变量的代码写在声明的代码下面.</p>
 
-2.3:说明符3
+<p><h2 id="click2.3">2.3:说明符3</h2></p>
 
-说明符3是可省略的.
+<p>说明符3是可省略的.</p>
 
-说明符3只能写stock,这是唯一的3号位说明符.
+<p>说明符3只能写<code>stock</code>,这是唯一的3号位说明符.</p>
 
-若填写stock,编译器不会警告符号(函数)未被调用.
+<p>若填写<code>stock</code>,编译器不会警告符号(函数)未被调用.</p>
 
-若符号(函数)未被调用,则编译时,不会将符号(函数)写入amxx文件,不会占用内存空间.
+<p>若符号(函数)未被调用,则编译时,不会将符号(函数)写入amxx文件,不会占用内存空间.</p>
 
-2.4:说明符4
+<p><h2 id="click2.4">2.4:说明符4</h2></p>
 
-声明函数时,不允许填写说明符4.因为const作为唯一的4号位说明符,不能用于声明函数.
+<p>声明函数时,不允许填写说明符4.因为<code>const</code>作为唯一的4号位说明符,不能用于声明函数.</p>
 
-2.5:标签
+<p><h2 id="click2.5">2.5:标签</h2></p>
 
-标签是可省略的.
+<p>标签是可省略的.</p>
 
-在函数名称左边填写标签.表示该函数的返回值所属类型,或具体用途.
+<p>在函数名称左边填写标签.表示该函数的返回值所属类型,或具体用途.</p>
 
-若省略标签,则默认该函数返回值使用 _: 标签.
+<p>若省略标签,则默认该函数返回值使用 <span class="amxx-tag">_:</span> 标签.</p>
 
-2.6:函数名称
+<p><h2 id="click2.6">2.6:函数名称</h2></p>
 
-函数名称是自定义的,命名时应遵从符号命名规则.
+<p>函数名称是自定义的,命名时应遵从符号命名规则.</p>
 
-在AMXX1.8.3以下版本中,符号名称不得超过31个字符.
+<p>在AMXX1.8.3以下版本中,符号名称不得超过31个字符.</p>
 
-在AMXX1.8.2以上版本中,符号名称不得超过63个字符.
+<p>在AMXX1.8.2以上版本中,符号名称不得超过63个字符.</p>
 
-名称的第一个字符必须是"_ @ a至z A至Z"这四者之一.
+<p>名称的第一个字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z</span>"这四者之一.</p>
 
-名称的剩余字符必须是"_ @ a至z A至Z 0至9"这五者之一.
+<p>名称的剩余字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z 0</span>至<span class="amxx-symbol">9</span>"这五者之一.</p>
 
-通常根据用途,给符号设定相关的英文名.
+<p>通常根据用途,给符号设定相关的英文名.</p>
 
-不得与保留词或用户声明的其它符号重名.
+<p>不得与保留词或用户声明的其它符号重名.</p>
 
-2.7:参数列表
+<p><h2 id="click2.7">2.7:参数列表</h2></p>
 
-参数列表必须以 ( ) 符号作为出入口.其内可填入多个参数.
+<p>参数列表必须以 <code>( )</code> 符号作为出入口.其内可填入多个参数.</p>
 
-参数列表用于声明函数正确运作所需的参数.参数的数量没有限制.且允许有默认值.
+<p>参数列表用于声明函数正确运作所需的参数.参数的数量没有限制.且允许有默认值.</p>
 
-每个参数需要用 , 符号隔开.
+<p>每个参数需要用 <code>,</code> 符号隔开.</p>
 
-2.8:函数体
+<p><h2 id="click2.8">2.8:函数体</h2></p>
 
-函数体可以使用 { } 符号作为出入口.其内可填入多条语句.
+<p>函数体可以使用 <code>{ }</code> 符号作为出入口.其内可填入多条语句.</p>
 
-若省略 { } 符号,则仅允许填写1条语句.且允许以 ; 符号结尾(检查分号模式下,必须以 ; 符号结尾).
+<p>若省略 <code>{ }</code> 符号,则仅允许填写1条语句.且允许以 <code>;</code> 符号结尾(检查分号模式下,必须以 <code>;</code> 符号结尾).</p>
 
-每个static仅允许声明一个函数.因此函数体结尾不允许用 , 符号连续声明函数.
+<p>每个<code>static</code>仅允许声明一个函数.因此函数体结尾不允许用 <code>,</code> 符号连续声明函数.</p>
 
-3:static声明变量详解
+<p><h1 id="click3">3:static声明变量详解</h1></p>
 
-3.1:说明符1
+<p><h2 id="click3.1">3.1:说明符1</h2></p>
 
-说明符1是可省略的.
+<p>说明符1是可省略的.</p>
 
-说明符1只能写new,这是唯一的1号位说明符.
+<p>说明符1只能写<code>new</code>,这是唯一的1号位说明符.</p>
 
-但函数体内不允许同时使用new static声明变量.它们的特性有冲突.
+<p>但函数体内不允许同时使用<code>new static</code>声明变量.它们的特性有冲突.</p>
 
-new的特性是:"在函数体内,可将运行时表达式用作变量的初始化表达式".
+<p><code>new</code>的特性是:"在函数体内,可将运行时表达式用作变量的初始化表达式".</p>
 
-目前看来,在函数体外同时使用new static与单独使用static并没有什么不同.
+<p>目前看来,在函数体外同时使用<code>new static</code>与单独使用<code>static</code>并没有什么不同.</p>
 
-3.2:static
+<p><h2 id="click3.2">3.2:static</h2></p>
 
-static说明符仅可写在函数体外.可用于声明静态变量.
+<p><code>static</code>说明符仅可写在函数体外.可用于声明静态变量.</p>
 
-调用变量的代码,不能写在声明变量的代码上面.
+<p>调用变量的代码,不能写在声明变量的代码上面.</p>
 
-不像声明函数,调用函数的代码,可以写在声明函数的代码上面.
+<p>不像声明函数,调用函数的代码,可以写在声明函数的代码上面.</p>
 
-static声明的变量拥有地址,可通过地址查改变量的值.
+<p><code>static</code>声明的变量拥有地址,可通过地址查改变量的值.</p>
 
-3.3:说明符3
+<p><h2 id="click3.3">3.3:说明符3</h2></p>
 
-说明符3是可省略的.
+<p>说明符3是可省略的.</p>
 
-说明符3只能写stock,这是唯一的3号位说明符.
+<p>说明符3只能写<code>stock</code>,这是唯一的3号位说明符.</p>
 
-若填写stock,编译器不会警告符号(变量)未被调用.
+<p>若填写<code>stock</code>,编译器不会警告符号(变量)未被调用.</p>
 
-若符号(变量)未被调用,则编译时,不会将符号(变量)写入amxx文件,不会占用内存空间.
+<p>若符号(变量)未被调用,则编译时,不会将符号(变量)写入amxx文件,不会占用内存空间.</p>
 
-3.4:说明符4
+<p><h2 id="click3.4">3.4:说明符4</h2></p>
 
-说明符4是可省略的.
+<p>说明符4是可省略的.</p>
 
-说明符4只能写const,这是唯一的4号位说明符.
+<p>说明符4只能写<code>const</code>,这是唯一的4号位说明符.</p>
 
-表示声明的变量只能被初始化表达式设置默认值.接下来的代码中不能被任何运算符更改.
+<p>表示声明的变量只能被初始化表达式设置默认值.接下来的代码中不能被任何运算符更改.</p>
 
-3.5:标签
+<p><h2 id="click3.5">3.5:标签</h2></p>
 
-标签是可省略的.
+<p>标签是可省略的.</p>
 
-声明每个变量都可在左边填写标签.表示该变量的运算方式或用途.
+<p>声明每个变量都可在左边填写标签.表示该变量的运算方式或用途.</p>
 
-若省略标签,则默认该变量使用 _: 标签.
+<p>若省略标签,则默认该变量使用 <span class="amxx-tag">_:</span> 标签.</p>
 
-3.6:变量名称
+<p><h2 id="click3.6">3.6:变量名称</h2></p>
 
-变量名称是自定义的,命名时应遵从符号命名规则.
+<p>变量名称是自定义的,命名时应遵从符号命名规则.</p>
 
-在AMXX1.8.3以下版本中,符号名称不得超过31个字符.
+<p>在AMXX1.8.3以下版本中,符号名称不得超过31个字符.</p>
 
-在AMXX1.8.2以上版本中,符号名称不得超过63个字符.
+<p>在AMXX1.8.2以上版本中,符号名称不得超过63个字符.</p>
 
-名称的第一个字符必须是"_ @ a至z A至Z"这四者之一.
+<p>名称的第一个字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z</span>"这四者之一.</p>
 
-名称的剩余字符必须是"_ @ a至z A至Z 0至9"这五者之一.
+<p>名称的剩余字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z 0</span>至<span class="amxx-symbol">9</span>"这五者之一.</p>
 
-通常根据用途,给符号设定相关的英文名.
+<p>通常根据用途,给符号设定相关的英文名.</p>
 
-不得与保留词或用户声明的其它符号重名.
+<p>不得与保留词或用户声明的其它符号重名.</p>
 
-3.7:维度列表
+<p><h2 id="click3.7">3.7:维度列表</h2></p>
 
-维度列表是可省略的.
+<p>维度列表是可省略的.</p>
 
-声明每个变量都可在右边填写维度列表(方括号).表示该变量的数据结构.
+<p>声明每个变量都可在右边填写维度列表(方括号).表示该变量的数据结构.</p>
 
-若省略维度列表,则默认该变量仅能储存1个数值.
+<p>若省略维度列表,则默认该变量仅能储存1个数值.</p>
 
-在AMXX1.10.0以下版本中,一个变量仅允许0至3对方括号,在AMXX1.9.0以上版本中,一个变量允许有0至4对方括号.
+<p>在AMXX1.10.0以下版本中,一个变量仅允许0至3对方括号,在AMXX1.9.0以上版本中,一个变量允许有0至4对方括号.</p>
 
-拥有维度列表的变量被称为数组.假设变量A拥有4对方括号,那么A是4维数组.
+<p>拥有维度列表的变量被称为数组.假设变量<span class="amxx-symbol">A</span>拥有4对方括号,那么<span class="amxx-symbol">A</span>是4维数组.</p>
 
-4维数组内存放的是3维数组,3维数组内存放的是2维数组,2维数组内存放的是1维数组,1维数组内存放的是数值.
+<p>4维数组内存放的是3维数组,3维数组内存放的是2维数组,2维数组内存放的是1维数组,1维数组内存放的是数值.</p>
 
-数组内存放的对象被称作元素.而方括号内填写的数值则是表示数组的尺寸,或容量,或元素数量.
+<p>数组内存放的对象被称作元素.而方括号内填写的数值则是表示数组的尺寸,或容量,或元素数量.</p>
 
-假设A的维度列表是[2][3][4][5],那么A的元素数量是2,
+<p>假设<span class="amxx-symbol">A</span>的维度列表是<code>[<span class="amxx-number">2</span>][<span class="amxx-number">3</span>][<span class="amxx-number">4</span>][<span class="amxx-number">5</span>]</code>,那么<span class="amxx-symbol">A</span>的元素数量是2,</p>
 
-A的每个元素都是3维数组,每个3维数组的元素数量都是3,
+<p><span class="amxx-symbol">A</span>的每个元素都是3维数组,每个3维数组的元素数量都是3,</p>
 
-3维数组的每个元素都是2维数组,每个2维数组的元素数量都是4,
+<p>3维数组的每个元素都是2维数组,每个2维数组的元素数量都是4,</p>
 
-2维数组的每个元素都是1维数组,每个1维数组的元素数量都是5,
+<p>2维数组的每个元素都是1维数组,每个1维数组的元素数量都是5,</p>
 
-1维数组的每个元素都是数值,因此每个1维数组都拥有5个数值.
+<p>1维数组的每个元素都是数值,因此每个1维数组都拥有5个数值.</p>
 
-方括号中的数值必须是字面量或无地址的常量,像static声明的有地址变量是不允许填入维度列表的.
+<p>方括号中的数值必须是字面量或无地址的常量,像<code>static</code>声明的有地址变量是不允许填入维度列表的.</p>
 
-方括号中的数值是可省略的.省略时,编译器会根据初始化表达式决定具体数量(这种情况下不允许省略初始化表达式).
+<p>方括号中的数值是可省略的.省略时,编译器会根据初始化表达式决定具体数量(这种情况下不允许省略初始化表达式).</p>
 
-3.8:初始化表达式
+<p><h2 id="click3.8">3.8:初始化表达式</h2></p>
 
-初始化表达式是可省略的.
+<p>初始化表达式是可省略的.</p>
 
-声明每个变量都可以在其维度列表右边(若没有就在变量名称右边)填写初始化表达式(以 = 符号开头的赋值表达式).
+<p>声明每个变量都可以在其维度列表右边(若没有就在变量名称右边)填写初始化表达式(以 <code>=</code> 符号开头的赋值表达式).</p>
 
-表示该变量的默认值.
+<p>表示该变量的默认值.</p>
 
-若被声明的变量是数组,应赋值为字符串或数组字面量.否则应赋值为单个数值字面量.
+<p>若被声明的变量是数组,应赋值为字符串或数组字面量.否则应赋值为单个数值字面量.</p>
 
-若省略初始化表达式,则该变量的默认值为0.
+<p>若省略初始化表达式,则该变量的默认值为0.</p>
 
-初始化表达式可以用 , 符号结尾,用于连续声明变量.
+<p>初始化表达式可以用 <code>,</code> 符号结尾,用于连续声明变量.</p>
 
-也可以用 ; 符号结尾,表示停止继续声明变量.
+<p>也可以用 <code>;</code> 符号结尾,表示停止继续声明变量.</p>
 
-通常情况下是可以省略 ; 符号的.但在检查分号模式下不允许省略 ; 符号.
+<p>通常情况下是可以省略 <code>;</code> 符号的.但在检查分号模式下不允许省略 <code>;</code> 符号.</p>
 
-4:实例-static的基本使用方法
+<p><h1 id="click4">4:实例-static的基本使用方法</h1></p>
 
-4.1:声明函数
+<p><h2 id="click4.1">4.1:声明函数</h2></p>
 
-// 最普通的声明方式(没有参数,没有设定函数返回值.函数默认返回0)
-static function1()
+<p><code><span class="amxx-comment">// 最普通的声明方式(没有参数,没有设定函数返回值.函数默认返回0)</span>
+static <span class="amxx-function">function1</span>()
 {
 }
 
-// 声明返回值固定为1的静态函数
-static function2() return 1;
+<span class="amxx-comment">// 声明返回值固定为1的静态函数</span>
+static <span class="amxx-function">function2</span>() return <span class="amxx-number">1</span>;
 
-// 声明带有标签的静态函数
-static Float:function3() return 15.0;
+<span class="amxx-comment">// 声明带有标签的静态函数</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-function">function3</span>() return <span class="amxx-number">15.0</span>;
 
-// 声明返回值由参数决定的静态函数
-static function4(p1, p2, p3) return p1 + p2 + p3;
+<span class="amxx-comment">// 声明返回值由参数决定的静态函数</span>
+static <span class="amxx-function">function4</span>(<span class="amxx-symbol">p1</span>, <span class="amxx-symbol">p2</span>, <span class="amxx-symbol">p3</span>) return <span class="amxx-symbol">p1</span> + <span class="amxx-symbol">p2</span> + <span class="amxx-symbol">p3</span>;
 
-// 声明返回值为数组的静态函数
-static function5(p1)
+<span class="amxx-comment">// 声明返回值为数组的静态函数</span>
+static <span class="amxx-function">function5</span>(<span class="amxx-symbol">p1</span>)
 {
-	static array[32];
-	switch (p1)
+	static <span class="amxx-symbol">array</span>[<span class="amxx-number">32</span>];
+	switch (<span class="amxx-symbol">p1</span>)
 	{
-		case 0:	array = "p1等于0";
-		case 1:	array = "p1等于1";
-		default:array = "p1等于其它";
+		case <span class="amxx-number">0</span>:	<span class="amxx-symbol">array</span> = <span class="amxx-string">"p1等于0"</span>;
+		case <span class="amxx-number">1</span>:	<span class="amxx-symbol">array</span> = <span class="amxx-string">"p1等于1"</span>;
+		default:<span class="amxx-symbol">array</span> = <span class="amxx-string">"p1等于其它"</span>;
 	}
-	return array;
-}
+	return <span class="amxx-symbol">array</span>;
+}</code></p>
 
-public声明的函数能被外界访问,而static则不同,仅允许当前文件访问.
+<p><span class="amxx-symbol">public</span>声明的函数能被外界访问,而<span class="amxx-symbol">static</span>则不同,仅允许当前文件访问.</p>
 
-若希望当前插件的每个引用文件中都能访问自定义函数,则不应该使用任何说明符.
+<p>若希望当前插件的每个引用文件中都能访问自定义函数,则不应该使用任何说明符.</p>
 
-没有说明符的函数,若函数名第1个字符不是 @ 符号,则是私有函数.仅允许当前插件访问.
+<p>没有说明符的函数,若函数名第1个字符不是 <code>@</code> 符号,则是私有函数.仅允许当前插件访问.</p>
 
-4.2:声明变量
+<p><h2 id="click4.2">4.2:声明变量</h2></p>
 
-// 最普通的声明方式(未填写初始化表达式,因此变量的值为0)
-static gVariable1;
+<p><code><span class="amxx-comment">// 最普通的声明方式(未填写初始化表达式,因此变量的值为0)</span>
+static <span class="amxx-symbol">gVariable1</span>;
 
-// 连续声明多个变量,并初始化
-static gVariable2 = 2, gVariable3 = 3, gVariable4 = 100;
+<span class="amxx-comment">// 连续声明多个变量,并初始化</span>
+static <span class="amxx-symbol">gVariable2</span> = <span class="amxx-number">2</span>, <span class="amxx-symbol">gVariable3</span> = <span class="amxx-number">3</span>, <span class="amxx-symbol">gVariable4</span> = <span class="amxx-number">100</span>;
 
-// 声明带有标签的变量
-static bool:gVariable5 = true, Float:gVariable6 = 222.0;
+<span class="amxx-comment">// 声明带有标签的变量</span>
+static <span class="amxx-tag">bool:</span><span class="amxx-symbol">gVariable5</span> = <span class="amxx-symbol">true</span>, <span class="amxx-tag">Float:</span><span class="amxx-symbol">gVariable6</span> = <span class="amxx-number">222.0</span>;
 
-// 声明拥有维度列表的变量,这是尺寸为4的1维数组,拥有4个值为0的元素(仅AMXX1.8.3以上版本支持)
-static gVariable7[4];
+<span class="amxx-comment">// 声明拥有维度列表的变量,这是尺寸为4的1维数组,拥有4个值为0的元素(仅AMXX1.8.3以上版本支持)</span>
+static <span class="amxx-symbol">gVariable7</span>[<span class="amxx-number">4</span>];
 
-// 声明尺寸由初始化表达式决定的1维数组变量,拥有4个元素,因此尺寸为4
-static gVariable8[] = { 1, 2, 3, 4 };
+<span class="amxx-comment">// 声明尺寸由初始化表达式决定的1维数组变量,拥有4个元素,因此尺寸为4</span>
+static <span class="amxx-symbol">gVariable8</span>[] = { <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span>, <span class="amxx-number">4</span> };
 
-// 声明尺寸为5的3维数组变量,并设定其内2维数组的尺寸为2,1维数组的尺寸为3
-static Float:gVariable9[5][2][3] =
+<span class="amxx-comment">// 声明尺寸为5的3维数组变量,并设定其内2维数组的尺寸为2,1维数组的尺寸为3</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-symbol">gVariable9</span>[<span class="amxx-number">5</span>][<span class="amxx-number">2</span>][<span class="amxx-number">3</span>] =
 {
 	{
-		{ 1.0, 2.0, 3.0 },
-		{ 4.0, 5.0, 6.0 },
+		{ <span class="amxx-number">1.0</span>, <span class="amxx-number">2.0</span>, <span class="amxx-number">3.0</span> },
+		{ <span class="amxx-number">4.0</span>, <span class="amxx-number">5.0</span>, <span class="amxx-number">6.0</span> },
 	},
 	{
-		{ 7.0, 8.0, 9.0 },
-		{ 10.0, 11.0, 12.0 },
+		{ <span class="amxx-number">7.0</span>, <span class="amxx-number">8.0</span>, <span class="amxx-number">9.0</span> },
+		{ <span class="amxx-number">10.0</span>, <span class="amxx-number">11.0</span>, <span class="amxx-number">12.0</span> },
 	},
 	{
-		{ 13.0, 14.0, 15.0 },
-		{ 16.0, 17.0, 18.0 },
+		{ <span class="amxx-number">13.0</span>, <span class="amxx-number">14.0</span>, <span class="amxx-number">15.0</span> },
+		{ <span class="amxx-number">16.0</span>, <span class="amxx-number">17.0</span>, <span class="amxx-number">18.0</span> },
 	},
 	{
-		{ 19.0, 20.0, 21.0 },
-		{ 22.0, 23.0, 24.0 },
+		{ <span class="amxx-number">19.0</span>, <span class="amxx-number">20.0</span>, <span class="amxx-number">21.0</span> },
+		{ <span class="amxx-number">22.0</span>, <span class="amxx-number">23.0</span>, <span class="amxx-number">24.0</span> },
 	},
 	{
-		{ 25.0, 26.0, 27.0 },
-		{ 28.0, 29.0, 30.0 },
+		{ <span class="amxx-number">25.0</span>, <span class="amxx-number">26.0</span>, <span class="amxx-number">27.0</span> },
+		{ <span class="amxx-number">28.0</span>, <span class="amxx-number">29.0</span>, <span class="amxx-number">30.0</span> },
 	}
-};
+};</code></p>
 
-4.3:与其它说明符一起使用
+<p><h2 id="click4.3">4.3:与其它说明符一起使用</h2></p>
 
-4.3.1:static const静态常量
+<p><h3 id="click4.3.1">4.3.1:static const静态常量</h3></p>
 
-同时使用static const,则所声明的符号是是有地址的公共常量.
+<p>同时使用<code>static const</code>,则所声明的符号是是有地址的公共常量.</p>
 
-去除const的特性:
+<p>去除<code>const</code>的特性:</p>
 
-"不能连续声明常量",
-"声明的常量不能是数组",
-"声明的常量必须初始化",
-"声明的常量不能用作引用参数".
+<p>"不能连续声明常量",</p>
+<p>"声明的常量不能是数组",</p>
+<p>"声明的常量必须初始化",</p>
+<p>"声明的常量不能用作引用参数".</p>
 
-保留const的特性:
+<p>保留<code>const</code>的特性:</p>
 
-"声明的常量不能被运算符更改".
+<p>"声明的常量不能被运算符更改".</p>
 
-// 声明一个有地址的静态常量,不能被运算符更改.
-static const gStaticConstant = 222;
+<p><code><span class="amxx-comment">// 声明一个有地址的静态常量,不能被运算符更改.</span>
+static const <span class="amxx-symbol">gStaticConstant</span> = <span class="amxx-number">222</span>;</code></p>
 
-4.3.2:static stock静态备用变量
+<p><h3 id="click4.3.2">4.3.2:static stock静态备用变量</h3></p>
 
-同时使用static stock,则声明的变量是静态备用变量.
+<p>同时使用<code>static stock</code>,则声明的变量是静态备用变量.</p>
 
-去除stock的特性:
+<p>去除<code>stock</code>的特性:</p>
 
-未知.
+<p>未知.</p>
 
-保留stock的特性:
+<p>保留<code>stock</code>的特性:</p>
 
-"说明符仅允许在函数体外使用",
-"不警告符号未被使用,不将未被使用的符号编译到amxx文件".
+<p>"说明符仅允许在函数体外使用",</p>
+<p>"不警告符号未被使用,不将未被使用的符号编译到amxx文件".</p>
 
-// 声明一个静态备用变量,接下来的代码中并未调用它,则不被写入amxx文件,因此不会触发警告:"gStaticStock符号从未被使用"
-static stock gStaticStock = 222;
+<p><code><span class="amxx-comment">// 声明一个静态备用变量,接下来的代码中并未调用它,则不被写入amxx文件,因此不会触发警告:"gStaticStock符号从未被使用"</span>
+static stock <span class="amxx-symbol">gStaticStock</span> = <span class="amxx-number">222</span>;</code></p>
 
-4.3.3:new static静态变量
+<p><h3 id="click4.3.3">4.3.3:new static静态变量</h3></p>
 
-目前看来,同时使用new static与单独使用static没什么不同.
+<p>目前看来,同时使用<code>new static</code>与单独使用<code>static</code>没什么不同.</p>
 
-new说明符允许将运行时表达式用作变量的初始化表达式.
+<p><code>new</code>说明符允许将运行时表达式用作变量的初始化表达式.</p>
 
-但在函数体外无法表现出这个特性.AMXX不支持在函数体外运行函数.
+<p>但在函数体外无法表现出这个特性.AMXX不支持在函数体外运行函数.</p>
 
-因此,目前看来,同时使用new static并没有什么用处.
+<p>因此,目前看来,同时使用<code>new static</code>并没有什么用处.</p>
 
-// 声明一个静态变量,仅当前文件可以访问它
-new static gNewStatic = 222;
+<p><code><span class="amxx-comment">// 声明一个静态变量,仅当前文件可以访问它</span>
+new static <span class="amxx-symbol">gNewStatic</span> = <span class="amxx-number">222</span>;</code></p>
 
-4.3.4:static stock const静态备用常量
+<p><h3 id="click4.3.4">4.3.4:static stock const静态备用常量</h3></p>
 
-同时使用static stock const,则所声明的符号是静态备用常量.
+<p>同时使用<code>static stock const</code>,则所声明的符号是静态备用常量.</p>
 
-继承stock与const的特性,使被声明的符号不能被运算符更改.并且在未被使用情况下,不会被编译到amxx文件中.
+<p>继承<code>stock</code>与<code>const</code>的特性,使被声明的符号不能被运算符更改.并且在未被使用情况下,不会被编译到amxx文件中.</p>
 
-// 声明一个静态备用常量
-static stock const gStaticStockConstant = 222;
+<p><code><span class="amxx-comment">// 声明一个静态备用常量</span>
+static stock const <span class="amxx-symbol">gStaticStockConstant</span> = <span class="amxx-number">222</span>;</code></p>
 
-4.4:总结
+<p><h2 id="click4.4">4.4:总结</h2></p>
 
-static使函数和全局变量仅在当前文件中可用.
+<p><code>static</code>使函数和全局变量仅在当前文件中可用.</p>
 
-static使局部变量表现出全局变量的效果,但仅在特定代码块内可用.
+<p><code>static</code>使局部变量表现出全局变量的效果,但仅在特定代码块内可用.</p>
 
-总而言之,static用于限制自定义符号的可见范围.并令该符号在程序运行期间一直存在.
+<p>总而言之,<code>static</code>用于限制自定义符号的可见范围.</p>
 
-</code>
 </body>
 </html>
