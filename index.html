@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
-  <meta charset="utf-8">
-  <title>cs1.6 amxx编程 教程 -- 作者:偶萤蛉(Oinling)</title>
-  <style>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
 	code {
 		white-space: pre;
 		color: rgb(0,0,255);
@@ -11,27 +10,88 @@
 		font-family: Consolas, monospace;
 		font-weight: bold;
 	}
-  </style>
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
 </head>
 <body>
 
-<h1>cs1.6 amxx编程 教程 -- 作者:偶萤蛉(Oinling)</h1>
+<p><h1>cs1.6 amxx编程 教程 -- 作者:偶萤蛉(Oinling)</h1></p>
 
-<p>点击访问:</p>
+<p><h1>点击访问:</h1></p>
 
-<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B.html">入门教程</a>
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B.html">入门教程</a></code></p>
 
-<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B.html">基础教程</a>
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B.html">基础教程</a></code></p>
 
-<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20new%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">new说明符精研教程</a>
+<p><h1>保留词-说明符:</h1></p>
 
-<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20static%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">static说明符精研教程</a>
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20new%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">new声明变量</a></code></p>
 
-<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20public%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">public说明符精研教程</a>
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20native%E4%B8%B4%E6%97%B6%E6%95%99%E7%A8%8B.html">native声明函数(临时教程)</a></code></p>
 
-<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20for%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">for循环精研教程</a>
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20forward%E4%B8%B4%E6%97%B6%E6%95%99%E7%A8%8B.html">forward声明函数(临时教程)</a></code></p>
 
-<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20enum%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">enum枚举精研教程</a></code></p>
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20static%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">static声明符号</a></code></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20public%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">public声明符号</a></code></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20stock%E4%B8%B4%E6%97%B6%E6%95%99%E7%A8%8B.html">stock声明符号(临时教程)</a></code></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20const%E4%B8%B4%E6%97%B6%E6%95%99%E7%A8%8B.html">const声明无地址常量(临时教程)</a></code></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20enum%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">enum声明无地址常量</a></code></p>
+
+<p><h1>保留词-流控制语句:</h1></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20for%E7%B2%BE%E7%A0%94%E6%95%99%E7%A8%8B.html">return返回(临时教程)</a></code></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20return%E4%B8%B4%E6%97%B6%E6%95%99%E7%A8%8B.html">for循环</a></code></p>
+
+<p><h1>保留词-运算关键词:</h1></p>
+
+<p><code><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/cs1.6%20amxx%E7%BC%96%E7%A8%8B%20sizeof%E4%B8%B4%E6%97%B6%E6%95%99%E7%A8%8B.html">sizeof获取变量尺寸(临时教程)</a></code></p>
 
 </body>
 </html>
