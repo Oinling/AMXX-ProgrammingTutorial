@@ -1,0 +1,106 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 tagof临时教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<code>cs1.6 amxx编程 tagof临时教程 -- 作者:偶萤蛉(Oinling)
+
+tagof用于获取符号的标签索引.
+
+在AMXX1.8.3以下版本中,tagof有bug,某些情况下获取的索引可能是错误的.甚至可能无法编译成功.
+
+在不同版本的AMXX中,tagof获取的索引号是不同的.
+
+比如,在AMXX1.9.0版本里,tagof获取的索引号是从整数能表达的最小值开始的.即-2147483648.
+
+这是使用例子:
+
+#include amxmodx
+public plugin_init()
+{
+	register_plugin("测试", "1.0.0", "偶萤蛉(Oinling)");
+	server_print("[AMXX]_:的索引是:%d", tagof(_:));
+	server_print("[AMXX]bool:的索引是:%d", tagof(bool:));
+	server_print("[AMXX]any:的索引是:%d", tagof(any:));
+	server_print("[AMXX]Float:的索引是:%d", tagof(Float:));
+	server_print("[AMXX]Array:的索引是:%d", tagof(Array:));
+	new bool:var1, any:var2, Float:var3, Array:var4;
+	server_print("[AMXX]plugin_init的标签索引是:%d (等于_:)", tagof(plugin_init));
+	server_print("[AMXX]var1的标签索引是:%d (等于bool:)", tagof(var1));
+	server_print("[AMXX]var2的标签索引是:%d (等于any:)", tagof(var2));
+	server_print("[AMXX]var3的标签索引是:%d (等于Float:)", tagof(var3));
+	server_print("[AMXX]var4的标签索引是:%d (等于Array:)", tagof(var4));
+}
+
+这是AMXX1.9.0版本下的打印结果:
+[AMXX]_:的索引是:-2147483648
+[AMXX]bool:的索引是:-2147483647
+[AMXX]any:的索引是:-2147483646
+[AMXX]Float:的索引是:-1073741821
+[AMXX]Array:的索引是:-1073741791
+[AMXX]plugin_init的标签索引是:-2147483648 (等于_:)
+[AMXX]var1的标签索引是:-2147483647 (等于bool:)
+[AMXX]var2的标签索引是:-2147483646 (等于any:)
+[AMXX]var3的标签索引是:-1073741821 (等于Float:)
+[AMXX]var4的标签索引是:-1073741791 (等于Array:)
+
+tagof的返回值是编译时常量(无地址常量).
+
+</code>
+
+</body>
+</html>
