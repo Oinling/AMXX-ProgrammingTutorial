@@ -1,0 +1,79 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 native临时教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<code>cs1.6 amxx编程 native临时教程 -- 作者:偶萤蛉(Oinling)
+
+native说明符可用于声明本机函数.但不允许有函数体.
+
+本机函数是一种接口函数,通常由一个主插件负责设计函数.由各个子插件决定何时执行函数.
+
+单纯用native说明符声明的函数并没有什么作用.
+
+想要发挥作用,必须用amxmodx.inc内的register_native函数创建本机函数,并设计其函数体.
+
+若某些插件引用了本机函数的声明,或者直接声明本机函数.
+
+那么,可以在任意函数体内调用这个本机函数.
+
+native的语法格式:
+
+/*无*/ native /*无*/ /*无*/ 标签 函数名称 参数列表;</code>
+
+</body>
+</html>

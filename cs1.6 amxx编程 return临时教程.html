@@ -1,0 +1,97 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 return临时教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<code>cs1.6 amxx编程 return临时教程 -- 作者:偶萤蛉(Oinling)
+
+正常情况下,函数体的 } 符号被运行时才会退出函数,回到函数被调用的那一行位置.
+
+但如果函数体内有return保留词,return被运行后将立即退出函数,其下方的代码统统不会被运行.
+
+return还能设置函数的计算结果,函数的计算结果被称为返回值.返回值必须与函数拥有相同的标签.否则会触发警告或报错:标签不匹配.
+
+函数体内,可以在不同if else语句的代码块中使用return保留词,表示可以在各种不同的条件下退出函数,并设定不同的返回值.
+
+函数体内有多个return时,只要其中一个设定了返回值,那么其它的return也必须设定返回值.并且函数体的 } 符号上一行也必须用return设定返回值.
+
+static Function()
+{
+	// 如果在0之4之中的随机数为4,那么立即退出函数,不执行下方的server_print函数
+	if (random(5) == 4) return;
+	server_print("[AMXX]测试.");
+}
+
+static Function()
+{
+	if (random(5) == 4) return 5;
+	
+	// 由于上面的if分支中,用return设定了返回值,因此函数体结尾也必须用return设定返回值
+	return 44444;
+}
+
+static Float:Function()
+{
+	// 由于Function函数有Float:标签,因此返回值也必须拥有相同的标签,浮点数字面量默认带有Float:标签
+	if (random(5) == 4) return 5.0;
+	const Float:constant = 44444.0;
+	// 若使用自定义符号作为返回值,那么自定义符号也要拥有Float:标签
+	return constant;
+}</code>
+
+</body>
+</html>
