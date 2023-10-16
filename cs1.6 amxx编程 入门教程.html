@@ -1463,64 +1463,112 @@ else
 <span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]我猜你的年龄大于或等于18岁"</span>);
 }</code></p>
 
-<p><code>return</code>用于设置函数计算结果,并退出函数,返回到调用函数的位置.其完整格式是:</p>
+<p><code>return</code>用于设置函数等于什么数值,并退出函数,返回到调用函数的位置.其完整格式是:</p>
 
-<code>return <span class="amxx-symbol">返回值</span>	<span class="amxx-comment">// 常量,变量,数组,都是可以的.</span></code>
+<code>return <span class="amxx-symbol">返回值</span>;	<span class="amxx-comment">// 返回值可以是字面量,常量,变量,数组,函数,等等.</span></code>
 
 <p>返回值必须与函数拥有相同的标签,否则会触发编译器警告.</p>
 
 <p>返回值不是必须填写的.不填写等于将函数计算结果设为无标签的0,不会触发警告.</p>
 
-<p>函数体内可用有多层代码块,每个代码块内都可以使用<code>return</code>退出函数,一旦退出,<code>return</code>下一行的代码就不可能执行,所以,不要把同一层的代码写在<code>return</code>下方.</p>
+<p>函数体内可用有多层代码块,每个代码块内都允许使用<code>return</code>退出函数,一旦退出,<code>return</code>下面的代码就不可能执行,所以,不要把想执行的代码写在<code>return</code>下方.</p>
 
-<p>函数体内,如果某个代码块中的<code>return</code>带有返回值,则其它代码块的<code>return</code>也必须填写返回值.</p>
+<p>函数体内,如果某个<code>return</code>带有返回值,则其它<code>return</code>也必须填写返回值.并且函数结尾也必须使用<code>return</code>退出函数.</p>
 
-<p>到游戏中测验所学知识,猜猜游戏中会显示哪些文字:</p>
+<p>这是return的使用例子,在不同情况下,设定函数等于不同的数值,因此游戏中,同一个函数被打印出来的结果会不同:</p>
 
 <p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
-public <span class="amxx-function">plugin_init</span>()
+<span class="amxx-comment">// 用static定义一个函数Function,根据param参数的不同数值,Function函数会等于不同的数值</span>
+static <span class="amxx-function">Function</span>(<span class="amxx-symbol">param</span>)
 {
-<span class="amxx-function">	register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
-<span class="amxx-comment">	// 将各种数值作为参数,将函数返回值发送到控制台:"你几岁了? 我猜你年龄小于xx岁"</span>
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(-<span class="amxx-number">99</span>));
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">4</span>));
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">9</span>));
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">14</span>));
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">19</span>));
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]How old are you ? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-number">24</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]Function函数的param参数被外界设定为%d"</span>, <span class="amxx-symbol">param</span>);
+	if (<span class="amxx-symbol">param</span> < <span class="amxx-number">0</span>)
+	{
+		<span class="amxx-comment">// 若param小于0,那么设定Function函数等于-1,并退出Function函数,回到外界</span>
+		return -<span class="amxx-number">1</span>;
+	}
+	if (<span class="amxx-number">0</span> <= <span class="amxx-symbol">param</span> && <span class="amxx-symbol">param</span> <= <span class="amxx-number">10</span>)
+	{
+		<span class="amxx-comment">// 若param等于0至10之中的数值,那么设定Function函数等于10,并退出Function函数,回到外界</span>
+		return <span class="amxx-number">10</span>;
+	}
+	<span class="amxx-comment">// 若param不满足上面两个条件,那么设定Function函数等于param+5,并退出Function函数,回到外界</span>
+	return <span class="amxx-symbol">param</span> + <span class="amxx-number">5</span>;
 }
-public <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-symbol">age</span>)
+<span class="amxx-comment">// 用static定义一个函数HowOldAreYou,根据age参数的不同数值,HowOldAreYou函数会等于不同的数值</span>
+static <span class="amxx-function">HowOldAreYou</span>(<span class="amxx-symbol">age</span>)
 {
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]HowOldAreYou函数的age参数被外界设定为%d"</span>, <span class="amxx-symbol">age</span>);
 	new <span class="amxx-symbol">result</span>[<span class="amxx-number">64</span>];
 	if (<span class="amxx-symbol">age</span> < <span class="amxx-number">0</span>)
 	{
 		<span class="amxx-symbol">result</span> = <span class="amxx-string">"你的年龄是负数?"</span>;
-		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]满足特殊条件,提前退出函数.age参数=%d"</span>, <span class="amxx-symbol">age</span>);
-		return <span class="amxx-symbol">result</span>; <span class="amxx-comment">// 满足某些特殊条件则提前退出函数,不要再执行下方代码.返回到被plugin_init函数调用的位置</span>
+		<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]满足age < 0条件,提前退出函数."</span>);
+		return <span class="amxx-symbol">result</span>; <span class="amxx-comment">// 满足age < 0的条件,退出HowOldAreYou函数.回到外界</span>
 	}
 	if (<span class="amxx-symbol">age</span> < <span class="amxx-number">5</span>)
 	{
-<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 5 years old."</span>;
+		<span class="amxx-symbol">result</span> = <span class="amxx-string">"我猜你低于5岁."</span>;
 	}
 	else if (<span class="amxx-symbol">age</span> < <span class="amxx-number">10</span>)
 	{
-<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 10 years old."</span>;
+		<span class="amxx-symbol">result</span> = <span class="amxx-string">"我猜你低于10岁."</span>;
 	}
 	else if (<span class="amxx-symbol">age</span> < <span class="amxx-number">15</span>)
 	{
-<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 15 years old."</span>;
+		<span class="amxx-symbol">result</span> = <span class="amxx-string">"我猜你低于15岁."</span>;
 	}
 	else if (<span class="amxx-symbol">age</span> < <span class="amxx-number">20</span>)
 	{
-<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're under 20 years old."</span>;
+		<span class="amxx-symbol">result</span> = <span class="amxx-string">"我猜你低于20岁."</span>;
 	}
 	else
 	{
-<span class="amxx-symbol">		result</span> = <span class="amxx-string">"I guess you're over 19 years old."</span>;
+		<span class="amxx-symbol">result</span> = <span class="amxx-string">"我猜你低于19岁."</span>;
 	}
-<span class="amxx-function">	server_print</span>(<span class="amxx-string">"[AMXX]按正常流程退出函数.age参数=%d"</span>, <span class="amxx-symbol">age</span>);
-	return <span class="amxx-symbol">result</span>; <span class="amxx-comment">// 若年龄非负数,都会在这里退出函数,返回到被plugin_init函数调用的位置</span>
+	<span class="amxx-comment">// 若不满足age < 0的条件,不论age等于什么,都在这里退出HowOldAreYou函数,回到外界</span>
+	return <span class="amxx-symbol">result</span>;
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名"</span>, <span class="amxx-string">"1.0.0.0"</span>, <span class="amxx-string">"作者"</span>);
+	<span class="amxx-comment">// 将Function的param参数设定为各种不同的数值,打印Function函数的返回值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]Function(-999)的返回值等于: %d"</span>, <span class="amxx-function">Function</span>(.<span class="amxx-symbol">param</span> = -<span class="amxx-number">999</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]Function(0)的返回值等于: %d"</span>, <span class="amxx-function">Function</span>(.<span class="amxx-symbol">param</span> = <span class="amxx-number">0</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]Function(9)的返回值等于: %d"</span>, <span class="amxx-function">Function</span>(.<span class="amxx-symbol">param</span> = <span class="amxx-number">9</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]Function(20)的返回值等于: %d"</span>, <span class="amxx-function">Function</span>(.<span class="amxx-symbol">param</span> = <span class="amxx-number">20</span>));
+	<span class="amxx-comment">// 将HowOldAreYou的age参数设定为各种不同的数值,打印HowOldAreYou函数的返回值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]怎么老是你? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(.<span class="amxx-symbol">age</span> = -<span class="amxx-number">99</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]怎么老是你? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(.<span class="amxx-symbol">age</span> = <span class="amxx-number">4</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]怎么老是你? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(.<span class="amxx-symbol">age</span> = <span class="amxx-number">9</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]怎么老是你? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(.<span class="amxx-symbol">age</span> = <span class="amxx-number">14</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]怎么老是你? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(.<span class="amxx-symbol">age</span> = <span class="amxx-number">19</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]怎么老是你? %s"</span>, <span class="amxx-function">HowOldAreYou</span>(.<span class="amxx-symbol">age</span> = <span class="amxx-number">24</span>));
 }</code></p>
+
+<p>以上代码的打印结果会是这样:</p>
+
+<p><code><span class="amxx-note">[AMXX]Function函数的param参数被外界设定为-999
+[AMXX]Function(-999)的返回值等于: -1
+[AMXX]Function函数的param参数被外界设定为0
+[AMXX]Function(0)的返回值等于: 10
+[AMXX]Function函数的param参数被外界设定为9
+[AMXX]Function(9)的返回值等于: 10
+[AMXX]Function函数的param参数被外界设定为20
+[AMXX]Function(20)的返回值等于: 25
+[AMXX]HowOldAreYou函数的age参数被外界设定为-99
+[AMXX]满足age < 0条件,提前退出函数.
+[AMXX]怎么老是你? 你的年龄是负数?
+[AMXX]HowOldAreYou函数的age参数被外界设定为4
+[AMXX]怎么老是你? 我猜你低于5岁.
+[AMXX]HowOldAreYou函数的age参数被外界设定为9
+[AMXX]怎么老是你? 我猜你低于10岁.
+[AMXX]HowOldAreYou函数的age参数被外界设定为14
+[AMXX]怎么老是你? 我猜你低于15岁.
+[AMXX]HowOldAreYou函数的age参数被外界设定为19
+[AMXX]怎么老是你? 我猜你低于20岁.
+[AMXX]HowOldAreYou函数的age参数被外界设定为24
+[AMXX]怎么老是你? 我猜你低于19岁.</span></code></p>
 
 <p><h2 id="click4.17">4.17:符号作用域,全局变量(Global Variable),全局常量(Global Constant)</h2></p>
 
