@@ -79,40 +79,40 @@ state语句用于切换某些同名函数的状态.
 // 定义正常状态下的func1函数
 static func1() <> return 3;
 // 定义Func1:State1状态下的func1函数
-static func1() <Func1:State1> return 2;
+static func1() <<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State1</span>> return 2;
 // 定义Func1:State2状态下的func1函数
-static func1() <Func1:State2> return 1;
+static func1() <<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State2</span>> return 1;
 // 定义正常状态下的func2函数
 static func2() <> return 6;
 // 定义State1状态下的func2函数
-static func2() <State1> return 5;
+static func2() <<span class="amxx-symbol">State1</span>> return 5;
 // 定义State2状态下的func2函数
-static func2() <State2> return 4;
+static func2() <<span class="amxx-symbol">State2</span>> return 4;
 public plugin_init()
 {
 	register_plugin("测试", "1.0.0", "偶萤蛉(Oinling)");
 	
 	server_print("[AMXX]func1<> = %d", func1());
 	state Func1:State1;
-	server_print("[AMXX]func1<Func1:State1> = %d", func1());
+	server_print("[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State1</span>> = %d", func1());
 	state Func1:State2;
-	server_print("[AMXX]func1<Func1:State2> = %d", func1());
+	server_print("[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State2</span>> = %d", func1());
 	
 	server_print("[AMXX]func2<> = %d", func2());
 	state State1;
-	server_print("[AMXX]func2<State1> = %d", func2());
+	server_print("[AMXX]func2<<span class="amxx-symbol">State1</span>> = %d", func2());
 	state State2;
-	server_print("[AMXX]func2<State2> = %d", func2());
+	server_print("[AMXX]func2<<span class="amxx-symbol">State2</span>> = %d", func2());
 }
 
 打印结果:
 
 [AMXX]func1<> = 3
-[AMXX]func1<Func1:State1> = 2
-[AMXX]func1<Func1:State2> = 1
+[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State1</span>> = 2
+[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State2</span>> = 1
 [AMXX]func2<> = 6
-[AMXX]func2<State1> = 5
-[AMXX]func2<State> = 4
+[AMXX]func2<<span class="amxx-symbol">State1</span>> = 5
+[AMXX]func2<<span class="amxx-symbol">State</span>> = 4
 
 最后一次切换的状态将会一直保持下来.我找不到如何将函数切换回<>状态.</code></p>
 
