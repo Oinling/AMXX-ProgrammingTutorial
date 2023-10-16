@@ -1,0 +1,77 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 exit临时教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><code>cs1.6 amxx编程 exit临时教程 -- 作者:偶萤蛉(Oinling)
+
+在函数体内可以调用exit符号.
+
+在debug模式下,exit被执行时会抛出一个报错.
+
+在正常模式下,exit被执行时会关闭游戏.
+
+如下所示,游戏将在载入地图之后被关闭.
+
+#include amxmodx
+public plugin_init()
+{
+	exit;
+}</code></p>
+
+</body>
+</html>

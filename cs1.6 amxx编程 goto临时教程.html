@@ -1,0 +1,124 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 goto临时教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><code>cs1.6 amxx编程 goto临时教程 -- 作者:偶萤蛉(Oinling)
+
+goto跳转语句的基本格式:
+
+goto 标记;
+
+在函数体内,goto语句一旦被执行,便可跳转至标记位置,然后向下继续执行代码.
+
+标记是自定义符号的一种,定义时必须以 : 符号结尾.标记的命名必须遵从符号命名规则.
+
+在函数体内,定义标记与定义变量常量不同,定义标记不需要说明符.像这样:
+
+public plugin_init()
+{
+	// 定义一个标记,名为Label_233
+	Label_233:
+}
+
+在函数体内的任何位置都可以使用goto语句跳转到标记位置,像这样:
+
+#include amxmodx
+public plugin_init()
+{
+	register_plugin("用于测试的插件", "1.0.0.0", "偶萤蛉(Oinling)");
+	
+	server_print("[AMXX]去5号标记.");
+	goto Label_05;	// 跳转至Label_05位置
+	
+	Label_01:	// 定义一个名为Label_01的标记
+	
+	server_print("[AMXX]1号标记下方的代码被执行了.接下来去4号标记.");
+	goto Label_04;	// 跳转至Label_04位置
+	
+	Label_02:	// 定义一个名为Label_02的标记
+	
+	server_print("[AMXX]2号标记下方的代码被执行了.接下来去6号标记.");
+	goto Label_06;	// 跳转至Label_06位置
+	
+	Label_03:	// 定义一个名为Label_03的标记
+	
+	server_print("[AMXX]3号标记下方的代码被执行了.接下来去7号标记.");
+	goto Label_07;	// 跳转至Label_07位置
+	
+	Label_04:	// 定义一个名为Label_04的标记
+	
+	server_print("[AMXX]4号标记下方的代码被执行了.接下来去2号标记.");
+	goto Label_02;	// 跳转至Label_02位置
+	
+	Label_05:	// 定义一个名为Label_05的标记
+	
+	server_print("[AMXX]5号标记下方的代码被执行了.接下来去1号标记.");
+	goto Label_01;	// 跳转至Label_01位置
+	
+	Label_06:	// 定义一个名为Label_06的标记
+	
+	server_print("[AMXX]6号标记下方的代码被执行了.接下来去3号标记.");
+	goto Label_03;	// 跳转至Label_03位置
+	
+	Label_07:	// 定义一个名为Label_07的标记
+	
+	server_print("[AMXX]7号标记下方的代码被执行了.接下来退出函数.");
+}</code></p>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程 assert临时教程 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-di {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><code>cs1.6 amxx编程 assert临时教程 -- 作者:偶萤蛉(Oinling)
+
+assert的语法格式:
+
+assert(条件表达式);
+
+assert断言语句用于判断一个条件是否为真,若为真则继续向下运行代码.
+
+若条件表达式为假,有两种情况.
+
+在debug模式下,会抛出一个错误报告.停止向下运行代码.
+
+在正常模式下,会关闭游戏程序.
+
+以下例子,将使每次载入地图之后都有极大可能关闭游戏:
+
+#include amxmodx
+public plugin_init()
+{
+	// 在0与1之中取随机数,若random函数返回值为0,则关闭游戏程序.否则无事发生.
+	assert(random(2));
+}</code></p>
+
+</body>
+</html>
