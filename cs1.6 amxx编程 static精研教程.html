@@ -70,7 +70,8 @@
 <p><a href="#click2.5">2.5:标签</a></p>
 <p><a href="#click2.6">2.6:函数名称</a></p>
 <p><a href="#click2.7">2.7:参数列表</a></p>
-<p><a href="#click2.8">2.8:函数体</a></p>
+<p><a href="#click2.8">2.8:状态标记</a></p>
+<p><a href="#click2.9">2.9:函数体</a></p>
 <p><a href="#click3">3:static声明变量详解</a></p>
 <p><a href="#click3.1">3.1:说明符1</a></p>
 <p><a href="#click3.2">3.2:static</a></p>
@@ -92,13 +93,23 @@
 
 <p><h1 id="click1">1:static的语法格式</h1></p>
 
-<p><code>说明符1 static 说明符3 说明符4 <span class="amxx-tag">标签</span> <span class="amxx-symbol">函数或变量名称</span> <span class="amxx-number">参数或维度列表</span> 函数体或初始化表达式;</code></p>
+<code>static</code>声明函数的语法格式:
+
+<p><code>说明符1 static 说明符3 说明符4 <span class="amxx-tag">标签</span> <span class="amxx-symbol">函数名称</span> <span class="amxx-note">参数列表</span> <span class="amxx-symbol">状态标记</span> 函数体;</code></p>
 
 <p>参考:</p>
 
-<p><code>/*无*/	static	stock	/*无*/	<span class="amxx-tag">bool:</span> <span class="amxx-function">customFunction</span>	(<span class="amxx-symbol">param1</span>, <span class="amxx-symbol">param2</span>, <span class="amxx-symbol">param3</span>)	{}
+<p><code><span class="amxx-comment">/*无*/</span> static stock <span class="amxx-comment">/*无*/</span> <span class="amxx-tag">bool:</span> <span class="amxx-function">customFunction</span> (<span class="amxx-symbol">param1</span>, <span class="amxx-symbol">param2</span>, <span class="amxx-symbol">param3</span>) <<span class="amxx-symbol">Automaton</span>:<span class="amxx-symbol">State</span>> {}</code></p>
 
-new	static	stock	const	<span class="amxx-tag">bool:</span> <span class="amxx-symbol">customSymbol</span>	[<span class="amxx-number">2</span>][<span class="amxx-number">2</span>][<span class="amxx-number">2</span>][<span class="amxx-number">2</span>]			=<span class="amxx-symbol">true</span>;</code></p>
+<code>static</code>声明变量的语法格式:
+
+<p><code>说明符1 static	说明符3 说明符4 <span class="amxx-tag">标签</span> <span class="amxx-symbol">变量名称</span> <span class="amxx-note">维度列表</span> 初始化表达式;</code></p>
+
+<p>参考:</p>
+
+<p><code>new	static	stock	const	<span class="amxx-tag">bool:</span> <span class="amxx-symbol">customSymbol</span> [<span class="amxx-number">2</span>][<span class="amxx-number">2</span>][<span class="amxx-number">2</span>][<span class="amxx-number">2</span>] =<span class="amxx-symbol">true</span>;</code></p>
+
+<p><code>说明符1 static 说明符3 说明符4 <span class="amxx-tag">标签</span> <span class="amxx-symbol">函数或变量名称</span> <span class="amxx-number">参数或维度列表</span> 函数体或初始化表达式;</code></p>
 
 <p><code>static</code>可用于声明"静态函数"或"静态变量".</p>
 
@@ -182,13 +193,35 @@ new	static	stock	const	<span class="amxx-tag">bool:</span> <span class="amxx-sym
 
 <p>每个参数需要用 <code>,</code> 符号隔开.</p>
 
-<p><h2 id="click2.8">2.8:函数体</h2></p>
+<p><h2 id="click2.8">2.8:状态标记</h2></p>
+
+<p>状态标记是可省略的.省略之后不允许重复定义同名函数.</p>
+
+<p>若定义了多个同名函数,必须定义不同的状态标记.否则无法编译.</p>
+
+<p>状态标记可细分为"自动机名称"和"状态名称".它们被 <code>< ></code> 尖括号包裹,中间用 <code>:</code> 符号隔开.</p>
+
+<p>自动机名称和状态名称都是自定义符号的一种.必须遵从符号命名规则.</p>
+
+<p>自动机名称和状态名称都是可省略的,若同时省略(仅留下 <code>< ></code> 尖括号),表示当前函数是原始状态.</p>
+
+<p>若填写了状态名称,可以不填写自动机名称.多个同名函数可以设定不同的状态名称.</p>
+
+<p>若填写了自动机名称,则必须填写状态名称.二者之间用 <code>:</code> 符号隔开.</p>
+
+<p>其中一个函数有自动机名称时,其他同名函数则必须填写相同自动机名称,以及不同的状态名称.</p>
+
+<p>使用<code>state</code>语句,便可设定状态标记.表示仅允许拥有指定状态标记的函数能被调用.</p>
+
+<p>更多详情,请参阅<code>state</code>语句相关教程.</p>
+
+<p><h2 id="click2.9">2.9:函数体</h2></p>
 
 <p>函数体可以使用 <code>{ }</code> 符号作为出入口.其内可填入多条语句.</p>
 
 <p>若省略 <code>{ }</code> 符号,则仅允许填写1条语句.且允许以 <code>;</code> 符号结尾(检查分号模式下,必须以 <code>;</code> 符号结尾).</p>
 
-<p>每个<code>static</code>仅允许声明一个函数.因此函数体结尾不允许用 <code>,</code> 符号连续声明函数.</p>
+<p>每个<code>public</code>仅允许声明一个函数.因此函数体结尾不允许用 <code>,</code> 符号连续声明函数.</p>
 
 <p><h1 id="click3">3:static声明变量详解</h1></p>
 
