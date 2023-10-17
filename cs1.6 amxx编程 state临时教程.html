@@ -61,60 +61,69 @@
 
 state的语法格式:
 
-state <自动机名称:状态名称>;
+state (条件表达式) 自动机名称:状态名称;
 
-自动机名称是一种自定义符号.定义时必须遵守符号命名规则.
+state用于设定插件当前使用哪一个自动机,以及进入自动机的哪一个状态.
 
-状态名称是一种自定义符号,定义是必须遵守符号命名规则.
+state语句中,条件表达式是可省略的,若省略,则应该把 ( ) 符号也删掉.
 
-state语句用于切换某些同名函数的状态.
+若不省略,则条件表达式为0时,设定失败.否则成功.
 
-一般情况下不允许定义同名函数.除非定义了自动机名称和状态名称.
+state语句中,自动机名称是可省略的,若省略,则应该把 : 符号也删掉.
 
-定义函数时,在参数列表右边可以用<自动机名称:状态名称>语句定义自动机和状态.
+若不省略,则可指定插件使用一个自动机.否则表示使用匿名自动机(默认自动机).
 
-以下是state语句的使用方法:
+state语句中的自动机名称和状态名称必须是实际存在的,已经定义的自定义符号(也叫标识符).
+
+自动机名称和状态名称都是在声明函数时定义的.具体查阅:cs1.6 amxx编程 状态分类器精研教程.
+
+state语句中的 ; 符号是可省略的,表示语句结束.在检查分号模式下,不允许省略 ; 符号.
+
+以下是一些设定状态的例子.
+
 
 #include amxmodx
-// 定义正常状态下的func1函数
-static func1() <> return 3;
-// 定义Func1:State1状态下的func1函数
-static func1() <<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State1</span>> return 2;
-// 定义Func1:State2状态下的func1函数
-static func1() <<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State2</span>> return 1;
-// 定义正常状态下的func2函数
-static func2() <> return 6;
-// 定义State1状态下的func2函数
-static func2() <<span class="amxx-symbol">State1</span>> return 5;
-// 定义State2状态下的func2函数
-static func2() <<span class="amxx-symbol">State2</span>> return 4;
+
+#define SB故事情节_开端	Beginning
+#define SD故事情节_发展	Development
+#define SC故事情节_高潮	Climax
+#define SE故事情节_结局	Ending
+
+static Story() <> return 1;         
+static Story() <<span class="amxx-symbol">SB故事情节_开端</span>> return 2;
+static Story() <<span class="amxx-symbol">SD故事情节_发展</span>> return 3;
+static Story() <<span class="amxx-symbol">SC故事情节_高潮</span>> return 4;
+static Story() <<span class="amxx-symbol">SE故事情节_结局</span>> return 5;
+
 public plugin_init()
 {
 	register_plugin("测试", "1.0.0", "偶萤蛉(Oinling)");
 	
-	server_print("[AMXX]func1<> = %d", func1());
-	state Func1:State1;
-	server_print("[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State1</span>> = %d", func1());
-	state Func1:State2;
-	server_print("[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State2</span>> = %d", func1());
+	server_print("[AMXX]Story = %d", Story());
 	
-	server_print("[AMXX]func2<> = %d", func2());
-	state State1;
-	server_print("[AMXX]func2<<span class="amxx-symbol">State1</span>> = %d", func2());
-	state State2;
-	server_print("[AMXX]func2<<span class="amxx-symbol">State2</span>> = %d", func2());
+	state SB故事情节_开端;
+	server_print("[AMXX]Story = %d", Story());
+	
+	state SD故事情节_发展;
+	server_print("[AMXX]Story = %d", Story());
+	
+	state SC故事情节_高潮;
+	server_print("[AMXX]Story = %d", Story());
+	
+	state SE故事情节_结局;
+	server_print("[AMXX]Story = %d", Story());
 }
+
 
 打印结果:
 
-[AMXX]func1<> = 3
-[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State1</span>> = 2
-[AMXX]func1<<span class="amxx-symbol">Func1</span>:<span class="amxx-symbol">State2</span>> = 1
-[AMXX]func2<> = 6
-[AMXX]func2<<span class="amxx-symbol">State1</span>> = 5
-[AMXX]func2<<span class="amxx-symbol">State</span>> = 4
+[AMXX]Story = 1
+[AMXX]Story = 2
+[AMXX]Story = 3
+[AMXX]Story = 4
+[AMXX]Story = 5
 
-最后一次切换的状态将会一直保持下来.我找不到如何将函数切换回<>状态.</code></p>
+</code></p>
 
 </body>
 </html>
