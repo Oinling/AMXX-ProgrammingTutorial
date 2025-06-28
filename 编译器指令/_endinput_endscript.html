@@ -1,0 +1,109 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn编译器指令#endinput #endscript</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>AMXXPawn编译器指令#endinput #endscript</h1></p>
+
+<p><h2>#endinput停止输入和#endscript停止脚本指令使用方法:</h2></p>
+
+<p><code><span class="amxx-directive">#if</span> <code>常量表达式</code>
+	<span class="amxx-directive">#endinput</span>
+<span class="amxx-directive">#endif</span></code></p>
+
+<p><span class="amxx-directive">#endinput</span>和<span class="amxx-directive">#endscript</span>指令是完全相同的.用于停止编译下文.</p>
+
+<p>因此,需要配合<span class="amxx-directive">#if #endif</span>条件指令使用.在满足某种条件时,停止编译下文.</p>
+
+<p>该指令通常用于防止重复引用同一个文件(避免重复自定义符号).</p>
+
+<p>示例(假设这个文件是<code>scripting/include/my_plugin.inc</code>inc文件):</p>
+
+<p><code><span class="amxx-directive">#if</span> (defined(<span class="amxx-ds">_my_plugin_included</span>))	<span class="amxx-comment">// 如果已定义了符号名_my_plugin_included</span>
+	<span class="amxx-directive">#endinput</span>			<span class="amxx-comment">// 停止输入下文(下文全部舍弃),不要再重复定义_my_plugin_included和gValue了</span>
+<span class="amxx-directive">#endif</span>					<span class="amxx-comment">// 表示#if条件指令的终点</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">_my_plugin_included</span>		<span class="amxx-comment">// 定义符号名_my_plugin_included</span>
+
+stock <span class="amxx-symbol">gValue</span> = <span class="amxx-number">10</span>;			<span class="amxx-comment">// 声明备用的全局变量gValue,定义它的值为10</span></code></p>
+
+<p>示例(假设这个文件是<code>scripting/my_plugin.sma</code>源码文件):</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+<span class="amxx-directive">#include</span> <span class="amxx-string">my_plugin</span>			<span class="amxx-comment">// 引用scripting/include/my_plugin.inc文件中所有内容到此处</span>
+<span class="amxx-directive">#include</span> <span class="amxx-string">my_plugin</span>			<span class="amxx-comment">// 再次引用scripting/include/my_plugin.inc文件中所有内容到此处</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gValue = %d"</span>, <span class="amxx-symbol">gValue</span>);
+}</code></p>
+
+<p>若删除<code>scripting/include/my_plugin.inc</code>文件中的<span class="amxx-directive">#endinput</span>指令,编译<code>scripting/my_plugin.sma</code>文件会触发报错.</p>
+
+<p>这是因为引用两次,等于定义了两个拥有相同作用域终点的同名符号:</p>
+
+<p><code><span class="amxx-note">...\scripting\include\my_plugin.inc(6) : error 021: symbol already defined: "gValue"</span></code></p>
+
+<p>有了<span class="amxx-directive">#endinput</span>或<span class="amxx-directive">#endscript</span>指令,便能避免一个文件被重复引用时所引发的各种问题.</p>
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn编译器指令#define</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>AMXXPawn编译器指令#define</h1></p>
+
+<p><h2>#define宏定义指令使用方法:</h2></p>
+
+<p><code><span class="amxx-directive">#define</span> <span class="amxx-ds">宏名</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">宏名</span> 替换宏名的代码</code></p>
+
+<p>功能1:定义<span class="amxx-ds">宏名</span>(宏定义符号),从下一行开始让<code>defined(<span class="amxx-ds">宏名</span>)</code>返回<span class="amxx-symbol">true</span>(AMXX1.8.3以下版本返回1).这种用法常见于inc文件的顶部.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]defined(name) = %d"</span>, defined(<span class="amxx-ds">name</span>));
+	<span class="amxx-directive">#define</span> <span class="amxx-ds">name</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]defined(name) = %d"</span>, defined(<span class="amxx-ds">name</span>));
+}</code></p>
+
+<p>进入游戏后,按下 [~] 按键打开控制台,可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX]defined(name) = 0
+[AMXX]defined(name) = 1</span></code></p>
+
+<p>需要注意,任何"指令"和"运算词"都是在编译时执行的,而函数体内的其它代码是在游戏运行时执行的.</p>
+
+<p>不要以为<span class="amxx-directive">#define</span>和<code>defined</code>在函数体内就会像<code>new</code>或<code>static</code>一样在游戏运行时执行.</p>
+
+<p>编译时,代码中的所有<code>defined</code>已经被替换为<span class="amxx-symbol">true</span>或<span class="amxx-symbol">false</span>(0或1).而不是在函数运行过程中临时发生变化.</p>
+
+<p>功能2:定义<span class="amxx-ds">宏名</span>和<code>替换宏名的代码</code>,从指令语句下一行开始,将源码中所有<span class="amxx-ds">宏名</span>替换掉.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+
+<span class="amxx-directive">#define</span> <span class="amxx-ds">dPluginName</span>	<span class="amxx-string">"测试插件"</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">dPluginVersion</span>	<span class="amxx-string">"1.0.0"</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">dPluginAuthor</span>	<span class="amxx-string">"插件作者"</span>
+
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-ds">dPluginName</span>, <span class="amxx-ds">dPluginVersion</span>, <span class="amxx-ds">dPluginAuthor</span>);
+	<span class="amxx-function">server_print</span>("<span class="amxx-string">[AMXX]插件名称 = %s"</span>, <span class="amxx-ds">dPluginName</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]插件版本 = %s"</span>, <span class="amxx-ds">dPluginVersion</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]插件作者 = %s"</span>, <span class="amxx-ds">dPluginAuthor</span>);
+}</code></p>
+
+<p>进入游戏后,按下 [~] 按键打开控制台,可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX]插件名称 = 测试插件
+[AMXX]插件版本 = 1.0.0
+[AMXX]插件作者 = 插件作者</span></code></p>
+
+<p><h2>#define宏定义指令的高级用法:</h2></p>
+
+<p>高级用法必须了解宏定义指令的书写规则.</p>
+
+<p>首先需要了解标识符命名规则:</p>
+
+<p>在AMXX1.8.3以下版本中,符号名称不得超过31个字节.</p>
+
+<p>在AMXX1.8.2以上版本中,符号名称不得超过63个字节.</p>
+
+<p>符号名区分大小写,比如<span class="amxx-symbol">foo</span>和<span class="amxx-symbol">Foo</span>是两个不同的符号.</p>
+
+<p>名称的第一个字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z</span>"这四者之一.</p>
+
+<p>名称的剩余字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z 0</span>至<span class="amxx-symbol">9</span>"这五者之一.</p>
+
+<p><span class="amxx-ds">宏名</span>不完全受到这些规则限制,但编译器实际只认可符合该规则的部分.</p>
+
+<p>编译器会认为"<span class="amxx-ds">_@AA我爱你</span>"和"<span class="amxx-ds">_@AA他爱我</span>"这样的两个宏名是相同的.因为名称左边的"<span class="amxx-ds">_@AA</span>"符合正常书写规则,而且相同.</p>
+
+<p>接下来了解<span class="amxx-ds">宏名</span>的书写规则:</p>
+
+<p><span class="amxx-ds">宏名</span>的首字符必须是"<span class="amxx-symbol">_ @ a</span>至<span class="amxx-symbol">z A</span>至<span class="amxx-symbol">Z</span>"这四者之一.</p>
+
+<p><span class="amxx-ds">宏名</span>总字节数不得超过标识符命名规则所限.</p>
+
+<p><span class="amxx-ds">宏名</span>可以含有转义字符.不能含有回车符或换行符.</p>
+
+<p>若<span class="amxx-ds">宏名</span>含有不符合标识符命名规则的字符.后续内容可用 <code>%<span class="amxx-number">0</span></code> 至 <code>%<span class="amxx-number">10</span></code> 表示外界输入的参数(代码).若有重复参数,则该参数对应最后输入的代码.</p>
+
+<p>若参数被 <span class="amxx-symbol">( )</span> 圆括号包裹,参数的后续内容可以是连续的空格或制表符之一.</p>
+
+<p>若名称内含有 <span class="amxx-symbol">(</span> 左圆括号,右边必须至少有1个 <span class="amxx-symbol">)</span> 右圆括号.且名称终止位置是最后1个 <span class="amxx-symbol">)</span> 右圆括号右边的第1个空白字符.</p>
+
+<p>若名称内不含 <span class="amxx-symbol">(</span> 左圆括号,名称终止位置是右边的第1个空白字符.</p>
+
+<p>然后是了解<code>替换宏名的代码</code>的书写规则:</p>
+
+<p>必须用空白字符将<span class="amxx-ds">宏名</span>和<code>替换宏名的代码</code>隔开.</p>
+
+<p>内容可以是残缺或完整的语句或表达式,不能是注释.多个语句必须用 <code>,</code> 逗号或 <code>;</code> 分号相隔.</p>
+
+<p>可以用 <code>%<span class="amxx-number">0</span></code> 至 <code>%<span class="amxx-number">10</span></code> 引用外界输入的代码.编号必须与<span class="amxx-ds">宏名</span>使用的一致,顺序无限制,使用次数无限制.</p>
+
+<p>若以 <code>\</code> 反斜杠结尾,下一行也是<code>用于替换宏名的代码</code>.但替换时不会保留换行符.本质上仍然是一行代码.</p>
+
+<p>若后续内容全是空白字符或注释.表示<code>替换宏名的代码</code>已经书写完毕.这些空白字符和注释不会被用于替换<span class="amxx-ds">宏名</span>.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+
+<span class="amxx-comment">// ^48和^50是转义字符,对应0和2</span>
+<span class="amxx-directive">#define</span> <span class="amxx-df">dCustom((叭叭叭^48Add(^50<code>%</code><span class="amxx-number">3</span>a(<code>%</code><span class="amxx-number">4</span>bcc<code>%</code><span class="amxx-number">1</span>)ttt</span>		%<span class="amxx-number">3</span> + %<span class="amxx-number">4</span> + %<span class="amxx-number">1</span>
+
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]自定义加法(5+6+7) = %d"</span>, <span class="amxx-df">dCustom((叭叭叭0Add(2<span class="amxx-number">5</span>a(<span class="amxx-number">6</span>bcc<span class="amxx-number">7</span>)ttt</span>);
+}</code></p>
+
+<p>进入游戏后,按下 [~] 按键打开控制台,可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX]自定义加法(5+6+7) = 18</span></code></p>
+
+<p>这种功能可以用来增加阅读理解成本,使一般人看不懂这段代码.开发者可以用这种方法隐藏类似删库跑路的恶劣代码.</p>
+
+<p>实际上,正常情况下不应该如此极端的使用这种书写规则.</p>
+
+<p>以下是正常的使用方法:</p>
+
+<p><code><span class="amxx-comment">// 格式:符号名称(参数列表)	替换文本</span>
+
+<span class="amxx-comment">// 将名字太长的函数改更短</span>
+<span class="amxx-directive">#define</span> <span class="amxx-df">IsAlive(<code>%</code><span class="amxx-number">0</span>)</span>		<span class="amxx-function">is_user_alive</span>(%<span class="amxx-number">0</span>)
+<span class="amxx-comment">// 以某种格式自动填写某个参数</span>
+<span class="amxx-directive">#define</span> <span class="amxx-df">GetWeaponName(<code>%</code><span class="amxx-number">0</span>,<code>%</code><span class="amxx-number">1</span>)</span>	<span class="amxx-function">get_weaponname</span>(%<span class="amxx-number">0</span>, %<span class="amxx-number">1</span>, <span class="amxx-ds">charsmax(<code>%</code><span class="amxx-number">1</span>)</span>)
+<span class="amxx-comment">// 将复杂计算改用简短的代码表示</span>
+<span class="amxx-directive">#define</span> <span class="amxx-df">GetVectorLength(<code>%</code><span class="amxx-number">0</span>)</span>	<span class="amxx-function">floatsqroot</span>(%<span class="amxx-number">0</span>[<span class="amxx-number">0</span>] * %<span class="amxx-number">0</span>[<span class="amxx-number">0</span>] + %<span class="amxx-number">0</span>[<span class="amxx-number">1</span>] * %<span class="amxx-number">0</span>[<span class="amxx-number">1</span>] + %<span class="amxx-number">0</span>[<span class="amxx-number">2</span>] * %<span class="amxx-number">0</span>[<span class="amxx-number">2</span>])</code></p>
+
+<p>在设定了<code>替换宏名代码</code>情况下,拥有 <span class="amxx-ds">( )</span> 圆括号的<span class="amxx-ds">宏名</span>通常被称呼为宏函数,或函数宏.</p>
+
+<p>而没有 <span class="amxx-ds">( )</span> 圆括号,且<code>替换宏名代码</code>是常量表达式的,通常被称呼为宏常量,或常量宏.</p>
+
+</body>
+</html>
+
+
+
+
+
+
