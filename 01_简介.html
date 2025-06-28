@@ -1,0 +1,109 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>CS1.6 AMXX简介</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>CS1.6 AMXX简介</h1></p>
+
+<p>Metamod是一个重要的插件加载平台,依靠CS,胜利之日,半条命等游戏运行,用于管理和运行其他插件(DLL/SO文件),挂钩游戏引擎的函数.</p>
+
+<p>AMX Mod X是一个脚本插件系统,在Metamod基础上运行,同样管理和运行其它插件(DLL和AMXX文件),实现高级功能(如管理员工具,娱乐模式等).</p>
+
+<p>AMXX文件是由SMA脚本文件编译而成.使用AMXXPawn语言开发.在AMX Mod X基础上运行.</p>
+
+<p>AMXX插件能更改服务端的部分数据,制作新的游戏规则或模式.</p>
+
+<p>比如让玩家拥有飞天遁地,释放魔法,格斗连击的能力.</p>
+
+<p>模拟自动锁头,自动爆头等类似外挂的效果.</p>
+
+<p>制作无限复活,免疫伤害,穿墙瞬移,跳舞,或npc导航寻路等等功能.</p>
+
+<p>所有连入服务端的客户端(玩家)都会在新规则下进行游戏.</p>
+
+<p>与外挂不同,外挂只能更改个人客户端的数据,用于个人享乐,他人遭殃.</p>
+
+<p>比如在自己屏幕上绘制图片,画出墙壁后面的敌人,画上其它游戏的HUD,UI界面.</p>
+
+<p>AMXX插件无法在客户端屏幕上画图,无法新增武器或子弹品种(CS客户端限制了武器与子弹的品种数量).</p>
+
+<p>AMXX只能以某个武器为原型,更改其外观和功能,使它看起来像新武器,但会和原型武器产生冲突.</p>
+
+<p>总而言之,插件是让所有人能在自己的游戏中一起玩耍,外挂是让自己能在所有人的游戏中,破坏别人的体验.</p>
+
+<p>想在屏幕上画图,自定义新武器的,应该学习外挂知识,或开发属于自己的游戏,比如使用Unity3D引擎开发游戏.</p>
+
+<p>要制作AMXX插件,建议先搜藏以下3个网站.</p>
+
+<p><a href="https://www.amxmodx.org/">AMX Mox X 官方网站</a></p>
+
+<p><a href="https://forums.alliedmods.net/forumdisplay.php?f=3">AMX Mox X 官方论坛</a></p>
+
+<p><a href="https://wiki.alliedmods.net/CBaseEntity_(CS)">CS基础实体的相关成员数据</a></p>
+
+<p><h1>下一篇教程:</h1></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/02_AMXX%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97.html">02_AMXX开发环境安装指南.html</a></p>
+
+</body>
+</html>
