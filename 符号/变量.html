@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 变量</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>AMXXPawn 变量</h1>
+
+	<h2>目录</h2>
+	<ul>
+		<li><a href="#Introduction">1. 简介</a></li>
+		<li><a href="#Keyword">2. 声明说明符</a></li>
+		<li><a href="#Tag">3. 值类型标签</a></li>
+		<li><a href="#Struct">4. 维度声明</a></li>
+		<li><a href="#Init">5. 初始化表达式</a></li>
+		<li><a href="#Continue">6. 连续声明变量</a></li>
+		<li><a href="#DataAndStack">7. 数据段变量和栈变量区别</a></li>
+	</ul>
+
+	<h2 id="Introduction">1. 简介</h2>
+
+	<p>变量(Variable)是由用户创建的标识符，其数值在插件运行后才能确定，并且可更改。</p>
+
+	<p>在函数外声明的是全局变量，在函数内声明的是局部变量，局部变量若在函数签名中声明，是参数。</p>
+
+	<p>按储存位置划分，变量可以分为<span class="highlight">数据段变量</span>和<span class="highlight">栈变量</span>。</p>
+	
+	<p>所有全局变量皆为<span class="highlight">数据段变量</span>，<span class="highlight">数据段变量</span>的声明、定义仅在插件启动时执行一次，确定一次初始值。</p>
+
+	<p>局部变量既有<span class="highlight">数据段变量</span>，也有<span class="highlight">栈变量</span>，<span class="highlight">栈变量</span>的声明、定义可在插件运行时重复执行，重复计算不同初始值。</p>
+	
+	<p>其中<span class="highlight">栈变量</span>还分为<span class="highlight">参数</span>和<span class="highlight">非参数</span>。</p>
+
+	<div class="note-box">
+	<h4>参数声明是函数声明语句的一部分：</h4>
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">点击查看函数指南</a></p>
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%82%E6%95%B0.html">点击查看参数指南</a></p>
+
+	<h4>非参数变量声明语句语法格式：</h4>
+	<p><声明说明符> <变量声明> \<span class="amxx-default"> ; </span>/</p>
+
+	<h4>变量声明语法拆解：</h4>
+	<p>\值类型标签/ <变量名称> \维度声明/ \初始化表达式/</p>
+
+	<h4>维度声明语法拆解：</h4>
+	<p>\<span class="amxx-default">[</span>\4维数组尺寸/<span class="amxx-default">]</span>/ \<span class="amxx-default">[</span>\3维数组尺寸/<span class="amxx-default">]</span>/ \<span class="amxx-default">[</span>\2维数组尺寸/<span class="amxx-default">]</span>/ \<span class="amxx-default">[</span>\1维数组尺寸/<span class="amxx-default">]</span>/</p>
+
+	<h4>初始化表达式拆解：</h4>
+	<p><<span class="amxx-default"> = </span>> <表达式></p>
+	</div>
+
+	<div class="note-box">
+		<h4><>是必填项目，\/是可选项目。</h4>
+		<h4>\变量声明/若在\<span class="amxx-default"> ; </span>/之前以逗号结尾，可再次编写新的\变量声明/，连续声明多个变量。</h4>
+	</div>
+
+	<h2 id="Keyword">2. 声明说明符</h2>
+
+	<p> <span class="highlight">new public static stock</span> 可用于编写全局变量声明语句。</p>
+
+	<p> <span class="highlight">new static</span> 可用于编写局部变量声明语句。</p>
+
+	<p>若额外添加 <span class="highlight">const</span> 关键字进行修饰，可令变量获得只读特性。变量值在初始化之后不能被运算符修改。</p>
+
+	<p>代码示例：</p>
+
+	<code><span class="amxx-comment">// 声明假公共只读变量(数据段变量,全局变量)</span>
+public const <span class="amxx-tag">Float:</span><span class="amxx-identifier">NULL_VECTOR</span>[<span class="amxx-number">3</span>] = { <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> };
+
+<span class="amxx-comment">// 声明插件私有备用只读变量(数据段变量,全局变量)</span>
+stock const <span class="amxx-tag">Float:</span><span class="amxx-identifier">V3_4Dir</span>[][] =
+{
+	{ <span class="amxx-number">1.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">0.0</span>, <span class="amxx-number">1.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">-1.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">0.0</span>, <span class="amxx-number">-1.0</span>, <span class="amxx-number">0.0</span> }
+};
+
+<span class="amxx-comment">// 声明文件私有变量(数据段变量,全局变量)</span>
+static <span class="amxx-identifier">m_flNextAttack</span> = <span class="amxx-number">83</span>;
+
+<span class="amxx-comment">// 声明插件私有变量(数据段变量,全局变量)</span>
+new <span class="amxx-tag">bool:</span><span class="amxx-identifier">gWeaponShooting</span>;
+
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 声明静态只读变量(数据段变量,静态局部变量)</span>
+	static const <span class="amxx-identifier">PluginName</span>[] = <span class="amxx-string">"插件名称"</span>;
+	<span class="amxx-comment">// 声明临时变量(栈变量,局部变量)</span>
+	new <span class="amxx-identifier">pluginId</span> = <span class="amxx-function">register_plugin</span>(<span class="amxx-identifier">PluginName</span>, <span class="amxx-string">"插件版本"</span>, <span class="amxx-string">"插件作者"</span>);
+}
+</code>
+
+	<div class="feature-list">
+		<h3>关于声明说明符的特性，点击查看更多详细内容</h3>
+		<ul>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a></li>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/public.html">public</a></li>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/static.html">static</a></li>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/stock.html">stock</a></li>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/const.html">const</a></li>
+		</ul>
+	</div>
+
+	<h2 id="Tag">3. 值类型标签</h2>
+
+	<p>若不填写值类型标签，变量将会获得默认标签 <span class="highlight">_:</span></p>
+
+	<p>因此，下面两行代码是相同的:</p>
+
+	<code>new <span class="amxx-tag">_:</span><span class="amxx-identifier">variable</span>;<br>new <span class="amxx-identifier">variable</span>;</code>
+
+	<p>若填写未定义的值类型标签，编译器会自动创建这个标签。</p>
+
+	<p>当变量与拥有不同标签的表达式做运算时，通常会触发编译器警告：</p>
+
+	<code><span class="amxx-comment">// variable拥有_标签,表达式15.0拥有Float标签,触发警告:"标签不匹配"</span><br>new <span class="amxx-tag">_:</span><span class="amxx-identifier">variable</span> = <span class="amxx-number">15.0</span>;</code>
+
+	<p>变量通常是用来储存函数返回值或充当函数的参数，因此需要定义与函数或参数相同的标签。</p>
+
+	<p>另外，定义不同的值类型标签，会导致变量参与运算时，根据运算符重载触发不同的运算函数。</p>
+
+	<p>若这个标签没有运算符重载，将会触发默认的运算函数。</p>
+
+	</div>
+
+	<div class="feature-list">
+		<h3>关于值类型标签，点击查看更多详细内容</h3>
+		<ul>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签</a></li>
+		</ul>
+	</div>
+
+	<h2 id="Struct">4. 维度声明</h2>
+
+	<p>声明变量时，在变量名称末尾添加中括号，会让变量变成数组，使变量可以储存多个数值。</p>
+
+	<p>中括号的数量表示数组的维度，[ ][ ]表示变量是2维数组。[ ][ ][ ]表示变量是3维数组。</p>
+
+	<div class="note-box"><ul>
+		<li>AMX Mod X 1.8.3以下版本：最多3个维度</li>
+		<li>AMX Mod X 1.8.3至1.10.0版本：最多4个维度</li>
+	</ul></div>
+
+	<p>3维数组储存的元素是多个2维数组，2维数组储存的元素是多个1维数组，1维数组储存的元素是多个数值。</p>
+
+	<p>中括号内可填写常量表达式（单值字面量或常量），表示各维度数组的尺寸（元素数量）。</p>
+
+	<p>在有多对中括号时，填写的尺寸从左至右对应从外层至内层数组。</p>
+
+	<p>代码示例：</p>
+	
+	<code><span class="amxx-comment">// 创建3尺寸的1维数组，他能储存3个值</span>
+static <span class="amxx-identifier">array1</span>[<span class="amxx-number">3</span>];
+<span class="amxx-comment">// 创建2维数组：2维数组尺寸为3，1维数组尺寸为2</span>
+static <span class="amxx-identifier">array2</span>[<span class="amxx-number">3</span>][<span class="amxx-number">2</span>];
+<span class="amxx-comment">// 创建3维数组：3维数组尺寸为4，2维数组尺寸为3，1维数组尺寸为2</span>
+static <span class="amxx-identifier">array3</span>[<span class="amxx-number">4</span>][<span class="amxx-number">3</span>][<span class="amxx-number">2</span>];</code>
+
+	<div class="note-box">
+	<p>若使用枚举结构体名称充当1维数组尺寸，编译器会按照枚举的成员结构，将数组解析为结构体。</p>
+	<p>此时允许使用枚举成员访问结构体的属性：</p>
+	<code>enum <span class="amxx-enumname">tZombieClass_Normal</span>
+{
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZCN_Name</span>[<span class="amxx-number">32</span>],
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZCN_MaxHealth</span>,
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZCN_MaxSpeed</span>,
+	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">ZCN_EyePos</span>[<span class="amxx-number">3</span>]
+}
+static <span class="amxx-identifier">sZombieClass</span>[<span class="amxx-enumname">tZombieClass_Normal</span>];
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 访问ZCN_EyePos常量所指的结构体属性,该属性是3尺寸数组,修改这个数组的值</span>
+
+	<span class="amxx-comment">// AMX Mod X 1.8.3以下版本中,用=运算符会错误解析属性标签为_,因此需以_覆盖右值标签,避免警告</span>
+	<span class="amxx-identifier">sZombieClass</span>[<span class="amxx-identifier">ZCN_EyePos</span>] = <span class="amxx-tag">_:</span>{ <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">17.0</span> };
+	<span class="amxx-comment">// AMX Mod X 1.8.2以上版本中,可正常解析属性标签,但数组字面量在任何版本中都是_标签,需以Float标签覆盖(在初始化表达式中不检查数组字面量标签,所以不需要)</span>
+	<span class="amxx-identifier">sZombieClass</span>[<span class="amxx-identifier">ZCN_EyePos</span>] = <span class="amxx-tag">Float:</span>{ <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">17.0</span> };
+}
+</code>
+	<div class="feature-list"><ul>
+			<li>该变量仍然是1维数组</li>
+			<li>结构体字面量中包含的字符串、数组、结构体字面量，皆为会被拆解为单一数值,数量不足会补0</li>
+			<li>上述例子中<span class="highlight">"普通僵尸"</span>会被拆解为13个数值(utf8编码)，而 <span class="highlight">ZCN_Name</span> 属性尺寸为32，补19个0</li>
+	</ul></div>
+	<p>关于枚举结构体：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html#Name">点击查看enum指南</a></p>
+	</div>
+
+	<h2 id="Init">5. 初始化表达式</h2>
+
+	<p>若省略初始化表达式，则变量储存的每个初始值被设为0。</p>
+
+	<div class="note-box">
+	<p>在为单值变量设置初始值时，若未使用 <span class="highlight">new</span> 关键字，仅允许填写常量表达式。</p>
+	<div class="warning-box"><strong>注意：</strong>若表达式含有重载的运算符，则不是常量表达式！
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">float</span>>
+<span class="amxx-comment">/* +的两个操作数都含有Float标签,而且float.inc内含有此定义：
+* native Float:operator+(Float:oper1, Float:oper2) = floatadd;
+* 因此10.0 + 5.0将会变为floatadd(10.0, 5.0)
+* 而static声明的变量并不支持使用函数进行初始化，因此会报错："必须使用常量表达式" */</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-identifier">var</span> = <span class="amxx-number">10.0</span> + <span class="amxx-number">5.0</span>;</code>
+	</div>
+	</div>
+
+	<div class="note-box">
+	<p>在为数组设置初始值时，仅允许填写常量表达式,数组字面量,字符串字面量：</p>
+
+	<code><span class="amxx-comment">// 使用常量表达式,将数组第一个元素值设为15</span>
+static <span class="amxx-identifier">array1</span>[<span class="amxx-number">3</span>] = <span class="amxx-number">10</span> + <span class="amxx-number">5</span>;
+<span class="amxx-comment">// 使用常量表达式,将数组第一个元素值设为15.0</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-identifier">array2</span>[<span class="amxx-number">3</span>] = <span class="amxx-number">15.0</span>;
+<span class="amxx-comment">// 使用数组字面量，对2维数组的每个元素进行初始化</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-identifier">array3</span>[<span class="amxx-number">4</span>][<span class="amxx-number">3</span>] =
+{
+	{ <span class="amxx-number">1.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">0.0</span>, <span class="amxx-number">1.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">-1.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">0.0</span>, <span class="amxx-number">-1.0</span>, <span class="amxx-number">0.0</span> }
+};
+<span class="amxx-comment">// 使用字符串字面量,对2维数组的每个元素进行初始化</span>
+static <span class="amxx-identifier">array4</span>[<span class="amxx-number">4</span>][] =
+{
+	<span class="amxx-string">"字符串字面量1"</span>,
+	<span class="amxx-string">"字符串字面量2"</span>,
+	<span class="amxx-string">"字符串字面量3"</span>,
+	<span class="amxx-string">"字符串字面量4"</span>
+};</code>
+
+	<p>数组字面量或字符串字面量的尺寸可以小于维度声明中设定的尺寸，编译器会自动将空缺的元素值设定为0。</p>
+
+	<p>使用常量表达式进行初始化与此类似，只能对数组第一个数值元素赋值，后续数值元素皆为0。</p>
+
+	<p>编译器提供了2种自动推测后续元素值的写法：</p>
+
+	<code><span class="amxx-comment">// 每个1维数组拥有8个数值</span>
+static <span class="amxx-identifier">array</span>[<span class="amxx-number">2</span>][<span class="amxx-number">8</span>] =
+{
+	<span class="amxx-comment">// 后续7个数值皆等于1</span>
+	{ <span class="amxx-number">1</span>, ... },
+	<span class="amxx-comment">// 用4-0得到差值4,后面每个数值都等于上一个数值+4，即{ 5, 0, 4, 8, 12, 16, 20, 24 }</span>
+	{ <span class="amxx-number">5</span>, <span class="amxx-number">0</span>, <span class="amxx-number">4</span>, ... }
+};</code>
+
+	<p>若维度声明中未填写尺寸，编译器会根据初始化表达式自动推测尺寸，此时禁止使用 <span class="highlight">...</span> 运算符。</p>
+
+	<code><span class="amxx-comment">// 尺寸=1</span>
+static <span class="amxx-identifier">array1</span>[] = <span class="amxx-number">10</span> + <span class="amxx-number">5</span>;
+<span class="amxx-comment">// 尺寸=3</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-identifier">array2</span>[] = { <span class="amxx-number">15.0</span>, <span class="amxx-number">15.0</span>, <span class="amxx-number">15.0</span> };
+<span class="amxx-comment">// 2维数组尺寸=4,1维数组尺寸=3</span>
+static <span class="amxx-tag">Float:</span><span class="amxx-identifier">array3</span>[][] =
+{
+	{ <span class="amxx-number">1.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">0.0</span>, <span class="amxx-number">1.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">-1.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> },
+	{ <span class="amxx-number">0.0</span>, <span class="amxx-number">-1.0</span>, <span class="amxx-number">0.0</span> }
+};</code>
+	</div>
+	
+	<div class="note-box">
+	<p>若使用枚举结构体名称充当1维数组尺寸，编译器会按照枚举的成员结构，将数组解析为结构体。</p>
+	<p>此时允许使用结构体字面量进行初始化：</p>
+	<code>enum <span class="amxx-enumname">tZombieClass_Normal</span>
+{
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZCN_Name</span>[<span class="amxx-number">32</span>],
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZCN_MaxHealth</span>,
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZCN_MaxSpeed</span>,
+	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">ZCN_EyePos</span>[<span class="amxx-number">3</span>]
+}
+static <span class="amxx-identifier">sZombieClass</span>[<span class="amxx-enumname">tZombieClass_Normal</span>] = { <span class="amxx-string">"普通僵尸"</span>, <span class="amxx-number">1000</span>, <span class="amxx-number">240</span>, { <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">34.0</span> } };</code>
+	<div class="feature-list"><ul>
+			<li>该变量仍然是1维数组</li>
+			<li>结构体字面量中包含的字符串、数组、结构体字面量，皆为会被拆解为单一数值,数量不足会补0</li>
+			<li>上述例子中<span class="highlight">"普通僵尸"</span>会被拆解为13个数值(utf8编码)，而 <span class="highlight">ZCN_Name</span> 属性尺寸为32，补19个0</li>
+	</ul></div>
+	<p>关于枚举结构体：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html#Usage">点击查看enum指南</a></p>
+	</div>
+
+	<div class="warning-box"><strong>注意：</strong>通常情况下，初始化表达式与变量的值类型标签必须一致，否则会被警告：“标签不匹配”</div>
+	
+	<h2 id="Continue">6. 连续声明变量</h2>
+
+	<p>与常量声明语句不同，变量声明语句允许连续声明多个变量：</p>
+
+	<code>new <span class="amxx-identifier">var1</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">var3</span> = <span class="amxx-identifier">true</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">var3</span> = <span class="amxx-number">5.0</span>;</code>
+
+	<div class="note-box">
+		<p><strong>提示：</strong>连续声明的变量不能更换声明说明符，因此它们获得的特性是相同的。</p>
+	</div>
+
+	<h2 id="DataAndStack">7. 数据段变量和栈变量区别</h2>
+
+	<p><span class="highlight">数据段变量</span>的声明语句仅在插件启动（载入游戏地图）时执行一次。</p>
+
+	<p>意味着下一次来到声明语句位置，并不会重新初始化，而是保持上次修改的数值。</p>
+
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">test</span>();	<span class="amxx-comment">// 第1次进入函数内部执行代码</span>
+	<span class="amxx-function">test</span>();	<span class="amxx-comment">// 第2次进入函数内部执行代码</span>
+	<span class="amxx-function">test</span>();	<span class="amxx-comment">// 第3次进入函数内部执行代码</span>
+}
+<span class="amxx-function">test</span>()
+{
+	<span class="amxx-comment">// 在进入游戏场景时创建数据段变量dataVar,设定初始值为1000,此语句不会运行第二次</span>
+	static <span class="amxx-identifier">dataVar</span> = <span class="amxx-number">1000</span>;
+	
+	<span class="amxx-comment">// 在控制台打印dataVar的值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"dataVar = %d"</span>, <span class="amxx-identifier">dataVar</span>);
+
+	<span class="amxx-comment">// dataVar储存的值增加2</span>
+	<span class="amxx-identifier">dataVar</span> += <span class="amxx-number">2</span>;
+}	<span class="amxx-comment">// 离开dataVar作用域,并不会删除dataVar</span></code>
+
+	<p>打印内容：</p>
+
+	<code><span class="amxx-note">dataVar = 1000;<br>dataVar = 1002;<br>dataVar = 1004;</span></code>
+
+	<p><span class="highlight">栈变量</span>的声明语句允许重复执行，离开变量作用域时会被删除。</p>
+
+	<p>因此，无论栈变量被如何修改，重新创建后仍会得到新的初始值。</p>
+
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">test</span>();	<span class="amxx-comment">// 第1次进入函数内部执行代码</span>
+	<span class="amxx-function">test</span>();	<span class="amxx-comment">// 第2次进入函数内部执行代码</span>
+	<span class="amxx-function">test</span>();	<span class="amxx-comment">// 第3次进入函数内部执行代码</span>
+}
+<span class="amxx-function">test</span>()
+{
+	<span class="amxx-comment">// 创建栈变量tempVar,设定初始值为1000</span>
+	new <span class="amxx-identifier">tempVar</span> = <span class="amxx-number">1000</span>;
+	
+	<span class="amxx-comment">// 在控制台打印tempVar的值</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"tempVar = %d"</span>, <span class="amxx-identifier">tempVar</span>);
+
+	<span class="amxx-comment">// tempVar储存的值增加2,这没有意义,因为他将要被删掉了</span>
+	<span class="amxx-identifier">tempVar</span> += <span class="amxx-number">2</span>;
+}	<span class="amxx-comment">// 离开tempVar作用域,删除tempVar</span></code>
+
+	<p>打印内容：</p>
+
+	<code><span class="amxx-note">tempVar = 1000;<br>tempVar = 1000;<br>tempVar = 1000;</span></code>
+
+	<div class="note-box"><strong>注意：</strong>全局变量全都是数据段变量，仅仅是作用域有差别。</div>
+	
+</body>
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn return关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn return关键字</h1>
+	
+	<p>return返回语句可以跳过当前函数体中尚未执行的语句，立即退出当前函数，并设置当前函数的返回值。</p>
+	
+	<p>返回语句的语法1：return;</p>
+	
+	<p>返回语句的语法2：return 返回值;</p>
+	
+	<p><span class="highlight">返回值</span>可以是除<strong>数组字面量</strong>以外的任意表达式。若省略，则隐式返回0。</p>
+	
+	<p>若函数体内存在多个返回语句，要么全部隐式返回0，要么全部显式设置<strong>相同尺寸</strong>的<span class="highlight">返回值</span>。</p>
+	
+	<p><span class="highlight">返回值</span>和当前函数的值类型标签需一致，否则触发警告：标签不匹配。</p>
+	
+	<p>若当前函数的调用方试图用变量复制<span class="highlight">返回值</span>，但函数并未被显式设置<span class="highlight">返回值</span>，则会触发警告：函数需要设置<span class="highlight">返回值</span>。</p>
+	
+	<p>若<span class="highlight">返回值</span>是数组，外部插件得到的是数组的相对地址（无法跨插件访问）。当前插件会得到数组的副本。</p>
+	
+	<p>示例：</p>
+
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+
+static <span class="amxx-function">func</span>(<span class="amxx-tag">bool:</span><span class="amxx-identifier">p</span>)
+{
+	new <span class="amxx-identifier">array</span>[] = <span class="amxx-string">"??????"</span>;
+	if (<span class="amxx-identifier">p</span>) return <span class="amxx-identifier">array</span>;	<span class="amxx-comment">// 跳过当前函数体中尚未执行的语句，立即退出并设置返回值</span>
+	<span class="amxx-identifier">array</span> = <span class="amxx-string">"114514"</span>;
+	return <span class="amxx-identifier">array</span>;		<span class="amxx-comment">// 退出并设置返回值</span>
+}
+
+static <span class="amxx-tag">Float:</span><span class="amxx-function">func2</span>()
+	return <span class="amxx-function">random_float</span>(<span class="amxx-number">10.0</span>, <span class="amxx-number">20.0</span>);	<span class="amxx-comment">// 返回值和函数的值类型标签需一致（Float标签）</span>
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件1"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]分支1返回值:%s 分支2返回值:%s"</span>, <span class="amxx-function">func</span>(<span class="amxx-identifier">false</span>), <span class="amxx-function">func</span>(<span class="amxx-identifier">true</span>));
+}	<span class="amxx-comment">// 自然退出函数</span></code>
+
+</body>
+</html>

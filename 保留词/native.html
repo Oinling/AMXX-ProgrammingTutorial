@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn native关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn native关键字</h1>
+	
+	<p>native关键字可用于声明<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Native">native函数</a>。</p>
+	
+	<p>native函数的定义来源于某个dll模块或amxx插件，这里不讨论dll模块。</p>
+
+	<p>主插件需使用register_native函数将native函数与某个<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Public">公共函数</a>互相绑定。</p>
+
+	<p>其它插件调用native函数时，等于调用其绑定的公共函数。</p>
+
+	<div class="note-box">
+		<h4>主插件源码示例：</h4>
+
+		<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+
+public <span class="amxx-function">plugin_natives</span>()
+{
+	<span class="amxx-comment">// 将native函数TestFunc绑定到公共函数@TestFunc</span>
+	<span class="amxx-function">register_native</span>(<span class="amxx-string">"TestFunc"</span>, <span class="amxx-string">"@TestFunc"</span>);
+}
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件1"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+}
+
+<span class="amxx-comment">// 参数1：来访插件的索引，参数2：来访插件送来多少个参数</span>
+<span class="amxx-function">@TestFunc</span>(<span class="amxx-identifier">pluginId</span>, <span class="amxx-identifier">paramCount</span>)
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] 随便做点什么 !"</span>);
+}</code>
+	</div>
+	
+	<div class="note-box">
+		<h4>主插件inc文件示例：</h4>
+
+		<code><span class="amxx-di">#if</span> (defined(<span class="amxx-identifier">_testplugin_included</span>))
+	<span class="amxx-di">#endinput</span>
+<span class="amxx-di">#endif</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">_testplugin_included</span>
+
+<span class="amxx-comment">// 声明native函数：该函数与主插件的公共函数@TestFunc函数互相绑定</span>
+native <span class="amxx-function">TestFunc</span>();</code>
+	</div>
+	
+	<div class="note-box">
+		<h4>其它插件源码示例：</h4>
+
+		<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-di">#include</span> <<span class="amxx-string">testplugin</span>>	<span class="amxx-comment">// 假设主插件提供的是testplugin.inc文件，引用它</span>
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件2"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+
+	<span class="amxx-comment">// 调用TestFunc函数，等于调用主插件的@TestFunc函数</span>
+	<span class="amxx-function">TestFunc</span>();
+}</code>
+	</div>
+	
+	<p>用户需要自行阅读这register_native函数相关注释。</p>
+	
+	<div class="note-box">
+		<h4>AMX Mod X 1.10.0版本amxconst.inc文件中相关内容：</h4>
+
+		<code><span class="amxx-comment">/// native函数错误</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_NATIVE</span> <span class="amxx-number">10</span>
+<span class="amxx-comment">/// 内存访问错误</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_MEMACCESS</span> <span class="amxx-number">5</span>
+<span class="amxx-comment">/// 无理由错误（在native函数中无效）</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_NONE</span> <span class="amxx-number">0</span>
+<span class="amxx-comment">/// 索引越界</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_BOUNDS</span> <span class="amxx-number">4</span>
+<span class="amxx-comment">/// 栈错误</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_STACKERR</span> <span class="amxx-number">3</span>
+<span class="amxx-comment">/// 栈空间不足</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_STACKLOW</span> <span class="amxx-number">7</span>
+<span class="amxx-comment">/// 堆空间不足</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_HEAPLOW</span> <span class="amxx-number">8</span>
+<span class="amxx-comment">/// 除法错误</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_DIVIDE</span> <span class="amxx-number">11</span>
+<span class="amxx-comment">/// 找不到函数</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_NOTFOUND</span> <span class="amxx-number">19</span>
+<span class="amxx-comment">/// 参数错误</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_PARAMS</span> <span class="amxx-number">25</span>
+<span class="amxx-comment">/// 未知错误</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">AMX_ERR_GENERAL</span> <span class="amxx-number">27</span></code>
+	</div>
+
+	<div class="note-box">
+		<h4>AMX Mod X 1.10.0版本amxmodx.inc文件中相关内容：</h4>
+
+		<code><span class="amxx-comment">/**
+ * 将native和public函数互相绑定。
+ *
+ * @note	此函数只能在plugin_natives函数内运行，一个native函数只能绑定一次，重新绑定没有任何效果。
+ *
+ * @note	native函数不该自己调用自己，会出问题。
+ *
+ * @param name		native函数名称
+ * @param handler	public函数名称，函数内部可使用log_error函数抛出错误
+ * @param style		public函数风格:
+ *			style参数为0时，应该像这样声明public函数的参数:
+ *			public native_handler(plugin_id, argc)
+ *			plugin_id    - 来访插件的索引
+ *			argc         - 来访插件送来多少个参数
+ *			public函数内部应该使用下列函数访问参数：
+ *			get_string/set_string/get_param/get_param_f/get_param_byref/get_float_byref/
+ *			set_param_byref/set_float_byref/get_array/get_array_f/set_array/set_array_f
+ *			style参数值1已被弃用，因为可能会出问题，插件不应该使用。
+ *			style参数为1时，public函数签名应该与native函数签名完全一致。
+ *			并且public函数内部应该使用param_convert函数处理每个按引用传递的参数
+ *
+ * @noreturn
+ * @error		handler参数所指public函数不存在。
+ */</span>
+native <span class="amxx-function">register_native</span>(const <span class="amxx-identifier">name</span>[], const <span class="amxx-identifier">handler</span>[], <span class="amxx-identifier">style</span> = <span class="amxx-number">0</span>);
+
+<span class="amxx-comment">/**
+ * 记录错误日志，并在退出public函数后，让来访插件跳转到AMXX调试器。
+ * 让来访插件对native函数的调用失败，抛出错误。
+ *
+ * @note	调用log_error函数的是定义native和public函数的插件，触发错误的是调用native函数的插件
+ *
+ * @note	执行此函数并不会立即抛出错误，而是在退出public函数后抛出错误
+ *
+ * @param error		错误码，详情查阅amxconst.inc文件中名称以AMX_ERR_开头的宏常量
+ * @param fmt		需要录入日志文件的文本，允许使用格式占位符%b %c %d %i %u %f %X %x %a %s %L %l %N %n %% % 
+ *			格式占位符表示将后续参数转换为某一样式的字符串，填充到自身位置。
+ *			%b 需要1个单值参数，二进制样式。
+ *			%c 需要1个单值参数，字符样式。
+ *			%d 和 %i 完全相同，需要1个单值参数，十进制样式。
+ *			%u 需要1个单值参数，无符号十进制样式。
+ *			%f 需要1个单值参数，浮点数样式。
+ *			%X 需要1个单值参数，大写十六进制样式。
+ *			%x 需要1个单值参数，小写十六进制样式。
+ *			%a 需要1个单值参数(字符串指针)，字符串样式。
+ *			%s 需要1个数组参数(字符串)。不转换。
+ *			%L 需要1个单值参数(LANG_SERVER/LANGE_PLAYER/玩家实体索引)和1个数组参数(预设的可翻译字符串)。
+ *			LANG_SERVER表示"使用服务端设定的语言"。
+ *			LANGE_PLAYER表示"显示给谁就使用谁设定的语言"。
+ *			玩家实体索引表示"使用索引所指玩家设定的语言"。
+ *			预设的可翻译字符串来自register_dictionary函数。
+ *			将字符串转换为翻译后的内容。
+ *			%l 需要1个数组参数(预设的可翻译字符串)，显示给谁就使用谁设定的语言，将字符串转换为翻译后的内容。
+ *			%N 需要1个单值参数(玩家实体索引)，"玩家名称<队伍名称>"样式。
+ *			%n 需要1个单值参数(玩家实体索引)，转换为玩家名称。
+ *			%% 不需要参数，而是将自身转换为 % 字符。
+ *			% 不需要参数，而是会被删除。
+ * @param ...		这是可变参数，允许输入输出任何类型的参数。但这里要求按照顺序填写格式占位符所需的参数
+ *
+ * @noreturn
+ */</span>
+native <span class="amxx-function">log_error</span>(<span class="amxx-identifier">error</span>, const <span class="amxx-identifier">fmt</span>[], <span class="amxx-tag">any</span>:...);
+
+<span class="amxx-comment">/**
+ * 处理native函数的传引用参数，使其能正常工作。
+ *
+ * @deprecated	绑定native函数时,若style参数为1,应该改为0,并且不需要处理传引用参数
+ *
+ * @note	绑定native函数时,若style参数为1,则必须处理传引用参数
+ * @note	注意：数组、字符串、带有&修饰符的单值参数，都是按引用传递
+ *
+ * @param num	需处理的参数号码，从1开始
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为0。
+ */</span>
+native <span class="amxx-function">param_convert</span>(<span class="amxx-identifier">num</span>);
+
+<span class="amxx-comment">/**
+ * 复制native函数的字符串参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param dest		输出字符串参数的副本
+ * @param maxlen	最多输出多少个字符（不包括终止符）
+ *
+ * @return	实际输出多少个字符（不包括终止符）
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">get_string</span>(<span class="amxx-identifier">param</span>, <span class="amxx-identifier">dest</span>[], <span class="amxx-identifier">maxlen</span>);
+
+
+<span class="amxx-comment">/**
+ * 更改native函数的字符串参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param dest		新字符串
+ * @param maxlen	最多从新字符串复制多少个字符（不包括终止符）
+ *
+ * @return	实际复制多少个字符（不包括终止符）
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">set_string</span>(<span class="amxx-identifier">param</span>, <span
+	class="amxx-identifier">dest</span>[], <span class="amxx-identifier">maxlen</span>);
+
+<span class="amxx-comment">/**
+ * 复制native函数按值传递的单值参数。
+ *
+ * @param param		参数号码，从1开始
+ *
+ * @return	参数值，若有需要，使用标签覆盖表达式更改标签
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">get_param</span>(<span class="amxx-identifier">param</span>);
+
+<span class="amxx-comment">/**
+ * 复制native函数按值传递的单值参数，并用Float标签覆盖_标签。
+ *
+ * @param param		参数号码，从1开始
+ *
+ * @return	参数值
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-tag">Float:</span><span class="amxx-function">get_param_f</span>(<span class="amxx-identifier">param</span>);
+
+<span class="amxx-comment">/**
+ * 复制native函数按引用传递的单值参数。
+ *
+ * @param param		参数号码，从1开始
+ *
+ * @return	参数值，若有需要，使用标签覆盖表达式更改标签
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">get_param_byref</span>(<span class="amxx-identifier">param</span>);
+
+<span class="amxx-comment">/**
+ * 复制native函数按引用传递的单值参数，并用Float标签覆盖_标签。
+ *
+ * @param param		参数号码，从1开始
+ *
+ * @return	参数值
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-tag">Float:</span><span class="amxx-function">get_float_byref</span>(<span class="amxx-identifier">param</span>);
+
+<span class="amxx-comment">/**
+ * 更改native函数按引用传递的单值参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param value		新值，若拥有any或_以外的标签，需附带标签覆盖表达式
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">set_param_byref</span>(<span class="amxx-identifier">param</span>, <span class="amxx-identifier">value</span>);
+
+<span class="amxx-comment">/**
+ * 更改native函数按引用传递的单值参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param value		带有Float标签的新值（标签是插件独享，编译时删除的，各插件同名标签id不同，并不能证明数值真的是浮点数）
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">set_float_byref</span>(<span class="amxx-identifier">param</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">value</span>);
+
+<span class="amxx-comment">/**
+ * 获取native函数的一维数组参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param dest		输出参数值，若有any或_以外的标签，需使用标签覆盖表达式
+ * @param size		需要输出多少个元素
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">get_array</span>(<span class="amxx-identifier">param</span>, <span class="amxx-identifier">dest</span>[], <span class="amxx-identifier">size</span>);
+
+<span class="amxx-comment">/**
+ * 获取native函数的一维数组参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param dest		输出参数值，若有Float以外的标签，需使用Float:标签覆盖表达式
+ * @param size		需要输出多少个元素
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">get_array_f</span>(<span class="amxx-identifier">param</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">dest</span>[], <span class="amxx-identifier">size</span>);
+
+<span class="amxx-comment">/**
+ * 更改native函数的一维数组参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param source	新数组，若有any或_以外的标签，需使用标签覆盖表达式
+ * @param size		从新数组复制多少个元素
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">set_array</span>(<span class="amxx-identifier">param</span>, const <span class="amxx-identifier">source</span>[], <span class="amxx-identifier">size</span>);
+
+<span class="amxx-comment">/**
+ * 更改native函数的一维数组参数。
+ *
+ * @param param		参数号码，从1开始
+ * @param source	新数组，若有Float以外的标签，需使用Float:标签覆盖表达式
+ * @param size		从新数组复制多少个元素
+ *
+ * @noreturn
+ * @error	在native函数绑定的public函数外使用；
+ *		绑定public函数时style参数为1。
+ */</span>
+native <span class="amxx-function">set_array_f</span>(<span class="amxx-identifier">param</span>, const <span class="amxx-tag">Float:</span><span class="amxx-identifier">source</span>[], <span class="amxx-identifier">size</span>);</code>
+
+	</div>
+	
+
+</body>
+</html>

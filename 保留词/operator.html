@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn operator关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn operator关键字</h1>
+	
+	<p>operator关键字用于声明运算符重载语句，同时也是声明一个拥有假名的函数。</p>
+	
+	<p>AMXXPawn的运算符重载本质是设定一个文本替换规则。</p>
+	
+	<p>编译器会检查源码中的复合表达式，若运算符对得上，且所有操作数的值类型标签对得上，则替换为函数调用。</p>
+	
+	<p>由于函数只能在插件运行时调用，所以满足替换条件的表达式不可能是常量表达式。</p>
+	
+	<div class="note-box">
+		<h3>各类运算符重载语句，（）是必填项目，【】是可选项目:</h3>
+
+		<h4>声明forward函数：</h4>
+		<h4>【<span class="amxx-default">forward</span>】 【值类型标签】（函数假名）（参数列表）【<span class="amxx-default">;</span>】</h4>
+		<br>
+		<h4>声明、定义native函数：</h4>
+		<h4>（<span class="amxx-default">native</span>） 【值类型标签】（函数假名）（参数列表） （<span class="amxx-default">=</span>） （真名可见的native函数）【<span class="amxx-default">;</span>】</h4>
+		<h4>（<span class="amxx-default">native</span>） 【值类型标签】（函数假名）（参数列表） （<span class="amxx-default">=</span>） （单值常量表达式）【<span class="amxx-default">;</span>】</h4>
+		<br>
+		<h4>声明、定义公共函数：</h4>
+		<h4>(<span class="amxx-default">public</span>) 【值类型标签】（函数假名）（参数列表） （函数体）</h4>
+		<br>
+		<h4>声明、定义文件私有函数：</h4>
+		<h4>(<span class="amxx-default">static</span>) 【值类型标签】（函数假名）（参数列表） （函数体）</h4>
+		<br>
+		<h4>声明、定义文件私有备用函数：</h4>
+		<h4>(<span class="amxx-default">static stock</span>) 【值类型标签】（函数假名）（参数列表） （函数体）</h4>
+		<h4>(<span class="amxx-default">stock static</span>) 【值类型标签】（函数假名）（参数列表） （函数体）</h4>
+		<br>
+		<h4>声明、定义插件私有函数：</h4>
+		<h4>【值类型标签】（函数假名）（参数列表） （函数体）</h4>
+		<br>
+		<h4>声明、定义插件私有备用函数：</h4>
+		<h4>(<span class="amxx-default">stock</span>) 【值类型标签】（函数假名）（参数列表） （函数体）</h4>
+		<br>
+		<h4>（函数假名）语法拆解:</h4>
+		<h4>（<span class="amxx-default">operator</span>）（运算符）</h4>
+	</div>
+	
+	<p>运算符重载语句和<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数声明语句</a>基本上完全相同，除了native函数声明语句，以及函数名称的设定。</p>
+
+	<p>关于“函数假名”：</p>
+	<ul>
+		<li>“函数假名”用于定义要匹配的运算符，可匹配的运算符有：<span class="highlight">+ - * / % ++ -- == != < > <= >= ! =</span></li>
+		<li>函数真名在编译时自动生成，因此通常无法得知。如果需要让外部插件调用，可定义一个接口函数进行跳转</li>
+	</ul>
+	
+	<p>关于“参数列表”：</p>
+	<ul>
+		<li>“参数列表”实际上是运算符的操作数列表</li>
+		<li>需要1个参数的运算符：<span class="highlight">++ -- ! =</span></li>
+		<li>需要2个参数的运算符：<span class="highlight">+ - * / % == != < > <= >=</span></li>
+		<li>参数不能传引用</li>
+	</ul>
+	
+	<p>关于“参数的值类型标签”：</p>
+	<ul>
+		<li>复合表达式的操作数与参数的标签相同时，就会进一步满足替换条件</li>
+		<li>编译器优化可能会交换左右两个操作数位置，若两个操作数标签不同，最好同时设定_: + Float:和Float: + _:两种匹配模式</li>
+		<li>需要2个参数的运算符：<span class="highlight">+ - * / % == != < > <= >=</span></li>
+	</ul>
+	
+	<p>关于“函数的值类型标签”：</p>
+	<ul>
+		<li>“函数的值类型标签”也就是返回值标签，运算符计算结果的标签</li>
+		<li><span class="highlight">!</span>运算符的返回值必须带有bool标签</li>
+		<li>其它运算符的返回值可以自定义标签</li>
+		<li><span class="highlight">=</span>的返回值标签同样是替换条件之一，因此，只有它可以有多个拥有相同“参数列表”的重载</li>
+	</ul>
+	
+	<p>其它：</p>
+	<ul>
+		<li>示例代码可以参照float.inc文件，该文件定义了拥有Float标签的操作数该如何运算，重载了几乎所有可重载的运算符</li>
+		<li><span class="highpght">++ --</span>不区分前置或后置，在文本替换时会自动处理，用户只需定义计算方式</li>
+		<li>变量声明语句会隐式调用<span class="highpght">标签:v=标签:0</span>运算，自动完成变量定义</li>
+	</ul>
+	
+	<div class="warning-box">
+		<h4>关于bug：</h4>
+		<ul>
+			<p>AMX Mod X 1.8.2 至 1.10.0版本，++和--运算会指向同一函数地址。</p>
+			<p>这会导致--运算实际触发的是++运算。</p>
+			<p>例子：</p>
+			<code>stock <span class="amxx-tag">Float:</span>operator++(<span class="amxx-tag">Float:</span><span class="amxx-identifier">oper</span>)
+	return <span class="amxx-identifier">oper</span>+<span class="amxx-number">1.0</span>;
+
+stock <span class="amxx-tag">Float:</span>operator--(<span class="amxx-tag">Float:</span><span class="amxx-identifier">oper</span>)
+	return <span class="amxx-identifier">oper</span>-<span class="amxx-number">1.0</span>;
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	new <span class="amxx-tag">Float:</span><span class="amxx-identifier">f</span> = <span class="amxx-number">5.0</span>;
+	<span class="amxx-identifier">f</span>--;
+	<span class="amxx-comment">// 正确结果为4.0，实际打印6.0</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"f = %f"</span>, <span class="amxx-identifier">f</span>);
+}</code>
+
+			<p>修复方法：</p>
+			<p>找到编译器源码sc3.c文件中，以下代码：</p>
+			<code>static void <span class="amxx-function">user_inc</span>(void) { }
+static void <span class="amxx-function">user_dec</span>(void) { }</code>
+			<p>用下面的代码覆盖再重新编译，得到新的amxxpc32.dll，替换旧文件。</p>
+			<code>static void <span class="amxx-function">user_inc</span>(void) { }
+static void <span class="amxx-function">user_dec</span>(void) { __asm { nop }; }</code>
+			<p>逃避方法：</p>
+			<p>将插件源码中f--或--f之类的代码改为<span class="highlight">f -= 1.0</span>、<span class="highlight">f = f - 1.0</span>、 <span class="highlight">f = floatsub(f, 1.0)</span>等样式。</p>
+			<p>注意事项：</p>
+			<p>v--或v++表达式的返回值是变量v的地址，而不是v的值。</p>
+			<p>建议：</p>
+			<p>由于运算符重载本质是将复合表达式替换为函数调用，直接调用函数实际上更可靠，可避开各种未知bug。</p>
+		</ul>
+	</div>
+	
+</body>
+</html>

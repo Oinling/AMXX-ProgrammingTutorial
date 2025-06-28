@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn 运算符</title>
+<style>
+	:root {
+		--primary-color: #3498db;
+		--secondary-color: #2c3e50;
+		--accent-color: #e74c3c;
+		--light-bg: #f8f9fa;
+		--dark-bg: #eaecef;
+		--code-color: #0000ff;
+		--border-color: #ddd;
+	}
+	
+	body {
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		line-height: 1.6;
+		color: #333;
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 20px;
+		background-color: #fff;
+	}
+	
+	h1, h2, h3 {
+		color: var(--secondary-color);
+		margin-top: 30px;
+	}
+	
+	h1 {
+		border-bottom: 2px solid var(--primary-color);
+		padding-bottom: 10px;
+	}
+	
+	h2 {
+		border-left: 4px solid var(--primary-color);
+		padding-left: 15px;
+		margin-top: 40px;
+	}
+	
+	h3 {
+		color: var(--accent-color);
+		margin-top: 25px;
+	}
+	
+	code {
+		font-family: 'Consolas', 'Monaco', monospace;
+		background-color: var(--light-bg);
+		padding: 2px 5px;
+		border-radius: 3px;
+		color: var(--code-color);
+		font-size: 0.95em;
+	}
+	
+	pre {
+		background-color: var(--light-bg);
+		padding: 15px;
+		border-radius: 5px;
+		overflow-x: auto;
+		border-left: 3px solid var(--primary-color);
+	}
+	
+	.operator-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 20px 0;
+		box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+	}
+	
+	.operator-table th, 
+	.operator-table td {
+		border: 1px solid var(--border-color);
+		padding: 12px 15px;
+		text-align: left;
+	}
+	
+	.operator-table th {
+		background-color: var(--secondary-color);
+		color: white;
+		font-weight: bold;
+	}
+	
+	.operator-table tr:nth-child(even) {
+		background-color: var(--light-bg);
+	}
+	
+	.operator-table tr:hover {
+		background-color: var(--dark-bg);
+	}
+	
+	.note {
+		background-color: #e7f5fe;
+		border-left: 4px solid var(--primary-color);
+		padding: 15px;
+		margin: 20px 0;
+		border-radius: 0 4px 4px 0;
+	}
+	
+	.warning {
+		background-color: #fff3e0;
+		border-left: 4px solid #ff9800;
+		padding: 15px;
+		margin: 20px 0;
+		border-radius: 0 4px 4px 0;
+	}
+	
+	.important {
+		background-color: #ffebee;
+		border-left: 4px solid var(--accent-color);
+		padding: 15px;
+		margin: 20px 0;
+		border-radius: 0 4px 4px 0;
+	}
+	
+	.toc {
+		background-color: var(--light-bg);
+		padding: 20px;
+		border-radius: 5px;
+		margin-bottom: 30px;
+	}
+	
+	.toc ul {
+		padding-left: 20px;
+		margin: 0;
+	}
+	
+	.toc li {
+		margin-bottom: 8px;
+	}
+	
+	.example {
+		background-color: #f5f5f5;
+		padding: 15px;
+		border-left: 4px solid #9e9e9e;
+		margin: 15px 0;
+		font-size: 0.95em;
+	}
+	
+	.amxx-comment {
+		color: #2e7d32;
+		font-style: bold;
+	}
+	
+	.amxx-symbol {
+		color: #6a1b9a;
+		font-weight: bold;
+	}
+	
+	.amxx-function {
+		color: #d81b60;
+		font-weight: bold;
+	}
+	
+	.amxx-tag {
+		color: #5d140a;
+	}
+	
+	.amxx-number {
+		color: #00838f;
+	}
+	
+	.binary-example {
+		font-family: monospace;
+		letter-spacing: 1px;
+		background-color: #263238;
+		color: #eceff1;
+		padding: 10px;
+		border-radius: 4px;
+		overflow-x: auto;
+	}
+	
+	.binary-arrow {
+		color: #4caf50;
+		font-weight: bold;
+	}
+</style>
+</head>
+<body>
+
+<h1>AMXXPawn 运算符</h1>
+
+<div class="toc">
+	<h2>目录</h2>
+	<ul>
+		<li><a href="#introduction">1. 简介</a></li>
+		<li><a href="#arithmetic">2. 算术运算符</a></li>
+		<li><a href="#bitwise">3. 二进制位操作运算符</a></li>
+		<li><a href="#assignment">4. 赋值运算符</a></li>
+		<li><a href="#relational">5. 关系运算符</a></li>
+		<li><a href="#logical">6. 逻辑运算符</a></li>
+		<li><a href="#other">7. 其他运算符</a></li>
+		<li><a href="#precedence">8. 优先级</a></li>
+	</ul>
+</div>
+
+<h2 id="introduction">1. 简介</h2>
+
+<p>运算符(Operator)是能够利用操作数得出数值的符号，是复合表达式的重要组成部分。</p>
+
+<p>部分运算符的操作数类型、计算结果是可以自定义的。点击查看：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">运算符重载指南</a></p>
+
+<p>float.inc文件专门为拥有Float标签的操作数重新定义了运算符计算方式，其它类型的操作数都默认执行整数计算。</p>
+
+<div class="note">
+	<p><strong>版本注意：</strong>AMXX1.8.3以下和AMXX1.8.2以上版本，浮点数的相关计算结果略有不同，而且某些运算符被禁用。感兴趣的可以自行查阅<code>float.inc</code>文件。</p>
+</div>
+
+<div class="warning">
+	<p><strong>学习建议：</strong>以下内容中，看不懂的可以先跳过，需要用到时再翻回来看。还有就是二进制位操作属于常用的必学内容。</p>
+</div>
+
+<h3>操作数表示法</h3>
+
+<p>操作数通常是字面量、常量、变量、函数等表达式，还可以是由它们与运算符组合成的表达式。接下来用单个字符表示：</p>
+
+<pre><code>e	   <span class="amxx-comment">// 任意表达式</span>
+<span class="amxx-symbol">v</span>	   <span class="amxx-comment">// 变量(不能有只读特性,不能是数组)</span>
+<span class="amxx-symbol">a</span>	   <span class="amxx-comment">// 数组(包括数组字面量,字符串字面量)</span>
+<span class="amxx-function">f</span>	   <span class="amxx-comment">// 函数</span>
+<span class="amxx-symbol">s</span>	   <span class="amxx-comment">// 任何标识符</span></code></pre>
+
+<p>需要注意，标识符和数值不是一回事，标识符可以当做数值使用，但数值不能当做标识符使用。</p>
+
+<p>运算符的操作结果可能会得到标识符本身，或得到标识符绑定的数值。</p>
+
+<h2 id="arithmetic">2. 算术运算符</h2>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>运算符</th>
+			<th>名称</th>
+			<th>用法</th>
+			<th>描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>+</code></td>
+			<td>加法运算符</td>
+			<td><code>e1 + e2</code></td>
+			<td>得到e1加e2的结果</td>
+		</tr>
+		<tr>
+			<td><code>-</code></td>
+			<td>求负数<br>减法运算符</td>
+			<td><code>-e</code><br><code>e1 - e2</code></td>
+			<td>求e的负数<br>得到e1减e2的结果</td>
+		</tr>
+		<tr>
+			<td><code>*</code></td>
+			<td>乘法运算符</td>
+			<td><code>e1 * e2</code></td>
+			<td>得到e1乘以e2的结果</td>
+		</tr>
+		<tr>
+			<td><code>/</code></td>
+			<td>除法运算符</td>
+			<td><code>e1 / e2</code></td>
+			<td>得到e1除以e2的商数，向下取整</td>
+		</tr>
+		<tr>
+			<td><code>%</code></td>
+			<td>求余运算符</td>
+			<td><code>e1 % e2</code></td>
+			<td>得到e1除以e2的余数</td>
+		</tr>
+		<tr>
+			<td><code>++</code></td>
+			<td>递增运算符</td>
+			<td><code><span class="amxx-symbol">v</span>++</code><br><code>++<span class="amxx-symbol">v</span></code></td>
+			<td>让v的值增加1<br>++在后，得到旧值<br>++在前，但得新值</td>
+		</tr>
+		<tr>
+			<td><code>--</code></td>
+			<td>递减运算符</td>
+			<td><code><span class="amxx-symbol">v</span>--</code><br><code>--<span class="amxx-symbol">v</span></code></td>
+			<td>让v的值减少1<br>--在后，得到旧值<br>--在前，得到新值</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="note">
+	<p><strong>注意：</strong>AMXX中并没有定义求正运算符，因此不能用<code>+</code>得到e的正数。</p>
+</div>
+
+<div class="example">
+	<h4>除法与求余的欧几里得性质：</h4>
+	<pre><code>e1 = 商 * e2 + 余
+商 = e1 / e2
+余 = e1 % e2</code></pre>
+</div>
+
+<h2 id="bitwise">3. 二进制位操作运算符</h2>
+
+<div class="important">
+	<p><strong>重要：</strong>二进制位操作是AMXXPawn编程中的核心技能，在游戏中应用广泛，务必掌握。</p>
+	<p>AMXXPawn的所有数值都可用32个位上的0或1表示，左边是高位，右边是低位。</p>
+	<p>其中，从右往左第32个位称为'符号位'，若为0表示数值是正数，若为1表示数值是负数。</p>
+	<p>源码中可以用0b开头，编写二进制数值字面量（可在数值内任何顺眼的位置穿插下划线），左侧连续的0可以不写。</p>
+	<p>例如：0b_00001111和0b_1111是同一个数值。</p>
+</div>
+
+<div class="example">
+	<h4>数值的二进制表示：</h4>
+	<div class="binary-example">
+		<div>0000_0000_0000_0000_1111_1111_1111_1111</div>
+		<div>↑符号位</div>
+	</div>
+</div>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>运算符</th>
+			<th>名称</th>
+			<th>用法</th>
+			<th>描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>~</code></td>
+			<td>按位取反</td>
+			<td><code>~e</code></td>
+			<td>得到e在二进制位中的补数，所有位取反，0变1，1变0</td>
+		</tr>
+		<tr>
+			<td><code>>></code></td>
+			<td>有符号右移</td>
+			<td><code>e1 >> e2</code></td>
+			<td>右移e2位，用符号位相同值填充左侧，右侧溢出位舍弃</td>
+		</tr>
+		<tr>
+			<td><code>>>></code></td>
+			<td>无符号右移</td>
+			<td><code>e1 >>> e2</code></td>
+			<td>右移e2位，用0填充左侧，右侧溢出位舍弃</td>
+		</tr>
+		<tr>
+			<td><code><<</code></td>
+			<td>左移</td>
+			<td><code>e1 << e2</code></td>
+			<td>左移e2位，左侧溢出位舍弃，用0填充右侧</td>
+		</tr>
+		<tr>
+			<td><code>&</code></td>
+			<td>位与</td>
+			<td><code>e1 & e2</code></td>
+			<td>保留e1与e2同位上的1，其它全为0。得到交集</td>
+		</tr>
+		<tr>
+			<td><code>|</code></td>
+			<td>位或</td>
+			<td><code>e1 | e2</code></td>
+			<td>保留e1或e2所有位上的1，其它全为0。得到并集</td>
+		</tr>
+		<tr>
+			<td><code>^</code></td>
+			<td>位异或</td>
+			<td><code>e1 ^ e2</code></td>
+			<td>保留e1和e2不同位上的1，其它全为0。得到对称差集</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="example">
+	<h4>二进制位操作示例：</h4>
+	<div class="binary-example">
+		<div>~e计算结果</div>
+		<div>0000_0000_0000_0000_1111_1111_1111_1111  <span class="amxx-comment">// e的值</span></div>
+		<div>1111_1111_1111_1111_0000_0000_0000_0000  <span class="amxx-comment">// 结果</span></div>
+		<br>
+		<div>e1 >> e2 计算结果(假设e2等于4,右移4位)</div>
+		<div>1000_0000_0000_0000_1111_1111_1111_0000  <span class="amxx-comment">// e1的值</span></div>
+		<div>1111_1000_0000_0000_0000_1111_1111_1111  <span class="amxx-comment">// 结果</span></div>
+		<br>
+		<div>e1 >>> e2 计算结果(假设e2等于4,右移4位)</div>
+		<div>0100_0000_0000_0000_1111_1111_1111_0000  <span class="amxx-comment">// e1的值</span></div>
+		<div>0000_0100_0000_0000_0000_1111_1111_1111  <span class="amxx-comment">// 结果</span></div>
+		<br>
+		<div>e1 & e2 计算结果，同位上等于1的部分设为1</div>
+		<div>0000_0000_0000_0000_1111_0000_0000_0000  <span class="amxx-comment">// e1的值</span></div>
+		<div>0000_0000_0000_0011_1100_0000_0000_0000  <span class="amxx-comment">// e2的值</span></div>
+		<div>0000_0000_0000_0000_1100_0000_0000_0000  <span class="amxx-comment">// 结果</span></div>
+		<br>
+		<div>e1 | e2 计算结果，有1的部分设为1</div>
+		<div>0000_0000_0000_0000_1111_0000_0000_0000  <span class="amxx-comment">// e1的值</span></div>
+		<div>0000_0000_0000_0011_1100_0000_0000_0000  <span class="amxx-comment">// e2的值</span></div>
+		<div>0000_0000_0000_0011_1111_0000_0000_0000  <span class="amxx-comment">// 结果</span></div>
+		<br>
+		<div>e1 ^ e2 计算结果，有差异的位设为1</div>
+		<div>0000_0000_0000_0000_1111_0000_0000_0000  <span class="amxx-comment">// e1的值</span></div>
+		<div>0000_0000_0000_0011_1100_0000_0000_0000  <span class="amxx-comment">// e2的值</span></div>
+		<div>0000_0000_0000_0011_0011_0000_0000_0000  <span class="amxx-comment">// 结果</span></div>
+	</div>
+</div>
+
+<h2 id="assignment">4. 赋值运算符</h2>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>运算符</th>
+			<th>名称</th>
+			<th>用法</th>
+			<th>描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>=</code></td>
+			<td>赋值</td>
+			<td><code><span class="amxx-symbol">v</span> = e</code></td>
+			<td>将e的每个数值复制给v<br>若e非数组，结果为e<br>若e是数组，维度必须与v相同，e和v的每个多维数组尺寸必须相同，<br>e的每个1维数组尺寸必须小于等于v内部对应的1维数组尺寸，计算结果是e的地址</td>
+		</tr>
+		<tr>
+			<td><code>+=</code></td>
+			<td>加法赋值</td>
+			<td><code><span class="amxx-symbol">v</span> += e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> + e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>-=</code></td>
+			<td>减法赋值</td>
+			<td><code><span class="amxx-symbol">v</span> -= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> - e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>*=</code></td>
+			<td>乘法赋值</td>
+			<td><code><span class="amxx-symbol">v</span> *= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> * e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>/=</code></td>
+			<td>除法赋值</td>
+			<td><code><span class="amxx-symbol">v</span> /= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> / e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>%=</code></td>
+			<td>求余赋值</td>
+			<td><code><span class="amxx-symbol">v</span> %= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> % e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>>>=</code></td>
+			<td>右移赋值</td>
+			<td><code><span class="amxx-symbol">v</span> >>= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> >> e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>>>>=</code></td>
+			<td>无符号右移赋值</td>
+			<td><code><span class="amxx-symbol">v</span> >>>= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> >>> e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code><<=</code></td>
+			<td>左移赋值</td>
+			<td><code><span class="amxx-symbol">v</span> <<= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> << e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>&=</code></td>
+			<td>位与赋值</td>
+			<td><code><span class="amxx-symbol">v</span> &= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> & e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>|=</code></td>
+			<td>位或赋值</td>
+			<td><code><span class="amxx-symbol">v</span> |= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> | e</code>的简写</td>
+		</tr>
+		<tr>
+			<td><code>^=</code></td>
+			<td>位异或赋值</td>
+			<td><code><span class="amxx-symbol">v</span> ^= e</code></td>
+			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> ^ e</code>的简写</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2 id="relational">5. 关系运算符</h2>
+
+<p>下列运算符的计算结果皆为0或1，是用于表示真假，是非，对错的数值。</p>
+
+<p>若数值为0，对应常量<code><span class="amxx-symbol">false</span></code>，表示否定。若数值非0，对应常量<code><span class="amxx-symbol">true</span></code>，表示肯定。</p>
+
+<div class="note">
+	<p><strong>注意：</strong>虽然任何非0数都可以表示<code><span class="amxx-symbol">true</span></code>，但它的实际数值为1。</p>
+</div>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>运算符</th>
+			<th>名称</th>
+			<th>用法</th>
+			<th>描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>==</code></td>
+			<td>等号</td>
+			<td><code>e1 == e2</code></td>
+			<td>相等得1，反之得0</td>
+		</tr>
+		<tr>
+			<td><code>!=</code></td>
+			<td>不等号</td>
+			<td><code>e1 != e2</code></td>
+			<td>相等得0，反之得1</td>
+		</tr>
+		<tr>
+			<td><code><</code></td>
+			<td>小于</td>
+			<td><code>e1 < e2</code></td>
+			<td>e1小于e2得1，否则得0</td>
+		</tr>
+		<tr>
+			<td><code><=</code></td>
+			<td>小于等于</td>
+			<td><code>e1 <= e2</code></td>
+			<td>e1小于等于e2得1，否则得0</td>
+		</tr>
+		<tr>
+			<td><code>></code></td>
+			<td>大于</td>
+			<td><code>e1 > e2</code></td>
+			<td>e1大于e2得1，否则得0</td>
+		</tr>
+		<tr>
+			<td><code>>=</code></td>
+			<td>大于等于</td>
+			<td><code>e1 >= e2</code></td>
+			<td>e1大于等于e2得1，否则得0</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2 id="logical">6. 逻辑运算符</h2>
+
+<p>下列运算符的计算结果皆为0或1，是用于表示真假，是非，对错的数值。</p>
+
+<p>若数值为0，对应常量<code><span class="amxx-symbol">false</span></code>，表示否定。若数值非0，对应常量<code><span class="amxx-symbol">true</span></code>，表示肯定。</p>
+
+<div class="note">
+	<p><strong>注意：</strong>虽然任何非0数都可以表示<code><span class="amxx-symbol">true</span></code>，但它的实际数值为1。</p>
+</div>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>运算符</th>
+			<th>名称</th>
+			<th>用法</th>
+			<th>描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>!</code></td>
+			<td>逻辑非</td>
+			<td><code>!e</code></td>
+			<td>是非颠倒。e为0得1，否则得0</td>
+		</tr>
+		<tr>
+			<td><code>&&</code></td>
+			<td>逻辑与</td>
+			<td><code>e1 && e2</code></td>
+			<td>全都要。两者皆非0，则得1，否则得0</td>
+		</tr>
+		<tr>
+			<td><code>||</code></td>
+			<td>逻辑或</td>
+			<td><code>e1 || e2</code></td>
+			<td>不可无。两者皆为0，则得0，否则得1</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="warning">
+	<p><strong>短路求值：</strong>假设e2内部含有运算符，<code>&&</code>运算符仅在e1为true时计算e2；<code>||</code>运算符仅在e1为false时计算e2。</p>
+</div>
+
+<h2 id="other">7. 其他运算符</h2>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>运算符</th>
+			<th>名称</th>
+			<th>用法</th>
+			<th>描述</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><code>[]</code></td>
+			<td>单元索引器</td>
+			<td><code><span class="amxx-symbol">a</span>[e]</code></td>
+			<td>访问数组元素,a必须是数组而不是数组字面量</td>
+		</tr>
+		<tr>
+			<td><code>{}</code></td>
+			<td>字节索引器</td>
+			<td><code><span class="amxx-symbol">a</span>{e}</code></td>
+			<td>访问数组字节(大端序),a必须是数组而不是数组字面量</td>
+		</tr>
+		<tr>
+			<td><code>()</code></td>
+			<td>分组运算<br>调用函数</td>
+			<td><code>(e)</code><br><code><span class="amxx-function">f</span>(e1, e2, ...)</code></td>
+			<td>若e是多个表达式组成,优先计算e的值,再参与外界运算</em><br>根据优化,以某种顺序计算完e1,e2,...的值后,调用f函数,得到f的返回值</td>
+		</tr>
+		<tr>
+			<td><code>? :</code></td>
+			<td>三元运算</td>
+			<td><code>e1 ? e2 : e3</code></td>
+			<td>若e1非0,则得e2,否则得e3</td>
+		</tr>
+		<tr>
+			<td><code>:</code></td>
+			<td>类标签生成与覆盖</td>
+			<td><code><span class="amxx-tag">s:</span>e</code></td>
+			<td>若s不存在则创建值类型标签,否则覆盖e的标签<br>虽然这其实不是运算符,但解析器源码中是这么称呼它的<br><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">点击查看值类型标签指南</a></td>
+		</tr>
+		<tr>
+			<td><code>:</code></td>
+			<td>跳转标签生成</td>
+			<td><code><span class="amxx-symbol">s</span>:</code></td>
+			<td>在函数体内生成一个跳转标签,可用goto关键字跳转至标签位置<br>虽然这其实不是运算符,但解析器源码中是这么称呼它的<br><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E8%B7%B3%E8%BD%AC%E6%A0%87%E7%AD%BE.html">点击查看跳转标签指南</a></td>
+		</tr>
+		<tr>
+			<td><code>,</code></td>
+			<td>逗号</td>
+			<td><code>e1, e2</code></td>
+			<td>得到e2的值<br>注意:某些逗号是分隔符,而不是运算符</td>
+		</tr>
+		<tr>
+			<td><code>defined</code></td>
+			<td>已定义</td>
+			<td><code>defined <span class="amxx-symbol">s</span></code></td>
+			<td>检查标识符是否已经定义</td>
+		</tr>
+		<tr>
+			<td><code>sizeof</code></td>
+			<td>求尺寸</td>
+			<td><code>sizeof <span class="amxx-symbol">s</span></code></td>
+			<td>s只能是变量<br>若s是单值变量,得1<br>若s是数组变量,得元素数量</td>
+		</tr>
+		<tr>
+			<td><code>tagof</code></td>
+			<td>取值类型标签</td>
+			<td><code>tagof <span class="amxx-symbol">s</span></code></td>
+			<td>s不能是自动机或状态名称<br>1.8.3以下版本中s不能是值类型标签<br>取得s的值类型标签uid</td>
+		</tr>
+		<tr>
+			<td><code>char</code></td>
+			<td>压缩尺寸</td>
+			<td><code>e char</code></td>
+			<td>得到(e + 3) / 4的结果<br>表示储存e个字节最少需要多少个cell<br>1个cell可以储存4个字节</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="example">
+	<h4>数组和字节操作示例：</h4>
+	<pre><code>new <span class="amxx-symbol">a</span>[] = { <span class="amxx-number">41</span>, <span class="amxx-number">42</span>, <span class="amxx-number">43</span>, <span class="amxx-number">0</span> };
+new <span class="amxx-symbol">value</span> = <span class="amxx-symbol">a</span>[<span class="amxx-number">0</span>];	<span class="amxx-comment">// 取0号元素值，得到41</span>
+<span class="amxx-symbol">a</span>[<span class="amxx-number">0</span>] = <span class="amxx-number">40</span>;		<span class="amxx-comment">// 对0号元素赋值</span>
+
+new <span class="amxx-symbol">b</span>[<span class="amxx-number">1</span>] = { <span class="amxx-number">0b_11100110_10001000_10010001_00000000</span> };
+new <span class="amxx-symbol">byteVal</span> = <span class="amxx-symbol">b</span>{<span class="amxx-number">0</span>};	<span class="amxx-comment">// 得到0b_11100110</span>
+<span class="amxx-symbol">byteVal</span> = <span class="amxx-symbol">b</span>{<span class="amxx-number">1</span>};		<span class="amxx-comment">// 得到0b_10001000</span>
+<span class="amxx-symbol">b</span>{<span class="amxx-number">2</span>} = <span class="amxx-number">0b_00000000</span>;	<span class="amxx-comment">// 将10010001部分改为00000000</span></code></pre>
+</div>
+
+<h2 id="precedence">8. 优先级</h2>
+
+<p>运算符优先级决定将某些表达式视作一组，优先求值。</p>
+
+<div class="example">
+	<h4>代码示例：</h4>
+	<pre><code><span class="amxx-symbol">v</span> = e1 + e2 * e3	<span class="amxx-comment">// 分组结果：(v = (e1 + (e2 * e3)))，最内层括号优先求值</span>
+<span class="amxx-symbol">v</span> = (e1 + e2) * e3	<span class="amxx-comment">// 使用圆括号改变分组结果：(v = ((e1 + e2) * e3))</span></code></pre>
+</div>
+
+<p>运算符优先级从高到低(1级最高，15级最低)：</p>
+
+<table class="operator-table">
+	<thead>
+		<tr>
+			<th>级别</th>
+			<th>运算符</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td><code>() [] {}</code></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td><code>! ~ -(负号) ++ -- : char defined sizeof tagof</code></td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td><code>* / %</code></td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td><code>+ -(减号)</code></td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td><code>>> >>> <<</code></td>
+		</tr>
+		<tr>
+			<td>6</td>
+			<td><code>&</code></td>
+		</tr>
+		<tr>
+			<td>7</td>
+			<td><code>^</code></td>
+		</tr>
+		<tr>
+			<td>8</td>
+			<td><code>|</code></td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td><code>< <= > >=</code></td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td><code>== !=</code></td>
+		</tr>
+		<tr>
+			<td>11</td>
+			<td><code>&&</code></td>
+		</tr>
+		<tr>
+			<td>12</td>
+			<td><code>||</code></td>
+		</tr>
+		<tr>
+			<td>13</td>
+			<td><code>? :</code></td>
+		</tr>
+		<tr>
+			<td>14</td>
+			<td><code>= *= /= %= += -= >>= >>>= <<= &= ^= |=</code></td>
+		</tr>
+		<tr>
+			<td>15</td>
+			<td><code>,</code></td>
+		</tr>
+	</tbody>
+</table>
+
+</body>
+</html>

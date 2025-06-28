@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn public关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn public关键字</h1>
+	
+	<h2>1. 使用public创建变量</h2>
+	
+	<p>public关键字可用于声明、定义全局变量，点击查看：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html">变量指南</a>。</p>
+	
+	<p>代码示例：</p>
+
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+
+<span class="amxx-comment">// 声明、定义仅当前插件可用的全局变量，并让AMX Mod X插件平台创建一个同名公共变量</span>
+public <span class="amxx-identifier">gDataVal</span> = <span class="amxx-number">1024</span>;
+
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 同时修改插件私有变量gDataVal和公共变量gDataVal的值</span>
+	<span class="amxx-function">set_xvar_num</span>(<span class="amxx-function">get_xvar_id</span>(<span class="amxx-string">"gDataVal"</span>), <span class="amxx-number">2048</span>);
+}</code>
+
+	<p>单独使用public声明全局变量几乎与<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a>相同，仅多出一个特性：</p>
+	
+	<p><strong>AMX Mod X 插件平台会额外创建一个同名的单值公共变量。</strong></p>
+
+	<div class="warning-box">
+	<h4>重点：</h4>
+	<ul>
+		<li>1. public私有变量可以是数组，但amxmodx公共变量是单值</li>
+		<li>2. public私有变量可以添加<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/const.html">const</a>修饰，变成只读私有变量，但amxmodx公共变量仍允许读写</li>
+		<li>3. 多个插件可创建同名public私有变量，但AMX Mod X只会创建1个同名公共变量</li>
+		<li>4. 第1个public私有变量和第1个amxmodx公共变量的值互相绑定，更改一个会影响另一个</li>
+		<li>5. 后续插件创建的public私有变量，是完全独立存在的，不受外部影响</li>
+	</ul>
+	</div>
+
+	<p>所有插件都必须使用下列函数才能访问amxmodx公共变量：</p>
+	
+	<div class="note-box">
+		<h4>amxmodx.inc文件中关于访问amxmodx公共变量的native函数：</h4>
+
+		<code><span class="amxx-comment">/// 搜索amxmodx公共变量名称，返回值：-1=无，其他=变量索引</span>
+native <span class="amxx-function">get_xvar_id</span>(const <span class="amxx-identifier">name</span>[]);
+
+<span class="amxx-comment">/// 搜索amxmodx公共变量名称，返回值：0=无，1=有</span>
+native <span class="amxx-function">xvar_exists</span>(const <span class="amxx-identifier">name</span>[]);
+
+<span class="amxx-comment">/// 根据amxmodx公共变量索引取值，并添加_标签（不会改变数值）</span>
+native <span class="amxx-function">get_xvar_num</span>(<span class="amxx-identifier">id</span>);
+
+<span class="amxx-comment">/// 根据amxmodx公共变量索引取值，并添加Float标签（不会改变数值）</span>
+native <span class="amxx-tag">Float:</span><span class="amxx-function">get_xvar_float</span>(<span class="amxx-identifier">id</span>);
+
+<span class="amxx-comment">/// 根据amxmodx公共变量索引赋值，新值需要拥有_标签</span>
+native <span class="amxx-function">set_xvar_num</span>(<span class="amxx-identifier">id</span>, <span class="amxx-identifier">value</span> = <span class="amxx-number">0</span>);
+
+<span class="amxx-comment">/// 根据amxmodx公共变量索引赋值，新值需要拥有Float标签</span>
+native <span class="amxx-function">set_xvar_float</span>(<span class="amxx-identifier">id</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">value</span> = <span class="amxx-number">0.0</span>);</code>
+	</div>
+
+	<p>声明全局变量时无法执行运行时代码，所以我们不可能提前确定一个公共变量是否存在。</p>
+	
+	<p>如此一来，就有可能与其它插件竞争同一个公共变量的控制权。</p>
+	
+	<p>AMX Mod X对public变量声明语句的设计可以说是非常失败，非常反直觉，尽量不要使用public创建变量。</p>
+	
+	<p>反正本来就需要使用<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/native.html">native函数</a>获取变量值，不如直接<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Native">创建native函数</a>，用于访问自己插件内的某个私有变量。</p>
+	
+	<p>如此一来，函数和变量的一切行为都在自己的掌控之下。</p>
+	
+	<div class="note-box">
+	<h3>public与其它声明说明符组合：</h3>
+
+	<table class="codetable">
+		<tr>
+			<th>声明说明符组合</th>
+			<th>全局变量特性</th>
+			<th>批注</th>
+		</tr>
+		<tr>
+			<td>public</td>
+			<td>储存在数据段<br>插件私有<br>生成AMX平台公共变量</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>new public</td>
+			<td>储存在数据段（重复）<br>插件私有（重复）<br>生成AMX平台公共变量</td>
+			<td>无变化，无意义<br>建议删除无意义的new</td>
+		</tr>
+		<tr>
+			<td>public stock<br>stock public</td>
+			<td>储存在数据段（重复）<br>插件私有（重复）<br>生成AMX平台公共变量</td>
+			<td>无变化，无意义<br>建议删除无意义的stock</td>
+		</tr>
+		<tr>
+			<td>public const</td>
+			<td>储存在数据段<br>插件私有<br>生成AMX平台公共变量<br>只读</td>
+			<td>私有变量只读<br>公共变量可读写</td>
+		</tr>
+		<tr>
+			<td>new public stock<br>new stock public</td>
+			<td>储存在数据段（重复）<br>插件私有（重复）<br>生成AMX平台公共变量</td>
+			<td>无变化，无意义<br>建议删除无意义的new和stock</td>
+		</tr>
+		<tr>
+			<td>new public const<br>new const public</td>
+			<td>储存在数据段<br>插件私有<br>生成AMX平台公共变量<br>只读</td>
+			<td>私有变量只读<br>公共变量可读写<br>建议删除无意义的new</td>
+		</tr>
+		<tr>
+			<td>public stock const<br>public const stock<br>stock public const<br>stock const public</td>
+			<td>储存在数据段（重复）<br>插件私有（重复）<br>生成AMX平台公共变量<br>只读</td>
+			<td>私有变量只读<br>公共变量可读写<br>建议删除无意义的stock</td>
+		</tr>
+		<tr>
+			<td>new public stock const<br>new public const stock<br>new stock public const<br>new stock const public<br>new const public stock<br>new const stock public</td>
+			<td>储存在数据段（重复）<br>插件私有（重复）<br>生成AMX平台公共变量<br>只读</td>
+			<td>私有变量只读<br>公共变量可读写<br>建议删除无意义的new和stock<br>组合时const不能放最前面</td>
+		</tr>
+	</table>
+
+	</div>
+
+	<h2>2. 使用public创建函数</h2>
+	
+	<p>public关键字可用于声明、定义<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Public">公共函数</a>。</p>
+	
+	<p>每个插件源码都必须拥有至少一个公共函数，否则无法编译。</p>
+
+	<p>AMX Mod X 核心模块会在执行<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Forward">forward函数</a>时，执行所有插件定义的同名公共函数。</p>
+
+	<p>所以，我们通常会用公共函数实现plugin_precache或plugin_init这两个forward函数的定义。</p>
+
+	<div class="note-box">
+		<h4>插件源码示例：</h4>
+
+		<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>	<span class="amxx-comment">// 引用关于forward函数的声明</span>
+
+<span class="amxx-comment">// 插件缓存函数：载入地图后，缓存资源文件时执行</span>
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件1"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+}
+
+<span class="amxx-comment">// 插件初始化函数：缓存资源文件结束后执行</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] 随便做点什么 !"</span>);
+}</code>
+	</div>
+	
+	<p>除了利用forward函数触发我们的公共函数，还可以用<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Native">native函数</a>，引导其他模块/插件来执行我们的公共函数。</p>
+
+	<p>amxmodx.inc文件中，提供了callfunc_系列函数，可以执行其他插件的公共函数.</p>
+
+	<div class="note-box">
+		<h4>amxmodx.inc文件callfunc_系列相关函数：</h4>
+
+		<code>
+<span class="amxx-comment">/// 根据公共函数名和插件文件名，准备开始函数调用</span>
+native <span class="amxx-function">callfunc_begin</span>(const <span class="amxx-identifier">func</span>[], const <span class="amxx-identifier">plugin</span>[] = <span class="amxx-string">""</span>);
+
+<span class="amxx-comment">/// 根据公共函数索引和插件索引，准备开始函数调用</span>
+native <span class="amxx-function">callfunc_begin_i</span>(<span class="amxx-identifier">func</span>, <span class="amxx-identifier">plugin</span> = -<span class="amxx-number">1</span>);
+
+<span class="amxx-comment">/// 根据公共函数名和插件索引，获取公共函数索引</span>
+native <span class="amxx-function">get_func_id</span>(const <span class="amxx-identifier">funcName</span>[], <span class="amxx-identifier">pluginId</span> = -<span class="amxx-number">1</span>);
+
+<span class="amxx-comment">/// 注册插件信息，返回插件索引</span>
+native <span class="amxx-function">register_plugin</span>(const <span class="amxx-identifier">plugin_name</span>[], const <span class="amxx-identifier">version</span>[], const <span class="amxx-identifier">author</span>[], const <span class="amxx-identifier">url</span>[] = <span class="amxx-string">""</span>, const <span class="amxx-identifier">description</span>[] = <span class="amxx-string">""</span>);
+
+<span class="amxx-comment">/// 准备好后，填入一个带有_标签的、按值传递的单值参数</span>
+native <span class="amxx-function">callfunc_push_int</span>(<span class="amxx-identifier">value</span>);
+
+<span class="amxx-comment">/// 准备好后，填入一个带有Float标签的、按值传递的单值参数</span>
+native <span class="amxx-function">callfunc_push_float</span>(<span class="amxx-tag">Float:</span><span class="amxx-identifier">value</span>);
+
+<span class="amxx-comment">/// 准备好后，填入一个带有_标签的、按引用传递的单值参数</span>
+native <span class="amxx-function">callfunc_push_intrf</span>(&<span class="amxx-identifier">value</span>);
+
+<span class="amxx-comment">/// 准备好后，填入一个带有Float标签的、按引用传递的单值参数</span>
+native <span class="amxx-function">callfunc_push_floatrf</span>(&<span class="amxx-tag">Float:</span><span class="amxx-identifier">value</span>);
+
+<span class="amxx-comment">/// 准备好后，填入一个带有_标签的字符串，参数2决定是否保存函数对字符串的更改</span>
+native <span class="amxx-function">callfunc_push_str</span>(const <span class="amxx-identifier">VALUE</span>[], <span class="amxx-tag">bool:</span><span class="amxx-identifier">copyback</span> = <span class="amxx-identifier">true</span>);
+
+<span class="amxx-comment">/// 准备好后，填入一个带有_标签的数组，参数2决定填入多少元素，参数3决定是否保存函数对数组的更改</span>
+native <span class="amxx-function">callfunc_push_array</span>(const <span class="amxx-identifier">VALUE</span>[], array_size, <span class="amxx-tag">bool:</span><span class="amxx-identifier">copyback</span> = <span class="amxx-identifier">true</span>);
+
+<span class="amxx-comment">/// 填好所有参数后，完成对该函数的调用</span>
+native <span class="amxx-function">callfunc_end</span>();</code>
+	</div>
+	
+	<p>除此以外，还有很多监听事件相关的native函数，要我们告知公共函数名称，对方模块/插件会在事件触发之前/之后执行。</p>
+	
+	<p>下面简单列举一部分：</p>
+	
+	<div class="note-box">
+		<h4>amxmodx.inc</h4>
+
+		<code><span class="amxx-comment">/// 延时执行指定公共函数</span>
+native <span class="amxx-function">set_task</span>(<span class="amxx-tag">Float:</span><span class="amxx-identifier">time</span>, const <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">id</span> = <span class="amxx-number">0</span>, const <span class="amxx-tag">any:</span><span class="amxx-identifier">parameter</span>[] = <span class="amxx-string">""</span>, <span class="amxx-identifier">len</span> = <span class="amxx-number">0</span>, const <span class="amxx-identifier">flags</span>[] = <span class="amxx-string">""</span>, <span class="amxx-identifier">repeat</span> = <span class="amxx-number">0</span>);
+<span class="amxx-comment">/// 监听到某个消息后执行指定公共函数</span>
+native <span class="amxx-function">register_event</span>(const <span class="amxx-identifier">event</span>[], const <span class="amxx-identifier">function</span>[], const <span class="amxx-identifier">flags</span>[], const <span class="amxx-identifier">cond</span>[] = "", ...);
+<span class="amxx-comment">/// 监听到客户端发送命令被公布之前，执行指定公共函数</span>
+native <span class="amxx-function">register_clcmd</span>(const <span class="amxx-identifier">client_cmd</span>[], const <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">flags</span> = -<span class="amxx-number">1</span>, const <span class="amxx-identifier">info</span>[] = <span class="amxx-string">""</span>, <span class="amxx-identifier">FlagManager</span> = -<span class="amxx-number">1</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">info_ml</span> = <span class="amxx-identifier">false</span>);
+<span class="amxx-comment">/// 监听到控制台命令被公布之前，执行指定公共函数</span>
+native <span class="amxx-function">register_concmd</span>(const <span class="amxx-identifier">cmd</span>[], const <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">flags</span> = -<span class="amxx-number">1</span>, const <span class="amxx-identifier">info</span>[] = <span class="amxx-string">""</span>, <span class="amxx-identifier">FlagManager</span> = -<span class="amxx-number">1</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">info_ml</span> = <span class="amxx-tag">false</span>);
+<span class="amxx-comment">/// 监听到服务端发送命令被公布之前，执行指定公共函数</span>
+native <span class="amxx-function">register_srvcmd</span>(const <span class="amxx-identifier">server_cmd</span>[], const <span class="amxx-identifier">function</span>[], <span class="amxx-identifier">flags</span> = -<span class="amxx-number">1</span>, const <span class="amxx-identifier">info</span>[] = <span class="amxx-string">""</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">info_ml</span> = <span class="amxx-identifier">false</span>);</code>
+	</div>
+
+	<div class="note-box">
+		<h4>fakemeta.inc</h4>
+
+		<code><span class="amxx-comment">/// 监听某个游戏事件，选择在之前或之后触发指定公共函数</span>
+native <span class="amxx-function">register_forward</span>(<span class="amxx-identifier">_forwardType</span>,const <span class="amxx-identifier">_function</span>[],<span class="amxx-identifier">_post</span>=<span class="amxx-number">0</span>);</code>
+	</div>
+
+	<div class="note-box">
+		<h4>hamsandwich.inc</h4>
+
+		<code><span class="amxx-comment">/// 监听某种类名实体的某个事件，选择在之前或之后触发指定公共函数</span>
+native <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHam</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, const <span class="amxx-identifier">EntityClass</span>[], const <span class="amxx-identifier">Callback</span>[], <span class="amxx-identifier">Post</span>=<span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">specialbot</span> = <span class="amxx-identifier">false</span>);
+<span class="amxx-comment">/// 监听某种实体的某个事件，选择在之前或之后触发指定公共函数</span>
+native <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHamFromEntity</span>(<span class="amxx-tag">Ham:</span><span class="amxx-identifier">function</span>, <span class="amxx-identifier">EntityId</span>, const <span class="amxx-identifier">Callback</span>[], <span class="amxx-identifier">Post</span>=<span class="amxx-number">0</span>);</code>
+	</div>
+
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn编译器指令#include #tryinclude</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>AMXXPawn编译器指令#include #tryinclude</h1></p>
+
+<p><h2>#include引用文件指令和#tryinclude尝试引用文件指令使用方法:</h2></p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">inc文件名</span>
+<span class="amxx-directive">#include</span> <span class="amxx-string">"inc文件名"</span>
+<span class="amxx-directive">#include</span> <span class="amxx-string"><</span><span class="amxx-string">inc文件名></span></span></code></p>
+
+<span class="amxx-directive">#include</span>和<span class="amxx-directive">#tryinclude</span>指令的书写格式是相同的,可以将inc文件的所有内容复制到该指令所在位置.
+
+<p>若inc文件不存在,<span class="amxx-directive">#include</span>会报错,而<span class="amxx-directive">#tryinclude</span>不会报错.</p>
+
+<p>首先需要知道,<code>amxxpc.exe</code>编译器是可以多次使用启动参数<code><span class="amxx-note">-i</span></code>指定inc文件目录的.</p>
+
+<p>像这样:<code><span class="amxx-note">-i"C:\AMX Mod X\include"</span></code></p>
+
+<p>若inc文件名没有 <span class="amxx-string">< ></span> 尖括号,编译器会按照"<span class="amxx-string">源码文件所在目录</span>" -> "<span class="amxx-string">-i参数所指目录</span>" -> "<span class="amxx-string">编译器目录\include</span>"顺序寻找inc文件.</p>
+
+<p>若inc文件名有 <span class="amxx-string">< ></span> 尖括号,编译器会按照"<span class="amxx-string">-i参数所指目录</span>" -> "<span class="amxx-string">编译器目录\include</span>"顺序寻找inc文件.</p>
+
+<p>若并未设定编译器启动参数.会直接从"<span class="amxx-string">编译器目录\include</span>"寻找inc文件.</p>
+
+<p>inc文件名可以省略<code>.inc .p .pawn</code>三种拓展名,编译器会自动尝试这三种可能.当然也可以主动指定其他拓展名.因为编译器会先拿用户定义的名称尝试寻找.</p>
+
+<p>inc文件名中允许使用任意数量的 <span class="amxx-string">/</span> 正斜杠或 <span class="amxx-string">\</span> 反斜杠字符,表示指向更深层的文件地址.</p>
+
+<p>比如<code><span class="amxx-directive">#include</span> <span class="amxx-string"><</span><span class="amxx-string">include2\\\\\\\\AMXX182\amxmodx.sma</span><span class="amxx-string">></span></code>实际指向:<code>编译器目录\include\include2\AMXX182\amxmodx.sma</code></p>
+
+<p>正斜杠和反斜杠的效果略有不同.</p>
+
+<p>若文件<code>a.sma</code>使用<span class="amxx-string">"z\b.inc"</span>,则<code>b.inc</code>要引用<code>z/x/c.inc</code>必须写<span class="amxx-string">"x/c.inc"</span>或<span class="amxx-string">"x\c.inc"</span>.</p>
+
+<p>若文件<code>a.sma</code>使用<span class="amxx-string">"z/b.inc"</span>,则<code>b.inc</code>要引用<code>z/x/c.inc</code>必须写<span class="amxx-string">"z/x/c.inc"</span>或<span class="amxx-string">"z\x\c.inc"</span>.</p>
+
+<p>通常应该尽可能使用 <span class="amxx-string">< ></span> 尖括号包裹文件名,本系列教程中一律省略尖括号,因为做教程时为尖括号染色很麻烦.</p>
+
+<p>一些邪门写法(续行符会被换成1空格拼接到下一行首个非空白字符,然后注释会被替换成同等字节数的空格):</p>
+
+<p><code><span class="amxx-directive"><span class="amxx-directive">#include</span> <span class="amxx-string"><</span><span class="amxx-string">my<span class="amxx-comment">/**/</span>plugin></span></span>	<span class="amxx-comment">// 引用my    plugin.inc文件</span>
+<span class="amxx-directive">#include</span> <span class="amxx-string"><</span><span class="amxx-string">my<span class="amxx-comment">/*<span class="amxx-note">\</span>
+*/</span>plugin></span></span>		<span class="amxx-comment">// 引用my     plugin.inc文件</span>
+<span class="amxx-directive">#include</span><span class="amxx-comment">/*<span class="amxx-note">\</span>
+*/</span><span class="amxx-string"><</span><span class="amxx-string">myplugin></span></span>		<span class="amxx-comment">// 引用myplugin.inc文件</span></code></p>
+
+</body>
+</html>

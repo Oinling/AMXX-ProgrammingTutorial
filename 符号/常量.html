@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 常量</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>AMXXPawn 常量</h1>
+
+	<h2>1. 简介</h2>
+
+	<p>常量（Constant）是由用户创建的标识符，其数值在编译时就能确定，并且不可更改。</p>
+
+	<p>常量通常用于代替数值字面量，让意义不明的魔法数字变成能够看懂的英文，提高可读性。</p>
+
+	<p>在函数外声明的是全局常量，在函数内声明的是局部常量。</p>
+
+	<p>常量有三种，普通常量、枚举名称和枚举常量(枚举成员)。</p>
+
+	<div class="note-box">
+	<h4>普通常量声明语句语法：</h4>
+	<p><<span class="amxx-default">const</span>> \值类型标签/ <常量名称> <初始化表达式> \ <span class="amxx-default">;</span> /</p>
+	
+	<h4>枚举声明语句的语法：</h4>
+	<p><<span class="amxx-default">enum</span>> \值类型标签/ \枚举名称/ \升值器/ < <span class="amxx-default">{</span> > \枚举常量声明/ < <span class="amxx-default">}</span> > \ <span class="amxx-default">;</span> /</p>
+
+	<h4>升值器语法拆解：</h4>
+	<p>< <span class="amxx-default">(</span> > \<多字节赋值运算符> <常量表达式>/ < <span class="amxx-default">)</span> ></p>
+
+	<h4>枚举常量声明语法拆解：</h4>
+	<p>\属性值类型标签/ \枚举常量名称/ \属性尺寸声明/ \初始化表达式/ \ <span class="amxx-default">,</span> /</p>
+
+	<h4>属性尺寸声明语法拆解：</h4>
+	<p>< <span class="amxx-default">[</span> > <常量表达式> < <span class="amxx-default">]</span> ></p>
+
+	<h4>初始化表达式语法拆解：</h4>
+	<p>< <span class="amxx-default">=</span> > <常量表达式></p>
+	</div>
+
+	<div class="note-box">
+		<h4><>是必填项目，\/是可选项目。</h4>
+		<h4>关于枚举声明语句的更多详情：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看enum指南</a></h4>
+	</div>
+
+	<p>代码示例：</p>
+
+	<code>const <span class="amxx-identifier">MAX_PLAYERS</span> = <span class="amxx-number">32</span>;
+enum {}; <span class="amxx-comment">// AMXXPawn允许这种毫无意义的写法</span>
+enum
+{
+	<span class="amxx-identifier">print_notify</span> = <span class="amxx-number">1</span>,
+	<span class="amxx-identifier">print_console</span>,
+	<span class="amxx-identifier">print_chat</span>,
+	<span class="amxx-identifier">print_center</span>,
+	<span class="amxx-identifier">print_radio</span>     <span class="amxx-comment">/* Counter-Strike only */</span>
+};
+enum <span class="amxx-identifier">LibType</span>
+{
+	<span class="amxx-identifier">LibType_Library</span>,
+	<span class="amxx-identifier">LibType_Class</span>
+};</code>
+
+	<h2>2. 常量特性</h2>
+	<div class="feature-list"><ul>
+	<li>常量在编译后被替换为实际数值，因此运行效率比变量高</li>
+	<li>可以重复声明同名常量，会覆盖上一个常量的数值，并得到一个警告</li>
+	<li>与 <span class="highlight">#define</span> 定义的宏常量不同，真正的常量有明确的<span class="highlight">值类型标签</span>定义</li>
+	<li>初始化时，编译器会检查初始化表达式与普通常量的标签是否一致</li>
+	<li>可以使用 <span class="highlight">tagof</span> 关键字获取常量的值类型标签 uid，而宏常量不能</li>
+	<li> <span class="highlight">enum</span> 可为常量提供额外特性、制作伪结构体。<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html#Usage">点击查看enum指南</a></li>
+	</ul></div>
+
+	<h2>3. 值类型标签</h2>
+
+	<p>若不填写值类型标签，常量将会获得默认的<span class="highlight">_</span>标签。</p>
+
+	<p>代码示例：</p>
+
+	<code><span class="amxx-comment">// 下面两行代码是相同的</span>
+const <span class="amxx-tag">_:</span><span class="amxx-identifier">MAX_PLAYERS</span> = <span class="amxx-number">32</span>;
+const <span class="amxx-identifier">MAX_PLAYERS</span> = <span class="amxx-number">32</span>;
+
+<span class="amxx-comment">// 下面两行代码是相同的</span>
+enum <span class="amxx-tag">_:</span><span class="amxx-identifier">LibType</span> { };
+enum <span class="amxx-identifier">LibType</span> { };
+
+enum {
+	<span class="amxx-comment">// 下面两行代码是相同的(此标签为结构体属性标签,而非常量标签,常量标签与枚举名称相同)</span>
+	<span class="amxx-tag">_:</span><span class="amxx-identifier">ZCN_MaxHealth</span>,
+	<span class="amxx-identifier">ZCN_MaxHealth</span>,
+};</code>
+
+	<p>若填写未定义的值类型标签，编译器会自动创建这个标签。</p>
+
+	<p>当常量与拥有不同标签的表达式做运算时，通常会触发编译器警告：</p>
+
+	<code><span class="amxx-comment">// MAX_PLAYERS拥有_标签,表达式32.0拥有Float标签,触发警告:"标签不匹配"</span><br>const <span class="amxx-tag">_:</span><span class="amxx-identifier">MAX_PLAYERS</span> = <span class="amxx-number">32.0</span>;</code>
+
+	<p>通过观察常量的标签就可以立即确认需要填写什么类型的初始值。</p>
+
+	<p>因此，应该尽量使用真正的常量代替 <span class="highlight">#define</span> 定义的宏常量。</p>
+
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">点击查看值类型标签指南</a></p>
+
+	<h2>4. 初始化表达式</h2>
+
+	<p>常量值的初始化表达式中只能含有常量表达式（单值字面量、常量以及相关的运算表达式）。</p>
+
+	<p>不能含有变量、函数、重载的运算符。</p>
+
+	<div class="warning-box"><strong>注意：</strong>若表达式含有重载的运算符，则不是常量表达式！
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">float</span>>
+<span class="amxx-comment">/* float.inc内含有此定义:
+* native Float:operator+(Float:oper1, Float:oper2) = floatadd;
+* 因此两个浮点数字面量之间的加法: 10.0 + 5.0将会变为floatadd(10.0, 5.0)
+* 而初始化表达式不能包括函数,因此会报错:"必须使用常量表达式" */</span>
+const <span class="amxx-tag">Float:</span><span class="amxx-identifier">constant1</span> = <span class="amxx-number">10.0</span> + <span class="amxx-number">5.0</span>;
+
+<span class="amxx-comment">// 必须直接写出运算结果</span>
+const <span class="amxx-tag">Float:</span><span class="amxx-identifier">constant2</span> = <span class="amxx-number">15.0</span>;
+
+<span class="amxx-comment">// 两个整数字面量之间的加法并未被重载,可以使用</span>
+const <span class="amxx-identifier">constant3</span> = <span class="amxx-number">10</span> + <span class="amxx-number">5</span>;
+
+<span class="amxx-comment">// 初始化表达式可以包括其他常量</span>
+const <span class="amxx-identifier">constant4</span> = <span class="amxx-identifier">constant3</span> + <span class="amxx-number">5</span>;</code>
+	</div>
+	
+	<div class="note-box">
+	<h4>枚举名称的初始值由升值器和最后一个枚举常量共同决定。</h4>
+	<h4>未显式赋值的枚举常量初始值由升值器和上一个枚举常量共同决定。</h4>
+	<h4>更多详情：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看enum指南</a></h4>
+	</div>
+
+	<h2>5. AMX Mod X 内置常量</h2>
+
+	<table class="codetable">
+	<tr>
+		<th>常量名称</th>
+		<th>值类型标签</th>
+		<th>介绍</th>
+	</tr>
+	<tr>
+		<td>true</td>
+		<td>bool</td>
+		<td>表示真，对，是，好，允许，开启，正确<br>值为1，但任何非0数都可表示true</td>
+	</tr>
+	<tr>
+		<td>false</td>
+		<td>bool</td>
+		<td>表示假，错，否，坏，禁止，关闭，错误<br>值为0</td>
+	</tr>
+	<tr>
+		<td>EOS</td>
+		<td>_</td>
+		<td>字符串终止符，遍历字符时，遇到它应该停止遍历<br>值为0，或者用字面量'^0'表示</td>
+	</tr>
+	<tr>
+		<td>cellbits</td>
+		<td>_</td>
+		<td>单元的二进制位数<br>值为32，AMX Mod X 并不支持其他位数</td>
+	</tr>
+	<tr>
+		<td>cellmin</td>
+		<td>_</td>
+		<td>单元最小值<br>值为-2147483648，或者用字面量0xFFFFFFFF表示</td>
+	</tr>
+	<tr>
+		<td>cellmax</td>
+		<td>_</td>
+		<td>单元最大值<br>值为2147483647，或者用字面量0x7FFFFFFF表示</td>
+	</tr>
+	<tr>
+		<td>charbits</td>
+		<td>_</td>
+		<td>压缩字符的二进制位数<br>值为8，AMX Mod X 并不支持其他位数</td>
+	</tr>
+	<tr>
+		<td>charmin</td>
+		<td>_</td>
+		<td>普通字符或压缩字符最小有效值<br>值为0</td>
+	</tr>
+	<tr>
+		<td>charmax</td>
+		<td>_</td>
+		<td>压缩字符最大有效值<br>值为254</td>
+	</tr>
+	<tr>
+		<td>ucharmax</td>
+		<td>_</td>
+		<td>单元值在0至此值范围内，不可能存有压缩字符<br>值为0xFFFFFF</td>
+	</tr>
+	<tr>
+		<td>debug</td>
+		<td>_</td>
+		<td>表示调试等级<br>0=禁调试，删除标识符和断言，索引可越界<br>1=禁调试，删标识符，可断言，索引可越界<br>2=可调试，留标识符，可断言，禁索引越界</td>
+	</tr>
+	<tr>
+		<td>__Pawn</td>
+		<td>_</td>
+		<td>表示当前Pawn版本</td>
+	</tr>
+	<tr>
+		<td>__LINE__</td>
+		<td>_</td>
+		<td>AMX1.8.3新增的常量，表示当前行号数<br>若文件中存在#line指令，__LINE__ = 上一个#line值 + 实际行号 - 上一个#line所在行</td>
+	</tr>
+	</table>
+
+	<h2>6. 常量的常见认知误区</h2>
+
+	<div class="feature-list">
+	<h4>单值字面量是不是常量？</h4>
+	<ul>
+	<li>单值字面量和常量皆属于常量表达式</li>
+	<li>常量是标识符，能被 <span class="highlight">defined</span> 关键字确认为“已定义”，单值字面量不行</li>
+	<li>常量是标识符，能被 <span class="highlight">tagof</span> 关键字取得值类型标签uid，单值字面量不行</li>
+	</ul>
+	</div>
+
+	<div class="feature-list">
+	<h4>字符串、数组、结构体字面量是不是常量？</h4>
+	<ul>
+	<li>字符串、数组、结构体字面量本质是数据段匿名变量</li>
+	<li>若被用于数组的初始化表达式中，会被编译器认为是常量表达式，编译后仍是变量</li>
+	</ul>
+	</div>
+
+	<div class="feature-list">
+	<h4>宏常量是不是常量？</h4>
+	<ul>
+	<li>宏常量只是单纯的文本替换，并不是真正的常量</li>
+	<li>设置宏常量文本源时无类型检查，设置常量初始值时有类型检查</li>
+	<li>常量初始值会先求值再覆盖目的地，宏常量文本源会直接覆盖目的地</li>
+	<li>除非宏常量文本源是常量，否则无法使用 <span class="highlight">tagof</span> 取得值类型标签uid</li>
+	<li>用枚举常量访问数组的数值元素，可将元素‘升维’成数组或结构体，或暂时切换元素的值类型标签，宏常量不能</li>
+	</ul>
+	</div>
+
+	<div class="feature-list">
+	<h4>常量是不是变量？</h4>
+	<ul>
+	<li>变量的数值是可更改的，即便是只读变量，也可通过#emit指令、set_addr_var、setarg函数修改，常量值不可更改</li>
+	<li>程序需通过变量地址访问数值，效率不如常量</li>
+	<li>常量在编译后被替换为具体数值，不需要通过地址访问</li>
+	</ul>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 字面量</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+
+		p {
+			margin: 15px 0;
+		}
+
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+
+		.amxx-default {
+			color: #0000ff;
+		}
+
+		.amxx-note {
+			color: #000000;
+		}
+
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+
+		.amxx-di {
+			color: #6f6f6b;
+		}
+
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-string {
+			color: #c0392b;
+		}
+
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+
+		.amxx-enumname {
+			background: linear-gradient(to right, #5d140a, #9933ff);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+
+		.amxx-of {
+			background: linear-gradient(to right, #0000ff, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+
+		.amxx-tag {
+			color: #5d140a;
+		}
+
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+	<h1>AMXXPawn 字面量</h1>
+
+	<h2>1. 简介</h2>
+
+	<p>字面量（Literal）用于表示一个或多个具体的数值。可用于做运算，或为标识符赋值。</p>
+
+	<p>AMXXPawn只有整数，不存在浮点数。而整数的类型是int32（在AMXXPawn中称为cell）。</p>
+	
+	<p>字面量能表达的单个数值范围是-2147483648~2147483647。</p>
+
+	<p>字面量可简单分为单值字面量、数组字面量。</p>
+
+	<p>单值字面量可细分为以下几个类型：</p>
+
+	<ul>
+		<li><a href="#Char">字符字面量</a></li>
+		<li><a href="#Binary">二进制整数字面量</a></li>
+		<li><a href="#Decimal">十进制整数字面量</a></li>
+		<li><a href="#Rational">十进制浮点数字面量</a></li>
+		<li><a href="#Hex">十六进制整数字面量</a></li>
+	</ul>
+	
+	<p>数组字面量可细分为以下几个类型：</p>
+
+	<ul>
+		<li><a href="#Array">数组字面量</a></li>
+		<li><a href="#Sz">转义字符串字面量</a></li>
+		<li><a href="#PackedSz">压缩字符串字面量</a></li>
+		<li><a href="#RawSz">素字符串字面量</a></li>
+		<li><a href="#PackedRawSz">压缩素字符串字面量</a></li>
+		<li><a href="#Struct">结构体字面量</a></li>
+	</ul>
+	
+	<p>单值字面量是不可再分解的最小计算单元，属于原子表达式，例如：0b_1111、1024、0xFF、512.0</p>
+
+	<p>数组字面量或与运算符组合的单值字面量，属于复合表达式，例如：{ 1, 2, 3 }、-512、 256 + 256</p>
+
+	<p>任何字面量都在编译时就能确定数值，因此全都属于<strong>常量表达式</strong>。</p>
+
+	<p>然而数组字面量本质是创建一个数据段匿名变量，因此仅在对命名变量初始化时会被编译器认定为<strong>常量表达式</strong>。</p>
+
+	<h2 id="Char">2. 字符字面量</h2>
+	
+	<p>字符字面量通常指的是ASCII码表中的128个字符(不含中文，详情百度ASCII码表)。</p>
+
+	<p><strong>字符字面量的正确写法是：以单引号'作为开头和结尾，中间填写1个ASCII字符。</strong></p>
+
+	<p>例如：<span class="amxx-string">'a' 'b' 'c' '1' '2' '3'</span></p>
+
+	<p>每个字符字面量都对应一个具体的数值，与ASCII码表中字符编码一致。</p>
+
+	<p>例如：</p>
+	
+	<ul>
+		<li><span class="amxx-string">'0'</span>至<span class="amxx-string">'9'</span>等于48至57</li>
+		<li><span class="amxx-string">'A'</span>至<span class="amxx-string">'Z'</span>等于65至90</li>
+		<li><span class="amxx-string">'a'</span>至<span class="amxx-string">'z'</span>等于97至122</li>
+	</ul>
+
+	<p>转义指示符可以表示一些不可见或键盘按不出来的字符，这种表示方式称为转义字符。</p>
+
+	<table class="codetable">
+		<tr>
+			<th>转义字符</th>
+			<th>解释</th>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'0'</span></td>
+			<td>蜂鸣符<br>等于十进制7</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^b'</span></td>
+			<td>[BACKSPACE]退格键<br>等于十进制8</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^e'</span></td>
+			<td>[ESC]退出键<br>等于十进制27</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^f'</span></td>
+			<td>换页符<br>等于十进制12</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^n'</span></td>
+			<td>换行符<br>等于十进制10</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^r'</span></td>
+			<td>回车符<br>等于十进制13</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^t'</span></td>
+			<td>[TAB]水平制表符<br>等于十进制9</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^v'</span></td>
+			<td>垂直制表符<br>等于十进制11</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^^'</span></td>
+			<td>[^]键自己<br>等于十进制94</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^''</span></td>
+			<td>[']单引号<br>等于十进制39</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^"'</span></td>
+			<td>["]双引号<br>等于十进制34</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^%'</span></td>
+			<td>[%]百分号<br>等于十进制37</td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^ddd;'</span></td>
+			<td>ddd可以填十进制数值<br>分号;可省略<br><span class="amxx-string">'^114514'</span>直接等于114514<br><span class="amxx-string">'^114514'</span> % 256 = 82 = <span class="amxx-string">'Q'</span></td>
+		</tr>
+		<tr>
+			<td><span class="amxx-string">'^xhhh;'</span></td>
+			<td>hhh可以填十六进制数值，不区分大小写<br>分号;可省略<br><span class="amxx-string">'^x1BF52'</span>直接等于114514<br><span class="amxx-string">'^x1BF52'</span> % 256 = 82 = <span class="amxx-string">'Q'</span></td>
+		</tr>
+	</table>
+
+	<p>编译器指令<span class="amxx-di">#pragma</span> <span class="amxx-default">ctrlchar</span> <span class="amxx-string">'^'</span>可以更改转义指示符，若不更改，默认为^字符。</p>
+
+	<p>若更改转义指示符，则<span class="amxx-string">'^^'</span>也要相应改变，例如将转义指示符改为\，要表示字符\就得写成<span class="amxx-string">'\\'</span></p>
+
+	<div class="warning-box">
+		<p><strong>注意：</strong>终止符<span class="amxx-string">'^0'</span>或<span class="amxx-string">'^x0'</span>等于十进制0，而零字符<span class="amxx-string">'0'</span>等于十进制48，不要混淆。</p>
+	</div>
+	
+	<h2 id="Binary">3. 二进制整数字面量</h2>
+	
+	<p>十进制指的是逢十进一，二进制类似，是逢二进一。</p>
+
+	<p><strong>二进制整数字面量的正确写法：以0b作为开头，后续跟随任意数量的_、0、1，下划线没有实际意义。</strong></p>
+
+	<div class="note-box">
+		<h4>注意事项：</h4>
+		<ul>
+			<li>只有末端的32个数字是有效的</li>
+			<li>最靠近右侧的数字是最低位，从右往左数第32个数字是最高位</li>
+			<li>AMXXPawn只存在cell(int32)数值类型，所以最高位被称为符号位，表示数值正负</li>
+			<li>符号位若为1，则数值为负数，符号位若为0，则数值为正数</li>
+		</ul>
+	</div>
+	
+	<p>整数最大值+1会变为最小值。这与二进制对最小值和最大值的定义以及逢二进一的机制有关。</p>
+
+	<p>　0b_01111111_11111111_11111111_11111111 + 1</p>
+	<p>= 0b_10000000_00000000_00000000_00000000</p>
+	<p>= -2147483648</p>
+
+	<div class="feature-list">
+		<h4>数值展示：</h4>
+		<ul>
+			<li>0b_10000000_00000000_00000000_00000000对应十进制-2147483648（最小值）</li>
+			<li>0b_10000000_00000000_00000000_00000001对应十进制-2147483648 + 1 = -2147483647</li>
+			<li>0b_01111111_11111111_11111111_11111110对应十进制2147483646</li>
+			<li>0b_01111111_11111111_11111111_11111111对应十进制2147483646 + 1 = 2147483647（最大值）</li>
+		</ul>
+	</div>
+	
+
+	<h2 id="Decimal">4. 十进制整数字面量</h2>
+	
+	<p><strong>十进制整数字面量正确写法：以任意数字开头，后续跟随任意数量的_或数字。</strong></p>
+
+	<p>若写出来的数值超出cell(int32)能表示的数值范围，得到的数值等于：除以最大值然后求余的结果。</p>
+
+	<p>例如6442450944实际等于6442450944 % 2147483648等于0。</p>
+
+	<div class="note-box">
+		<h4>整数最小值的各种写法：</h4>
+		<ul>
+			<li>十进制：-2147483648</li>
+			<li>二进制：0b_10000000_00000000_00000000_00000000</li>
+			<li>十六进制：0x_80000000</li>
+		</ul>
+		<h4>整数最大值的各种写法：</h4>
+		<ul>
+			<li>十进制：2147483647</li>
+			<li>二进制：0b_01111111_11111111_11111111_11111111</li>
+			<li>十六进制：0x_7FFFFFFF</li>
+		</ul>
+	</div>
+	
+	<h2 id="Rational">5. 十进制浮点数字面量</h2>
+	
+	<p>AMXXPawn默认情况下不允许编写浮点数字面量，会在编译时触发报错。</p>
+
+	<p>必须使用<span class="amxx-di">#pragma</span> <span class="amxx-default">rational</span>指令设置一个浮点数标签，才允许使用浮点数字面量。</p>
+
+	<p>由于float.inc文件中包含这个指令，而amxmodx.inc文件引用了float.inc文件，只需引用amxmodx.inc文件便能达到一样效果。</p>
+
+	<p>浮点数字面量在被编译器解析时，解析器会访问浮点数的二进制表示，将其解释为一个32位整数。</p>
+
+	<p>因此，虽然看着是浮点数，但数值在AMXXPawn仍是整数，核心模块提供的接口函数在得到这个整数时会自动转换回浮点数。</p>
+
+	<p>因为会转换回浮点数，我们通常不需要担心计算结果错误，但这导致AMXXPawn对于浮点数的运算效率要低一些。</p>
+
+	<p>浮点数字面量自带Float标签（<span class="amxx-di">#pragma</span> <span class="amxx-default">rational</span> <span class="amxx-tag">Float</span>指令设定的），与其它表达式做运算会被警告标签不匹配。</p>
+
+	<div class="note-box">
+		<h4>浮点数字面量的正确写法：（数字）【数字或下划线】（.）（数字）【数字或下划线】【（e）【-】（数字）】</h4>
+		<h4>（）是必选项目，【】是可选项目。</h4>
+		<h4>【（e）【-】（数字）】部分表示小数点要移动多少个位。负数向左移动，正数向右移动。</h4>
+	</div>
+	
+	<p>浮点数能表示的最小值是无穷小，但只能用整数字面量表示：<span class="amxx-tag">Float:</span>0b_11111111_10000000_00000000_00000000</p>
+	
+	<p>浮点数能表示的最大值是无穷大，但只能用整数字面量表示：<span class="amxx-tag">Float:</span>0b_01111111_10000000_00000000_00000000</p>
+	
+	<p>浮点数字面量最小有限值：-340282346638528800000000000000000000000.0（或-3402823466385288.0e23）</p>
+
+	<p>浮点数字面量最大有限值：340282346638528800000000000000000000000.0（或3402823466385288.0e23）</p>
+
+	<div class="warning-box">
+		<h4>由于浮点数精度问题，距离0.0越远的字面量与接口函数实际所得浮点数差距越大。</h4>
+		<h4>例如0.0001字面量被接口函数接收时，因为误差会变为0.000099999997473</h4>
+	</div>
+
+	<h2 id="Hex">6. 十六进制整数字面量</h2>
+	
+	<p>十进制指的是逢十进一，十六制类似，是逢十六进一。</p>
+
+	<p>十六进制字面量用ABCDEF字母（不区分大小）分别表示10、11、12、13、14、15、16，所以是逢F进一。</p>
+
+	<p><strong>十六进制整数字面量的正确写法：以0x作为开头，后续跟随任意数量的_、数字、A~F，下划线没有实际意义。</strong></p>
+
+	<p><strong>注意：</strong>只有末端的8个数字和字母是有效的</p>
+	
+	<p>若写出来的数值超出cell(int32)能表示的数值范围，得到的数值等于：除以最大值然后求余的结果。</p>
+
+	<p>例如0x_F0000000实际等于4294967296 % 2147483648等于0。</p>
+
+	<div class="note-box">
+		<h4>整数最小值的各种写法：</h4>
+		<ul>
+			<li>十六进制：0x_8000_0000</li>
+			<li>十进制：-2147483648</li>
+			<li>二进制：0b_10000000_00000000_00000000_00000000</li>
+		</ul>
+		<h4>整数最大值的各种写法：</h4>
+		<ul>
+			<li>十六进制：0x_7FFF_FFFF</li>
+			<li>十进制：2147483647</li>
+			<li>二进制：0b_01111111_11111111_11111111_11111111</li>
+		</ul>
+	</div>
+	
+	<h2 id="Array">7. 数组字面量</h2>
+	
+	<p><strong>多个<strong>单值常量表达式</strong>用逗号隔开，再用{ }包裹它们，就能形成一维数组字面量。</strong></p>
+	
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">float</span>>
+
+const <span class="amxx-identifier">CONSTANT</span> = <span class="amxx-number">512</span> + <span class="amxx-number">512</span>;
+
+<span class="amxx-comment">// 数组字面量的花括号{ }可以含有任意常量表达式</span>
+static <span class="amxx-identifier">array1</span>[] = { <span class="amxx-string">'8'</span>, <span class="amxx-number">0b_11111111</span>, <span class="amxx-number">255</span>, <span class="amxx-number">0xFF</span>, <span class="amxx-number">127</span> + <span class="amxx-number">128</span>, <span class="amxx-identifier">CONSTANT</span> };
+static <span class="amxx-tag">Float:</span><span class="amxx-identifier">array2</span>[] = { <span class="amxx-number">32.0</span>, <span class="amxx-number">64.0</span>, <span class="amxx-number">128.0</span>, <span class="amxx-number">256.0</span> };</code>
+
+	<p>数组字面量和数组略有不同。数组指的是数组类型的变量，变量拥有名称，而数组字面量是储存在数据段的匿名变量。</p>
+	
+	<p>因为数组字面量是变量，所以被按引用传递到函数内时，可以被函数更改内容。而真正的<strong>常量表达式</strong>是不会被更改的。</p>
+	
+	<p>一维数组字面量之上还有二、三维数组字面量，AMX Mod X 1.8.2以上版本扩展到四维。</p>
+	
+	<p>正确的编写方法应该参照变量声明语句所设定的规则：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Struct">变量维度</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Init">变量初始化</a></p>
+	
+	<h2 id="Sz">8. 转义字符串字面量</h2>
+	
+	<p>转义字符串字面量（普通字符串字面量）是最常用的字符串字面量，特点是像<a href="#Char">字符字面量</a>一样，内部允许填写转义字符。</p>
+
+	<p><strong>转义字符串字面量的正确写法：以"作为开头和结尾，中间填写任意数量的字符（包括转义字符），例如：<span class="amxx-string">"中文^t"</span></strong></p>
+
+	<p>有时候我们会关注字面量的<strong>长度</strong>和<strong>尺寸</strong>。</p>
+
+	<p><strong>长度</strong>指的是第一个终止符之前有多少个cell储存数据。</p>
+
+	<p><strong>尺寸</strong>总共有多少个cell储存数据。</p>
+
+	<p>若源码是UTF8编码，每个ASCII字符占用1个cell，每个转义字符占用1个cell，每个中文占用3个cell。</p>
+
+	<p>字面量末端会自动增加1个终止符，占用1个cell。</p>
+
+	<div class="note-box">
+		<h4>例子：</h4>
+		<ul>
+			<li><span class="amxx-string">"CN中文^0"</span>由于转义字符^0等于终止符，因此<strong>长度</strong>等于1+1+3+3=8，计算的只有“CN中文”这部分</li>
+			<li><span class="amxx-string">"CN中文^0"</span>由于转义字符^0占1cell，且末端自动添加1个终止符，因此<strong>尺寸</strong>等于1+1+3+3+1+1=10</li>
+		</ul>
+	</div>
+
+	<div class="warning-box">
+		<h4>注意事项：</h4>
+		<ul>
+			<li>核心模块提供的inc文件会提到字符串的字符数，一般是指<strong>长度</strong>，不是真的指中英文字符数量</li>
+			<li>核心模块提供的接口函数，在接收我们提供的字符串时，不会接收第一个终止符后续内容</li>
+			<li>转义指示符可通过<span class="amxx-di">#pragma</span> <span class="amxx-default">ctrlchar</span>指令更改</li>
+		</ul>
+	</div>
+
+	<h2 id="PackedSz">9. 压缩字符串字面量</h2>
+	
+	<p>一个cell拥有4字节的储存空间，但UTF8编码下，1个ASCII字符只需要1字节空间，1个中文只需要3个字节空间。</p>
+
+	<p>也就是说，非压缩字符串字面量用1个cell去储存1个数据，浪费了3/4的空间。</p>
+
+	<p>使用压缩字符串字面量就能紧凑储存这些数据，大幅度改善这一情况。</p>
+
+	<p><strong>若一个字符串字面量的左边紧贴着!感叹号，则内容会在编译时被压缩，例如：<span class="amxx-string">!"中文^t"</span>、<span class="amxx-string">!^"中文^t"</span></strong></p>
+
+	<p>压缩后，每个ASCII字符占1个字节，每个中文占3个字节，每4个字节占1个cell，剩下的不足4字节也占1个cell。</p>
+
+	<div class="warning-box">
+		<h4>注意事项：</h4>
+		<ul>
+			<li>使用<span class="amxx-di">#pragma</span> <span class="amxx-default">pack</span> <span class="amxx-number">1</span>指令可以颠倒压缩和非压缩的语法</li>
+			<li>当代计算机空间足够，且所有默认接口函数都只接受非压缩字符串，解压缩还费算力，所以几乎不使用压缩功能</li>
+			<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/char.html">char运算符</a>用于计算‘需多少cell才足够储存多少字节’，专为压缩字符串服务</li>
+			<li>编译后，会在末尾增加1个终止符。字符串包含的数值量增加1</li>
+		</ul>
+	</div>
+
+	<h2 id="RawSz">10. 素字符串字面量</h2>
+	
+	<p>素字符串字面量（未加工字符串字面量）与<a href="#Sz">转义字符串字面量</a>相反，是不支持转义字符的。</p>
+
+	<p><strong>若一个字符串字面量的左边紧贴着^转义指示符，则是素字符串字面量，例如：<span class="amxx-string">^"中文^t"</span>、<span class="amxx-string">^!"中文^t"</span></strong></p>
+
+	<p>所有转义字符会原模原样的存入，不转变为其它字符。例如^48本该转变为0字符，但素字符串会直接储存^、4、8三个字符。</p>
+
+	<div class="warning-box">
+		<h4>注意事项：</h4>
+		<ul>
+			<li>AMX Mod X 1.8.2至1.10.0版本中，这种字面量在含有转义字符时，解析过程有不同的bug</li>
+			<li>转义指示符有可能导致无法编译、1.10.0版本中^"会停止解析后续字符</li>
+		</ul>
+	</div>
+
+	<h2 id="PackedRawSz">11. 压缩素字符串字面量</h2>
+	
+	<p><strong><a href="#Sz">转义字符串字面量</a>的左边加上!和转义指示符，则是压缩素字符串字面量，例如：<span class="amxx-string">^!"中文"</span>、<span class="amxx-string">!^"中文"</span></strong></p>
+
+	<p>同时拥有<a href="#PackedSz">压缩字符串字面量</a>和<a href="#RawSz">素字符串字面量</a>的特性。</p>
+
+	<h2 id="Struct">12. 结构体字面量</h2>
+	
+	<p>结构体字面量是允许含有任意常量表达式的一维数组字面量，例如： <span class="amxx-default">{ <span class="amxx-string">"急速僵尸"</span>, { <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">17.0</span> }, <span class="amxx-number">1000</span>, <span class="amxx-number">1.0</span> }</span></p>
+
+	<p>仅在为结构体（数组+枚举组合而成）赋值时，才允许根据其结构编写对应的字面量。</p>
+
+	<p>这种字面量虽然有时候看起像是多维的，但必须使用相同结构的一维数组变量才能储存，否则会被编译器视作语法错误。</p>
+
+	<p>详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Init">数组初始化</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html#Usage">enum模拟结构体</a></p>
+
+</body>
+</html>

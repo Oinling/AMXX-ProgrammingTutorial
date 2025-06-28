@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 参数</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+
+		p {
+			margin: 15px 0;
+		}
+
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+
+		.amxx-default {
+			color: #0000ff;
+		}
+
+		.amxx-note {
+			color: #000000;
+		}
+
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+
+		.amxx-di {
+			color: #6f6f6b;
+		}
+
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-string {
+			color: #c0392b;
+		}
+
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+
+		.amxx-enumname {
+			background: linear-gradient(to right, #5d140a, #9933ff);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+
+		.amxx-of {
+			background: linear-gradient(to right, #0000ff, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+
+		.amxx-tag {
+			color: #5d140a;
+		}
+
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+	<h1>AMXXPawn 参数</h1>
+
+	<h2>1. 简介</h2>
+
+	<p>调用函数时实际传入的值叫做实参（Actual Argument），可以是常量、变量、表达式或函数返回值。</p>
+
+	<p>函数内部接收的值叫做形参（Formal Parameter），是局部变量中的<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#DataAndStack">栈变量</a>。</p>
+	
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#ParamList">参数声明</a>是<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数声明语句</a>的一部分。</p>
+
+	<p>参数有按值传递和按引用传递两种方式。</p>
+	
+	<p>按值传递：形参的值是实参的副本，更改形参值不会影响实参。</p>
+	
+	<p>按引用传递：形参和实参是同一个<strong>变量</strong>，更改形参等于更改实参。</p>
+	
+	<p>参数声明中，带有&修饰符的单值参数和拥有维度声明的数组参数是按引用传递，调用函数时只能填写变量作为实参。</p>
+	
+	<p>参数声明中的...<strong>可变参数</strong>同样是按引用传递，但调用函数时允许输入常量或函数，amxmodx会自动创建一个临时变量代替传递。</p>
+	
+	<h2>2. 实参计算顺序</h2>
+
+	<p>调用函数，输入多个实参时，若有需要运行时取值的表达式，实参计算顺序受到编译器优化影响，并不固定。</p>
+	
+	<p>示例：</p>
+	
+	<code>new <span class="amxx-identifier">b</span> = <span class="amxx-number">1</span>, <span class="amxx-identifier">c</span> = <span class="amxx-number">2</span>;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] %d %d %d %d"</span>, ++<span class="amxx-identifier">b</span>, <span class="amxx-function">random_num</span>(<span class="amxx-identifier">b</span>, <span class="amxx-identifier">b</span>), ++<span class="amxx-identifier">c</span>, <span class="amxx-function">random_num</span>(<span class="amxx-identifier">c</span>, <span class="amxx-identifier">c</span>));</code>
+	
+	<p>根据直觉，计算顺序应该从左至右计算，打印结果应为：</p>
+	
+	<p>[AMXX] 2 2 3 3</p>
+	
+	<p>实际打印：</p>
+	
+	<p>[AMXX] 2 1 3 2</p>
+	
+	<p>因此，建议优先编写不依赖计算顺序的代码，以保障可移植性和可维护性。</p>
+	
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn编译器指令#file</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>AMXXPawn编译器指令#file</h1></p>
+
+<p><h2>#file文件名指令使用方法:</h2></p>
+
+<p><span class="amxx-directive">#file</span> <span class="amxx-string">字符串字面量</span></p>
+
+<p>更改脚本文件名称.</p>
+
+<p>从该指令所在行开始,若有导致报错的代码,在展示报错文件名称时,显示该指令设定的字符串字面量.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#file</span> <span class="amxx-string">"C:\MyPlugin.sma"</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-directive">#error</span> <span class="amxx-string">BAD!!! Baka !!!</span>
+}</code></p>
+
+<p>在编译这段源码时,将会看见以下报错:</p>
+
+<p><code><span class="amxx-note">C:\MyPlugin.sma(5) : fatal error 111: user error: BAD!!! Baka !!!</span></code></p>
+
+<p>不论你将脚本保存为什么名称,报错时只会显示<span class="amxx-string">"C:\MyPlugin.sma"</span>这个名字.</p>
+
+<p>这个指令在插件运行时依然有效.</p>
+
+</body>
+</html>

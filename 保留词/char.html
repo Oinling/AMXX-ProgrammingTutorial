@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+<title>AMXXPawn char关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+	
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+	
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+	
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+	
+		p {
+			margin: 15px 0;
+		}
+	
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+	
+		.amxx-default {
+			color: #0000ff;
+		}
+	
+		.amxx-note {
+			color: #000000;
+		}
+	
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+	
+		.amxx-di {
+			color: #6f6f6b;
+		}
+	
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+	
+		.amxx-string {
+			color: #c0392b;
+		}
+	
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+	
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93, 20, 10), rgb(153, 51, 255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+	
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+	
+		.amxx-tag {
+			color: #5d140a;
+		}
+	
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+	
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+	
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+	
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+	
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+	
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+	
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+	
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+	
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+	
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+<h1>AMXXPawn char关键字</h1>
+
+<h2>1. 核心功能</h2>
+<p>char用于计算需要多大尺寸的数组，才能储存指定数量的字节，专为压缩字符串服务。</p>
+<p>AMX Mod X 1.10.0及旧版本都是32位，cell是AMXXPawn语言的唯一数值类型，等同于int32，通常可储存1个数值或1个字符。</p>
+<p>由于1个字符最多只需8位(1个字节)储存，32位的cell完全可以储存4个字符。</p>
+<p>用于一个cell的字节数是4，因此e char等同于(e + 3) / 4。</p>
+<p>极少数情况下，我们希望用cell数组尽可能储存多的字符，此时可用char计算，多少个cell才能储存e个字符。</p>
+
+<h2>2. 求压缩尺寸语法</h2>
+
+	<div class="note-box">
+	<h4>求压缩尺寸表达式：</h4>
+	<p><单值表达式> <<span class="amxx-default">char</span>></p>
+	<h4>求压缩尺寸语句：</h4>
+	<p><单值表达式> <<span class="amxx-default">char</span>> [<span class="amxx-default">;</span>]</p>
+	</div>
+
+	<div class="note-box">
+		<h4><>是必填项目，[]是可选项目。</h4>
+		<h4><单值表达式>可以是常量表达式、单值变量、单值函数，但决不能是数组、数组的单值元素（可能是编译器bug）。</h4>
+		<h4>若<单值表达式>是<span class="highlight">求尺寸表达式</span>，应改为<span class="highlight">(求尺寸表达式)</span>。例如：<span class="highlight">sizeof a</span> char应改为<span class="highlight">(sizeof a)</span> char形式。</h4>
+	</div>
+
+<h2>3. 代码示例</h2>
+
+	<code><span class="amxx-default"><span class="amxx-comment">// 正常储存字符串，1个英文1字节，1个中文占3字节，加上终止符，text的cell数量为24</span>
+static <span class="amxx-identifier">text</span>[] = <span class="amxx-string">"一段文本:hello word"</span>;
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 将text变量的内容压缩储存到packedText变量</span>
+	new <span class="amxx-identifier">packedText</span>[(sizeof <span class="amxx-identifier">text</span>) char];
+	for (new <span class="amxx-identifier">cellId</span>; <span class="amxx-identifier">text</span>[<span class="amxx-identifier">cellId</span>] != <span class="amxx-identifier">EOS</span>; <span class="amxx-identifier">cellId</span>++) <span class="amxx-identifier">packedText</span>{<span class="amxx-identifier">cellId</span>} = <span class="amxx-identifier">text</span>[<span class="amxx-identifier">cellId</span>];
+	<span class="amxx-comment">// 打印：[AMXX]text的尺寸:24</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]text的尺寸:%d"</span>, sizeof <span class="amxx-identifier">text</span>);
+	<span class="amxx-comment">// 打印：[AMXX]packedText的尺寸:6</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]packedText的尺寸:%d"</span>, sizeof <span class="amxx-identifier">packedText</span>);
+}</span></code>
+
+	<div class="warning-box">
+		<li>因解析器设计问题，若<span class="highlight">运算词表达式</span>右边是char，char不被视作运算符，<span class="highlight">运算词表达式</span>被视作<span class="highlight">语句</span>，需添括号预防</li>
+		<li>char运算优先级仅次于<span class="highlight">() [] {}</span>，与<span class="highlight">! ~ -(负号) ++ -- : defined sizeof tagof</span>同级，酌情给char左边表达式添加括号</li>
+		<li>AMX Mod X 1.10.0及旧版本没有提供打印压缩字符串的函数，要打印必须解压缩</li>
+	</div>
+
+</body>
+</html>

@@ -263,7 +263,7 @@ new switch = 5; // 用保留词new定义一个名为switch的变量,会报错.�
 
 <div class="example">
 	<h4>作用域示例:</h4>
-	<code>// 用static定义名为index的全局变量，作用域终点位于源码最后一行
+	<code>// 用static定义名为index的全局变量，作用域终点位于当前文件末尾
 static index;
 
 // 定义一个函数func
@@ -283,15 +283,11 @@ public func()
 
 <p>良好的命名规范能提高代码可读性和可维护性。以下是AMXXPawn社区中常见的命名约定：</p>
 
-<h3>5.1 标签命名</h3>
-<p>定义值类型标签(Tag)或跳转标签(Label)时，必须以冒号(:)结尾：</p>
-<code>bool: Float: HamHook: Label: LoopStart:</code>
-
-<h3>5.2 常量命名</h3>
+<h3>5.1 常量命名</h3>
 <p>常量通常全部大写，并用下划线分隔单词：</p>
 <code>MAX_PLAYERS MAX_NAME_LENGTH</code>
 
-<h3>5.3 伪结构体命名</h3>
+<h3>5.2 伪结构体命名</h3>
 <p>定义伪结构体值类型时，必须以小写字母开头：</p>
 <code>enum sPlayer
 {
@@ -299,7 +295,7 @@ public func()
 	结构体属性2索引常量
 }</code>
 
-<h3>5.4 变量命名</h3>
+<h3>5.3 变量命名</h3>
 <ul>
 	<li><strong>全局变量</strong>：通常以"g"开头，每个单词首字母大写<br>
 	<code>gZombie gHasWeapon</code></li>
@@ -311,11 +307,11 @@ public func()
 	<code>playerEntityIndex wpnEntId attackerKills num_args</code></li>
 </ul>
 
-<h3>5.5 函数命名</h3>
+<h3>5.4 函数命名</h3>
 <p>函数通常全部小写用下划线分隔单词，或每个单词首字母大写：</p>
 <code>is_user_alive get_user_weapon ArrayGetCell ExecuteHamB</code>
 
-<h3>5.6 常见命名方法</h3>
+<h3>5.5 常见命名方法</h3>
 
 <ul>
 	<li><strong>小驼峰命名法</strong>：除第一个单词外，其他单词首字母大写<br>

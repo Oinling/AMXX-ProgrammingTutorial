@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn enum关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>AMXXPawn enum关键字</h1>
+
+	<h2>目录</h2>
+	<ul>
+		<li><a href="#Core">1. 核心功能</a></li>
+		<li><a href="#Statement">2. 枚举声明语句</a></li>
+		<li><a href="#Tag">3. 值类型标签注意事项</a></li>
+		<li><a href="#Name">4. 枚举名称注意事项</a></li>
+		<li><a href="#Incrementer">5. 升值器注意事项</a></li>
+		<li><a href="#PropTag">6. 属性值类型标签注意事项</a></li>
+		<li><a href="#Member">7. 枚举常量注意事项</a></li>
+		<li><a href="#PropStruct">8. 属性尺寸注意事项</a></li>
+		<li><a href="#Init">9. 初始化表达式注意事项</a></li>
+		<li><a href="#Usages">10. 三种核心用法</a></li>
+	</ul>
+
+	<h2 id="Core">1. 核心功能</h2>
+
+	<p>enum可声明一组带有相同值类型标签、数值有规律、关联性强的常量，替代“魔法数字”，提高代码的可读性。</p>
+
+	<p>enum还可以设计结构体，结合数组可模拟查改结构体属性，方便用户管理复杂数据。</p>
+
+	<p>若未来需增减数据，只需修改枚举定义，无需修改所有用到数字索引的代码。</p>
+
+	<p>编译器会对枚举相关代码进行更加灵活的类型标签检查，引导用户编写正确代码。</p>
+
+	<h2 id="Statement">2. 枚举声明语句</h2>
+
+	<div class="note-box">
+	<h4>枚举声明语句的语法：</h4>
+	<p><<span class="amxx-default">enum</span>> \值类型标签/ \枚举名称/ \升值器/ <<span class="amxx-default">{</span>> \枚举常量声明/ <<span class="amxx-default">}</span>> \<span class="amxx-default">;</span>/</p>
+
+	<h4>升值器语法拆解：</h4>
+	<p><<span class="amxx-default">(</span>> \<多字节赋值运算符> <常量表达式>/ <<span class="amxx-default">)</span>></p>
+
+	<h4>枚举常量声明语法拆解：</h4>
+	<p>\属性值类型标签/ \枚举常量名称/ \属性尺寸声明/ \初始化表达式/ \<span class="amxx-default">,</span>/</p>
+
+	<h4>属性尺寸声明语法拆解：</h4>
+	<p><<span class="amxx-default">[</span>> <常量表达式> <<span class="amxx-default">]</span>></p>
+
+	<h4>初始化表达式语法拆解：</h4>
+	<p><<span class="amxx-default">=</span>> <常量表达式></p>
+	</div>
+
+	<div class="note-box">
+		<h4><>是必填项目，\/是可选项目。</h4>
+		<h4>\枚举常量声明/若以逗号结尾，可继续声明下一个枚举常量。</h4>
+		<h4>不填写枚举名称，则为匿名枚举。</h4>
+		<h4>填写枚举名称，则为命名枚举。</h4>
+	</div>
+
+	<h2 id="Tag">3. 值类型标签注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>若未填写值类型标签，则等于枚举名称，若未填写枚举名称，则等于_标签</li>
+	<li>枚举常量与枚举名称的值类型标签是一致的，注意不要混淆‘常量所指属性值类型标签’与'常量的值类型标签'</li>
+	<li>若enum被用于设计结构体，不该填写标签，解析器会根据需要自动切换标签到_或枚举名称</li>
+	<li>通常不填写标签，而是利用枚举名称形成暗示：带有此标签的索引器、变量、函数，输入或输出的值与枚举常量相关</li>
+	</ul>
+	</div>
+
+	<h2 id="Name">4. 枚举名称注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>省略名称是匿名枚举，反之是命名枚举</li>
+	<li>省略名称将牺牲编译时类型安全检查，编译器无法通过标签警告引导用户正确使用枚举常量</li>
+	<li>枚举名称是常量，其值由升值器和最后一个枚举常量共同决定</li>
+	<li>若最后一个枚举常量拥有属性尺寸声明，名称 = 常量 + 属性尺寸</li>
+	<li>若最后一个枚举常量没有属性尺寸声明，假设升值器为(+= 2)，名称 = 常量 + 2</li>
+	<li>若enum被用于设计结构体，名称需以小写开头，否则解析器不会智能切换标签，将会在关键位置触发警告</li>
+	<li>声明1维数组尺寸时，若填写枚举名称作为尺寸，1维数组会被解析为结构体</li>
+	<li>声明属性尺寸时，若填写枚举名称作为尺寸，对应的结构体属性会被解析为结构体</li>
+	</ul>
+	</div>
+
+	<h2 id="Incrementer">5. 升值器注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>升值器决定如何给枚举常量和枚举名称自动初始化</li>
+	<li>若未填写升值器，则以(+= 1)作为默认升值器</li>
+	<li>不要妄图填写浮点数字面量，浮点数运算在编译时无法执行，编译器会将其二进制表示为整数，执行整数运算</li>
+	<li>若以(<<= 1)作为升值器，通常需对第2或第1个枚举常量进行初始化，赋值为1</li>
+	</ul>
+	</div>
+
+	<h2 id="PropTag">6. 属性值类型标签注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>当枚举常量被用于访问数组元素，该元素会被当做结构体属性，属性值会被临时切换标签</li>
+	<li>若未填写属性值类型标签，则以_作为默认标签</li>
+	<li>注意不要将其于'枚举常量的值类型标签'混淆</li>
+	</ul>
+	</div>
+
+	<h2 id="Member">7. 枚举常量注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>枚举常量与枚举名称的值类型标签是一致的</li>
+	<li><span class="highlight">tagof</span> 无法获取枚举常量的标签uid，可能是编译器设计缺陷</li>
+	<li>不要误认为常量是结构体私有的，最好添加名称前缀避免与其它标识符同名</li>
+	</ul>
+	</div>
+
+	<h2 id="PropStruct">8. 属性尺寸注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>当枚举常量被用于访问1维数组元素，该元素会被当做结构体属性，属性尺寸大于1时，可使用[]访问属性元素</li>
+	<li>属性尺寸看似让1维数组的数值元素变成了数组,实则<span class="highlight">a[枚举常量][索引]</span>会变成<span class="highlight">a[枚举常量+索引]</span></li>
+	<li>属性尺寸声明会让下一个枚举常量无法执行升值器，改为：下一个常量 = 当前常量 + 属性尺寸</li>
+	<li>属性尺寸声明会让枚举名称无法执行升值器，改为：名称 = 最后常量 + 属性尺寸</li>
+	<li>若不填写属性尺寸声明，则不干扰升值器</li>
+	</ul>
+	</div>
+
+	<h2 id="Init">9. 初始化表达式注意事项</h2>
+	<div class="feature-list">
+	<ul>
+	<li>若填写初始化表达式，为枚举常量设定初始值，则升值器会跳过对此常量的赋值</li>
+	<li>若不填写初始化表达式，第一个枚举常量的值为0</li>
+	<li>不建议在使用浮点数字面量进行初始化的同时，省略下一常量的初始化，应全部显式赋值</li>
+	</ul>
+	</div>
+
+	<h2 id="Usages">10. 三种核心用法</h2>
+
+	<div class="note-box">
+		<h3>基础用法：替代"魔法数字"</h3>
+		<p><strong>用途：</strong>定义一组有意义，强相关的常量，代替 0, 1, 2... 这样的数字，提高代码可读性。</p>
+		<code>enum <span class="amxx-enumname">LibType</span>
+{
+	<span class="amxx-identifier">LibType_Library</span>,
+	<span class="amxx-identifier">LibType_Class</span>
+};
+
+<span class="amxx-comment">// 参数2带有LibType标签,暗示用户填写LibType枚举的成员,若填写无关的表达式,则会触发警告</span>
+native <span class="amxx-function">LibraryExists</span>(const <span class="amxx-identifier">library</span>[], <span class="amxx-enumname">LibType:</span><span class="amxx-identifier">type</span>);
+
+static <span class="amxx-identifier">gErrorText</span>[<span class="amxx-number">128</span>];
+public <span class="amxx-function">plugin_natives</span>()
+{
+	<span class="amxx-comment">// 调用LibraryExists函数,参数2根据需求填LibType_Library或LibType_Class</span>
+	if (!<span class="amxx-function">LibraryExists</span>(<span class="amxx-string">"zombienpc"</span>, <span class="amxx-identifier">LibType_Library</span>))
+	{
+		<span class="amxx-function">formatex</span>(<span class="amxx-identifier">gErrorText</span>, <span class="amxx-df">charsmax</span>(<span class="amxx-identifier">gErrorText</span>), <span class="amxx-string">"'ZombieNpc' plugin must initialize earlier than the current plugin. Check plugins.ini."</span>);
+		return;
+	}
+}</code>
+		<p><strong>反面教材：</strong>定义一组强相关的宏常量，在没有注释的情况下，用户根本猜不出这些宏常量的用途。</p>
+		<code><span class="amxx-di">#define <span class="amxx-identifier">AMX_ERR_NATIVE</span> <span class="amxx-number">10</span>
+#define <span class="amxx-identifier">AMX_ERR_MEMACCESS</span> <span class="amxx-number">5</span>
+#define <span class="amxx-identifier">AMX_ERR_NONE</span> <span class="amxx-number">0</span>
+#define <span class="amxx-identifier">AMX_ERR_BOUNDS</span> <span class="amxx-number">4</span>
+#define <span class="amxx-identifier">AMX_ERR_STACKERR</span> <span class="amxx-number">3</span>
+#define <span class="amxx-identifier">AMX_ERR_STACKLOW</span> <span class="amxx-number">7</span>
+#define <span class="amxx-identifier">AMX_ERR_HEAPLOW</span> <span class="amxx-number">8</span>
+#define <span class="amxx-identifier">AMX_ERR_DIVIDE</span> <span class="amxx-number">11</span>
+#define <span class="amxx-identifier">AMX_ERR_NOTFOUND</span> <span class="amxx-number">19</span>
+#define <span class="amxx-identifier">AMX_ERR_PARAMS</span> <span class="amxx-number">25</span>
+#define <span class="amxx-identifier">AMX_ERR_GENERAL</span> <span class="amxx-number">27</span></span>
+
+<span class="amxx-comment">// 参数1带有_标签，用户绝对猜不到要填写名称以AMX_ERR_开头的宏常量</span>
+native <span class="amxx-function">abort</span>(<span class="amxx-identifier">error</span>, const <span class="amxx-identifier">fmt</span>[] = <span class="amxx-string">""</span>, <span class="amxx-tag">any:</span>...);
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	if (<span class="amxx-identifier">gErrorText</span>[<span class="amxx-number">0</span>] != <span class="amxx-identifier">EOS</span>)
+	{
+		<span class="amxx-comment">// 填写任何带有_标签的表达式作为参数1,都不会触发警告.原生inc文件中存在大量这样的缺陷设计</span>
+		<span class="amxx-function">abort</span>(<span class="amxx-identifier">AMX_ERR_NONE</span>, <span class="amxx-identifier">gErrorText</span>);
+	}
+}</code>
+	</div>
+
+	<div class="note-box">
+		<h3>进阶用法：位掩码（Bitmask）</h3>
+		<p><strong>用途：</strong>定义二进制位标志，表示可并存的状态，比如同时按下多个按键，同时拥有多种权限。</p>
+		<code><span class="amxx-comment">/// 障碍物特征</span>
+enum <span class="amxx-enumname">ObstacleAttribute</span> (<<= <span class="amxx-number">1</span>)	<span class="amxx-comment">// 每次左移1位(相当于*= 2)</span>
+{
+	<span class="amxx-comment">/// 值为0,表示无任何特征,无法与其它特征并存</span>
+	<span class="amxx-identifier">OA_Static</span>,
+	<span class="amxx-comment">/// 显式赋值为1,让接下来的常量可以自动赋值	(二进制 0b_0001)</span>
+	<span class="amxx-identifier">OA_Dynamic</span>	= <span class="amxx-number">1</span>,
+	<span class="amxx-comment">/// 自动赋值为2 (0b_0010)</span>
+	<span class="amxx-identifier">OA_Ladder</span>,
+	<span class="amxx-comment">/// 自动赋值为4 (0b_0100)</span>
+	<span class="amxx-identifier">OA_Virtualized</span>
+}
+
+<span class="amxx-comment">// 表示某个障碍物同时含有的特征:运动中的爬梯,由于被虚化而无法产生碰撞 值为1|2|4=7 (0b_0111)</span>
+new <span class="amxx-enumname">ObstacleAttribute</span>:<span class="amxx-identifier">obsAttributes</span> = <span class="amxx-identifier">OA_Dynamic</span> | <span class="amxx-identifier">OA_Ladder</span> | <span class="amxx-identifier">OA_Virtualized</span>;</code>
+
+	<div class="feature-list"><ul>
+		<li>用 | 组合多个标志，用 & 检查是否拥有某个权限。</li>
+		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E8%BF%90%E7%AE%97%E7%AC%A6.html">点击查看二进制运算指南</a></li>
+	</ul></div>
+	</div>
+
+	<div class="note-box">
+		<h3>高级用法：模拟结构体（重要！）</h3>
+		<p><strong>用途：</strong>用 enum + 数组模拟 C 语言的 struct，方便管理复杂数据。</p>
+		<code><span class="amxx-comment">// 僵尸外观数据结构</span>
+enum <span class="amxx-enumname">tZombieAppearance</span>
+{
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZA_MdlPath</span>[<span class="amxx-number">64</span>],
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZA_BodyId</span>,
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZA_SkinId</span>,
+	<span class="amxx-tag">bool:</span>	<span class="amxx-identifier">ZA_SunkInGround</span>
+};
+
+<span class="amxx-comment">// 僵尸类型数据结构</span>
+enum <span class="amxx-enumname">tZombieClass</span>
+{
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_Name</span>[<span class="amxx-number">32</span>],
+	<span class="amxx-comment">// 属性尺寸声明要求[]内填写带有_标签的常量表达式,表示结构体属性的尺寸</span>
+	<span class="amxx-comment">// 若填写枚举名称,表示该这个结构体属性也是结构体.编译器自动切换tZombieAppearance的标签为_</span>
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_Appearance</span>[<span class="amxx-enumname">tZombieAppearance</span>],
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_MaxHealth</span>,
+	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_MaxSpeed</span>,
+	<span class="amxx-tag">Float:</span>	<span class="amxx-identifier">ZC_EyePos</span>[<span class="amxx-number">3</span>]
+};
+
+<span class="amxx-comment">// 维度声明要求[]内填写带有_标签的常量表达式,编译器自动切换tZombieClass的标签为_</span>
+<span class="amxx-comment">// tZombieClass让2维数组gDefaultZombieClasses内的1维数组变成结构体,</span>
+<span class="amxx-comment">// 解析器允许用户使用结构体字面量对这些1维数组进行初始化</span>
+static <span class="amxx-identifier">gDefaultZombieClasses</span>[][<span class="amxx-enumname">tZombieClass</span>] =
+{
+	<span class="amxx-comment">// 第1个结构体字面量</span>
+	{
+		<span class="amxx-string">"普通僵尸"</span>,
+		{
+			<span class="amxx-string">"models/player/zombie_classic/zombie_classic.mdl"</span>,
+			<span class="amxx-number">0</span>,
+			<span class="amxx-number">0</span>,
+			<span class="amxx-identifier">true</span>
+		},
+		<span class="amxx-number">1000</span>,
+		<span class="amxx-number">250</span>,
+		{ <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">35.0</span> }
+	},
+	<span class="amxx-comment">// 第2个结构体字面量</span>
+	{
+		<span class="amxx-string">"快速僵尸"</span>,
+		{
+			<span class="amxx-string">"models/zombie_fast.mdl"</span>,
+			<span class="amxx-number">0</span>,
+			<span class="amxx-number">0</span>,
+			<span class="amxx-identifier">false</span>
+		},
+		<span class="amxx-number">500</span>,
+		<span class="amxx-number">320</span>,
+		{ <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span>, <span class="amxx-number">0.0</span> }
+	}
+};
+static <span class="amxx-enumname">Array:</span><span class="amxx-identifier">gZombieClasses</span> = <span class="amxx-identifier">Invalid_Array</span>;
+
+native <span class="amxx-enumname">Array:</span><span class="amxx-function">ArrayCreate</span>(<span class="amxx-identifier">cellsize</span> = <span class="amxx-number">1</span>, <span class="amxx-identifier">reserved</span> = <span class="amxx-number">32</span>);
+native <span class="amxx-function">ArrayPushArray</span>(<span class="amxx-enumname">Array:</span><span class="amxx-identifier">which</span>, const <span class="amxx-tag">any:</span><span class="amxx-identifier">input</span>[], <span class="amxx-identifier">size</span> = -<span class="amxx-number">1</span>);
+
+<span class="amxx-comment">// native ZombieClasses_Add(zombieClass[tZombieClass]);</span>
+public <span class="amxx-function">@ZombieClasses_Add</span>(<span class="amxx-identifier">pluginId</span>, <span class="amxx-identifier">numParams</span>)
+{
+	<span class="amxx-comment">// tZombieClass让1维数组zombieClass变成结构体</span>
+	new <span class="amxx-identifier">zombieClass</span>[<span class="amxx-enumname">tZombieClass</span>];
+	<span class="amxx-function">get_array</span>(<span class="amxx-number">1</span>, <span class="amxx-identifier">zombieClass</span>, sizeof <span class="amxx-identifier">zombieClass</span>);
+
+	if (<span class="amxx-identifier">gZombieClasses</span> == <span class="amxx-identifier">Invalid_Array</span>)
+	{
+		<span class="amxx-comment">// ArrayCreate的参数1要求填写带有_标签的表达式,编译器自动切换tZombieClass的标签为_</span>
+		<span class="amxx-identifier">gZombieClasses</span> = <span class="amxx-function">ArrayCreate</span>(<span class="amxx-enumname">tZombieClass</span>);
+	}
+
+	<span class="amxx-comment">// 用ZC_Name访问1维数组zombieClass的元素,允许额外添加[]索引器访问元素的元素</span>
+	<span class="amxx-comment">// ZC_Name值为0,但若之间填0,会触发标签不匹配的警告,且第二个[]索引器会触发语法错误</span>
+	<span class="amxx-comment">// zombieClass本质是1维数组,不可能升维,这两个索引器会被解析为[ZC_Name + 0]</span>
+	if (<span class="amxx-identifier">zombieClass</span>[<span class="amxx-identifier">ZC_Name</span>][<span class="amxx-number">0</span>] == <span class="amxx-identifier">EOS</span>)
+	{
+		<span class="amxx-function">log_error</span>(<span class="amxx-identifier">AMX_ERR_NATIVE</span>, <span class="amxx-string">"The name of zombie class connot be empty."</span>);
+		return;
+	}
+
+	<span class="amxx-comment">// ZC_Appearance让结构体属性也变成了结构体,允许使用第二,甚至第三个[]索引器</span>
+	if (<span class="amxx-identifier">zombieClass</span>[<span class="amxx-identifier">ZC_Appearance</span>][<span class="amxx-identifier">ZA_MdlPath</span>][<span class="amxx-number">0</span>] == <span class="amxx-identifier">EOS</span>)
+	{
+		<span class="amxx-function">log_error</span>(<span class="amxx-identifier">AMX_ERR_NATIVE</span>, <span class="amxx-string">"The appearance of zombie classes cannot use empty model paths."</span>);
+		return;
+	}
+
+	<span class="amxx-comment">// 参数2要求索引器使用_标签,编译器自动切换zombieClass索引器标签为_</span>
+	<span class="amxx-function">ArrayPushArray</span>(<span class="amxx-identifier">gZombieClasses</span>, <span class="amxx-identifier">zombieClass</span>);
+}</code>
+
+		<p>访问结构体属性时，可使用<span class="highlight">sizeof</span>关键字获取该属性尺寸。</p>
+		<p>比起直接填写具体尺寸数值，<span class="highlight">sizeof</span>的可读性更高。</p>
+		<code><span class="amxx-function">server_print</span>(<span class="amxx-string">"僵尸名称尺寸:%d, 实际单元数:%d"</span>, sizeof <span class="amxx-identifier">zombieClass</span>[<span class="amxx-identifier">ZC_Name</span>], <span class="amxx-identifier">strlen</span>(<span class="amxx-identifier">zombieClass</span>[<span class="amxx-identifier">ZC_Name</span>]));
+		</code>
+	</div>
+
+</body>
+
+</html>

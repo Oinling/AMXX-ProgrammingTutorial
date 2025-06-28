@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 函数</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+
+		p {
+			margin: 15px 0;
+		}
+
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+
+		.amxx-default {
+			color: #0000ff;
+		}
+
+		.amxx-note {
+			color: #000000;
+		}
+
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+
+		.amxx-di {
+			color: #6f6f6b;
+		}
+
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-string {
+			color: #c0392b;
+		}
+
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+
+		.amxx-enumname {
+			background: linear-gradient(to right, #5d140a, #9933ff);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+
+		.amxx-of {
+			background: linear-gradient(to right, #0000ff, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+
+		.amxx-tag {
+			color: #5d140a;
+		}
+
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+	<h1>AMXXPawn 函数</h1>
+
+	<h2>目录</h2>
+	<ul>
+		<li><a href="#Introduction">1. 简介</a></li>
+		<li><a href="#Forward">2. forward函数</a></li>
+		<li><a href="#Native">3. native函数</a></li>
+		<li><a href="#Public">4. 公共函数</a></li>
+		<li><a href="#Static">5. 文件私有函数</a></li>
+		<li><a href="#StaticStock">6. 文件私有备用函数</a></li>
+		<li><a href="#Internal">7. 插件私有函数</a></li>
+		<li><a href="#InternalStock">8. 插件私有备用函数</a></li>
+		<li><a href="#Tag">9. 值类型标签</a></li>
+		<li><a href="#ParamList">10. 参数列表</a></li>
+		<li><a href="#StateBind">11. 插件状态声明</a></li>
+		<li><a href="#FuncBody">12. 函数体</a></li>
+	</ul>
+
+	<h2 id="Introduction">1. 简介</h2>
+
+	<p>函数（Variable）是由用户创建的标识符，能够接受输入参数，执行多条语句，并返回数值。</p>
+
+	<p>每个脚本至少需要拥有1个公共函数，由外界执行，否则无法编译脚本。</p>
+
+	<p>任何一个公共函数都可以成为脚本的入口，有了入口，才能执行运行时表达式（例如浮点数算术，或调用私有函数）。</p>
+	
+	<p>一些需要在多个位置重复使用的代码也可以封装为函数，用不同的参数调节内部代码执行的细节。</p>
+	
+	<p>声明、定义函数的方法有很多，</p>
+	
+	<p>不使用关键字可以声明forward函数、脚本公共函数、插件私有函数。</p>
+	
+	<p>使用关键字可以声明forward函数、native函数、脚本公共函数、插件私有函数、文件私有函数、备用函数。</p>
+	
+	<p>forward函数、native函数的定义需要额外实现。</p>
+
+	<p>脚本公共函数、插件私有函数、文件私有函数、备用函数的定义与声明是同一条语句。</p>
+	
+	<p>若定义main、entry函数，不允许有参数。</p>
+	
+	<p>本接下来的声明、定义语句讲解中，（）是必填项目，【】是可选项目。</p>
+	
+	<h2 id="Forward">2. forward函数</h2>
+
+	<div class="note-box">
+		<h4>声明语句1：</h4>
+		<h4>【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<span class="amxx-default">;</span>）</h4>
+		
+		<h4>声明语句2：</h4>
+		<h4>(<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/forward.html">forward</a>）【<a href="#Tag">值类型标签</a>】 【维度声明】  （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 【<span class="amxx-default">;</span>】</h4>
+	</div>
+
+	<div class="warning-box">
+		<h4>注1：</h4>
+		<p>声明语句的编写者称为A。</p>
+		<p>声明语句的引用者、定义语句的编写者称为B。</p>
+		<h4>注2：</h4>
+		<p>【维度声明】对于A和B无意义，因为B返回数组时，A只会得到B插件的数组地址。</p>
+		<p>AMX Mod X并未提供跨插件访问变量地址的功能，而且若是栈变量，已被销毁。</p>
+		<h4>注3：</h4>
+		<p>【<a href="#StateBind">插件状态声明</a>】无意义，这是解析器的错误设计，B可以在定义语句中设定函数绑定B插件状态。</p>
+		<p>A若强行填写【<a href="#StateBind">插件状态声明</a>】，会导致B的引用指令被警告，定义语句有可能报错。</p>
+	</div>
+
+	<div class="note-box">
+		<p>A可以用AMX Mod X的dll模块或amxx插件创建、执行forward函数的转发器。这里不讨论dll模块，只讨论amxx插件。</p>
+		<p>A需引用amxmodx.inc文件，用CreateMultiForward、ExecuteForward函数创建、执行转发器。</p>
+		<p>函数声明通常应该被A写在inc文件中，供B引用，由B声明同名的公共函数，实现forward函数的定义。</p>
+		<p>当A执行转发器时，会按创建的规则执行每个B实现的公共函数。</p>
+		<p>若A不创建、执行转发器，forward函数声明没有存在意义。</p>
+		<p>总结：</p>
+		<p>主插件创建转发器，声明函数原形，其它插件定义函数，由主插件执行。</p>
+		<p>适用于制作简单的事件处理系统，跨插件通信。</p>
+	</div>
+
+	<h2 id="Native">3. native函数</h2>
+
+	<div class="note-box">
+		<h4>声明语句：</h4>
+		<h4>(<span class="amxx-default">native</span>） 【<a href="#Tag">值类型标签</a>】 【维度声明】 （函数名称） (<a href="#ParamList">参数列表</a>） (<span class="amxx-default">;</span>）</h4>
+	</div>
+
+	<div class="warning-box">
+		<h4>注1：</h4>
+		<p>声明语句、定义语句的编写者称为A。</p>
+		<p>声明语句的引用者、函数的使用者称为B。</p>
+		<h4>注2：</h4>
+		<p>【维度声明】对于A和B无意义，因为A返回数组时，B只会得到A插件的数组地址。</p>
+		<p>AMX Mod X并未提供跨插件访问变量地址的功能，而且若是栈变量，已被销毁。</p>
+		<h4>注3：</h4>
+		<p>若该函数的定义是AMX Mod X核心模块实现的，则可以返回数组。</p>
+	</div>
+
+	<div class="note-box">
+		<p>A可以用AMX Mod X的dll模块或amxx插件定义native函数。这里不讨论dll模块，只讨论amxx插件。</p>
+		<p>A需编写公共函数定义语句，再引用amxmodx.inc文件，用register_native函数将公共函数与native函数互相绑定。</p>
+		<p>函数声明通常应该被A写在inc文件中，供B引用，B调用native函数时，实际调用的是A定义的公共函数。</p>
+		<p>若native函数未绑定一个公共函数，B调用时会触发报错：使用了未知函数。</p>
+		<p>总结：</p>
+		<p>主插件绑定native函数声明和公共函数定义，其它插件执行native函数等于执行公共函数。</p>
+		<p>适用于制作模块化插件，主插件负责实现复杂功能，其它插件只需执行主插件暴露的函数。</p>
+	</div>
+
+	<h2 id="Public">4. 公共函数</h2>
+
+	<div class="note-box">
+		<h4>声明、定义语句1：</h4>
+		<h4>【<a href="#Tag">值类型标签</a>】 （@开头的函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+		
+		<h4>声明、定义语句2：</h4>
+		<h4>(<span class="amxx-default">public</span>） 【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+	</div>
+
+	<div class="note-box">
+		<p>公共函数是外部模块、插件以及当前插件所有文件中皆可使用的函数。</p>
+		<p>公共函数通常是供dll模块或其它amxx插件使用，每个amxx插件都必须至少拥有1个公共函数。</p>
+		<p>当公共函数与fowrard函数同名时，该函数会被外部模块或插件调用。</p>
+		<p>当用户将公共函数名称告知其它模块或插件时，对方可调用该函数。</p>
+		<p>例如get_func_id、set_task、register_forward、menu_create等函数需要用户填写某个公共函数名称。</p>
+	</div>
+
+	<div class="warning-box">
+		<h4>注1：</h4>
+		<p>虽然不允许填写维度声明，但公共函数可以返回数组。</p>
+		<h4>注2：</h4>
+		<p>其它插件只会收到该数组在当前插件内的地址，毫无意义。</p>
+		<p>AMX Mod X并未提供跨插件访问变量地址的功能，而且若是栈变量，已被销毁。</p>
+		<h4>注3：</h4>
+		<p>若插件调用自己的公共函数，可以得到数组的副本。</p>
+		<h4>注4：</h4>
+		<p>公共函数的设计初衷是供外部调用，常需执行严格的参数检查、环境检查，不建议插件调用自己的公共函数。</p>
+		<h4>注5：</h4>
+		<p>当插件被暂停或停止，外部模块或插件无法调用其公共函数。</p>
+		<h4>注6：</h4>
+		<p>外部可以通过猜测函数id或不小心调用公共函数，导致难以预料的事情发生。</p>
+		<p>因此，若无必要，尽量用私有函数代替公共函数。</p>
+		<h4>注7：</h4>
+		<p>公共函数与伪公共变量不同，公共函数拥有者是插件，两个插件的同名公共函数并不是同一个公共函数。</p>
+		<p>伪公共变量的拥有者是AMX Mod X插件平台，两个插件的同名伪公共变量，会是同一个变量。</p>
+	</div>
+
+	<h2 id="Static">5. 文件私有函数</h2>
+
+	<div class="note-box">
+		<h4>声明、定义语句：</h4>
+		<h4>(<span class="amxx-default">static</span>） 【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+	</div>
+
+	<div class="note-box">
+		<p>文件私有函数通常被称呼为静态函数，仅在当前文件可用。</p>
+		<p>例如，源码A引用了源码B（inc、sma、pawn等等），源码B内部声明了静态函数，则A或外部模块/插件无法调用这个函数。</p>
+	</div>
+
+	<div class="warning-box">
+		<h4>注1：</h4>
+		<p>虽然不允许填写维度声明，但静态函数可以返回数组。</p>
+		<p>毕竟这是用户自定义、自用的，所以肯定知道返回值的维度和尺寸，维度声明也就不重要了。</p>
+		<h4>注2：</h4>
+		<p>作为私有函数，只要用户确定参数来源安全，即可省略运行时参数检查，提高代码效率。</p>
+		<h4>注3：</h4>
+		<p>若无跨文件、跨插件访问的需求，应该尽量使用静态函数代替其它类型的函数。</p>
+		<h4>注4：</h4>
+		<p>若函数未被使用，编译时会触发警告。</p>
+	</div>
+
+	<h2 id="StaticStock">6. 文件私有备用函数</h2>
+
+	<div class="note-box">
+		<h4>声明、定义语句1：</h4>
+		<h4>(<span class="amxx-default">static stock</span>） 【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+
+		<h4>声明、定义语句2：</h4>
+		<h4>(<span class="amxx-default">stock static</span>） 【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+	</div>
+
+	<div class="note-box">
+		<p>与文件私有函数类似，但多了一个备用特性。</p>
+		<p>若该函数未被使用，编译器不会检查函数内部语法错误，不会触发未使用警告，直接舍弃。</p>
+		<p>备用函数的设计初衷是按需编译，方便函数库（inc文件）的设计，确保未使用的函数不会增加插件的文件体积。</p>
+	</div>
+
+	<h2 id="Internal">7. 插件私有函数</h2>
+
+	<div class="note-box">
+		<h4>声明、定义语句：</h4>
+		<h4>【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+	</div>
+
+	<div class="note-box">
+		<p>插件私有函数，仅在当前插件相关的文件中可用。</p>
+		<p>例如，源码A引用源码B，源码B引用源码C，源码B内部声明了插件私有函数，则A、B、C皆可调用此函数。</p>
+	</div>
+
+	<div class="warning-box">
+		<h4>注1：</h4>
+		<p>虽然不允许填写维度声明，但插件私有函数可以返回数组。</p>
+		<p>毕竟这是用户自定义、自用的，所以肯定知道返回值的维度和尺寸，维度声明也就不重要了。</p>
+		<h4>注2：</h4>
+		<p>作为私有函数，只要用户确定参数来源安全，即可省略运行时参数检查，提高代码效率。</p>
+		<h4>注3：</h4>
+		<p>若有跨文件访问、无跨插件访问的需求，应该尽量使用插件私有函数代替其它类型的函数。</p>
+		<h4>注4：</h4>
+		<p>若函数未被使用，编译时会触发警告。</p>
+	</div>
+
+	<h2 id="InternalStock">8. 插件私有备用函数</h2>
+
+	<div class="note-box">
+		<h4>声明、定义语句：</h4>
+		<h4>(<span class="amxx-default">stock</span>） 【<a href="#Tag">值类型标签</a>】 （函数名称） (<a href="#ParamList">参数列表</a>） 【<a href="#StateBind">插件状态声明</a>】 (<a href="#FuncBody">函数体</a>）</h4>
+	</div>
+
+	<div class="note-box">
+		<p>与插件私有函数类似，但多了一个备用特性。</p>
+		<p>若该函数未被使用，编译器不会检查函数内部语法错误，不会触发未使用警告，直接舍弃。</p>
+		<p>备用函数的设计初衷是按需编译，方便函数库（inc文件）的设计，确保未使用的函数不会增加插件的文件体积。</p>
+	</div>
+
+	<h2 id="Tag">9. 值类型标签</h2>
+
+	<p>若不填写值类型标签，函数将会获得默认标签 <span class="highlight">_:</span></p>
+
+	<p>因此，下面两行代码是相同的:</p>
+
+	<code>static <span class="amxx-tag">_:</span><span class="amxx-identifier">func</span>() return <span class="amxx-number">32</span>;<br>static <span class="amxx-identifier">func</span>() return <span class="amxx-number">32</span>;</code>
+
+	<p>若填写未定义的值类型标签，编译器会自动创建这个标签。</p>
+
+	<p>当函数与拥有不同标签的表达式做运算、或返回值标签不同时，通常会触发编译器警告：</p>
+
+	<code><span class="amxx-comment">// 函数func拥有_标签，返回值32.0拥有Float标签，触发警告：“标签不匹配”</span>
+static <span class="amxx-function">func</span>() return <span class="amxx-number">32.0</span>;
+
+public <span class="amxx-function">Player_PreThinkThink</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-comment">// 函数GetTeamId拥有CsTeams标签，整数字面量1拥有_标签，触发警告：“标签不匹配”</span>
+	if (<span class="amxx-function">GetTeamId</span>(<span class="amxx-identifier">playerEntId</span>) == <span class="amxx-number">1</span>)
+	{
+	}
+}
+static <span class="amxx-tag">CsTeams:</span><span class="amxx-function">GetTeamId</span>(<span class="amxx-identifier">playerEntId</span>) return <span class="amxx-tag">CsTeams:</span><span class="amxx-function">get_user_team</span>(<span class="amxx-identifier">playerEntId</span>);</code>
+
+	<p>调用函数时，观察标签可得知函数返回值的类型，用相同标签的变量可以储存返回值。</p>
+
+	<p>定义函数时，可根据返回值类型，设置函数的标签。</p>
+
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">点击查看值类型标签指南</a></p>
+
+	<h2 id="ParamList">10. 参数列表</h2>
+
+	<div class="note-box">
+		<h4>【参数列表】语法拆解：</h4>
+		<h4>(<span class="amxx-default">(</span>） 【参数声明】 (<span class="amxx-default">)</span>）</h4>
+
+		<h4>【参数声明】语法1拆解：</h4>
+		<h4>【<span class="amxx-default">const</span>】 【<span class="amxx-default">&</span>】 【值类型标签】 <参数名称> 【维度声明】 【初始化表达式】 【<span class="amxx-default">,</span>】</h4>
+
+		<h4>【参数声明】语法2拆解：</h4>
+		<h4>【<span class="amxx-default">const</span>】 【值类型标签】 (<span class="amxx-default">...</span>）</h4>
+	</div>
+
+	<div class="note-box">
+		<h4>【<span class="amxx-default">const</span>】作用是让参数变为只读，提高代码可读性。</h4>
+		<h4>用户调用函数、填写参数时，一看就知道函数内部不会更改此参数值。</h4>
+		<h4>此修饰符仅用于传引用类型的参数，通常是数组或可变参数。</h4>
+
+		<br>
+		<h4>【<span class="amxx-default">&</span>】作用是让单值参数变为传引用（默认为传值，也就是副本），提高代码可读性。</h4>
+		<h4>用户调用函数、填写参数时，一看就知道需要填写变量作为参数本体，供函数更改。</h4>
+		<h4>通常不需要添加const修饰，除非你想用setarg/set_addr_val/#emit之类的手段更改只读变量。</h4>
+		<h4>数组参数和可变参数禁止使用此修饰符，这两种参数默认是传引用。</h4>
+
+		<br>
+		<h4>【值类型标签】作用是设置参数的标签，与变量的【值类型标签】相同，详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Tag">变量标签指南</a></h4>
+		<h4>用户调用函数、填写参数时，一看就知道需要填写什么类型的变量作为参数。</h4>
+
+		<br>
+		<h4>【维度声明】作用是表示参数的数组结构，与变量的【维度声明】相同，详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Struct">变量维度指南</a></h4>
+		<h4>若不填写【维度声明】中的尺寸，表示允许用户填写任意尺寸的参数</h4>
+		<h4>数组参数是引用参数，应尽量使用const修饰，除非确实需要更改数组内容。</h4>
+
+		<br>
+		<h4>【初始化表达式】用于设置参数的默认值，语法与变量的【初始化表达式】相同，详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Init">变量初始化指南</a></h4>
+		<h4>用户调用函数时，若某个参数拥有默认，可以不填写此参数。</h4>
+		<h4>forward函数和公共函数不允许参数拥有默认值。</h4>
+
+		<br>
+		<h4>【<span class="amxx-default">,</span>】作用是让用户可以继续声明下一个参数，若无下一个参数，不允许填写逗号。</h4>
+
+		<br>
+		<h4>(<span class="amxx-default">...</span>）表示可变参数。</h4>
+		<h4>用户调用函数、填写参数时，可在此位置填写变量或常量，数量不限，结构不限。</h4>
+		<h4>实际上函数注释会告知用户应该如何填写可变参数，不可能真的不受限制。</h4>
+		<h4>native函数限制最多16个参数，其它函数最大127个参数。</h4>
+		<h4>可变参数通常会使用any:作为标签，表示不限制参数的标签类型。</h4>
+		<h4>可变参数是引用参数，应尽量使用const修饰，除非确实需要更改参数内容。</h4>
+		<h4>AMX Mod X制作团队在所有inc文件中完全忘记给只读可变参数添加const修饰，给初学者增加了学习成本，不要模仿。</h4>
+
+		<br>
+		<h4>更多关于参数的讲解，点击查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%82%E6%95%B0.html">参数指南</a></h4>
+	</div>
+
+	<h2 id="StateBind">11. 插件状态声明</h2>
+
+	<div class="note-box">
+		<h4>【插件状态声明】语法拆解：</h4>
+		<h4>(<span class="amxx-default"><</span>） 【自动机声明】【状态名称】 (<span class="amxx-default">></span>）</h4>
+
+		<h4>【自动机声明】语法拆解：</h4>
+		<h4>【自动机名称】 （<span class="amxx-default">:</span>）</h4>
+	</div>
+
+	<div class="note-box">
+		<h4>【插件状态声明】作用是创建自动机和自动机状态，并将函数绑定到指定该自动机状态下。</h4>
+		<h4>插件被切换到该自动机和状态时，才允许调用此函数。</h4>
+		<h4>一个插件可以拥有多个同名函数，只要绑定到不同自动机状态。</h4>
+		<h4>用户可使用<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/state.html">state</a>关键字切换插件自动机和状态。</h4>
+		<h4>若填写了【插件状态声明】，就必须定义至少两个同名函数，且其中一个必须绑定到默认自动机状态，即留空的<>状态。</h4>
+		<h4>同名函数不能绑定到同一自动机状态。</h4>
+
+		<h4><br>注意，状态拥有者是自动机，自动机拥有者是插件，不要因为状态声明是函数声明的一部分，就误以为拥有者是函数。</h4>
+	</div>
+
+	<h2 id="FuncBody">12. 函数体</h2>
+
+	<p>【函数体】是一个语句块。若只有一条语句，可省略{}花括号，若有多条语句，必须用{}包裹。</p>
+	<p>调用函数实际上就是进入函数体执行代码，完毕后退出函数体。</p>
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%92%8C%E8%AF%AD%E5%8F%A5.html">点击查看语句指南.html</a></p>
+
+</body>
+</html>

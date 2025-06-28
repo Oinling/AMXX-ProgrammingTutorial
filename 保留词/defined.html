@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn defined关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn defined关键字</h1>
+	
+	<p>defined即是关键字，又是运算符。可在当前作用域内检查一个标识符是否已声明。</p>
+	
+	<p><strong>表达式语法：<span class="amxx-default">defined</span> <span class="amxx-identifier">标识符名称</span></strong></p>
+	
+	<p>这个表达式会在编译时返回1或0。在AMX Mod X 1.8.2以上版本中，该返回值带有<span class="highlight">bool</span>标签。</p>
+
+	<p>若返回1，表示标识符已声明，若返回0，表示未声明。</p>
+
+	<p>这种表达式常用于决定是否将某段代码编译到amxx文件中。</p>
+
+	<div class="note-box">
+		<p>示例1，避免用户重复引用同一个inc文件：</p>
+		<code><span class="amxx-comment">// 若已声明_amxmodx_included，执行#endinput指令，舍弃下面所有内容</span>
+<span class="amxx-di">#if <span class="amxx-default">defined</span> <span class="amxx-identifier">_amxmodx_included</span>
+	#endinput
+#endif</span>
+
+<span class="amxx-comment">// 若下面的代码未被舍弃……</span>
+
+<span class="amxx-comment">// 声明_amxmodx_included，下次引用当前文件会触发上面的#endinput指令</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">_amxmodx_included</span>
+
+......</code>
+	</div>
+
+	<div class="note-box">
+		<p>示例2，选择是否编译某段代码：</p>
+		<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+
+<span class="amxx-comment">// 若当前版本的amxmodx.inc未声明MaxClients变量，那么手动声明这个变量</span>
+<span class="amxx-di">#if</span> (!defined(<span class="amxx-identifier">MaxClients</span>))
+static <span class="amxx-identifier">MaxClients</span>;
+<span class="amxx-di">#endif</span>
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-comment">// 若当前版本的amxmodx.inc含有MaxClients变量，必不可能等于0，
+	// 既然等于0，说明是咱手动声明的，纠正它的值</span>
+	if (!<span class="amxx-identifier">MaxClients</span>) <span class="amxx-identifier">MaxClients</span> = <span class="amxx-function">get_maxplayers</span>();
+}</code>
+	</div>
+
+	<div class="warning-box">
+		<p><strong>注意事项：</strong></p>
+		<ul>
+			<li>不能判断<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签</a>是否存在</li>
+			<li>不能判断<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StateBind">插件自动机</a>是否存在</li>
+			<li>不能判断<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StateBind">插件状态</a>是否存在</li>
+		</ul>
+	</div>
+	
+</body>
+</html>

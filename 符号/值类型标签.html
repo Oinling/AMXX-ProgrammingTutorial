@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 值类型标签</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+
+		p {
+			margin: 15px 0;
+		}
+
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+
+		.amxx-default {
+			color: #0000ff;
+		}
+
+		.amxx-note {
+			color: #000000;
+		}
+
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+
+		.amxx-di {
+			color: #6f6f6b;
+		}
+
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-string {
+			color: #c0392b;
+		}
+
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+
+		.amxx-enumname {
+			background: linear-gradient(to right, #5d140a, #9933ff);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+
+		.amxx-of {
+			background: linear-gradient(to right, #0000ff, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+
+		.amxx-tag {
+			color: #5d140a;
+		}
+
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+	<h1>AMXXPawn 值类型标签</h1>
+
+	<h2>1. 简介</h2>
+	<p>值类型标签（Tag）为有值的标识符（常量、变量、函数）和表达式提供额外的类型检查和语义区分，帮助开发者更安全地编写代码。</p>
+	<p>标签拥有uid，可通过<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/tagof.html">tagof</a>关键字获取。</p>
+	<p>编译前会自动生成3个默认标签：</p>
+	<table class="codetable">
+	<tr>
+		<th>名称</th>
+		<th>作用</th>
+	</tr>
+	<tr>
+		<td>any</td>
+		<td>拥有此标签的表达式参与运算时，编译器不会进行类型检查</td>
+	</tr>
+	<tr>
+		<td>bool</td>
+		<td>拥有此标签的表达式若等于0，表示否定，若等于其他数值，表示肯定</td>
+	</tr>
+	<tr>
+		<td>_</td>
+		<td>所有表达式的默认标签，说明表达式的值是整数</td>
+	</tr>
+	</table>
+	<div class="warning-box">
+		<h4>注意：</h4>
+		<h4><span class="highlight">Float</span>并不是默认标签，需使用<span class="highlight">#pragma rational</span>指令创建，或引用float.inc文件，才能使用。</h4>
+		<h4>float.inc已被amxmodx.inc文件引用，所以引用amxmodx.inc也是可以的。</h4>
+		<h4>使用<span class="highlight">#pragma rational</span>指令创建浮点数标签之前，编译器不会允许用户使用浮点数字面量。</h4>
+	</div>
+	<p>源码被编译后，所有标签都会被删除。</p>
+	
+	<h2>2. 声明标识符时设定标签</h2>
+	<p>用户在声明标识符时，若不设置标签，则默认标识符拥有_标签。</p>
+	<p>用户在声明标识符时，若设置不存在的标签，编译器会自动创建该标签。因此，引用inc文件后会获得很多标签。</p>
+
+	<div class="note-box">
+
+	<h4>常量标签：</h4>
+	<ul>
+		<li>用户在设定常量值时，需填写拥有相同标签的表达式</li>
+		<li>常量被用于运算时，通常要求其它操作数拥有相同标签</li>
+		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">点击查看常量指南</a></li>
+	</ul>
+
+	<h4>结构体属性标签：</h4>
+	<ul>
+		<li>声明枚举常量时可以设置结构体属性标签，默认为_标签</li>
+		<li>用户用枚举常量当做索引获取数组元素时，通常要求其它操作数拥有相同标签</li>
+		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
+	</ul>
+
+	<h4>变量标签：</h4>
+	<ul>
+		<li>用户在赋值或设定默认值时，需填写拥有相同标签的表达式</li>
+		<li>变量被用于运算时，通常要求其它操作数拥有相同标签</li>
+		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Tag">点击变量指南</a></li>
+	</ul>
+
+	<h4>数组索引器标签：</h4>
+	<ul>
+		<li>用户在为数组赋值时，需填写索引器拥有相同标签的数组</li>
+		<li>用户在填写索引访问数组元素时，索引标签需与索引器相同</li>
+		<li>索引器默认使用_标签，若填写小写开头的枚举名称，编译器会灵活切换索引器和索引标签</li>
+		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
+	</ul>
+
+	<h4>函数标签：</h4>
+	<ul>
+		<li>用户在设置返回值时，需填写拥有相同标签的表达式</li>
+		<li>函数被用于运算时，通常要求其它操作数拥有相同标签</li>
+		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">点击查看函数指南</a></li>
+	</ul>
+
+	<h4>函数索引器标签：</h4>
+	<ul>
+		<li>函数返回值被复制给数组时，要求数组索引器拥有相同标签</li>
+		<li>注意：仅native函数允许拥有索引器，提醒第三方用户使用方法。其余函数返回值是用户自设，无需索引器</li>
+	</ul>
+	</div>
+
+	<h2>3. 标签覆盖</h2>
+
+	<p>在任意表达式左边，可以使用标签覆盖表达式。</p>
+	<p>AMXXPawn任何数值本质都是整数，标签覆盖不会改变表达式的数值，顶多只会因为重载的运算符导致求值错误。</p>
+	<p>标签覆盖的意义是：满足运算过程中一个操作数对另一个操作数的标签要求，屏蔽编译器警告，避开重载的运算符。</p>
+
+	<div class="note-box">
+	<h4>用<span class="highlight">Float</span>标签覆盖二进制整数字面量的<span class="highlight">_</span>标签：</h4>
+	<code><span class="amxx-comment">// 若不覆盖标签，因常量和常量值标签不同，将触发警告：“标签不匹配”</span>
+<span class="amxx-comment">// 浮点型常量：负无穷</span>
+const <span class="amxx-tag">Float:</span><span class="amxx-identifier">FLOAT_NEGATIVE_INFINITY</span> = <span class="highlight"><span class="amxx-tag">Float:</span></span><span class="amxx-number">0b_01000000_01001001_00000000_00000000</span>;</code>
+	</div>
+
+	<div class="note-box">
+	<h4>用<span class="highlight">bool</span>标签覆盖函数返回值的<span class="highlight">_</span>标签：</h4>
+	<code><span class="amxx-comment">// 若index参数值等于某个活人的实体索引，返回1，否则返回0</span>
+native <span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">index</span>);
+<span class="amxx-comment">// 玩家前置思考后置挂钩回调函数，参数1=思考者实体索引</span>
+public <span class="amxx-function">PlayerPreThink_Post</span>(<span class="amxx-identifier">playerEntId</span>)
+{
+	<span class="amxx-comment">// 若不覆盖标签，因变量与函数标签不同，将触发警告：“标签不匹配”</span>
+	<span class="amxx-comment">// 布尔型只读变量：思考者是否活着</span>
+	new const <span class="amxx-tag">bool:</span><span class="amxx-identifier">isAlive</span> = <span class="highlight"><span class="amxx-tag">bool:</span></span><span class="amxx-function">is_user_alive</span>(<span class="amxx-identifier">playerEntId</span>);
+}</code>
+	</div>
+
+	<div class="note-box">
+	<h4>用<span class="highlight">Float</span>标签覆盖函数返回值的<span class="highlight">any</span>标签：</h4>
+	<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-di">#include</span> <<span class="amxx-string">cellarray</span>>	<span class="amxx-comment">// 可省略这个指令，amxmodx.inc已经引用这个文件了</span>
+<span class="amxx-di">#include</span> <<span class="amxx-string">float</span>>	<span class="amxx-comment">// 可省略这个指令，amxmodx.inc已经引用这个文件了</span>
+
+<span class="amxx-comment">// 返回值：which所指数组内，item索引所指元素的值</span>
+native <span class="amxx-tag">any:</span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-enumname">Array:</span><span class="amxx-identifier">which</span>, <span class="amxx-identifier">item</span>, <span class="amxx-identifier">block</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-identifier">asChar</span> = <span class="amxx-identifier">false</span>);
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-comment">// 创建动态数组，并储存一个浮点数字面量进去</span>
+	new <span class="amxx-enumname">Array:</span><span class="amxx-identifier">handle</span> = <span class="amxx-function">ArrayCreate</span>();
+	<span class="amxx-function">ArrayPushCell</span>(<span class="amxx-identifier">handle</span>, <span class="amxx-number">1024.0</span>);
+
+	<span class="amxx-comment">// 创建浮点型临时变量，储存2048.0</span>
+	new <span class="amxx-tag">Float:</span><span class="amxx-identifier">fValue</span> = <span class="amxx-number">2048.0</span>;
+
+	<span class="amxx-comment">// float.inc文件中含有Float += Float和Float += _ 等等与浮点数相关的运算符重载，
+	// 这让只有整数的AMXX可以执行通过核心模块接口，执行浮点数运算。
+	// 覆盖ArrayGetCell返回值标签后，满足Float += Float运算条件,
+	// 将两个整数转变为浮点数并执行浮点数+=算法。
+	// 若不覆盖标签，将无法满足运算条件，最终会得到_ += _的计算结果</span>
+	<span class="amxx-identifier">fValue</span> += <span class="highlight"><span class="amxx-tag">Float:</span></span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-identifier">handle</span>, <span class="amxx-number">0</span>);
+}</code>
+	</div>
+
+	<h2>4. 运算符重载</h2>
+
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a>关键字可以重载部分运算符，运算符重载本质是定义一种文本替换的规则。</p>
+
+	<p>只要运算符相关操作数的标签满足条件，就会被替换为具体的函数。</p>
+
+	<div class="note-box">
+		<h4>代码示例：</h4>
+		
+		<code><span class="amxx-comment">// 将两个浮点数的二进制整数发给核心模块，执行浮点数加法，得到结果后返回二进制整数</span>
+native <span class="amxx-tag">Float:</span><span class="amxx-function">floatadd</span>(<span class="amxx-tag">Float:</span><span class="amxx-identifier">oper1</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">oper2</span>);
+
+<span class="amxx-comment">// 若源码中存在两个带有Float标签的表达式相加，例如1.0 + 2.0，编译后将其替换成floatadd(1.0, 2.0)</span>
+native <span class="amxx-tag">Float:</span><span class="amxx-of">operator+</span>(<span class="amxx-tag">Float:</span><span class="amxx-identifier">oper1</span>, <span class="amxx-tag">Float:</span><span class="amxx-identifier">oper2</span>) = <span class="amxx-function">floatadd</span>;
+
+<span class="amxx-comment">// 若源码中带有Float标签的变量使用了++自增，例如++v，将其替换为v = floatadd(v, 1.0)</span>
+stock <span class="amxx-tag">Float:</span><span class="amxx-of">operator++</span>(<span class="amxx-tag">Float:</span><span class="amxx-identifier">oper</span>)
+	return <span class="amxx-identifier">oper</span>+<span class="amxx-number">1.0</span>;</code>
+	</div>
+
+</body>
+
+</html>

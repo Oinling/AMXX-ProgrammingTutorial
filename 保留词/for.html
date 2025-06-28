@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn for关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn for关键字</h1>
+	
+	<p>for可以用于编写for循环语句。</p>
+	
+	<p><strong>for循环语句的语法：</strong>for (初始化语句; 条件表达式; 迭代表达式) 循环体</p>
+	
+	<p>for循环语句只能在函数体内使用。</p>
+	
+	<p><span class="highlight">初始化语句</span>可以是<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a>编写的变量声明语句，或任意表达式。</p>
+	
+	<p><span class="highlight">初始化语句</span>会被首先执行，作用通常是对计数器变量进行初始化，然后执行<span class="highlight">条件表达式</span>。</p>
+	
+	<p><span class="highlight">条件表达式</span>被执行后，若为真，则执行<span class="highlight">循环体</span>代码，若为假，则退出循环。</p>
+	
+	<p><span class="highlight">循环体</span>可以是一条语句，也可以是复合语句块。被执行完毕后，会执行<span class="highlight">迭代表达式</span>。</p>
+	
+	<p><span class="highlight">迭代表达式</span>通常用于更新计数器变量，被执行后，会再次执行<span class="highlight">条件表达式</span>。</p>
+	
+	<p><span class="highlight">初始化语句</span>、<span class="highlight">条件表达式</span>、<span class="highlight">循环体</span>都允许留空。</p>
+	
+	<p>若<span class="highlight">条件表达式</span>留空，会变成无限循环。除非<span class="highlight">循环体</span>含有可以停止循环的语句（如：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/break.html">break</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/return.html">return</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/goto.html">goto</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/assert.html">assert</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/exit.html">exit</a>）。</p>
+	
+	<p>示例：</p>
+	<code>for (new <span class="amxx-identifier">i</span>; <span class="amxx-identifier">i</span> < <span class="amxx-number">10</span>; <span class="amxx-identifier">i</span>++)
+{
+	if (<span class="amxx-note">跳过剩余语句的条件</span>) <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/continue.html">continue</a>;
+	
+	if (<span class="amxx-note">提前退出的条件</span>) <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/break.html">break</a>;
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]呃 ... "</span>);
+}</code>
+
+	<p><strong>注意：</strong></p>
+	
+	<ul>
+	<p>若<span class="highlight">条件表达式</span>是常量表达式，会触发警告。</p>
+	<p>因为常量表达式的结果在编译时就已经确定，在运行时判断其为0或非0是没有意义的。</p>
+	<p>要么改为运行时表达式，要么将其删除变为无条件循环，要么删除整个for循环语句。</p>
+	</ul>
+	
+</body>
+</html>

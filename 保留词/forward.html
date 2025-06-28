@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn forward关键字</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+		h2, h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+		p {
+			margin: 15px 0;
+		}
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+		.amxx-default {
+			color: #0000ff;
+		}
+		.amxx-note {
+			color: #000000;
+		}
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+		.amxx-di {
+			color: #6f6f6b;
+		}
+		.amxx-string {
+			color: #c0392b;
+		}
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+		.amxx-enumname {
+			background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+		.amxx-tag {
+			color: #5d140a;
+		}
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+		}
+		.codetable th, 
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+<body>
+
+	<h1>AMXXPawn forward关键字</h1>
+	
+	<p>forward关键字可用于声明<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Forward">forward函数</a>。</p>
+	
+	<p>forward函数需要1个主插件创建、执行转发器，由其它插件引用函数声明，实现函数定义。</p>
+
+	<p>转发器会按创建时设定的规则执行其他插件定义的<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Public">公共函数</a>。</p>
+
+	<div class="note-box">
+		<h4>主插件源码示例：</h4>
+
+		<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+
+<span class="amxx-comment">// 声明两个变量用于储存转发器句柄</span>
+static <span class="amxx-identifier">gFH_HelloWorld_Pre</span>;
+static <span class="amxx-identifier">gFH_HelloWorld_Post</span>;
+
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件1"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+	
+	<span class="amxx-comment">// 在某个合适时机创建转发器。通常应该在plugin_precache或plugin_init函数内创建</span>
+	<span class="amxx-identifier">gFH_HelloWorld_Pre</span> = <span class="amxx-function">CreateMultiForward</span>(<span class="amxx-string">"HelloWorld_Pre"</span>, <span class="amxx-identifier">ET_CONTINUE</span>);
+	<span class="amxx-identifier">gFH_HelloWorld_Post</span> = <span class="amxx-function">CreateMultiForward</span>(<span class="amxx-string">"HelloWorld_Post"</span>, <span class="amxx-identifier">ET_CONTINUE</span>);
+
+	<span class="amxx-function">set_task</span>(<span class="amxx-number">10.0</span>, <span class="amxx-string">"Task"</span>);
+}
+
+public <span class="amxx-function">Task</span>()
+{
+	<span class="amxx-comment">// 在某个合适的时机执行转发器，若有插件实现了forward函数定义，该函数就会被执行。
+	// 转发器需根据创建时设定的规则，发送参数给其它插件定义的函数，并得到其中一个函数的返回值。
+	// 若并没有插件实现forward函数的定义，则收不到返回值，res变量不会被改变。</span>
+
+	new <span class="amxx-identifier">res</span>;
+	<span class="amxx-function">ExecuteForward</span>(<span class="amxx-identifier">gFH_HelloWorld_Pre</span>, <span class="amxx-identifier">res</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] Hello World !"</span>);
+	<span class="amxx-function">ExecuteForward</span>(<span class="amxx-identifier">gFH_HelloWorld_Post</span>, <span class="amxx-identifier">res</span>);
+}
+
+public <span class="amxx-function">plugin_end</span>()
+{
+	<span class="amxx-comment">// 当你认为再也不需要执行转发器了，可以将其销毁，释放内存。
+	// 若不销毁，转发器会持续占用内存，直到更换地图、关闭服务器或关闭游戏，会自动销毁。
+	// 退回游戏菜单并不会自动销毁。</span>
+
+	<span class="amxx-function">DestroyForward</span>(<span class="amxx-identifier">gFH_HelloWorld_Pre</span>);
+	<span class="amxx-function">DestroyForward</span>(<span class="amxx-identifier">gFH_HelloWorld_Post</span>);
+}</code>
+	</div>
+	
+	<div class="note-box">
+		<h4>主插件inc文件示例：</h4>
+
+		<code><span class="amxx-di">#if</span> (defined(<span class="amxx-identifier">_testplugin_included</span>))
+	<span class="amxx-di">#endinput</span>
+<span class="amxx-di">#endif</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">_testplugin_included</span>
+
+<span class="amxx-comment">// 声明forward函数：该函数的定义会在打印"[AMXX] Hello World !"之前触发</span>
+forward <span class="amxx-function">HelloWorld_Pre</span>();
+<span class="amxx-comment">// 声明forward函数：该函数的定义会在打印"[AMXX] Hello World !"之后触发</span>
+forward <span class="amxx-function">HelloWorld_Post</span>();</code>
+	</div>
+	
+	<div class="note-box">
+		<h4>其它插件源码示例：</h4>
+
+		<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-di">#include</span> <<span class="amxx-string">testplugin</span>>	<span class="amxx-comment">// 假设主插件提供的是testplugin.inc文件，引用它
+
+// 这是forward函数’plugin_precache’的定义语句</span>
+public <span class="amxx-function">plugin_precache</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试插件2"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+}
+
+<span class="amxx-comment">// 这是forward函数’HelloWorld_Pre’的定义语句</span>
+public <span class="amxx-function">HelloWorld_Pre</span>()
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] 现在是事件发生之前 !"</span>);
+}
+
+<span class="amxx-comment">// 这是forward函数’HelloWorld_Post’的定义语句</span>
+public <span class="amxx-function">HelloWorld_Post</span>()
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] 现在是事件发生之后 !"</span>);
+}</code>
+	</div>
+	
+	<p>forward函数的声明和定义都很简单，复杂的是<span class="highlight">CreateMultiForward</span>和<span class="highlightl">ExecuteForward</span>函数。</p>
+
+	<p>因此用户需要自行阅读这两个函数和相关常量的注释。</p>
+	
+	<div class="note-box">
+		<h4>AMX Mod X 1.10.0版本amxconst.inc文件中相关内容：</h4>
+
+		<code><span class="amxx-comment">/**
+ * 某些函数返回值用带有_标签的-1表示无效的对象句柄，而这个宏常量也是-1。
+ * 不要模仿这种做法，尽量用可设置标签的常量代替宏常量。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">INVALID_HANDLE</span>	<span class="amxx-number">-1</span>
+
+/**
+ * CreateMultiForward函数参数2的可选数值之一。
+ * 转发器不要接收其他插件送来的返回值。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">ET_IGNORE</span>	<span class="amxx-number">0</span>
+/**
+ * CreateMultiForward函数参数2的可选数值之一。
+ * 若转发器收到大于等于PLUGIN_HANDLED的返回值，停止转发。
+ * 按照这个规则，先注册的插件有能力拦截后注册插件对forward函数的处理。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">ET_STOP</span>		<span class="amxx-number">1</span>
+/**
+ * CreateMultiForward函数参数2的可选数值之一。
+ * 不接收小于PLUGIN_HANDLED的返回值。
+ * 接收大于或等于PLUGIN_HANDLED的返回值，但只保留最大值。
+ * 收到等于PLUGIN_HANDLED的返回值，停止转发。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">ET_STOP2</span>	<span class="amxx-number">2</span>
+/**
+ * CreateMultiForward函数参数2的可选数值之一。
+ * 接收最大的返回值，不停止转发。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">ET_CONTINUE</span>	<span class="amxx-number">3</span>
+
+/**
+ * CreateOneForward、CreateMultiForward函数中，可变参数的可选数值之一。
+ * 表示ExecuteForward函数中，相同编号的可变参数应该填写带有任意标签的单值表达式。
+ * forward和public函数声明中，必须声明第(可变参数编号-2)个参数，必须是按值传递的单值参数。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">FP_CELL</span>		<span class="amxx-number">0</span>
+/**
+ * CreateOneForward、CreateMultiForward函数中，可变参数的可选数值之一。
+ * 表示ExecuteForward函数中，相同编号的可变参数应该填写带有Float标签的单值表达式。
+ * forward和public函数声明中，必须声明第(可变参数编号-2)个参数，标签为Float，必须是按值传递的单值参数。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">FP_FLOAT</span>	<span class="amxx-number">1</span>
+/**
+ * CreateOneForward、CreateMultiForward函数中，可变参数的可选数值之一。
+ * 表示ExecuteForward函数中，相同编号的可变参数应该填写字符串或字符串字面量。
+ * forward和public函数声明中，必须声明第(可变参数编号-2)个参数，必须是一维数组，并添加const修饰。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">FP_STRING</span>	<span class="amxx-number">2</span>
+/**
+ * CreateOneForward、CreateMultiForward函数中，可变参数的可选数值之一。
+ * 表示ExecuteForward函数中，相同编号的可变参数应该填写PrepareArray函数的返回值。
+ * forward和public函数声明中，必须声明第(可变参数编号-2)个参数，必须是一维数组，若PrepareArray的copyback参数为假，应添加const修饰。
+ */
+<span class="amxx-di">#define</span> <span class="amxx-identifier">FP_ARRAY</span>	<span class="amxx-number">4</span>
+/**
+ * CreateOneForward、CreateMultiForward函数中，可变参数的可选数值之一。
+ * 表示ExecuteForward函数中，相同编号的可变参数应该填写带有任意标签的变量。
+ * forward和public函数声明中，必须声明第(可变参数编号-2)个参数，必须是按引用传递的单值参数。
+ */</span>
+<span class="amxx-di">#define</span> <span class="amxx-identifier">FP_VAL_BYREF</span>	<span class="amxx-number">5</span></code>
+
+	</div>
+	
+	<div class="note-box">
+		<h4>AMX Mod X 1.10.0版本amxmodx.inc文件中相关内容：</h4>
+
+		<code><span class="amxx-comment">/**
+ * 创建一个forward函数转发器。
+ *
+ * @param name		被转发、调用的函数名称（forward和public函数的名称）
+ * @param stop_type	如何处理public函数返回值，详情查阅amxconst.inc文件中名称以ET_开头的宏常量
+ * @param ...           可变参数：转发过程中每个被传递参数的类型，详情查阅amxconst.inc文件中名称以FP_开头的宏常量
+ *
+ * @return		INVALID_HANDLE=创建失败，转发器句柄=创建成功
+ */</span>
+native <span class="amxx-function">CreateMultiForward</span>(const <span class="amxx-identifier">name</span>[], <span class="amxx-identifier">stop_type</span>, ...);
+
+<span class="amxx-comment">/**
+ * 将一个数组缓存到堆中，以便ExecuteForward函数传递给其它插件。
+ * FP_ARRAY类型的参数必须使用这个函数的返回值代替。
+ *
+ * @param array		被缓存的一维数组
+ * @param size		需缓存多少个元素
+ * @param copyback	若非0，允许将public函数对array副本的更改，复制给array和下一个public函数的array副本
+ *
+ * @return		数组句柄，用作ExecuteForward函数的可变参数
+ */</span>
+native <span class="amxx-function">PrepareArray</span>(const <span class="amxx-identifier">array</span>[], <span class="amxx-identifier">size</span>, <span class="amxx-identifier">copyback</span> = <span class="amxx-number">0</span>);
+
+<span class="amxx-comment">/**
+ * 执行转发器，根据插件注册顺序调用forward函数对应的所有public函数。
+ *
+ * @param forward_handle	转发器句柄，来源于CreateOneForward或CreateMultiForward函数返回值
+ * @param ret			如果有public函数，按规则输出其中一个public函数的返回值
+ * @param ...			可变参数，类型和数量与CreateOneForward或CreateMultiForward函数的可变参数一一对应，
+ *				若要输入FP_ARRAY类型的参数，必须用PrepareArray函数的返回值代替
+ *
+ * @return			1=执行成功，其它=转发器句柄无效
+ * @error			执行与创建时可变参数数量不一致
+ */</span>
+native <span class="amxx-function">ExecuteForward</span>(<span class="amxx-identifier">forward_handle</span>, &<span class="amxx-identifier">ret</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">any:</span>...);
+
+<span class="amxx-comment">/**
+ * 销毁转发器，释放内存。
+ *
+ * @param forward_handle	转发器句柄，来源于CreateOneForward或CreateMultiForward函数返回值
+ *
+ * @noreturn
+ */</span>
+native <span class="amxx-function">DestroyForward</span>(<span class="amxx-identifier">forward_handle</span>);</code>
+
+	</div>
+	
+
+</body>
+</html>
