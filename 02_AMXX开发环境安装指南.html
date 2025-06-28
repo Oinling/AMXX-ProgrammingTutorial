@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>CS1.6 AMXX开发环境安装指南</title>
+<style>
+    code {
+        white-space: pre;
+        color: rgb(0,0,255);
+        background-color: #f1f1f1;
+        font-family: Consolas, monospace;
+        font-weight: bold;
+    }
+    .version-info {
+        background-color: #fffde7;
+        padding: 10px;
+        border-left: 3px solid #ffd600;
+        margin: 10px 0;
+    }
+    .step {
+        margin-bottom: 15px;
+    }
+    .note {
+        color: #d32f2f;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>CS1.6 AMXX开发环境安装指南</h1>
+
+<div class="version-info">
+    <h2>版本选择说明</h2>
+    <p>根据您的CS1.6版本选择安装流程：</p>
+    <ul>
+        <li><strong>旧版CS</strong>：Exe build ≤ 9000，可使用低版本或高版本Metamod和AMXModX</li>
+        <li><strong>新版CS</strong>：Exe build > 9000，必须使用ReHLDS、ReGameDLL等组件配合高版本AMXModX</li>
+    </ul>
+    <p>检查方法：游戏中按`打开控制台，输入version，查看"Exe build"末尾括号内数字。</p>
+</div>
+
+<h2>1. 基础准备(显示文件扩展名)</h2>
+
+<div class="step">
+    <p>在Windows设置中启用"显示文件扩展名"功能.</p>
+</div>
+
+<h2>2. 旧版CS安装流程 (Exe build ≤ 9000)</h2>
+
+<div class="step">
+    <h3>2.1 安装Metamod</h3>
+    <p>下载：<a href="https://www.amxmodx.org/release/metamod-1.21.1-am.zip">Metamod 1.21.1</a></p>
+    <p>解压后将addons文件夹复制到cstrike目录</p>
+</div>
+
+<div class="step">
+    <h3>2.2 修改liblist.gam</h3>
+    <p>编辑cstrike/liblist.gam文件，修改以下内容：</p>
+    <code>gamedll "addons/metamod/dlls/metamod.dll"
+gamedll_linux "addons/metamod/dlls/metamod.so"
+gamedll_osx "addons/metamod/dlls/metamod.dylib"</code>
+</div>
+
+<div class="step">
+    <h3>2.3 创建plugins.ini</h3>
+    <p>在cstrike/addons/metamod/下创建plugins.ini文件，添加：</p>
+    <code>win32 addons/amxmodx/dlls/amxmodx_mm.dll</code>
+</div>
+
+<div class="step">
+    <h3>2.4 安装AMX Mod X</h3>
+    <p>下载：<a href="https://www.amxmodx.org/release/amxmodx-1.8.2-base-windows.zip">基础包</a>和<a href="https://www.amxmodx.org/release/amxmodx-1.8.2-cstrike-windows.zip">CS模块</a></p>
+    <p>解压后将addons文件夹合并到cstrike目录</p>
+    <p>这是1.8.2版本的AMX Mod X,也可以选择下载1.9.0或1.10.0版本,并不需要安装GameData修复包.</p>
+</div>
+
+<h2>3. 新版CS安装流程 (Exe build > 9000)</h2>
+
+<div class="step">
+    <h3>3.1 安装ReHLDS</h3>
+    <p>下载：<a href="https://github.com/rehlds/ReHLDS">ReHLDS</a></p>
+    <p>解压bin/win32文件夹内容到CS目录</p>
+</div>
+
+<div class="step">
+    <h3>3.2 安装ReGameDLL</h3>
+    <p>下载：<a href="https://github.com/rehlds/ReGameDLL_CS">ReGameDLL_CS</a></p>
+    <p>解压bin/win32/cstrike文件夹内容到CS目录</p>
+</div>
+
+<div class="step">
+    <h3>3.3 安装Metamod-R</h3>
+    <p>下载：<a href="https://github.com/rehlds/metamod-r">Metamod-R</a></p>
+    <p>解压addons文件夹到cstrike目录</p>
+    <p>修改liblist.gam：</p>
+    <code>gamedll "addons\metamod\metamod.dll"
+gamedll_linux "addons/metamod/metamod_i386.so"</code>
+</div>
+
+<div class="step">
+    <h3>3.4 安装高版本AMX Mod X</h3>
+    <p>下载：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5467-base-windows.zip">基础包</a>和<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5467-cstrike-windows.zip">CS模块</a></p>
+    <p>解压后将addons文件夹合并到cstrike目录</p>
+</div>
+
+<div class="step">
+    <h3>3.5 安装GameData修复包</h3>
+    <p>下载：<a href="https://github.com/AoiKagase/amxmodx/tree/master/gamedata">GameData</a></p>
+    <p>将所有文件复制到cstrike\addons\amxmodx\data文件夹</p>
+</div>
+
+<h2>4. 开发工具安装</h2>
+
+<div class="step">
+    <h3>4.1 文本编辑器</h3>
+    <p>推荐使用：</p>
+    <ul>
+        <li>Visual Studio Code</li>
+        <li>Notepad++</li>
+        <li>AMX Mod X Studio</li>
+    </ul>
+    <p class="note">注意：保存源码时使用UTF-8无BOM编码</p>
+</div>
+
+<div class="step">
+    <h3>4.2 插件相关目录结构</h3>
+    <p>重要目录说明：</p>
+    <ul>
+        <li><code>addons/amxmodx/scripting</code> - 源码和编译器</li>
+        <li><code>addons/amxmodx/scripting/include</code> - 头文件</li>
+        <li><code>addons/amxmodx/plugins</code> - 编译后的插件</li>
+        <li><code>addons/amxmodx/logs</code> - 插件运行日志</li>
+        <li><code>addons/amxmodx/configs</code> - 配置文件</li>
+        <li><code>addons/amxmodx/data/lang</code> - 插件文本翻译</li>
+        <li><code>addons/amxmodx/modules</code> - 模块</li>
+    </ul>
+    <p>scripting文件夹里的amxxpc.exe是编译器,可以附带各种参数,编译单个源码.将.sma文件拖到其图标上就会原地生成.amxx文件.</p>
+    <p>scripting文件夹里的compile.exe可以一次编译多个源码.将.sma文件拖到其图标上就会在scripting/compile文件夹生成.amxx文件.</p>
+    <p>直接运行compile.exe可以编译scripting文件夹里的所有源码.</p>
+    <p>编译好的.amxx文件需要放入plugins文件夹,并在configs/plugins.ini文件内另起一行写上.amxx文件全名.</p>
+    <p>像这样:</p>
+    <p><code>myplugin.amxx		; 简单介绍我的插件</code></p>
+</div>
+
+<h2>5. 验证安装</h2>
+
+<div class="step">
+    <p>启动游戏,按~打开控制台,发送以下命令:</p>
+    <ul>
+        <li><code>amxx version</code> - 检查AMXX版本</li>
+        <li><code>amxx plugins</code> - 查看运行中的插件</li>
+        <li><code>setinfo lang cn</code> - 设置中文</li>
+        <li><code>amx_language cn</code> - 设置中文</li>
+        <li><code>amx_langmenu</code> - 打开语言菜单,查看菜单文本是否为中文</li>
+    </ul>
+</div>
+
+<p><h1>下一篇教程:</h1></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/03_%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99AMXX%E6%8F%92%E4%BB%B6%E6%BA%90%E7%A0%81.html">03_如何编写AMXX插件源码.html</a></p>
+
+</body>
+</html>
