@@ -1,0 +1,164 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn 编译器指令</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		background-clip: text;
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>AMXXPawn 编译器指令</h1></p>
+
+<p>编译器指令(Compiler Directive)也被叫做预处理指令(Preprocessor Directive).</p>
+
+<p>以下是所有指令的名称:</p>
+
+<p><code><span class="amxx-directive">#assert #define #else #elseif #emit #endif #endinput #endscript #error #file #if #include #line #pragma #tryinclude #undef</span></code></p>
+
+<p>编译器指令要么写在行首,要么左边全部是空格或制表符.并且编译器指令不需要以 <code>;</code> 分号结尾.</p>
+
+<p>源码被编译时,有一个预处理期,专门用来执行这些指令,然后才是词法分析,语法分析,生成amxx文件.</p>
+
+<p>最常见的有以下几种:</p>
+
+<p><code><span class="amxx-comment">// 引用指令,将指定的文件内容插入该指令位置.</span>
+<span class="amxx-directive">#include</span>	<span class="amxx-string"><被引用文件的名称></span>
+<span class="amxx-comment">// 宏定义指令,从下一行开始将所有同名标识符替换为其它文本.</span>
+<span class="amxx-directive">#define</span>		<span class="amxx-ds">宏定义标识符</span>	其它文本
+<span class="amxx-comment">// 条件指令,根据表达式结果判断是否编译某段代码.</span>
+<span class="amxx-directive">#if</span>		常量表达式
+<span class="amxx-directive">#elseif</span>		常量表达式
+<span class="amxx-directive">#else</span>
+<span class="amxx-directive">#endif</span>
+<span class="amxx-comment">// 停止输入指令,该指令一旦被执行,下方所有内容都会被舍弃.</span>
+<span class="amxx-directive">#endinput</span></code></p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>			<span class="amxx-comment">// 从这一行开始,引用amxmodx.inc文件的所有内容</span>
+
+<span class="amxx-directive">#define</span> <span class="amxx-ds">PluginName</span>	<span class="amxx-string">"测试插件"</span>	<span class="amxx-comment">// 从这一行开始,将源码中所有的PluginName替换为"测试插件"</span>
+
+<span class="amxx-comment">// 若AMXX_VERSION_NUM宏常量对应的值小于183,说明当前使用的AMX Mod X低于1.8.3版本</span>
+<span class="amxx-directive">#if</span> (<span class="amxx-ds">AMXX_VERSION_NUM</span> < <span class="amxx-number">183</span>)
+<span class="amxx-comment">// 若满足if条件,舍弃#elseif至#else和#else至#endif中间的代码.并将#endif下所有PluginVersion替换为"1.0.0",</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">PluginVersion</span>	<span class="amxx-string">"1.0.0"</span>
+
+<span class="amxx-comment">// 否则,若AMXX_VERSION_NUM宏常量对应的值小于200,说明当前使用的AMX Mod X高于1.8.2版本,低于1.10.0版本</span>
+<span class="amxx-directive">#elseif</span> (<span class="amxx-ds">AMXX_VERSION_NUM</span> < <span class="amxx-number">200</span>)
+<span class="amxx-comment">// 若满足elseif条件,舍弃#if至#elseif和#else至#endif中间的代码.并将#endif下所有PluginVersion替换为"1.0.1"</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">PluginVersion</span>	<span class="amxx-string">"1.0.1"</span>
+
+<span class="amxx-comment">// 否则,说明当前使用的AMX Mod X可能是1.10.0或更高版本</span>
+<span class="amxx-directive">#else</span>
+<span class="amxx-comment">// 若满足#else条件,舍弃#if至#else中间的代码.并使用#endinput指令停止编译下文.这个指令常见于头文件,防止重复引用,而不是像这样用来停止编译插件</span>
+<span class="amxx-directive">#endinput</span>
+
+<span class="amxx-directive">#endif</span>
+<span class="amxx-comment">// 一旦使用了#if指令,可以没有#elseif或#else,但必须有#endif结尾</span>
+
+<span class="amxx-comment">/*
+ * 由于引用了amxmodx.inc文件中的forward plugin_init()预声明,
+ * 因此这里的plugin_init公共函数会在合适时机自动运行.
+ * 按照amxmodx.inc文件中的注释所示,所有插件的plugin_init公共函数都会在服务器启动,缓存资源文件之后执行一次.
+*/</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">/*
+	* 由于引用了amxmodx.inc文件中的native register_plugin...函数声明,
+	* 因此可以在大部分函数的 { } 花括号内执行register_plugin函数,设定插件信息.
+	* 按照amxmodx.inc文件中的注释所示,该函数需要在 ( ) 圆括号内填写3个字符串参数.依次表示插件名称,版本,作者
+	* 在游戏中按下 [~] 按键打开控制台,发送amxx plugins即可看见当前插件的插件名称,版本,作者
+	*/</span>
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-ds">PluginName</span>, <span class="amxx-ds">PluginVersion</span>, <span class="amxx-string">"作者"</span>);
+}</code></p>
+
+<p>更多详情,请查阅以下内容(其余指令不常用,建议初学者先跳过,优先学习其它内容):</p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23assert.html">#assert</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23define.html">#define</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23endinput%23endscript.html">#endinput#endscript</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23error.html">#error</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23emit.html">#emit</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23file.html">#file</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23if%23elseif%23else%23endif.html">#if#elseif#else#endif</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23include%23tryinclude.html">#include#tryinclude</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23line.html">#line</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23pragma.html">#pragma</a></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/%23undef.html">#undef</a></p>
+
+<p><h1>下一篇教程:</h1></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/06_%E5%AD%97%E9%9D%A2%E9%87%8F%E3%80%81%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81%E8%AF%AD%E5%8F%A5.html">06_字面量、表达式、语句.html</a></p>
+
+</body>
+</html>
