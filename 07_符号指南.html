@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AMXXPawn 符号指南</title>
+<style>
+	body {
+		font-family: Arial, sans-serif;
+		line-height: 1.6;
+		margin: 0 auto;
+		max-width: 900px;
+		padding: 20px;
+		color: #333;
+	}
+	h1, h2, h3 {
+		color: #2c3e50;
+		border-bottom: 1px solid #eee;
+		padding-bottom: 10px;
+	}
+	code {
+		white-space: pre;
+		color: #0066cc;
+		background-color: #f8f9fa;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+		padding: 2px 4px;
+		border-radius: 4px;
+	}
+	.note {
+		background-color: #e7f5fe;
+		padding: 10px;
+		border-left: 4px solid #2196F3;
+		margin: 10px 0;
+	}
+	.warning {
+		background-color: #fff8e1;
+		padding: 10px;
+		border-left: 4px solid #ffc107;
+		margin: 10px 0;
+	}
+	.keyword-table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 15px 0;
+	}
+	.keyword-table th, .keyword-table td {
+		border: 1px solid #ddd;
+		padding: 8px;
+		text-align: left;
+	}
+	.keyword-table th {
+		background-color: #f2f2f2;
+	}
+	.keyword-table tr:nth-child(even) {
+		background-color: #f9f9f9;
+	}
+	.symbol-type {
+		color: #8e44ad;
+		font-weight: bold;
+	}
+	.example {
+		background-color: #f5f5f5;
+		padding: 10px;
+		border-left: 4px solid #9e9e9e;
+		margin: 10px 0;
+	}
+	.toc {
+		background-color: #f8f9fa;
+		padding: 15px;
+		border-radius: 5px;
+		margin-bottom: 20px;
+	}
+</style>
+</head>
+<body>
+
+<h1>AMXXPawn 符号指南</h1>
+
+<div class="toc">
+	<h2>目录</h2>
+	<ul>
+		<li><a href="#symbol-types">1. 符号类型</a></li>
+		<li><a href="#operators">2. 运算符</a></li>
+		<li><a href="#keywords">3. 关键字</a></li>
+		<li><a href="#identifiers">4. 标识符</a></li>
+		<li><a href="#naming-conventions">5. 命名规范</a></li>
+	</ul>
+</div>
+
+<h2 id="symbol-types">1. 符号类型</h2>
+
+<p>AMXXPawn中的符号大致可分为三类：</p>
+
+<ul>
+	<li><span class="symbol-type">运算符</span> - 用于执行各种操作的符号</li>
+	<li><span class="symbol-type">保留词(关键字)</span> - 语言定义的具有特殊含义的单词</li>
+	<li><span class="symbol-type">标识符</span> - 由用户自定义的符号</li>
+</ul>
+
+<div class="note">
+	<p><strong>注意：</strong>符号需要先定义，然后才能使用。运算符和保留词是AMXXPawn定义的符号，有固定的作用。标识符是由用户自定义的符号，其用途由用户决定。</p>
+</div>
+
+<h2 id="operators">2. 运算符</h2>
+
+<p>AMXXPawn提供了丰富的运算符，用于执行各种计算和操作：</p>
+
+<h3>2.1 算术运算符</h3>
+<code>+  -  *  /  %  ++  --</code>
+
+<h3>2.2 二进制位操作运算符</h3>
+<code>~  >>  >>>  <<  &  |  ^</code>
+
+<h3>2.3 赋值运算符</h3>
+<code>=  +=  -=  *=  /=  %=  >>=  >>>=  <<=  &=  |=  ^=</code>
+
+<h3>2.4 关系运算符</h3>
+<code>==  !=  <  <=  >  >=</code>
+
+<h3>2.5 逻辑运算符</h3>
+<code>!  &&  ||</code>
+
+<h3>2.6 其他运算符</h3>
+<code>[]  {}  ()  ? :  :  ,  defined  sizeof  tagof  char</code>
+
+<div class="note"><p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E8%BF%90%E7%AE%97%E7%AC%A6.html">点击查看运算符指南</a></p></div>
+
+<h2 id="keywords">3. 关键字</h2>
+
+<p>AMXXPawn中的关键字(保留词)具有特殊含义，不能用作标识符名称。</p>
+
+<table class="keyword-table">
+	<tr>
+		<th>运算符</th>
+		<th>声明说明符</th>
+		<th>流程控制</th>
+	</tr>
+	<tr>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/char.html">char</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/const.html">const</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/break.html">break</a></td>
+	</tr>
+	<tr>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/defined.html">defined</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">enum</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/case.html">case</a></td>
+	</tr>
+	<tr>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/forward.html">forward</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/continue.html">continue</a></td>
+	</tr>
+	<tr>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/sizeof.html">sizeof</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/native.html">native</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/default.html">default</a></td>
+	</tr>
+	<tr>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/tagof.html">tagof</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/do.html">do</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/public.html">public</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/else.html">else</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/static.html">static</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/for.html">for</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/stock.html">stock</a></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/if.html">if</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/return.html">return</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/switch.html">switch</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/while.html">while</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/goto.html">goto</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/state.html">state</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/assert.html">assert</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/exit.html">exit</a></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/sleep.html">sleep</a></td>
+	</tr>
+</table>
+
+<div class="warning">
+	<p><strong>警告：</strong>使用保留词作为标识符名称会导致编译错误。例如：</p>
+	<code>new tagof = 5;  // 用保留词new定义一个名为tagof的变量,会报错.因为tagof是保留词
+new switch = 5; // 用保留词new定义一个名为switch的变量,会报错.因为switch是保留词</code>
+</div>
+
+<h2 id="identifiers">4. 标识符</h2>
+
+<p>标识符是由用户定义的符号，用途由用户决定。</p>
+
+<p>inc文件中包含大量标识符定义，用户引用inc文件的行为，也等于定义了这些标识符。</p>
+
+<p>标识符可以分为以下几种类型：</p>
+
+<ul>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签 (Tag)</a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E8%B7%B3%E8%BD%AC%E6%A0%87%E7%AD%BE.html">跳转标签 (Label)</a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">常量 (Constant)</a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html">变量 (Variable)</a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数 (Function)</a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%82%E6%95%B0.html">参数 (Parameter)</a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StateBind">插件状态 (State)</a></a></li>
+	<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StateBind">插件自动机 (Automaton)</a></li>
+</ul>
+
+<h3>4.1 标识符命名规则</h3>
+
+<ul>
+	<li>标识符不能与保留词同名</li>
+	<li>作用域终点相同的变量不能同名</li>
+	<li>同一插件状态下的函数名称不能同名</li>
+	<li>在AMXX1.8.3以下版本中，标识符名称不得超过31个字符</li>
+	<li>在AMXX1.8.2以上版本中，标识符名称不得超过63个字符</li>
+	<li>标识符区分大小写（例如：foo和Foo是两个不同的标识符）</li>
+	<li>名称的首字符必须是"_ @ a至z A至Z"这四者之一</li>
+	<li>名称的后续字符必须是"_ @ a至z A至Z 0至9"这五者之一</li>
+</ul>
+
+<h3>4.2 作用域规则</h3>
+
+<p>所有标识符都有作用域（能够使用该符号的区域）。如果两个同名变量的作用域终点相同，将导致插件编译失败（编译器无法确定使用哪个变量）。</p>
+
+<p>即使作用域终点不同，在同一个函数内部也应尽量避免定义同名变量，以避免产生歧义。</p>
+
+<div class="example">
+	<h4>作用域示例:</h4>
+	<code>// 用static定义名为index的全局变量，作用域终点位于源码最后一行
+static index;
+
+// 定义一个函数func
+public func()
+{
+	// 用new定义名为index的局部变量，作用域终点位于 } 右花括号
+	// 与全局变量index的终点不同，不会报错
+	new index;
+	
+	new var;  // 作用域终点位于 } 位置
+	new var;  // 报错！上下两个var的作用域终点相同
+	return index + var;
+}</code>
+</div>
+
+<h2 id="naming-conventions">5. 命名规范</h2>
+
+<p>良好的命名规范能提高代码可读性和可维护性。以下是AMXXPawn社区中常见的命名约定：</p>
+
+<h3>5.1 标签命名</h3>
+<p>定义值类型标签(Tag)或跳转标签(Label)时，必须以冒号(:)结尾：</p>
+<code>bool: Float: HamHook: Label: LoopStart:</code>
+
+<h3>5.2 常量命名</h3>
+<p>常量通常全部大写，并用下划线分隔单词：</p>
+<code>MAX_PLAYERS MAX_NAME_LENGTH</code>
+
+<h3>5.3 伪结构体命名</h3>
+<p>定义伪结构体值类型时，必须以小写字母开头：</p>
+<code>enum sPlayer
+{
+	结构体属性1索引常量,
+	结构体属性2索引常量
+}</code>
+
+<h3>5.4 变量命名</h3>
+<ul>
+	<li><strong>全局变量</strong>：通常以"g"开头，每个单词首字母大写<br>
+	<code>gZombie gHasWeapon</code></li>
+	
+	<li><strong>全局只读变量</strong>：每个单词首字母大写<br>
+	<code>MaxClients MapName</code></li>
+	
+	<li><strong>局部变量</strong>：通常以小写字母开头，后续单词首字母大写或全小写用下划线分隔<br>
+	<code>playerEntityIndex wpnEntId attackerKills num_args</code></li>
+</ul>
+
+<h3>5.5 函数命名</h3>
+<p>函数通常全部小写用下划线分隔单词，或每个单词首字母大写：</p>
+<code>is_user_alive get_user_weapon ArrayGetCell ExecuteHamB</code>
+
+<h3>5.6 常见命名方法</h3>
+
+<ul>
+	<li><strong>小驼峰命名法</strong>：除第一个单词外，其他单词首字母大写<br>
+	<code>myQqNumber numPlayers</code></li>
+	
+	<li><strong>大驼峰命名法</strong>：每个单词首字母大写<br>
+	<code>CsInternalModel CsTeams ArrayGetCell GetModelBoundingBox</code></li>
+	
+	<li><strong>匈牙利命名法</strong>：变量名=值类型缩写+对象描述<br>
+	<code>bHasWeapon	// b = bool = 布尔型
+iCounter	// i = int = 整数型
+flCounter	// fl = float = 浮点型
+szMessage	// sz = StringWithZeroEnd = 以终止符结尾的字符串</code></li>
+	
+	<li><strong>下划线命名法</strong>：用下划线分隔单词<br>
+	<code>my_name pev_teleport_time set_pev_string get_pdata_int</code></li>
+</ul>
+
+<div class="note">
+	<p><strong>最佳实践：</strong>命名规则应尽可能一致和规范。这能提高代码可读性，使人一看就能猜出符号的大致含义。同时，要避免使用具有歧义的符号名，以防止在开发过程中出现混淆和错误。</p>
+</div>
+
+</body>
+</html>
