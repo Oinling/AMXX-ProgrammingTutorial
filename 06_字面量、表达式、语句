@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="utf-8">
+	<title>AMXXPawn 字面量、表达式、语句</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+
+		p {
+			margin: 15px 0;
+		}
+
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+
+		.amxx-default {
+			color: #0000ff;
+		}
+
+		.amxx-note {
+			color: #000000;
+		}
+
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+
+		.amxx-di {
+			color: #6f6f6b;
+		}
+
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-string {
+			color: #c0392b;
+		}
+
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+
+		.amxx-enumname {
+			background: linear-gradient(to right, #5d140a, #9933ff);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+
+		.amxx-of {
+			background: linear-gradient(to right, #0000ff, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+
+		.amxx-tag {
+			color: #5d140a;
+		}
+
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
+</head>
+
+<body>
+	<h1>AMXXPawn 字面量、表达式、语句</h1>
+
+	<h2>1. 字面量（Literal）</h2>
+
+	<p>字面量是指直接在代码中明确表示固定值的符号。它们是源代码中直接写出的数据值，不需要通过变量或计算来获取。</p>
+
+	<p>字面量可简单分为单值字面量、数组字面量。</p>
+
+	<p>字面量也可以称呼为表达式，单值字面量是原子表达式，数组字面量是复合表达式。</p>
+	
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E5%AD%97%E9%9D%A2%E9%87%8F.html">点击查看字面量指南</a></p>
+	
+	<h2>2. 表达式（Expression）</h2>
+	
+	<p>表达式是能求值并返回一个结果的代码单元，可以是：</p>
+	
+	<ul>
+		<li>原子表达式：字面量、变量名（如 1、MaxClients）。</li>
+		<li>复合表达式：含有运算符、函数调用等（如 -1、5 + 5、i++、random(MaxClients)）。</li>
+	</ul>
+	
+	<p>原子表达式指的是不可再分解的最小计算单元，直接表示一个具体的值或操作。</p>
+
+	<p>复合表达式通常指的由多个子表达式通过运算符组合成的表达式。</p>
+
+	<p>关键特性：</p>
+
+	<ul>
+		<li>表达式必须具有可计算性（即使结果是一个固定值）。</li>
+		<li>字面量是最简单的表达式形式，但“表达式”涵盖的范围更广。</li>
+	</ul>
+	
+	<div class="note-box">
+		<p>编译时就能确定数值的表达式被称为<strong>常量表达式</strong>。</p>
+		
+		<p>单值字面量是不可再分解的最小计算单元，属于原子表达式，例如：0b_1111、1024、0xFF、512.0</p>
+
+		<p>数组字面量或与运算符组合的单值字面量，属于复合表达式，例如：{ 1, 2, 3 }、-512、 256 + 256</p>
+
+		<p>任何字面量都在编译时就能确定数值，因此全都属于<strong>常量表达式</strong>。</p>
+
+		<p>const可用于<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">定义常量</a>，常量、常量与运算符的组合也属于<strong>常量表达式</strong>。</p>
+
+		<p>定义常量、变量的初始值时，通常要求填写<strong>常量表达式</strong>作为初始值。</p>
+		
+		<div class="warning-box">
+			<p><strong>注意：</strong></p>
+			<ul>
+				<li>数组字面量包含了创建匿名数组变量的过程，因此仅在对命名变量初始化时会被编译器认定为常量表达式</li>
+				<li>浮点数字面量拥有Float标签和运算符重载，其相关运算会被替换为函数（运行时求值），不属于常量表达式</li>
+			</ul>
+		</div>
+	</div>
+	
+	<h2>3. 语句（Statement）</h2>
+	
+	<p>语句有3个大类：</p>
+	
+	<ul>
+		<li>声明语句（<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">常量声明</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html">变量声明</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数声明</a>）。</li>
+		<li>控制流语句（if、for、goto、assert、exit<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/06_%E7%AC%A6%E5%8F%B7%E6%8C%87%E5%8D%97.html#keywords">等等</a>）</li>
+		<li>表达式语句（以表达式开头，末尾加上分号，通常可省略分号）</li>
+	</ul>
+	
+	<p>语句通常以分号;结尾，不过amxxpawn默认情况下允许省略分号。</p>
+	
+	<p>某些语句会拥有{}代码块，若代码块允许含有语句，则这个代码块被称为<span class="highlight">语句块</span>或<span class="highlight">复合语句块</span>。</p>
+	
+	<ul>
+		<li>函数声明语句的语句块（函数体）：<span class="amxx-default">static <span class="amxx-function">func</span>() {<span class="amxx-comment">/*函数体*/</span>}</span></li>
+		<li>for语句的语句块（循环体）：<span class="amxx-default">for (;;) {<span class="amxx-comment">/*循环体*/</span>}</span></li>
+		<li>if语句的语句块（分支）：<span class="amxx-default">if (<span class="amxx-function">random</span>(<span class="amxx-number">2</span>)) {<span class="amxx-comment">/*分支1*/</span>} else {<span class="amxx-comment">/*分支2*/</span>}</span></li>
+	</ul>
+	
+	<p>如果<span class="highlight">语句块</span>只含有一条语句，大部分情况下是可以省略{}花括号的。</p>
+	
+	<p>多个表达式之间可通过逗号连接成复合表达式或<span class="highlight">表达式语句</span>。</p>
+	
+	<code><span class="amxx-comment">// 省略函数体的{}花括号，这种情况下只允许填写一条语句。</span>
+public <span class="amxx-function">plugin_init</span>()
+	<span class="amxx-comment">// 用逗号将两个复合表达式组成一条新的复合表达式。同时这是一条表达式语句。</span>
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名称"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>), <span class="amxx-function">server_print</span>(<span class="amxx-string">"第二条复合表达式"</span>);</code>
+	
+	<p>注释不是语句，注释在编译时就已经被删除了。</p>
+	
+	<p>编译器指令通常不算是语句，大部分指令会在编译时删除，小部分会被替换成可能包含语句的文本。</p>
+	
+	<h2>下一篇教程:</h2>
+
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/07_%E7%AC%A6%E5%8F%B7%E6%8C%87%E5%8D%97.html">07_符号指南.html</a></p>
+
+</body>
+</html>
