@@ -1,0 +1,287 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>如何编写AMXX插件源码</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>如何编写AMXX插件源码</h1></p>
+
+<p>打开编译器目录(源码目录),右键点击空白区域,新建一个文本文档,将<code>.txt</code>后缀改为<code>.sma</code>后,再将文件名改为英文.你得到了一个插件源码.</p>
+
+<p>打开这个文件,就可以开始编写代码了.</p>
+
+<p>AMXX插件源码必须有至少一个公共函数作为入口,让外界模块或其它插件能够进入插件内部执行代码.</p>
+
+<p>函数是一种有名字的代码块.声明公共函数,并定义其代码块的示例如下:</p>
+
+<p><code><span class="amxx-comment">// 声明一个函数Function(名称可自定义),并定义它所代表的代码,左边的public说明符表示该函数是公开的</span>
+public <span class="amxx-function">Function</span>()
+{
+	<span class="amxx-comment">// 这里填写需要执行的代码</span>
+}</code></p>
+
+<p>其它模块和插件不会没事访问某个插件内的某个公共函数.因此,这段代码的唯一作用就是让源码能够被编译成<code>.amxx</code>文件.</p>
+
+<p>也就是说,没有公共函数的源码是无法成功编译的.</p>
+
+<p>要让插件中的代码被执行,通常需要引用<code>amxmodx.inc</code>文件.</p>
+
+<p>也就是在源码文件中,写入这个编译器指令:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>></code></p>
+
+<p>这等于是将<code>amxmodx.inc</code>文件的所有内容抄入你的源码中.</p>
+
+<p><code>amxmodx.inc</code>文件内有数个用<code>forward</code>说明符声明的函数.它们是一种缺少定义的函数.</p>
+
+<p>引用<code>amxmodx.inc</code>之后,若你在自己的源码中,用<code>public</code>定义了同名的函数,这个公共函数就会在某一刻被执行.</p>
+
+<p><code>amxmodx.inc</code>文件里,它们都有注释,你可以查看注释(看不懂英文就使用百度在线翻译网站或各种AI聊天软件进行翻译),了解它们什么情况下会被触发.</p>
+
+<p>比如名为<span class="amxx-function">plugin_init</span>的forward函数:</p>
+
+<p><code><span class="amxx-comment">/**
+ * Called just after server activation.
+ *
+ * @note Good place to initialize most of the plugin, such as registering
+ *       cvars, commands or forwards, creating data structures for later use, or
+ *       generating and loading other required configurations.
+ *
+ * @noreturn
+ */</span>
+forward <span class="amxx-function">plugin_init</span>();</code></p>
+
+<p>注释内容:</p>
+
+<p>该函数在服务器启动后立刻触发.</p>
+
+<p>提示:这是大部分插件进行初始化的好地方,比如注册控制台变量,控制台命令,或新增转发,添加事件挂钩,或构建将要使用的数据结构,或生成或加载插件所需配置等等.</p>
+
+<p>该函数没有返回值(意思是该函数的值等于0).</p>
+
+<p>你可以这样编写你的源码:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+}</code></p>
+
+<p>这样一来,这个<span class="amxx-function">plugin_init</span>公共函数就会在服务器启动后触发(载入地图,并加载各种资源文件之后).</p>
+
+<p>-----------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>用鼠标左键按住你的源码文件,拖放到编译器<code>Compile.exe</code>文件上后,这个源码就会被编译成<code>.amxx</code>文件.</p>
+
+<p>将该文件剪切或复制到插件目录,再用记事本打开配置文件目录下的<code>plugins.ini</code>文件,在里面另起一行,写上你<code>.amxx</code>文件的全名,就可以进入游戏体验这个插件了.</p>
+
+<p>比如你拥有名为<code>my_plugin.sma</code>的源码文件,则你编译后会得到<code>my_plugin.amxx</code>文件.在<code>plugins.ini</code>文件中,你可以这样写:</p>
+
+<p><code><span class="amxx-note">my_plugin.amxx			// 这是我正在测试的小插件</span></code></p>
+
+<p>当你进入游戏后,按下键盘左上角的 [~] 按键,就能打开控制台,发送amxx plugins之后,即可看见控制台里打印出了你当前使用的所有插件.</p>
+
+<p>你可能会看见类似这样的一行字:</p>
+
+<p><code><span class="amxx-note"> [  1] unknown                 unknown     unknown           my_plugin.amxx        running  </span></code></p>
+
+<p>这行字从左到右分别是:</p>
+
+<p><code><span class="amxx-note">插件编号	插件名称	插件版本	插件作者	插件文件名称	插件状态</span></code></p>
+
+<p>只要你的源码没写错,你就能在控制台里看到该插件正在运行.</p>
+
+<p>-----------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>如果你想设置插件名称,版本,作者.需要利用<code>amxmodx.inc</code>文件提供的<span class="amxx-function">register_plugin</span>native函数.</p>
+
+<p><code>amxmodx.inc</code>文件中提供了很多用<code>native</code>说明符声明的native函数,这种函数的定义通常位于某个模块或其它插件,你不需要定义它,直接调用它即可.</p>
+
+<p>在你的源码中,任何函数的代码块内都可以调用native函数.像这样:</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件名称"</span>, <span class="amxx-string">"插件版本"</span>, <span class="amxx-string">"插件作者"</span>);
+}</code></p>
+
+<p>这样就能在服务器启动后,设置你插件的名称,版本,作者.</p>
+
+<p>如果你在源码使用了中文,保存源码时,需要设定编码格式为UTF8无BOM.</p>
+
+<p>如果你用的是中文版AMXX-Studio编写源码,只需要确保源码顶部写了这句话就行:<span class="amxx-comment">/* UTF-8 func by www.DT-Club.net */</span></p>
+
+<p>其它文本编辑器的具体操作方法,你可以问百度或AI类似这样的问题:</p>
+
+<p>Win10系统的记事本如何将文件保存为UTF8无BOM格式?</p>
+
+<p>Notepad++如何将文件保存为UTF8无BOM格式?</p>
+
+<p>-----------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>每个forward函数都代表了某种事件.编写插件基本上就是挑选,监听各种事件,在事件触发之前或之后调用其它函数,达成某种需求.</p>
+
+<p>然而,forward函数在所有头文件中都非常少见,用它们能监听的事件非常少.</p>
+
+<p>要想监听更多事件,就需要用另一种方法,那就是用native函数,给某个事件添加挂钩.</p>
+
+<p>例如:</p>
+
+<p><code>hamsandwich.inc</code>提供了<span class="amxx-function">RegisterHam</span>函数,能监听游戏实体(比如玩家,武器,水,玻璃,特效)相关的事件.</p>
+
+<p><code>fakemeta.inc</code>提供了<span class="amxx-function">register_forward</span>函数,能监听引擎函数调用(模型和声音预加载,实体操作,追踪和碰撞检测,消息和通信,玩家行为,播放声音等).</p>
+
+<p>你可以引用你喜欢的头文件.只要该文件内有你喜欢的事件和函数.</p>
+
+<p>通常,仅需引用以下几个文件:</p>
+
+<p><code>amxmodx.inc		<span class="amxx-comment">// 主要提供插件事件相关的监听方法,和各种核心函数</span>
+
+cstrike.inc		<span class="amxx-comment">// 主要提供各种cs竞技相关的函数</span>
+
+fakemeta.inc		<span class="amxx-comment">// 查改实体属性,监听大量关键引擎函数调用</span>
+
+hamsandwich.inc		<span class="amxx-comment">// 提供大量与实体相关事件的监听方法</span>
+
+xs.inc			<span class="amxx-comment">// 主要提供向量相关的运算函数</span></code></p>
+
+<p>其它头文件不需要引用.因为大部分已经被上述文件引用,其余的要么过于冷门,要么功能重复,要么cs不支持.</p>
+
+<p>基本上每个头文件都会解释各种函数的使用方法,没事可以多看看,看不懂就问百度或AI.</p>
+
+<p>需要注意,某些注释在介绍函数时,可能会告诉你某个参数应该填某个常量,但这个常量可能在另一个文件中有更详细的介绍.</p>
+
+<p>你可以查看当前头文件是否有<span class="amxx-directive">#include</span>指令,看它是否引用了其它头文件,你可以去其它头文件试着寻找注释中介绍的东西.</p>
+
+<p>比如<code>hamsandwich.inc</code>的<span class="amxx-function">RegisterHam</span>函数是这样声明的:</p>
+
+<p><code><span class="amxx-comment">/**
+ * Hooks the virtual table for the specified entity class.
+ * An example would be: RegisterHam(Ham_TakeDamage, "player", "player_hurt");
+ * Look at the Ham enum for parameter lists.
+ *
+ * @param function		The function to hook.
+ * @param EntityClass		The entity classname to hook.
+ * @param callback		The forward to call.
+ * @param post			Whether or not to forward this in post.
+ * @return 				Returns a handle to the forward.  Use EnableHamForward/DisableHamForward to toggle the forward on or off.
+ */</span>
+native <span class="amxx-tag">HamHook:</span><span class="amxx-function">RegisterHam</span>(<span class="amxx-tag">Ham:</span><span class="amxx-symbol">function</span>, const <span class="amxx-tag">EntityClass</span>[], const <span class="amxx-symbol">Callback</span>[], <span class="amxx-symbol">Post</span>=<span class="amxx-number">0</span>);</code></p>
+
+<p>注释中说了,参数1(<span class="amxx-tag">Ham:</span><span class="amxx-symbol">function</span>)可以填<span class="amxx-symbol">Ham_TakeDamage</span>这样的常量,你可以去<code>ham_const.inc</code>文件寻找<code>enum <span class="amxx-enumname">Ham</span></code>或<span class="amxx-symbol">Ham_TakeDamage</span>这个字段,找到这些枚举常量.</p>
+
+<p>这些常量的注释会告诉你,它们对应的是什么事件,如何设计参数3(<code>const <span class="amxx-symbol">Callback</span>[]</code>)对应的回调函数(一个公共函数),或者在强制执行事件时如何填写事件相关参数.</p>
+
+<p>注意,名字以<code>const.inc</code>结尾的头文件都是储存各种常量的文件.<code>fakemeta.inc</code>也引用了<code>fakemeta_const.inc</code>这个文件,内部写了很多匿名枚举,需要看注释才能知道用途.</p>
+
+<p>-----------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>做个示范,我们可以在插件初始化时,为玩家死亡事件添加后置挂钩(在事件触发之后执行代码),给凶手加满血.</p>
+
+<p>示例(该例子用的是AMXX 1.8.2以上版本,AMXX 1.8.3以下版本的编译器是无法编译的):</p>
+
+<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>	<span class="amxx-comment">// 引用它是为了能够监听插件初始化事件,能检查玩家生死</span>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">fakemeta</span>>	<span class="amxx-comment">// 引用它是为了能够查改玩家实体属性</span>
+<span class="amxx-directive">#include</span> <<span class="amxx-string">hamsandwich</span>>	<span class="amxx-comment">// 引用它是为了能够监听玩家死亡事件</span>
+
+<span class="amxx-comment">// plugin_init函数将在插件初始化之后被调用</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 设定当前插件的名称,版本,作者</span>
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"插件作者"</span>);
+	<span class="amxx-comment">// 为BOT和真人玩家的死亡事件添加后置挂钩.效果是:BOT或真人玩家触发事件之后,调用Player_Killed_Post函数</span>
+	<span class="amxx-function">RegisterHam</span>(<span class="amxx-symbol">Ham_Killed</span>, <span class="amxx-string">"player"</span>, <span class="amxx-string">"Player_Killed_Post"</span>, <span class="amxx-number">1</span>, <span class="amxx-symbol">true</span>);
+}
+
+<span class="amxx-comment">// Player_Killed_Post函数将在玩家死亡后被调用,插件会监听到死者killedEntId,凶手killerEntId,是否碎尸shouldGib,这3个参数</span>
+public <span class="amxx-function">Player_Killed_Post</span>(<span class="amxx-symbol">killedEntId</span>, <span class="amxx-symbol">killerEntId</span>, <span class="amxx-symbol">shouldGib</span>)
+{
+	<span class="amxx-comment">// 若凶手是个活着的玩家</span>
+	if (<span class="amxx-function">is_user_alive</span>(<span class="amxx-symbol">killerEntId</span>))
+	{
+		<span class="amxx-comment">// 声明浮点型变量maxHealth</span>
+		new <span class="amxx-tag">Float:</span><span class="amxx-symbol">maxHealth</span>;
+		<span class="amxx-comment">// 查询凶手血量上限,存入maxHealth变量</span>
+		<span class="amxx-function">pev</span>(<span class="amxx-symbol">killerEntId</span>, <span class="amxx-symbol">pev_max_health</span>, <span class="amxx-symbol">maxHealth</span>);
+		<span class="amxx-comment">// 更改凶手当前血量为maxHealth</span>
+		<span class="amxx-function">set_pev</span>(<span class="amxx-symbol">killerEntId</span>, <span class="amxx-symbol">pev_health</span>, <span class="amxx-symbol">maxHealth</span>);
+	}
+}</code></p>
+
+
+<p>-----------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p>正常来说应该先学习编程基础语法,再开始编程.</p>
+
+<p>如果想跳过学习语法的过程,现在就可以去翻译并背诵上述头文件的全文了(包括那几个头文件引用的其它头文件).</p>
+
+<p>只要你背诵的够多,你就能更合理的挑选事件进行监听,并使用合理的函数实现你要的功能.</p>
+
+<p>(当然,那是不可能的.你会发现自己不知道如何填写函数所需的参数,也不知道如何分析各种条件,如何做运算等等.还是得学习基础语法.)</p>
+
+<p>-----------------------------------------------------------------------------------------------------------------------------------</p>
+
+<p><h1>下一篇教程:</h1></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/04_AMXX%E6%BA%90%E7%A0%81%E7%9A%84%E6%B3%A8%E9%87%8A.html">04_AMXX源码的注释.html</a></p>
+
+</body>
+</html>
