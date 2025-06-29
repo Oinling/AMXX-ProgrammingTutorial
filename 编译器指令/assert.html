@@ -1,158 +1,255 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
 <head>
-<meta charset="utf-8">
-<title>AMXXPawn编译器指令#assert</title>
-<style>
-	code {
-		white-space: pre;
-		color: rgb(0,0,255);
-		background-color: #f1f1f1;
-		font-family: Consolas, monospace;
-		font-weight: bold;
-	}
-	.amxx-note {
-		color: rgb(0,0,0);
-		font-weight: normal;
-	}
-	.amxx-comment {
-		color: rgb(63,159,63);
-		font-weight: normal;
-	}
-	.amxx-directive {
-		color: rgb(111,111,107);
-		font-weight: normal;
-	}
-	.amxx-ds {
-		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
-		-webkit-background-clip: text;
-		color: transparent;
-		font-weight: normal;
-	}
-	.amxx-df {
-		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
-		-webkit-background-clip: text;
-		color: transparent;
-		font-weight: normal;
-	}
-	.amxx-string {
-		color: rgb(193,61,41);
-		font-weight: normal;
-	}
-	.amxx-number {
-		color: rgb(0,0,0);
-		font-weight: normal;
-	}
-	.amxx-enumname {
-		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
-		-webkit-background-clip: text;
-		color: transparent;
-	}
-	.amxx-function {
-		color: rgb(113,31,195);
-		font-weight: bold;
-	}
-	.amxx-tag {
-		color: rgb(93,20,10);
-		font-weight: normal;
-	}
-	.amxx-symbol {
-		color: rgb(153,51,255);
-		font-weight: normal;
-	}
-</style>
+	<meta charset="utf-8">
+	<title>AMXXPawn编译器指令#assert</title>
+	<style>
+		:root {
+			--primary-color: #3498db;
+			--secondary-color: #2c3e50;
+			--accent-color: #e74c3c;
+			--light-bg: #f8f9fa;
+			--dark-bg: #eaecef;
+			--code-color: #0000ff;
+			--border-color: #ddd;
+		}
+
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			line-height: 1.6;
+			color: #333;
+			max-width: 900px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+		}
+
+		h1 {
+			color: #2c3e50;
+			border-bottom: 2px solid #3498db;
+			padding-bottom: 10px;
+			text-align: center;
+		}
+
+		h2,
+		h3 {
+			color: #2c3e50;
+			border-bottom: 1px solid #eee;
+			padding-bottom: 10px;
+		}
+
+		p {
+			margin: 15px 0;
+		}
+
+		code {
+			display: block;
+			white-space: pre;
+			background-color: #f5f5f5;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			color: #0000ff;
+			padding: 15px;
+			overflow-x: auto;
+			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+			line-height: 1.5;
+			margin: 15px 0;
+			box-shadow: 0 1px 3px #0000001a;
+		}
+
+		.amxx-default {
+			color: #0000ff;
+		}
+
+		.amxx-note {
+			color: #000000;
+		}
+
+		.amxx-comment {
+			color: #3f9f3f;
+		}
+
+		.amxx-di {
+			color: #6f6f6b;
+		}
+
+		.amxx-df {
+			background: linear-gradient(to right, #6f6f6b, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-string {
+			color: #c0392b;
+		}
+
+		.amxx-number {
+			color: #000000;
+			font-weight: bold;
+		}
+
+		.amxx-enumname {
+			background: linear-gradient(to right, #5d140a, #9933ff);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+		}
+
+		.amxx-of {
+			background: linear-gradient(to right, #0000ff, #711fc3);
+			background-clip: text;
+			-webkit-background-clip: text;
+			color: transparent;
+			font-weight: bold;
+		}
+
+		.amxx-function {
+			color: #711fc3;
+			font-weight: bold;
+		}
+
+		.amxx-tag {
+			color: #5d140a;
+		}
+
+		.amxx-identifier {
+			color: #9933ff;
+			font-weight: bold;
+		}
+
+		.highlight {
+			background-color: #fffde7;
+			padding: 2px 4px;
+			border-radius: 3px;
+		}
+
+		.note-box {
+			background-color: #e3f2fd;
+			border-left: 4px solid #2196f3;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.warning-box {
+			background-color: #ffebee;
+			border-left: 4px solid #f44336;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.feature-list {
+			background-color: #e8f5e9;
+			border-left: 4px solid #4caf50;
+			padding: 15px;
+			margin: 20px 0;
+			border-radius: 0 4px 4px 0;
+		}
+
+		.codetable {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+		}
+
+		.codetable th,
+		.codetable td {
+			border: 1px solid var(--border-color);
+			padding: 12px 15px;
+			text-align: left;
+		}
+
+		.codetable th {
+			background-color: var(--secondary-color);
+			color: white;
+			font-weight: bold;
+		}
+
+		.codetable tr:nth-child(even) {
+			background-color: var(--light-bg);
+		}
+
+		.codetable tr:hover {
+			background-color: var(--dark-bg);
+		}
+	</style>
 </head>
+
 <body>
 
 <p><h1>AMXXPawn编译器指令#assert</h1></p>
 
-<p><h2>#assert断言指令使用方法:</h2></p>
+<p>#assert编译时断言指令的语法:</p>
 
-<p><code><span class="amxx-directive">#assert</span> 常量表达式</code></p>
+<ul>#assert 常量表达式;</ul>
 
-<p>该指令用于检查常量表达式的真假.若为真,则继续编译.若为假,则报错并停止编译.</p>
+<p>若常量表达式的返回值为真,则断言成功.若为假,则断言失败.</p>
 
-<p>该指令可以在一定程度上,防止源码的下一位拥有者乱改常量设定.</p>
+<p>编译时断言指令是一种在编译阶段进行条件检查的机制,用于验证代码中的某些假设是否成立.</p>
 
-<p>示例1:</p>
+<p>如果断言失败,编译器会立即报错并终止编译,从而帮助开发者在早期发现潜在问题.</p>
 
-<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+<h3>编译时断言指令的作用:</h3>
 
-static const <span class="amxx-symbol">gPluginName</span>[]	= <span class="amxx-string">"测试插件"</span>;
-static const <span class="amxx-symbol">gPluginVersion</span>[]	= <span class="amxx-string">"1.0.0"</span>;
-static const <span class="amxx-symbol">gPluginAuthor</span>[]	= <span class="amxx-string">"插件作者"</span>;
+<h4>1. 验证标识符存在</h4>
+<ul>确保常量符合预期,例如标签约束,数值范围约束:
+<code><span class="amxx-di">#include</span> </span><<span class="amxx-string">cellarray</span>>
 
-const <span class="amxx-symbol">gValue</span> = <span class="amxx-number">10</span>;
+<span class="amxx-comment">// 断言在此之前已经引用了cellarray.inc文件,该文件定义了_cellarray_included标识符</span>
+<span class="amxx-di">#assert</span> (defined(<span class="amxx-identifier">_cellarray_included</span>));</code>
+</ul>
 
-<span class="amxx-comment">// 断言1小于gPluginName的元素数量,也就是说gPluginName的可见字数必须大于0</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-symbol">gPluginName</span>))
-<span class="amxx-comment">// 断言1小于gPluginVersion的元素数量,也就是说gPluginVersion的可见字数必须大于0</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-symbol">gPluginVersion</span>))
-<span class="amxx-comment">// 断言1小于gPluginAuthor的元素数量,也就是说gPluginAuthor的可见字数必须大于0</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-symbol">gPluginAuthor</span>))
-<span class="amxx-comment">// 断言0小于gValue,而且gValue小于101,也就是说gValue的取值范围是1至100</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">0</span> < <span class="amxx-symbol">gValue</span> && <span class="amxx-symbol">gValue</span> < <span class="amxx-number">101</span>)
+<h4>2. 验证编译期常量</h4>
+<ul>确保常量符合预期,例如标签约束,数值范围约束:
+<code><span class="amxx-comment">// 断言当前AMX Mod X版本高于1.8.2</span>
+<span class="amxx-di">#assert</span> (<span class="amxx-number">182</span> < <span class="amxx-identifier">AMXX_VERSION_NUM</span>);
 
-public <span class="amxx-function">plugin_init</span>()
-{
-	<span class="amxx-function">register_plugin</span>(<span class="amxx-symbol">gPluginName</span>, <span class="amxx-symbol">gPluginVersion</span>, <span class="amxx-symbol">gPluginAuthor</span>);
-	
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gPluginName的元素数量为:%d"</span>, sizeof(<span class="amxx-symbol">gPluginName</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gPluginVersion的元素数量为:%d"</span>, sizeof(<span class="amxx-symbol">gPluginVersion</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gPluginAuthor的元素数量为:%d"</span>, sizeof(<span class="amxx-symbol">gPluginAuthor</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gValue的值为:%d"</span>, <span class="amxx-symbol">gValue</span>);
-}</code></p>
+const <span class="amxx-tag">Float:</span><span class="amxx-identifier">OBJECT_HEIGHT</span> = <span class="amxx-number">36.0</span>;
 
-<p>进入游戏后,按下 [~] 按键打开控制台,可以看见打印结果:</p>
+<span class="amxx-comment">// 断言OBJECT_HEIGHT拥有Float标签(需 AMX Mod X 1.8.2 以上版本才支持tagof(Float:)语法)</span>
+<span class="amxx-di">#assert</span> (tagof(<span class="amxx-identifier">OBJECT_HEIGHT</span>) == tagof(<span class="amxx-tag">Float:</span>));
 
-<p><code><span class="amxx-note">[AMXX]gPluginName的元素数量为:13
-[AMXX]gPluginVersion的元素数量为:6
-[AMXX]gPluginAuthor的元素数量为:19
-[AMXX]gValue的值为:10</span></code></p>
+<span class="amxx-comment">// 断言OBJECT_HEIGHT的二进制整数等于18.0或36.0的二进制整数</span>
+<span class="amxx-di">#assert</span> (<span class="amxx-tag">_:</span><span class="amxx-identifier">OBJECT_HEIGHT</span> == <span class="amxx-tag">_:</span><span class="amxx-number">18.0</span> || <span class="amxx-tag">_:</span><span class="amxx-identifier">OBJECT_HEIGHT</span> == <span class="amxx-tag">_:</span><span class="amxx-number">36.0</span>);</code></code>
+</ul>
 
-<p>注意,被<span class="amxx-string">""</span>包裹的代码,被称呼为字符串,UTF8编码下字符串内的每个中文占用3个元素.英文占用1个元素.</p>
+<h4>3. 验证变量尺寸</h4>
+<ul>确保数组内容非空:
+<code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>
 
-<p>编译过程中,字符串的末尾会被添加一个看不见的字符,名为终止符.同样占用1个元素.</p>
+static const <span class="amxx-identifier">PluginName</span>[]	= <span class="amxx-string">"测试插件"</span>;
+static const <span class="amxx-identifier">PluginVersion</span>[]	= <span class="amxx-string">"1.0.0"</span>;
+static const <span class="amxx-identifier">PluginAuthor</span>[]	= <span class="amxx-string">"插件作者"</span>;
 
-<p>因此<span class="amxx-string">"测试插件"</span>是4个中文和1个终止符.总共为4中文*3元素+1英文*1元素=13元素.</p>
-
-<p>示例2:</p>
-
-<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
-
-static const <span class="amxx-symbol">gPluginName</span>[]	= <span class="amxx-string">""</span>;	<span class="amxx-comment">// 故意设置可见字数为0,以触发报错</span>
-static const <span class="amxx-symbol">gPluginVersion</span>[]	= <span class="amxx-string">""</span>;	<span class="amxx-comment">// 故意设置可见字数为0,以触发报错</span>
-static const <span class="amxx-symbol">gPluginAuthor</span>[]	= <span class="amxx-string">""</span>;	<span class="amxx-comment">// 故意设置可见字数为0,以触发报错</span>
-
-const <span class="amxx-symbol">gValue</span> = <span class="amxx-number">101</span>;			<span class="amxx-comment">// 故意设置数值超出1至100的取值范围,以触发报错</span>
-
-<span class="amxx-comment">// 断言1小于gPluginName的元素数量,也就是说gPluginName的可见字数必须大于0</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-symbol">gPluginName</span>))
-<span class="amxx-comment">// 断言1小于gPluginVersion的元素数量,也就是说gPluginVersion的可见字数必须大于0</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-symbol">gPluginVersion</span>))
-<span class="amxx-comment">// 断言1小于gPluginAuthor的元素数量,也就是说gPluginAuthor的可见字数必须大于0</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-symbol">gPluginAuthor</span>))
-<span class="amxx-comment">// 断言0小于gValue,而且gValue小于101,也就是说gValue的取值范围是1至100</span>
-<span class="amxx-directive">#assert</span> (<span class="amxx-number">0</span> < <span class="amxx-symbol">gValue</span> && <span class="amxx-symbol">gValue</span> < <span class="amxx-number">101</span>)
+<span class="amxx-comment">// 断言PluginName不是空字符串(空字符串含有1个终止符,尺寸为1)</span>
+<span class="amxx-di">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-identifier">PluginName</span>));
+<span class="amxx-comment">// 断言PluginVersion不是空字符串(空字符串含有1个终止符,尺寸为1)</span>
+<span class="amxx-di">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-identifier">PluginVersion</span>));
+<span class="amxx-comment">// 断言PluginAuthor不是空字符串(空字符串含有1个终止符,尺寸为1)</span>
+<span class="amxx-di">#assert</span> (<span class="amxx-number">1</span> < sizeof(<span class="amxx-identifier">PluginAuthor</span>));
 
 public <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-function">register_plugin</span>(<span class="amxx-symbol">gPluginName</span>, <span class="amxx-symbol">gPluginVersion</span>, <span class="amxx-symbol">gPluginAuthor</span>);
-	
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gPluginName的元素数量为:%d"</span>, sizeof(<span class="amxx-symbol">gPluginName</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gPluginVersion的元素数量为:%d"</span>, sizeof(<span class="amxx-symbol">gPluginVersion</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gPluginAuthor的元素数量为:%d"</span>, sizeof(<span class="amxx-symbol">gPluginAuthor</span>));
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]gValue的值为:%d"</span>, <span class="amxx-symbol">gValue</span>);
-}</code></p>
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-identifier">PluginName</span>, <span class="amxx-identifier">PluginVersion</span>, <span class="amxx-identifier">PluginAuthor</span>);
 
-<p>编译源码时,由于第一个断言失败,导致编译停止.可以看见报错内容:</p>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]PluginName的元素数量为:%d"</span>, sizeof(<span class="amxx-identifier">PluginName</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]PluginVersion的元素数量为:%d"</span>, sizeof(<span class="amxx-identifier">PluginVersion</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]PluginAuthor的元素数量为:%d"</span>, sizeof(<span class="amxx-identifier">PluginAuthor</span>));
+}</code>
+</ul>
 
-<p><code><span class="amxx-note">Error: Assertion failed: (1 < sizeof(gPluginName)) on line 12</span></code></p>
-
-<p>这是因为示例2的<span class="amxx-symbol">gPluginName</span>被设定为<span class="amxx-string">""</span>,是一个空字符串.这种字符串通常不是我们想要使用的.</p>
-
-<p>修复<span class="amxx-symbol">gPluginName</span>的字数问题后,接下来就会面临下一个断言带来的报错.</p>
-
-<p>需要注意,断言指令的常量表达式中不能填写无效代码或者变量表达式,否则必定报错.</p>
+<div class="warning-box">
+	<strong>注意：</strong>
+	<ul>
+		<li>断言指令不能含有运行时表达式(例如浮点数算术,浮点数比较),否则必定断言失败</li>
+		<li>在发布模式下(编译器使用-d0选项),断言指令会被删除.建议改用<span class="highlight">#if-#endif</span>与<span class="highlight">#error</span>指令的组合</li>
+	</ul>
+</div>
 
 </body>
 </html>
