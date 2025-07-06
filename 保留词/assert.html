@@ -189,14 +189,12 @@
 	</ul></div>
 
 	<h2>2. 断言语句语法</h2>
-	<div class="note-box">
-	<h4>断言语句：</h4>
-		<p><<span class="amxx-default">assert</span>> [<span class="amxx-default">(</span>]<条件表达式>[<span class="amxx-default">)</span>] [<span class="amxx-default">;</span>]</p>
-	</div>
-
-	<div class="note-box">
-		<h4><>是必填项目，[]是可选项目。</h4>
-	</div>
+		<p>（<span class="amxx-default">assert</span>） （条件表达式）【<span class="amxx-default">;</span>】</p>
+		<p>注意：</p>
+		<ul>
+			<li>（）是必填项目，【】是可选项目。</li>
+			<li>条件表达式若填写常量表达式，会触发警告。因为常量表达式的值在编译时已经固定，运行时重复判断毫无意义。</li>
+		</ul>
 
 	<h2>3. 代码示例</h2>
 
