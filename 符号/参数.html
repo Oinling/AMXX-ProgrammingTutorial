@@ -185,23 +185,293 @@
 
 	<h2>1. 简介</h2>
 
-	<p>调用函数时实际传入的值叫做实参（Actual Argument），可以是常量、变量、表达式或函数返回值。</p>
+	<p>参数（Parameter）是<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数</a>与外部交互的接口，决定了函数如何接受输入数据。</p>
+	
+	<h3>关键概念：</h3>
+	
+	<ul>
+		<p>1. 形参（Formal Parameter）</p>
+		<ul>
+			<p>函数声明、定义语句中列出的变量，用于描述需要哪些数据。</p>
+			<code>static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param</span>) { }	<span class="amxx-comment">// param是形参</span></code>
+		</ul>
 
-	<p>函数内部接收的值叫做形参（Formal Parameter），是局部变量中的<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#DataAndStack">栈变量</a>。</p>
-	
-	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#ParamList">参数声明</a>是<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数声明语句</a>的一部分。</p>
+		<p>2. 实参（Actual Argument）</p>
+		<ul>
+			<p>调用函数时传入的表达式（字面量、常量、变量或函数返回值等）。</p>
+			<code>public <span class="amxx-function">plugin_init</span>()
+{
+	const <span class="amxx-identifier">constant</span> = <span class="amxx-number">1</span>;	<span class="amxx-comment">// 常量</span>
+	new <span class="amxx-identifier">variable</span>;		<span class="amxx-comment">// 变量</span>
+	<span class="amxx-comment">// 调用server_print函数，传入字符串字面量、常量、变量、函数返回值作为实参</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]字面量! c:%d v:%d f:%d"</span>, <span class="amxx-identifier">constant</span>, <span class="amxx-identifier">variable</span>, <span class="amxx-function">random</span>(<span class="amxx-number">5</span>));
+}</code>
+		</ul>
+	</ul>
 
-	<p>参数有按值传递和按引用传递两种方式。</p>
+	<h3>参数的作用：</h3>
 	
-	<p>按值传递：形参的值是实参的副本，更改形参值不会影响实参。</p>
+	<ul>
+		<li><strong>传递数据</strong>：将外部数据传入函数内部进行处理。</li>
+		<li><strong>定制行为</strong>：通过不同参数值改变函数的执行逻辑。</li>
+		<li><strong>提高复用性</strong>：同一函数通过不同参数处理多种情况，减少重复代码。</li>
+	</ul>
+
+	<h3>常见参数类型：</h3>
 	
-	<p>按引用传递：形参和实参是同一个<strong>变量</strong>，更改形参等于更改实参。</p>
+	<ul>
+		<p>1. 位置参数（Positional Arguments）</p>
+		<ul>
+			<p>调用函数时，可以按声明顺序输入实参，称为位置参数（位置实参）：</p>
+			<code><span class="amxx-comment">// 按顺序，param1是1号参数，param2是2号参数</span>
+static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param1</span>, <span class="amxx-identifier">param2</span>)
+	return <span class="amxx-identifier">param1</span> + <span class="amxx-identifier">param2</span>;
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 调用testfunc函数，按顺序填写param1和param2的值，此时10和20是<strong>位置参数</strong></span>
+	<span class="amxx-function">testfunc</span>(<span class="amxx-number">10</span>, <span class="amxx-number">20</span>);
+}</code>
+		</ul>
+
+		<p>2. 命名参数（Named Arguments）</p>
+		<ul>
+			<p>调用函数时，可指定实参对应的形参名称，称为命名参数（命名实参）：</p>
+			<code><span class="amxx-comment">// 按顺序，param1是1号参数，param2是2号参数</span>
+static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param1</span>, <span class="amxx-identifier">param2</span>)
+	return <span class="amxx-identifier">param1</span> + <span class="amxx-identifier">param2</span>;
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 调用testfunc函数，通过参数名显式赋值，顺序可打乱，此时20和10是<strong>命名参数</strong></span>
+	<span class="amxx-function">testfunc</span>(.<span class="amxx-identifier">param2</span> = <span class="amxx-number">20</span>, .<span class="amxx-identifier">param1</span> = <span class="amxx-number">10</span>);
+}</code>
+			<p><strong>注意</strong>：所有命名实参都必须后置，位置参数必须前置。</p>
+			<code><span class="amxx-comment">// 报错：位置实参只能出现在命名实参前</span>
+<span class="amxx-function">testfunc</span>(.<span class="amxx-identifier">param2</span> = <span class="amxx-number">20</span>, <span class="amxx-number">10</span>);</code>
+		</ul>
+
+		<p>3. 传值参数（Pass by Value）</p>
+		<ul>
+			<li>形参绝非数组，实参可以是任意单值表达式。</li>
+			<li>形参是实参的副本，属于<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#DataAndStack">栈变量（临时变量）</a>，在调用函数时创建，退出函数后销毁。</li>
+			<li>对形参的修改不会影响实参。</li>
+			<code><span class="amxx-comment">// 参数param是按值传递</span>
+static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param</span>)
+{
+	<span class="amxx-comment">// 更改param的值，不会影响实参</span>
+	<span class="amxx-identifier">param</span> = <span class="amxx-number">20</span>;
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// 不用担心字面量10被更改</span>
+	<span class="amxx-function">testfunc</span>(<span class="amxx-number">10</span>);
 	
-	<p>参数声明中，带有&修饰符的单值参数和拥有维度声明的数组参数是按引用传递，调用函数时只能填写变量作为实参。</p>
-	
-	<p>参数声明中的...<strong>可变参数</strong>同样是按引用传递，但调用函数时允许输入常量或函数，amxmodx会自动创建一个临时变量代替传递。</p>
-	
-	<h2>2. 实参计算顺序</h2>
+	<span class="amxx-comment">// 不用担心变量arg被更改</span>
+	new <span class="amxx-identifier">arg</span> = <span class="amxx-number">10</span>;
+	<span class="amxx-function">testfunc</span>(<span class="amxx-identifier">arg</span>);
+}</code>
+		</ul>
+
+		<p>4. 传引用参数（Pass by Reference）</p>
+		<ul>
+			<li>形参声明中含有<span class="highlight">&</span>修饰符或<span class="highlight">[]</span>维度声明，或者形参名称是<span class="highlight">...</span>（可变参数）。</li>
+			<li>若形参是可变参数，实参可以是任意表达式，若是常量表达式，会生成临时变量代替实参被传入。</li>
+			<li>若形参是不可变参数，实参必须是变量。</li>
+			<li>形参和实参是同一个变量。</li>
+			<li>修改形参等于修改实参变量。</li>
+			<code><span class="amxx-comment">// 参数param1、param2、...是按引用传递</span>
+static <span class="amxx-function">testfunc</span>(&<span class="amxx-identifier">param1</span>, <span class="amxx-identifier">param2</span>[<span class="amxx-number">1</span>], ...)
+{
+	<span class="amxx-comment">// 更改param1和对应实参的值</span>
+	<span class="amxx-identifier">param1</span> = <span class="amxx-number">20</span>;
+	<span class="amxx-comment">// 更改param1和对应实参的值</span>
+	<span class="amxx-identifier">param2</span>[<span class="amxx-number">0</span>] = <span class="amxx-number">20</span>;
+	<span class="amxx-comment">// 更改可变参数（第3个实参）的值</span>
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">2</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">20</span>);
+	<span class="amxx-comment">// 更改可变参数（第4个实参）的值</span>
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">3</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">20</span>);
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	new <span class="amxx-identifier">arg1</span> = <span class="amxx-number">10</span>;
+	new <span class="amxx-identifier">arg2</span>[<span class="amxx-number">1</span>] = <span class="amxx-number">10</span>;
+	new <span class="amxx-identifier">arg3</span> = <span class="amxx-number">10</span>;
+	<span class="amxx-function">testfunc</span>(<span class="amxx-identifier">arg1</span>, <span class="amxx-identifier">arg2</span>, <span class="amxx-identifier">arg3</span>, <span class="amxx-number">10</span>);
+	<span class="amxx-comment">// arg1、arg2、arg3会被改为20</span>
+	<span class="amxx-comment">// 第4个实参（常量表达式10）不会被更改，因为暗中有一个临时变量代替它被传入，被更改了</span>
+}</code>
+		</ul>
+		
+		<p>5. 数组参数</p>
+		<ul>
+			<li>形参声明中含有<span class="highlight">[]</span>维度声明，则形参是数组参数。</li>
+			<li>数组参数可传递多个数值，并且是强制按引用传递的，因此实参不能是常量和单值字面量。</li>
+			<code><span class="amxx-comment">// 参数param1和param2是数组参数</span>
+static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param1</span>[], <span class="amxx-identifier">param2</span>[<span class="amxx-number">3</span>][<span class="amxx-number">2</span>])
+{
+}</code>
+		</ul>
+		
+		<p>6. 可变参数（Variadic Parameters）</p>
+		<ul>
+			<li>声明形参时，用<span class="highlight">...</span>作为名称，则表示声明可变参数。</li>
+			<li>其数量可变，数组结构可变（允许外界输入0或多个实参、不限制实参是否为数组，不限制实参数组结构）。</li>
+			<li>可变参数是强制按引用传递的，虽然不限制实参是什么表达式，但会自动创建变量代替外界输入的常量表达式。</li>
+			<code><span class="amxx-comment">// ...表示数量不限，结构不限；any:表示标签不限</span>
+static <span class="amxx-function">testfunc</span>(<span class="amxx-tag">any:</span>...)
+{
+	<span class="amxx-comment">// 获取实参总数</span>
+	new <span class="amxx-identifier">totalArgCount</span> = <span class="amxx-function">numargs</span>();
+
+	<span class="amxx-comment">// 获取索引号为0的实参[0]偏移量</span>
+	new <span class="amxx-identifier">arg0@0_addr</span>		= <span class="amxx-function">getarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-number">0</span>) / <span class="amxx-number">4</span> + <span class="amxx-number">0</span>;
+	<span class="amxx-comment">// 获取索引号为0的实参[0][0]（假设索引号为0的实参是二维数组）</span>
+	new <span class="amxx-identifier">arg0@0@0</span>		= <span class="amxx-function">getarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@0_addr</span> + <span class="amxx-number">0</span>);
+	<span class="amxx-comment">// 将索引号为0的实参[0]设为 { arg0@0@0 * 10, 20, 30 }</span>
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@0_addr</span> + <span class="amxx-number">0</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-identifier">arg0@0@0</span> * <span class="amxx-number">10</span>);
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@0_addr</span> + <span class="amxx-number">1</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">20</span>);
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@0_addr</span> + <span class="amxx-number">2</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">30</span>);
+
+	<span class="amxx-comment">// 获取索引号为0的实参[1]偏移量</span>
+	new <span class="amxx-identifier">arg0@1_addr</span>		= <span class="amxx-function">getarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-number">1</span>) / <span class="amxx-number">4</span> + <span class="amxx-number">1</span>;
+	<span class="amxx-comment">// 获取索引号为0的实参[1][0]（假设索引号为0的实参是二维数组）</span>
+	new <span class="amxx-identifier">arg0@1@0</span>		= <span class="amxx-function">getarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@1_addr</span> + <span class="amxx-number">0</span>);
+	<span class="amxx-comment">// 将索引号为0的实参[1]设为 { arg0@1@0 * 10, 50, 60 }</span>
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@1_addr</span> + <span class="amxx-number">0</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-identifier">arg0@1@0</span> * <span class="amxx-number">10</span>);
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@1_addr</span> + <span class="amxx-number">1</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">50</span>);
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@1_addr</span> + <span class="amxx-number">2</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">60</span>);
+
+	<span class="amxx-comment">// 获取索引号为0的实参[2]偏移量</span>
+	new <span class="amxx-identifier">arg0@2_addr</span>		= <span class="amxx-function">getarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-number">2</span>) / <span class="amxx-number">4</span> + <span class="amxx-number">2</span>;
+	<span class="amxx-comment">// 获取索引号为0的实参[2][0]（假设索引号为0的实参是二维数组）</span>
+	new <span class="amxx-identifier">arg0@2@0</span>		= <span class="amxx-function">getarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@2_addr</span> + <span class="amxx-number">0</span>);
+	<span class="amxx-comment">// 将索引号为0的实参[2]设为 { arg0@2@0 * 10, 80, 90 }</span>
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@2_addr</span> + <span class="amxx-number">0</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-identifier">arg0@2@0</span> * <span class="amxx-number">10</span>);
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@2_addr</span> + <span class="amxx-number">1</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">80</span>);
+	<span class="amxx-function">setarg</span>(.<span class="amxx-identifier">arg</span> = <span class="amxx-number">0</span>, .<span class="amxx-identifier">index</span> = <span class="amxx-identifier">arg0@2_addr</span> + <span class="amxx-number">2</span>, .<span class="amxx-identifier">value</span> = <span class="amxx-number">90</span>);
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	new <span class="amxx-identifier">array</span>[<span class="amxx-number">3</span>][<span class="amxx-number">3</span>] =
+	{
+		{ <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span> },
+		{ <span class="amxx-number">4</span>, <span class="amxx-number">5</span>, <span class="amxx-number">6</span> },
+		{ <span class="amxx-number">7</span>, <span class="amxx-number">8</span>, <span class="amxx-number">9</span> }
+	};
+
+	<span class="amxx-function">test</span>(<span class="amxx-identifier">array</span>);	<span class="amxx-comment">// array内部所有数值都被改为10倍</span>
+
+	for (new <span class="amxx-identifier">i</span>; <span class="amxx-identifier">i</span> < sizeof <span class="amxx-identifier">array</span>; <span class="amxx-identifier">i</span>++)
+		for (new <span class="amxx-identifier">j</span>; <span class="amxx-identifier">j</span> < sizeof <span class="amxx-identifier">array</span>[]; <span class="amxx-identifier">j</span>++)
+			<span class="amxx-function">server_print</span>(<span class="amxx-string">"array[%d][%d] = %d"</span>, <span class="amxx-identifier">i</span>, <span class="amxx-identifier">j</span>, <span class="amxx-identifier">array</span>[<span class="amxx-identifier">i</span>][<span class="amxx-identifier">j</span>]);
+}</code>
+		</ul>
+
+		<p>7. 可选参数</p>
+		<ul>
+			<li>若声明可变参数或拥有初始化表达式的参数，调用函数时可以选择是否输入对应实参。</li>
+			<li>若不输入可变参数，函数内获取实参，将得到垃圾数据（访问错误内存）。</li>
+			<li>若不输入拥有初始化表达式的参数，函数会得到该参数的默认值。</li>
+			<code>static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param1</span>, <span class="amxx-identifier">param2</span> = <span class="amxx-number">10</span>, ...)
+{
+	<span class="amxx-comment">// param2的默认值是10，可变参数没有默认值，一旦省略，就不应该访问可变参数</span>
+}
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-comment">// param1是必需填的参数，param2和...是可选参数，可省略</span>
+	<span class="amxx-function">testfunc</span>(.<span class="amxx-identifier">param1</span> = <span class="amxx-number">10</span>);
+}</code>
+		</ul>
+
+	</ul>
+
+	<h2 id="Grammar">2. 参数声明语法</h2>
+
+	<p><span class="highlight">参数声明</span>必须写在<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数声明语句中的参数列表</a>内。</p>
+
+	<p><strong>注意</strong>：下文中，（）表示必填项目，【】表示可选项目。</p>
+
+	<div class="note-box">
+		<p>（参数列表）语法拆解：</p>
+		<ul>（<span class="amxx-default">(</span>）【参数声明】（<span class="amxx-default">)</span>）</ul>
+
+		<p>【参数声明】语法1拆解：</p>
+		<ul>【<span class="amxx-default">const</span>】【<span class="amxx-default">&</span>】【值类型标签】（参数名称）【维度声明】【初始化表达式】【<span class="amxx-default">,</span>】</ul>
+
+		<p>【参数声明】语法2拆解：</p>
+		<ul>【<span class="amxx-default">const</span>】 【值类型标签】（<span class="amxx-default">...</span>）</ul>
+	</div>
+
+	<div class="note-box">
+		<p>【<span class="amxx-default">const</span>】注解：</p>
+		<ul>
+			<p>让参数变为只读，常用于修饰<span class="highlight">数组参数</span>和<span class="highlight">可变参数</span>，明确表示函数内不会更改实参，提高代码可读性。</p>
+			<p>用户调用函数前，可通过此修饰符判断函数是否有更改实参的意图。</p>
+			<p>对<span class="highlight">传值参数</span>使用此修饰是没有意义的。</p>
+		</ul>
+
+		<br>
+
+		<p>【<span class="amxx-default">&</span>】注解：</p>
+		<ul>
+			<p>让参数按引用传递，只允许用于修饰<span class="highlight">单值参数</span>，明确表示函数将要更改实参，提高代码可读性。</p>
+			<p>约束实参必须是变量。</p>
+			<p>用户调用函数前，可通过此修饰符判断函数是否有更改实参的意图。</p>
+			<p><span class="highlight">数组参数</span>和<span class="highlight">可变参数</span>默认按引用传递，禁止使用此修饰符。</p>
+		</ul>
+
+		<br>
+
+		<p>【值类型标签】注解：</p>
+		<ul>
+			<p>设置形参的标签，若形参与拥有不同标签的表达式做运算，将触发警告（除非设为<span class="highlight">any:</span>标签）。</p>
+			<p>约束形参默认值的标签，若默认值标签与此不符，将触发警告（除非设为<span class="highlight">any:</span>标签）。</p>
+			<p>约束实参的标签，若实参标签与此不符，将触发警告（除非设为<span class="highlight">any:</span>标签）。</p>
+			<p>若填写的标签不存在，编译器会自动创建。若不设定标签，则默认使用<span class="highlight">_:</span>标签。</p>
+			<p>编译器默认提供<span class="highlight">any:</span>、<span class="highlight">bool:</span>、<span class="highlight">_:</span>三种标签，其余皆为inc文件提供或用户自定义。</p>
+			<p>标签在一定程度上暗示了用户应该填写什么类型的实参，提高了代码的可读性。</p>
+			<p>默认inc文件很多参数要求填写枚举成员，但并未设置标签，导致用户得不到警告提示、感到迷茫，应引以为戒。</p>
+			<p>点击查看更多内容：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签指南</a></p>
+		</ul>
+
+		<br>
+		
+		<p>【维度声明】注解：</p>
+		<ul>
+			<p>设置形参的维度、各个维度的尺寸，或者与枚举名称组合，设置形参为结构体。详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Struct">变量维度声明语法</a></p>
+			<p>约束实参必须是数组（数组字面量也是可以，因为其属于数据段匿名变量）。</p>
+			<p>若未填写维度声明，则形参是<span class="highlight">单值参数</span>，而非<span class="highlight">数组参数</span>。</p>
+			<p>若未填写某个维度的尺寸，表示不约束实参对应维度的尺寸。</p>
+			<p>由于<span class="highlight">数组参数</span>是强制按引用传递，若函数无更改实参意图，应该为形参添加<span class="highlight">const</span>修饰。</p>
+		</ul>
+
+		<br>
+		
+		<p>【初始化表达式】注解：</p>
+		<ul>
+			<p>设置形参的<strong>默认值</strong>，让形参变为<span class="highlight">可选参数</span>。详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Init">变量初始化语法</a></p>
+			<p>forward函数和公共函数不允许参数拥有默认值。</p>
+		</ul>
+
+		<br>
+
+		<p>【<span class="amxx-default">,</span>】注解：</p>
+		<ul>
+			<p>一旦填写此逗号，表示一个参数声明结束，用户必须填写下一个参数声明。</p>
+			<p>native函数限制最多16个实参，其它函数最多127个实参。</p>
+		</ul>
+
+		<br>
+
+		<p>【<span class="amxx-default">...</span>】注解：</p>
+		<ul>
+			<p>作为参数名称，表示可变参数：不约束接下来的实参数量、维度、尺寸。</p>
+			<p>native函数限制最多16个实参，其它函数最多127个实参。</p>
+			<p>可变参数通常需使用<span class="highlight">any:</span>作为值类型标签，表示不限制实参的标签类型。</p>
+			<p>可变参数是强制按引用传递的，通常应添加<span class="highlight">const</span>修饰，除非确实需要在函数内部更改实参。</p>
+			<p>默认inc文件中完全忘记给只读可变参数添加<span class="highlight">const</span>修饰，让新手误以为实参会被更改，增加学习成本，应引以为戒。</p>
+		</ul>
+
+	<h2>3. 实参计算顺序</h2>
 
 	<p>调用函数，输入多个实参时，若有需要运行时取值的表达式，实参计算顺序受到编译器优化影响，并不固定。</p>
 	

@@ -158,38 +158,59 @@
 
 	<p>变量(Variable)是由用户创建的标识符，其数值在插件运行后才能确定，并且可更改。</p>
 
-	<p>在函数外声明的是全局变量，在函数内声明的是局部变量，局部变量若在函数签名中声明，是参数。</p>
-
+	<h3>关键概念：</h3>
+	<ul>
+		<p>1. 全局变量（Global Variable）</p>
+		<ul>
+			<li>在函数外声明的变量，作用域为当前文件或当前插件。</li>
+			<li>全局变量可以在当前文件或当前插件内的函数中被访问和修改。</li>
+			<code>new <span class="amxx-identifier">pluginVar</span>;	<span class="amxx-comment">// 当前插件的所有文件中可以访问此变量</span>
+static <span class="amxx-identifier">fileVar</span>;	<span class="amxx-comment">// 当前文件中可以访问此变量</span>
+public <span class="amxx-function">plugin_init</span>(<span class="amxx-comment">/*函数内（参数列表内）*/</span>)
+{
+	<span class="amxx-comment">// 函数内</span>
+}</code>
+		</ul>
+		<p>2. 局部变量（Local Variable）</p>
+		<ul>
+			<li>在函数内声明的变量，作用域仅限于该函数。</li>
+			<li>局部变量只能在声明它的函数内被访问和修改。</li>
+			<code>public <span class="amxx-function">myFunction</span>(<span class="amxx-identifier">param</span>)	<span class="amxx-comment">// 函数参数也是局部变量</span>
+{
+	new <span class="amxx-identifier">localVar1</span>;	<span class="amxx-comment">// 函数内声明的局部变量（临时变量）</span>
+	static <span class="amxx-identifier">localVar2</span>;	<span class="amxx-comment">// 函数内声明的局部变量（静态变量）</span>
+}</code>
+		</ul>
+	</ul>
+	
 	<p>按储存位置划分，变量可以分为<span class="highlight">数据段变量</span>和<span class="highlight">栈变量</span>。</p>
 	
-	<p>所有全局变量皆为<span class="highlight">数据段变量</span>，<span class="highlight">数据段变量</span>的声明、定义仅在插件启动时执行一次，确定一次初始值。</p>
+	<p>全局变量和函数体内用<span class="highlight">static</span>声明的变量属于<span class="highlight">数据段变量</span>，<span class="highlight">数据段变量</span>的声明、定义仅在插件启动时执行一次，确定初始值。</p>
 
-	<p>局部变量既有<span class="highlight">数据段变量</span>，也有<span class="highlight">栈变量</span>，<span class="highlight">栈变量</span>的声明、定义可在插件运行时重复执行，重复计算不同初始值。</p>
+	<p>函数体内用<span class="highlight">new</span>关键字声明的是<span class="highlight">栈变量</span>，<span class="highlight">栈变量</span>的声明、定义可在插件运行时重复执行，重复计算不同初始值。</p>
 	
-	<p>其中<span class="highlight">栈变量</span>还分为<span class="highlight">参数</span>和<span class="highlight">非参数</span>。</p>
+	<p>参数分为传值和传引用，传值参数是实参的临时副本，必定是<span class="highlight">栈变量</span>；传引用参数等于实参本体，实参有可能是<span class="highlight">数据段变量</span>。</p>
+
+	<p>关于参数变量的相关概念：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%82%E6%95%B0.html">点击查看参数指南</a></p>
 
 	<div class="note-box">
-	<h4>参数声明是函数声明语句的一部分：</h4>
-	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">点击查看函数指南</a></p>
-	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%82%E6%95%B0.html">点击查看参数指南</a></p>
+	
+	<p>非参数变量声明语句语法格式：</p>
+	<ul>（声明说明符） （变量声明）【<span class="amxx-default">;</span>】</ul>
 
-	<h4>非参数变量声明语句语法格式：</h4>
-	<p><声明说明符> <变量声明> \<span class="amxx-default"> ; </span>/</p>
+	<p>变量声明语法拆解：</p>
+	<ul>【值类型标签】（变量名称）【维度声明】【初始化表达式】【<span class="amxx-default">,</span>】</ul>
 
-	<h4>变量声明语法拆解：</h4>
-	<p>\值类型标签/ <变量名称> \维度声明/ \初始化表达式/</p>
+	<p>维度声明语法拆解：</p>
+	<ul>【<span class="amxx-default">[</span>【4维数组尺寸】<span class="amxx-default">]</span>】【<span class="amxx-default">[</span>【3维数组尺寸】<span class="amxx-default">]</span>】【<span class="amxx-default">[</span>【2维数组尺寸】<span class="amxx-default">]</span>】【<span class="amxx-default">[</span>【1维数组尺寸】<span class="amxx-default">]</span>】</ul>
 
-	<h4>维度声明语法拆解：</h4>
-	<p>\<span class="amxx-default">[</span>\4维数组尺寸/<span class="amxx-default">]</span>/ \<span class="amxx-default">[</span>\3维数组尺寸/<span class="amxx-default">]</span>/ \<span class="amxx-default">[</span>\2维数组尺寸/<span class="amxx-default">]</span>/ \<span class="amxx-default">[</span>\1维数组尺寸/<span class="amxx-default">]</span>/</p>
-
-	<h4>初始化表达式拆解：</h4>
-	<p><<span class="amxx-default"> = </span>> <表达式></p>
+	<p>初始化表达式拆解：</p>
+	<ul>（<span class="amxx-default">=</span>）（表达式）</ul>
 	</div>
+	
+	<p><strong>注意：</strong></p>
 
-	<div class="note-box">
-		<h4><>是必填项目，\/是可选项目。</h4>
-		<h4>\变量声明/若在\<span class="amxx-default"> ; </span>/之前以逗号结尾，可再次编写新的\变量声明/，连续声明多个变量。</h4>
-	</div>
+	<ul><li>（）是必填项目，【】是可选项目。</li><li>【<span class="amxx-default">,</span>】一旦填写，就必须继续填写一个（变量声明）。</li></ul>
 
 	<h2 id="Keyword">2. 声明说明符</h2>
 
