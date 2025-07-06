@@ -470,6 +470,7 @@ public <span class="amxx-function">plugin_init</span>()
 			<p>可变参数是强制按引用传递的，通常应添加<span class="highlight">const</span>修饰，除非确实需要在函数内部更改实参。</p>
 			<p>默认inc文件中完全忘记给只读可变参数添加<span class="highlight">const</span>修饰，让新手误以为实参会被更改，增加学习成本，应引以为戒。</p>
 		</ul>
+	</div>
 
 	<h2>3. 实参计算顺序</h2>
 
@@ -488,7 +489,12 @@ public <span class="amxx-function">plugin_init</span>()
 	
 	<p>[AMXX] 2 1 3 2</p>
 	
-	<p>因此，建议优先编写不依赖计算顺序的代码，以保障可移植性和可维护性。</p>
+	<p>因此，建议提前计算各个参数的值，然后再调用函数，以保障可移植性和可维护性：</p>
+
+	<code>new <span class="amxx-identifier">b</span> = <span class="amxx-number">1</span>, <span class="amxx-identifier">c</span> = <span class="amxx-number">2</span>;
+<span class="amxx-identifier">b</span>++;
+<span class="amxx-identifier">c</span>++;
+<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] %d %d %d %d"</span>, <span class="amxx-identifier">b</span>, <span class="amxx-function">random_num</span>(<span class="amxx-identifier">b</span>, <span class="amxx-identifier">b</span>), <span class="amxx-identifier">c</span>, <span class="amxx-function">random_num</span>(<span class="amxx-identifier">c</span>, <span class="amxx-identifier">c</span>));</code>
 	
 </body>
 </html>
