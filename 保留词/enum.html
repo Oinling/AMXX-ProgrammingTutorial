@@ -154,12 +154,12 @@
 	<ul>
 		<li><a href="#Core">1. 核心功能</a></li>
 		<li><a href="#Statement">2. 枚举声明语句</a></li>
-		<li><a href="#Tag">3. 值类型标签注意事项</a></li>
-		<li><a href="#Name">4. 枚举名称注意事项</a></li>
+		<li><a href="#Tag">3. 常量标签覆盖注意事项</a></li>
+		<li><a href="#Name">4. 枚举类名注意事项</a></li>
 		<li><a href="#Incrementer">5. 升值器注意事项</a></li>
-		<li><a href="#PropTag">6. 属性值类型标签注意事项</a></li>
+		<li><a href="#PropTag">6. 属性标签覆盖注意事项</a></li>
 		<li><a href="#Member">7. 枚举常量注意事项</a></li>
-		<li><a href="#PropStruct">8. 属性尺寸注意事项</a></li>
+		<li><a href="#PropStruct">8. 属性尺寸声明注意事项</a></li>
 		<li><a href="#Init">9. 初始化表达式注意事项</a></li>
 		<li><a href="#Usages">10. 三种核心用法</a></li>
 	</ul>
@@ -178,13 +178,16 @@
 
 	<div class="note-box">
 	<h4>枚举声明语句的语法：</h4>
-	<p><<span class="amxx-default">enum</span>> \值类型标签/ \枚举名称/ \升值器/ <<span class="amxx-default">{</span>> \枚举常量声明/ <<span class="amxx-default">}</span>> \<span class="amxx-default">;</span>/</p>
+	<p><<span class="amxx-default">enum</span>> \常量标签覆盖/ \枚举类名/ \升值器/ <<span class="amxx-default">{</span>> \枚举常量声明/ <<span class="amxx-default">}</span>> \<span class="amxx-default">;</span>/</p>
+
+	<h4>标签覆盖语法拆解：</h4>
+	<p><值类型标签名称> <<span class="amxx-default">:</span>></p>
 
 	<h4>升值器语法拆解：</h4>
 	<p><<span class="amxx-default">(</span>> \<多字节赋值运算符> <常量表达式>/ <<span class="amxx-default">)</span>></p>
 
 	<h4>枚举常量声明语法拆解：</h4>
-	<p>\属性值类型标签/ \枚举常量名称/ \属性尺寸声明/ \初始化表达式/ \<span class="amxx-default">,</span>/</p>
+	<p>\属性标签覆盖/ \枚举常量名称/ \属性尺寸声明/ \初始化表达式/ \<span class="amxx-default">,</span>/</p>
 
 	<h4>属性尺寸声明语法拆解：</h4>
 	<p><<span class="amxx-default">[</span>> <常量表达式> <<span class="amxx-default">]</span>></p>
@@ -196,69 +199,69 @@
 	<div class="note-box">
 		<h4><>是必填项目，\/是可选项目。</h4>
 		<h4>\枚举常量声明/若以逗号结尾，可继续声明下一个枚举常量。</h4>
-		<h4>不填写枚举名称，则为匿名枚举。</h4>
-		<h4>填写枚举名称，则为命名枚举。</h4>
+		<h4>不填写枚举类名，则为匿名枚举。</h4>
+		<h4>填写枚举类名，则为命名枚举。</h4>
 	</div>
 
-	<h2 id="Tag">3. 值类型标签注意事项</h2>
+	<h2 id="Tag">3. 常量标签覆盖注意事项</h2>
 	<div class="feature-list">
 	<ul>
-	<li>若未填写值类型标签，则等于枚举名称，若未填写枚举名称，则等于_标签</li>
-	<li>枚举常量与枚举名称的值类型标签是一致的，注意不要混淆‘常量所指属性值类型标签’与'常量的值类型标签'</li>
-	<li>若enum被用于设计结构体，不该填写标签，解析器会根据需要自动切换标签到_或枚举名称</li>
-	<li>通常不填写标签，而是利用枚举名称形成暗示：带有此标签的索引器、变量、函数，输入或输出的值与枚举常量相关</li>
+	<li>作用：覆盖枚举类名和每个枚举常量的标签（枚举类名也是常量）</li>
+	<li>若省略，编译器会复制枚举类名作为标签名称（若枚举类名也被省略，则使用_标签）</li>
+	<li>若不省略，且标签名称与枚举类名不同，将导致编译器无法准确警告用户，标签是否匹配</li>
 	</ul>
 	</div>
-
-	<h2 id="Name">4. 枚举名称注意事项</h2>
+	
+	<h2 id="Name">4. 枚举类名注意事项</h2>
 	<div class="feature-list">
 	<ul>
 	<li>省略名称是匿名枚举，反之是命名枚举</li>
 	<li>省略名称将牺牲编译时类型安全检查，编译器无法通过标签警告引导用户正确使用枚举常量</li>
-	<li>枚举名称是常量，其值由升值器和最后一个枚举常量共同决定</li>
+	<li>枚举类名是常量，其值由升值器和最后一个枚举常量共同决定</li>
 	<li>若最后一个枚举常量拥有属性尺寸声明，名称 = 常量 + 属性尺寸</li>
 	<li>若最后一个枚举常量没有属性尺寸声明，假设升值器为(+= 2)，名称 = 常量 + 2</li>
 	<li>若enum被用于设计结构体，名称需以小写开头，否则解析器不会智能切换标签，将会在关键位置触发警告</li>
-	<li>声明1维数组尺寸时，若填写枚举名称作为尺寸，1维数组会被解析为结构体</li>
-	<li>声明属性尺寸时，若填写枚举名称作为尺寸，对应的结构体属性会被解析为结构体</li>
+	<li>声明1维数组尺寸时，若填写枚举类名作为尺寸，1维数组会被解析为结构体</li>
+	<li>声明属性尺寸时，若填写枚举类名作为尺寸，对应的结构体属性会被解析为结构体</li>
 	</ul>
 	</div>
 
 	<h2 id="Incrementer">5. 升值器注意事项</h2>
 	<div class="feature-list">
 	<ul>
-	<li>升值器决定如何给枚举常量和枚举名称自动初始化</li>
+	<li>升值器决定如何给枚举常量和枚举类名自动初始化</li>
 	<li>若未填写升值器，则以(+= 1)作为默认升值器</li>
 	<li>不要妄图填写浮点数字面量，浮点数运算在编译时无法执行，编译器会将其二进制表示为整数，执行整数运算</li>
 	<li>若以(<<= 1)作为升值器，通常需对第2或第1个枚举常量进行初始化，赋值为1</li>
 	</ul>
 	</div>
 
-	<h2 id="PropTag">6. 属性值类型标签注意事项</h2>
+	<h2 id="PropTag">6. 属性标签覆盖注意事项</h2>
 	<div class="feature-list">
 	<ul>
-	<li>当枚举常量被用于访问数组元素，该元素会被当做结构体属性，属性值会被临时切换标签</li>
-	<li>若未填写属性值类型标签，则以_作为默认标签</li>
-	<li>注意不要将其于'枚举常量的值类型标签'混淆</li>
+	<li>作用：使用枚举常量访问数组元素时，将元素视作结构体属性，临时覆盖元素值标签</li>
+	<li>若省略，默认使用_标签</li>
+	<li>不要将其于'常量标签覆盖'混淆，很多人会以为'属性标签覆盖'是在覆盖枚举常量的标签，这是错的</li>
 	</ul>
 	</div>
 
 	<h2 id="Member">7. 枚举常量注意事项</h2>
 	<div class="feature-list">
 	<ul>
-	<li>枚举常量与枚举名称的值类型标签是一致的</li>
+	<li>枚举常量与枚举类名的值类型标签是一致的，（使用'常量标签覆盖'设置标签，而不是'属性标签覆盖'）</li>
 	<li><span class="highlight">tagof</span> 无法获取枚举常量的标签uid，可能是编译器设计缺陷</li>
-	<li>不要误认为常量是结构体私有的，最好添加名称前缀避免与其它标识符同名</li>
+	<li>使用枚举常量访问数组元素时，可将元素视作结构体属性，'属性标签覆盖'和'属性尺寸声明'会改变元素的操作方式</li>
+	<li>在设计结构体时，强烈建议给枚举常量添加前缀避免命名冲突，尤其是枚举常量是全局常量的情况下</li>
 	</ul>
 	</div>
 
-	<h2 id="PropStruct">8. 属性尺寸注意事项</h2>
+	<h2 id="PropStruct">8. 属性尺寸声明注意事项</h2>
 	<div class="feature-list">
 	<ul>
-	<li>当枚举常量被用于访问1维数组元素，该元素会被当做结构体属性，属性尺寸大于1时，可使用[]访问属性元素</li>
-	<li>属性尺寸看似让1维数组的数值元素变成了数组,实则<span class="highlight">a[枚举常量][索引]</span>会变成<span class="highlight">a[枚举常量+索引]</span></li>
+	<li>作用：使用枚举常量访问1维数组元素时，将该元素视作结构体的<span class="highlight">数组属性</span>，可用[]访问该属性的元素</li>
+	<li>属性尺寸看似让1维数组的元素变成了数组，实则<span class="highlight">a[枚举常量][索引]</span>会在编译后被改为<span class="highlight">a[枚举常量+索引]</span></li>
 	<li>属性尺寸声明会让下一个枚举常量无法执行升值器，改为：下一个常量 = 当前常量 + 属性尺寸</li>
-	<li>属性尺寸声明会让枚举名称无法执行升值器，改为：名称 = 最后常量 + 属性尺寸</li>
+	<li>属性尺寸声明会让枚举类名无法执行升值器，改为：名称 = 最后常量 + 属性尺寸</li>
 	<li>若不填写属性尺寸声明，则不干扰升值器</li>
 	</ul>
 	</div>
@@ -364,7 +367,7 @@ enum <span class="amxx-enumname">tZombieClass</span>
 {
 	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_Name</span>[<span class="amxx-number">32</span>],
 	<span class="amxx-comment">// 属性尺寸声明要求[]内填写带有_标签的常量表达式,表示结构体属性的尺寸</span>
-	<span class="amxx-comment">// 若填写枚举名称,表示该这个结构体属性也是结构体.编译器自动切换tZombieAppearance的标签为_</span>
+	<span class="amxx-comment">// 若填写枚举类名,表示该这个结构体属性也是结构体.编译器自动切换tZombieAppearance的标签为_</span>
 	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_Appearance</span>[<span class="amxx-enumname">tZombieAppearance</span>],
 	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_MaxHealth</span>,
 	<span class="amxx-tag">_:</span>	<span class="amxx-identifier">ZC_MaxSpeed</span>,
