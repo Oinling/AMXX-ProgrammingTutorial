@@ -151,14 +151,14 @@
 
 	<p>在函数外声明的是全局常量，在函数内声明的是局部常量。</p>
 
-	<p>常量有三种，普通常量、枚举名称和枚举常量(枚举成员)。</p>
+	<p>常量有三种，普通常量、枚举类名和枚举常量(枚举成员)。</p>
 
 	<div class="note-box">
 	<h4>普通常量声明语句语法：</h4>
 	<p><<span class="amxx-default">const</span>> \值类型标签/ <常量名称> <初始化表达式> \ <span class="amxx-default">;</span> /</p>
 	
 	<h4>枚举声明语句的语法：</h4>
-	<p><<span class="amxx-default">enum</span>> \值类型标签/ \枚举名称/ \升值器/ < <span class="amxx-default">{</span> > \枚举常量声明/ < <span class="amxx-default">}</span> > \ <span class="amxx-default">;</span> /</p>
+	<p><<span class="amxx-default">enum</span>> \值类型标签/ \枚举类名/ \升值器/ < <span class="amxx-default">{</span> > \枚举常量声明/ < <span class="amxx-default">}</span> > \ <span class="amxx-default">;</span> /</p>
 
 	<h4>升值器语法拆解：</h4>
 	<p>< <span class="amxx-default">(</span> > \<多字节赋值运算符> <常量表达式>/ < <span class="amxx-default">)</span> ></p>
@@ -221,7 +221,7 @@ enum <span class="amxx-tag">_:</span><span class="amxx-identifier">LibType</span
 enum <span class="amxx-identifier">LibType</span> { };
 
 enum {
-	<span class="amxx-comment">// 下面两行代码是相同的(此标签为结构体属性标签,而非常量标签,常量标签与枚举名称相同)</span>
+	<span class="amxx-comment">// 下面两行代码是相同的(此标签为结构体属性标签,而非常量标签,常量标签与枚举类名相同)</span>
 	<span class="amxx-tag">_:</span><span class="amxx-identifier">ZCN_MaxHealth</span>,
 	<span class="amxx-identifier">ZCN_MaxHealth</span>,
 };</code>
@@ -263,7 +263,7 @@ const <span class="amxx-identifier">constant4</span> = <span class="amxx-identif
 	</div>
 	
 	<div class="note-box">
-	<h4>枚举名称的初始值由升值器和最后一个枚举常量共同决定。</h4>
+	<h4>枚举类名的初始值由升值器和最后一个枚举常量共同决定。</h4>
 	<h4>未显式赋值的枚举常量初始值由升值器和上一个枚举常量共同决定。</h4>
 	<h4>更多详情：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看enum指南</a></h4>
 	</div>
