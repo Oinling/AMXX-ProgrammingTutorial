@@ -617,7 +617,7 @@
 			<td><code>()</code></td>
 			<td>分组运算<br>调用函数</td>
 			<td><code>(e)</code><br><code><span class="amxx-function">f</span>(e1, e2, ...)</code></td>
-			<td>若e是多个表达式组成,优先计算e的值,再参与外界运算</em><br>根据优化,以某种顺序计算完e1,e2,...的值后,调用f函数,得到f的返回值</td>
+			<td>若e是多个表达式组成,优先计算e的值,再参与外界运算</em><br>以某种顺序对e1,e2,...求值,调用f函数,得到f的返回值</td>
 		</tr>
 		<tr>
 			<td><code>? :</code></td>
@@ -680,6 +680,11 @@ new <span class="amxx-symbol">b</span>[<span class="amxx-number">1</span>] = { <
 new <span class="amxx-symbol">byteVal</span> = <span class="amxx-symbol">b</span>{<span class="amxx-number">0</span>};	<span class="amxx-comment">// 得到0b_11100110</span>
 <span class="amxx-symbol">byteVal</span> = <span class="amxx-symbol">b</span>{<span class="amxx-number">1</span>};		<span class="amxx-comment">// 得到0b_10001000</span>
 <span class="amxx-symbol">b</span>{<span class="amxx-number">2</span>} = <span class="amxx-number">0b_00000000</span>;	<span class="amxx-comment">// 将10010001部分改为00000000</span></code></pre>
+</div>
+
+<div class="warning">
+	<p><strong>调用函数注意事项：</strong>若未填写参数、或编译器含有-(+选项，不可省略()运算符。反之可省略。</p>
+	<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">点击查看函数与参数指南</a><p>
 </div>
 
 <h2 id="precedence">8. 优先级</h2>
