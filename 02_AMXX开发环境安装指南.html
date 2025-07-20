@@ -6,9 +6,9 @@
 <style>
     code {
         white-space: pre;
-        color: rgb(0,0,255);
+        color: rgb(0，0，255);
         background-color: #f1f1f1;
-        font-family: Consolas, monospace;
+        font-family: Consolas， monospace;
         font-weight: bold;
     }
     .version-info {
@@ -43,7 +43,7 @@
 <h2>1. 基础准备(显示文件扩展名)</h2>
 
 <div class="step">
-    <p>在Windows设置中启用"显示文件扩展名"功能.</p>
+    <p>在Windows设置中启用"显示文件扩展名"功能。</p>
 </div>
 
 <h2>2. 旧版CS安装流程 (Exe build ≤ 9000)</h2>
@@ -70,9 +70,11 @@ gamedll_osx "addons/metamod/dlls/metamod.dylib"</code>
 
 <div class="step">
     <h3>2.4 安装AMX Mod X</h3>
-    <p>下载：<a href="https://www.amxmodx.org/release/amxmodx-1.8.2-base-windows.zip">基础包</a>和<a href="https://www.amxmodx.org/release/amxmodx-1.8.2-cstrike-windows.zip">CS模块</a></p>
+    <p>下载：<a href="https://www.amxmodx.org/release/amxmodx-1.8.2-base-windows.zip">AMX Mod X 1.8.2</a>和<a href="https://www.amxmodx.org/release/amxmodx-1.8.2-cstrike-windows.zip">AMX Mod X 1.8.2 CS拓展模块</a></p>
     <p>解压后将addons文件夹合并到cstrike目录</p>
-    <p>这是1.8.2版本的AMX Mod X,也可以选择下载1.9.0或1.10.0版本,并不需要安装GameData修复包.</p>
+    <p>其它版本（不需要安装GameData修复包）：</p>
+    <p><a href="https://www.amxmodx.org/downloads-new.php">AMX Mod X 1.9.0</a></p>
+    <p><a href="https://www.amxmodx.org/downloads-new.php?branch=master">AMX Mod X 最新版</a></p>
 </div>
 
 <h2>3. 新版CS安装流程 (Exe build > 9000)</h2>
@@ -100,12 +102,21 @@ gamedll_linux "addons/metamod/metamod_i386.so"</code>
 
 <div class="step">
     <h3>3.4 安装高版本AMX Mod X</h3>
-    <p>下载：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5467-base-windows.zip">基础包</a>和<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5467-cstrike-windows.zip">CS模块</a></p>
+    <p>下载：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5467-base-windows.zip">AMX Mod X 1.10.0.5467</a>和<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5467-cstrike-windows.zip">AMX Mod X 1.10.0.5467 CS拓展模块</a></p>
     <p>解压后将addons文件夹合并到cstrike目录</p>
+    <p>其它版本：</p>
+    <p><a href="https://www.amxmodx.org/downloads-new.php?branch=master">AMX Mod X 最新版</a></p>
+    <p><a href="https://www.amxmodx.org/downloads-new.php">AMX Mod X 1.9.0</a></p>
 </div>
 
 <div class="step">
-    <h3>3.5 安装GameData修复包</h3>
+    <h3>3.5 创建plugins.ini</h3>
+    <p>在cstrike/addons/metamod/下创建plugins.ini文件，添加：</p>
+    <code>win32 addons/amxmodx/dlls/amxmodx_mm.dll</code>
+</div>
+
+<div class="step">
+    <h3>3.6 安装GameData修复包</h3>
     <p>下载：<a href="https://github.com/AoiKagase/amxmodx/tree/master/gamedata">GameData</a></p>
     <p>将所有文件复制到cstrike\addons\amxmodx\data文件夹</p>
 </div>
@@ -135,10 +146,10 @@ gamedll_linux "addons/metamod/metamod_i386.so"</code>
         <li><code>addons/amxmodx/data/lang</code> - 插件文本翻译</li>
         <li><code>addons/amxmodx/modules</code> - 模块</li>
     </ul>
-    <p>scripting文件夹里的amxxpc.exe是编译器,可以附带各种参数,编译单个源码.将.sma文件拖到其图标上就会原地生成.amxx文件.</p>
+    <p>scripting文件夹里的amxxpc.exe是编译器，可以附带各种参数，编译单个源码.将.sma文件拖到其图标上就会原地生成.amxx文件.</p>
     <p>scripting文件夹里的compile.exe可以一次编译多个源码.将.sma文件拖到其图标上就会在scripting/compile文件夹生成.amxx文件.</p>
     <p>直接运行compile.exe可以编译scripting文件夹里的所有源码.</p>
-    <p>编译好的.amxx文件需要放入plugins文件夹,并在configs/plugins.ini文件内另起一行写上.amxx文件全名.</p>
+    <p>编译好的.amxx文件需要放入plugins文件夹，并在configs/plugins.ini文件内另起一行写上.amxx文件全名.</p>
     <p>像这样:</p>
     <p><code>myplugin.amxx		; 简单介绍我的插件</code></p>
 </div>
@@ -146,13 +157,13 @@ gamedll_linux "addons/metamod/metamod_i386.so"</code>
 <h2>5. 验证安装</h2>
 
 <div class="step">
-    <p>启动游戏,按~打开控制台,发送以下命令:</p>
+    <p>启动游戏，按~打开控制台，发送以下命令:</p>
     <ul>
         <li><code>amxx version</code> - 检查AMXX版本</li>
         <li><code>amxx plugins</code> - 查看运行中的插件</li>
         <li><code>setinfo lang cn</code> - 设置中文</li>
         <li><code>amx_language cn</code> - 设置中文</li>
-        <li><code>amx_langmenu</code> - 打开语言菜单,查看菜单文本是否为中文</li>
+        <li><code>amx_langmenu</code> - 打开语言菜单，查看菜单文本是否为中文</li>
     </ul>
 </div>
 
