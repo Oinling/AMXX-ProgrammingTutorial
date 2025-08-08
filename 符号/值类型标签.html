@@ -269,7 +269,7 @@
 	<p>在任意表达式左边，可以使用标签覆盖表达式，临时更改表达式的标签。</p>
 	<p><strong>重点1：</strong>标签无实际意义，会在编译时被删除。标签覆盖<span class="highlight">不会改变表达式的数值</span>。</p>
 	<p><strong>重点2：</strong>复合表达式的操作数无论带有什么标签，默认情况下<span class="highlight">只会进行整数之间的运算</span>。但两操作数的标签不同可能触发警告。</p>
-	<p><strong>重点3：</strong>amxx插件与AMX Mod X通过native或forward函数交换数据，数据（表达式）的标签<span class="highlight">不影响函数计算结果</span>。</p>
+	<p><strong>重点3：</strong>amxx插件默认情况下只能调用核心模块提供的float系列函数进行浮点数运算，参数数据（表达式）的标签<span class="highlight">不影响函数计算结果</span>。</p>
 	<p><strong>重点4：</strong><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a>关键字可定义文本替换规则（运算符重载），<span class="highlight">将满足规则的复合表达式替换为函数与参数</span>。</p>
 	<p><strong>重点5：</strong>覆盖标签可以主动满足或避开运算符重载定义的文本替换规则，或屏蔽某些标签不匹配的警告。</p>
 	<p><strong>重点6：</strong>一旦满足运算符重载的文本替换规则，替换成函数运算后，<span class="highlight">计算结果可能与预期不符</span>。</p>
