@@ -263,9 +263,9 @@
 		</tr>
 		<tr>
 			<td><code>%</code></td>
-			<td>求余运算符</td>
+			<td>取模运算符</td>
 			<td><code>e1 % e2</code></td>
-			<td>得到e1除以e2的余数</td>
+			<td>模 = e2 - 商 * e1 (商=e1/e2，向负无穷取整)</td>
 		</tr>
 		<tr>
 			<td><code>++</code></td>
@@ -284,13 +284,6 @@
 
 <div class="note">
 	<p><strong>注意：</strong>AMXX中并没有定义求正运算符，因此不能用<code>+</code>得到e的正数。</p>
-</div>
-
-<div class="example">
-	<h4>除法与求余的欧几里得性质：</h4>
-	<pre><code>e1 = 商 * e2 + 余
-商 = e1 / e2
-余 = e1 % e2</code></pre>
 </div>
 
 <h2 id="bitwise">3. 二进制位操作运算符</h2>
@@ -442,7 +435,7 @@
 		</tr>
 		<tr>
 			<td><code>%=</code></td>
-			<td>求余赋值</td>
+			<td>求模赋值</td>
 			<td><code><span class="amxx-symbol">v</span> %= e</code></td>
 			<td><code><span class="amxx-symbol">v</span> = <span class="amxx-symbol">v</span> % e</code>的简写</td>
 		</tr>
