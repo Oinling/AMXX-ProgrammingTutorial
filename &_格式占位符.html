@@ -1,0 +1,1214 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="utf-8">
+<title>cs1.6 amxx编程教程 字面量 -- 作者:偶萤蛉(Oinling)</title>
+<style>
+	code {
+		white-space: pre;
+		color: rgb(0,0,255);
+		background-color: #f1f1f1;
+		font-family: Consolas, monospace;
+		font-weight: bold;
+	}
+	.amxx-note {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-comment {
+		color: rgb(63,159,63);
+		font-weight: normal;
+	}
+	.amxx-directive {
+		color: rgb(111,111,107);
+		font-weight: normal;
+	}
+	.amxx-ds {
+		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-df {
+		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
+		-webkit-background-clip: text;
+		color: transparent;
+		font-weight: normal;
+	}
+	.amxx-string {
+		color: rgb(193,61,41);
+		font-weight: normal;
+	}
+	.amxx-number {
+		color: rgb(0,0,0);
+		font-weight: normal;
+	}
+	.amxx-enumname {
+		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
+		-webkit-background-clip: text;
+		color: transparent;
+	}
+	.amxx-function {
+		color: rgb(113,31,195);
+		font-weight: bold;
+	}
+	.amxx-tag {
+		color: rgb(93,20,10);
+		font-weight: normal;
+	}
+	.amxx-symbol {
+		color: rgb(153,51,255);
+		font-weight: normal;
+	}
+</style>
+</head>
+<body>
+
+<p><h1>cs1.6 amxx编程教程 字面量 -- 作者:偶萤蛉(Oinling)</h1></p>
+
+<p><h1>目录:</h1></p>
+
+<p><a href="#click1">1:简介</a></p>
+
+<p><a href="#click1.1">1.1:单值字面量写法</a></p>
+
+<p><a href="#click1.2">1.2:数组字面量写法</a></p>
+
+<p><a href="#click2">2:整数</a></p>
+
+<p><a href="#click3">3:浮点数</a></p>
+
+<p><a href="#click4">4:字符</a></p>
+
+<p><a href="#click5">5:二进制整数</a></p>
+
+<p><a href="#click6">6:十六进制整数</a></p>
+
+<p><a href="#click7">7:数组</a></p>
+
+<p><a href="#click8">8:字符串</a></p>
+
+<p><a href="#click8.1">8.1:压缩字符串</a></p>
+
+<p><a href="#click8.2">8.2:原始字符串</a></p>
+
+<p><a href="#click9">9:关于数值类型的底层知识</a></p>
+
+<p><a href="#click10">10:关于数组字面量的底层知识</a></p>
+
+<p><h1 id="click1">1:简介</h1></p>
+
+<p>字面量(Literal)在源代码用于表示一个或多个数值.可简单分为单值字面量和数组字面量两种.</p>
+
+<p>字面量可用于做运算,或设定标识符的值,令这些标识符也能用于运算.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-comment">// 声明var变量(标识符的一种),定义它的值为5.这里的5是字面量</span>
+static <span class="amxx-symbol">var</span> = <span class="amxx-number">5</span>;</code></p>
+
+<p><h2 id="click1.1">1.1:单值字面量写法</h2></p>
+
+<p><h3>字符(Char):</h3></p>
+
+<p><code><span class="amxx-string">'A'
+'Z'
+'1'
+'2'
+'3'</span></code></p>
+
+<p><h3>二进制整数(Binary Integer):</h3></p>
+
+<p><code><span class="amxx-note">0b1001
+0b101010
+0b111111
+0b000001
+0b100000</span></code></p>
+
+<p><h3>十进制整数(Decimal Integer):</h3></p>
+
+<p><code><span class="amxx-note">000
+005
+333
+6
+99999999</span></code></p>
+
+<p><h3>十进制浮点数(Floating-Point Number):</h3></p>
+
+<p><code><span class="amxx-note">0.0
+3.3333
+0.0001
+0001.01
+3.141592</span></code></p>
+
+<p><h3>十六进制整数(Hexadecimal Integer):</h3></p>
+
+<p><code><span class="amxx-note">0x1
+0xFF
+0xABCDEF
+0x123456789
+0xA</span></code></p>
+
+<p><h2 id="click1.2">1.2:数组字面量写法</h2></p>
+
+<p><h3>数组(Array):</h3></p>
+
+<p><code>{ <span class="amxx-number">1</span>, <span class="amxx-number">6</span> }
+{ { <span class="amxx-number">1</span>, <span class="amxx-number">6</span> }, { <span class="amxx-number">1</span>, <span class="amxx-number">6</span> } }
+{ { { <span class="amxx-number">1</span>, <span class="amxx-number">6</span> } }, { { <span class="amxx-number">1</span>, <span class="amxx-number">6</span> } } }
+{ <span class="amxx-number">22.2</span>, <span class="amxx-number">33.3</span>, <span class="amxx-number">44.4</span>, <span class="amxx-number">55.5</span>, <span class="amxx-number">66.6</span>, <span class="amxx-number">77.7</span> }
+{ { { <span class="amxx-number">6.6</span> } }, { { <span class="amxx-number">6.6</span> } } }
+{ <span class="amxx-string">"abc"</span>, <span class="amxx-number">2</span>, <span class="amxx-string">"def"</span>, <span class="amxx-number">4</span>, { <span class="amxx-number">5</span>, <span class="amxx-number">6</span>, <span class="amxx-number">7</span> } }</code></p>
+
+<p><h3>字符串(String):</h3></p>
+
+<p><code><span class="amxx-string">"世界真美好呀."
+"这是一段字符串"
+"0至9,a至z,A至Z."
+"________________"
+"[测试]变量A = 101"
+<code>^</code>"原字符串"
+<code>!</code>"压缩字符串"
+<code>!^</code>"压缩原字符串"
+<code>^!</code>"压缩原字符串"</span></code></p>
+
+<p>浮点数与整数做运算时,极有可能会出现计算错误.</p>
+
+<p>尽量避免编写<code><span class="amxx-number">10</span> + <span class="amxx-number">33.3</span></code>或<code><span class="amxx-number">33.3</span> + <span class="amxx-number">10</span></code>这样的代码.</p>
+
+<p>如果你希望得到浮点数的计算结果,正确写法是:<code><span class="amxx-number">10.0</span> + <span class="amxx-number">33.3</span></code>或<code><span class="amxx-number">33.3</span> + <span class="amxx-number">10.0</span></code></p>
+
+<p>如果你希望得到整数的计算结果,正确写法是:<code><span class="amxx-number">10</span> + <span class="amxx-number">33</span></code>或<code><span class="amxx-number">33</span> + <span class="amxx-number">10</span></code></p>
+
+<p>(以下内容,看不懂的可以跳过,等阅读接下来的教程,学到相关概念后再翻回来看)</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click2">2:整数</h1></p>
+
+<p>整数,通常指的是十进制整数.</p>
+
+<p>整数字面量能表示的最大值:<code>	<span class="amxx-number">2147483647</span></code></p>
+
+<p>整数字面量能表示的最小值:<code>	-<span class="amxx-number">2147483648</span></code></p>
+
+<p>十进制整数字面量的正确写法:</p>
+
+<p>1:第一个字必须是数字.</p>
+
+<p>2:数字从0至9中挑选.</p>
+
+<p>3:后续内容可以是任意数量的下划线或数字.</p>
+
+<p>注意事项:</p>
+
+<p>1:常量<span class="amxx-symbol">cellmin</span>和<span class="amxx-symbol">cellmax</span>可以准确表示整数的最小值和最大值(具体数值由编译器决定).</p>
+
+<p>2:最大值+1会变为最小值.原因与二进制有关.详情查阅: <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/08_%E5%AD%97%E9%9D%A2%E9%87%8F.html#click5">08_字面量.html#click5</a></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>打印字符串时,若想将十进制整数填充到某个位置,需要使用<span class="amxx-string">%d</span>或<span class="amxx-string">%i</span>格式占位符.效果是一样的.</p>
+
+<p>字面量对应的数值,会被转化为字符串,被填入对应的占位符位置.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%d]"</span>,		<span class="amxx-number">128</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%d]"</span>,		<span class="amxx-number">256</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%d %d %d]"</span>,	<span class="amxx-number">512</span>, <span class="amxx-number">1024</span>, <span class="amxx-number">2048</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][十进制整数:128]
+[AMXX][十进制整数:256]
+[AMXX][十进制整数:512 1024 2048]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>在<span class="amxx-string">%</span>与<span class="amxx-string">d</span>或<span class="amxx-string">%</span>与<span class="amxx-string">i</span>中间,可以选择添加3种标志:宽度,右置,补零</p>
+
+<p>宽度标志表示字面量所化字符串的最低元素数量(纯英文情况下可视作字符数量),数量不足,在左边补充空格.</p>
+
+<p>宽度标志可以是任意正整数.</p>
+
+<p>右置标志表示将空格放右边.</p>
+
+<p>右置标志以 <span class="amxx-string">-</span> 负号表示.</p>
+
+<p>补零标志表示添加0而不是空格.</p>
+
+<p>补零标志以 <span class="amxx-string">0</span> 字符表示.</p>
+
+<p>宽度标志右边不能接补零标志.除此以外,不限制各标志的书写顺序.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%11d]"</span>,		<span class="amxx-number">128</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%-11d]"</span>,		<span class="amxx-number">128</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%11-d]"</span>,		<span class="amxx-number">128</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%11-0d]"</span>,	<span class="amxx-number">128</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%011-d]"</span>,	<span class="amxx-number">128</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制整数:%011d]"</span>,		<span class="amxx-number">128</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][十进制整数:        128]
+[AMXX][十进制整数:128        ]
+[AMXX][十进制整数:128        ]
+[AMXX][十进制整数:12800000000]
+[AMXX][十进制整数:12800000000]
+[AMXX][十进制整数:00000000128]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click3">3:浮点数</h1></p>
+
+<p>浮点数,通常指的是带有小数点的十进制数值.</p>
+
+<p>浮点数字面量能表示的最大值:<code>	<span class="amxx-number">340282346638528800000000000000000000000.0</span></code></p>
+
+<p>浮点数字面量能表示的最小值:<code>	-<span class="amxx-number">340282346638528800000000000000000000000.0</span></code></p>
+
+<p>浮点数字面量的正确写法是:</p>
+
+<p>1:第一个字必须是数字.</p>
+
+<p>2:数字从0至9中挑选.</p>
+
+<p>3:后续内容中必须有一个小数点,且下个字必须是数字.</p>
+
+<p>4:其余内容可以是任意数量的下划线或数字.</p>
+
+<p>注意事项:</p>
+
+<p>1:浮点数有误差,距离0越远,误差越大.</p>
+
+<p>2:浮点数拥有-0.0和0.0,大小相同,方向相反.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>打印字符串时,若想将十进制浮点数填充到某个位置,需要使用<span class="amxx-string">%f</span>格式占位符.</p>
+
+<p>字面量对应的数值,会被转化为字符串,被填入对应的占位符位置.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%f]"</span>,		<span class="amxx-number">2.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%f]"</span>,		<span class="amxx-number">5.0</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%f %f %f]"</span>,	<span class="amxx-number">5.5</span>, <span class="amxx-number">6.5</span>, <span class="amxx-number">7.5</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][十进制浮点数:2.500000]
+[AMXX][十进制浮点数:5.000000]
+[AMXX][十进制浮点数:5.500000 6.500000 7.500000]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>在<span class="amxx-string">%</span>与<span class="amxx-string">f</span>中间,可以选择添加4种标志:宽度,右置,补零,精度</p>
+
+<p>宽度标志表示字面量所化字符串的最低元素数量(纯英文情况下可视作字符数量),数量不足,在左边补充空格.</p>
+
+<p>宽度标志可以是任意正整数.</p>
+
+<p>右置标志表示将空格放右边.</p>
+
+<p>右置标志以 <span class="amxx-string">-</span> 负号表示.</p>
+
+<p>补零标志表示添加0而不是空格.</p>
+
+<p>补零标志以 <span class="amxx-string">0</span> 字符表示.</p>
+
+<p>精度标志表示小数部分占用多少元素(省略精度标志表示精度为6).</p>
+
+<p>精度标志以 <span class="amxx-string">.</span> 小数点作为首字符,再以<span class="amxx-string">0</span>或正整数结尾(省略结尾表示精度为0).若精度为0,只保留浮点数的整数部分.</p>
+
+<p>宽度标志右边不能接补零标志,精度标志右边不能接宽度标志和补零标志.除此以外,不限制各标志的书写顺序.</p>
+
+<p>右置标志会导致补零标志无效化,可能是设计上的bug.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%11f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%-11f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%11-f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%011f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%011.f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%011.3f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%11.f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%.3f]"</span>,	<span class="amxx-number">7.5</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十进制浮点数:%.f]"</span>,		<span class="amxx-number">7.5</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][十进制浮点数:   7.500000]
+[AMXX][十进制浮点数:7.500000   ]
+[AMXX][十进制浮点数:7.500000   ]
+[AMXX][十进制浮点数:0007.500000]
+[AMXX][十进制浮点数:00000000007]
+[AMXX][十进制浮点数:0000007.500]
+[AMXX][十进制浮点数:          7]
+[AMXX][十进制浮点数:7.500]
+[AMXX][十进制浮点数:7]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click4">4:字符</h1></p>
+
+<p>字符,通常指的是ASCII码表中的字符(不含中文.详情百度ASCII码表).</p>
+
+<p>字符字面量的正确写法是:</p>
+
+<p>1:以 <span class="amxx-string">'</span> 单引号作为开头和结尾.</p>
+
+<p>2:从ASCII码表中挑选1个字符填入中间,比如A B C 1 2 3等等.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>打印字符串时,若想将字符填充到某个位置,需要使用<span class="amxx-string">%c</span>格式占位符.</p>
+
+<p>字面量对应的数值,会被转化为字符串,被填入对应的占位符位置.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符:%c]"</span>,		<span class="amxx-string">'A'</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符:%c]"</span>,		<span class="amxx-string">'B'</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符:%c %c %c]"</span>,	<span class="amxx-string">'C'</span>, <span class="amxx-string">'m'</span>, <span class="amxx-string">'@'</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][字符:A]
+[AMXX][字符:B]
+[AMXX][字符:C m @]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>ASCII码表中总共有128个字符.每个字符对应一个编码.编码从0开始,到127结束.</p>
+
+<p>不可见或键盘按不出来的字符,可用转义序列(Escape sequences)表示.</p>
+
+<p><code><span class="amxx-string">'^a'</span>		<span class="amxx-comment">// 蜂鸣符</span>
+<span class="amxx-string">'^b'</span>		<span class="amxx-comment">// [BACKSPACE]退格键</span>
+<span class="amxx-string">'^e'</span>		<span class="amxx-comment">// [ESC]退出键</span>
+<span class="amxx-string">'^f'</span>		<span class="amxx-comment">// 换页符</span>
+<span class="amxx-string">'^n'</span>		<span class="amxx-comment">// 换行符</span>
+<span class="amxx-string">'^r'</span>		<span class="amxx-comment">// 回车符</span>
+<span class="amxx-string">'^t'</span>		<span class="amxx-comment">// [TAB]水平制表符</span>
+<span class="amxx-string">'^v'</span>		<span class="amxx-comment">// 垂直制表符</span>
+<span class="amxx-string">'^^'</span>		<span class="amxx-comment">// [^]键自己</span>
+<span class="amxx-string">'^''</span>		<span class="amxx-comment">// [']单引号按键</span>
+<span class="amxx-string">'^"'</span>		<span class="amxx-comment">// ["]双引号按键</span>
+<span class="amxx-string">'^%'</span>		<span class="amxx-comment">// [%]百分号按键,这东西的存在毫无意义,直接'%'也是一样的</span>
+<span class="amxx-string">'^ddd;'</span>		<span class="amxx-comment">// ddd部分用于填写十进制编码,范围是0至255.超出127的部分意义不明.且 ; 符号可省略.</span>
+		<span class="amxx-comment">// 0至9 a至z A至Z的字符字面量分别为:'^48'至'^57' '^97'至'^122' '^65'至'^90'</span>
+<span class="amxx-string">'^9;'</span>		<span class="amxx-comment">// [TAB]水平制表符</span>
+<span class="amxx-string">'^xhhh;'</span>	<span class="amxx-comment">// hhh部分用于填写十六进制编码,范围是0至FF.超出7F的部分意义不明.且 ; 符号可省略.</span>
+		<span class="amxx-comment">// 十六进制编码中,用ABCDEF表示10至15,满16进一位.ABCDEF不区分大小写.</span>
+		<span class="amxx-comment">// 0至9,a至z,A至Z的字符字面量分别为:'^x30'至'^x39' '^x61'至'^x7A' '^x41'至'^x5A'</span>
+<span class="amxx-string">'^x9;'</span>		<span class="amxx-comment">// [TAB]水平制表符</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>注意事项:</p>
+
+<p>1:字符字面量<span class="amxx-string">'^0'</span>或<span class="amxx-string">'^x0'</span>,以及常量<span class="amxx-symbol">EOS</span>表示终止符.程序在循环读取字符串的每个字符时,遇到终止符就会停止.</p>
+
+<p>2:二进制0b0,十进制0,十六进制0x0,常量<span class="amxx-symbol">false</span>,都可以表示终止符.如果看见判断字符是否等于0的代码,不用怀疑,那是在判断是否等于终止符.</p>
+
+<p>3:终止符<span class="amxx-string">'^0'</span>对应的数值为0.字符<span class="amxx-string">'0'</span>对应的数值为48.不要搞混了.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>若想用字符字面量表示 <span class="amxx-string">'</span> 或 <span class="amxx-string">^</span> 字符,必须用转义字符表示.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][单引号字符:%c %c %c]"</span>,	<span class="amxx-string">'^''</span>, <span class="amxx-string">'^39;'</span>, <span class="amxx-string">'^x27;'</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][乘方字符:%c %c %c]"</span>,	<span class="amxx-string">'^^'</span>, <span class="amxx-string">'^94;'</span>, <span class="amxx-string">'^x5E;'</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][单引号字符:' ' ']
+[AMXX][乘方字符:^ ^ ^]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>使用<span class="amxx-directive">#pragma</span>指令,设定<span class="amxx-symbol">ctrlchar</span>的值为其它字符字面量.可以将转义序列中的 <span class="amxx-string">^</span> 乘方字符改为其它字符.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#pragma</span> <span class="amxx-symbol">ctrlchar</span> <span class="amxx-string">'\'</span>	<span class="amxx-comment">// 从下一行开始,转义序列必须以\字符开头,例如:'\a' '\t' '\48'</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click5">5:二进制整数</h1></p>
+
+<p>二进制整数是满二进1.参照十进制的满十进1.</p>
+
+<p>二进制字面量能表示的最大值:<code>	<span class="amxx-number">01111111111111111111111111111111</span></code></p>
+
+<p>二进制字面量能表示的最小值:<code>	<span class="amxx-number">10000000000000000000000000000000</span></code></p>
+
+<p>二进制整数字面量的正确写法:</p>
+
+<p>1:以0b开头,后续内容可以是任意数量的下划线和数字.</p>
+
+<p>2:数字从0或1中挑选.</p>
+
+<p>注意事项:</p>
+
+<p>1:只有末端的32个数字是有效的.</p>
+
+<p>2:常量<span class="amxx-symbol">cellbits</span>可以准确表示数值的二进制位数(具体由编译器决定),通常都是32位.</p>
+
+<p>3:常量<span class="amxx-symbol">cellmin</span>和<span class="amxx-symbol">cellmax</span>可以准确表示整数的最小值和最大值(具体数值由编译器决定).</p>
+
+<p>4:从右往左数,第32号位是符号位,表示正负,而不是数量.0表示正数,1表示负数.因此,最大值+1会变为最小值.</p>
+
+<p>5:二进制0b00111和十进制00007类似,数值左边的0是可忽略,可省略的(0b00111等于0b111).</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>若你使用AMXX1.8.2以上版本,打印字符串时,若想将二进制整数填充到某个位置,需要使用<span class="amxx-string">%b</span>格式占位符.</p>
+
+<p>字面量对应的数值,会被转化为字符串,被填入对应的占位符位置.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%b]"</span>,		<span class="amxx-number">0b11</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%b]"</span>,		<span class="amxx-number">0b100</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%b %b %b]"</span>,	<span class="amxx-number">0b101</span>, <span class="amxx-number">0b110</span>, <span class="amxx-number">0b111</span>);
+}</code></p>
+
+<p>若你使用AMXX1.8.3以下版本,需使用自定义的函数,实现类似的功能.</p>
+
+<p>示例(将数值转换为二进制格式的字符串,再用<span class="amxx-string">%s</span>格式占位符,写入能够打印文本的函数):</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,		<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b11</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,		<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b100</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s %s %s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b101</span>), <span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b110</span>), <span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b111</span>));
+}
+<span class="amxx-comment">/**
+ * 将一个数值转换为二进制格式的字符串.
+ *
+ * @note		使用方法:
+ *			server_print(ValToSzBin('A'));
+ *			server_print("%s", ValToSzBin('A'));
+ * 
+ * @note		在AMXX1.8.2以上版本中,应使用格式占位符%b或%32-0b代替此函数.
+ *			其中,32等同于将参数1设为32, -等同于将参数2设为true, 0等同于将参数3设为true.
+ *
+ * @param value		待转换的数值
+ * @param minWidth	字符串的最低字数(最多255),若不足,在左侧补充空格
+ * @param rightPadding	false=在左侧补充空格,true=在右侧补充空格
+ * @param zeroPadding	false=用空格做补充,true=用0做补充
+ *
+ * @return		二进制格式的字符串
+*/</span>
+static <span class="amxx-function">ValToSzBin</span>(<span class="amxx-symbol">value</span>, <span class="amxx-symbol">minWidth</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-symbol">rightPadding</span> = <span class="amxx-symbol">false</span>, <span class="amxx-tag">bool:</span><span class="amxx-symbol">zeroPadding</span> = <span class="amxx-symbol">false</span>)
+{
+	new <span class="amxx-symbol">byteId</span>, <span class="amxx-symbol">binaryText</span>[<span class="amxx-number">33</span> char], <span class="amxx-symbol">buffer</span>[<span class="amxx-number">256</span>];
+	for (new <span class="amxx-tag">bool:</span><span class="amxx-symbol">started</span>, <span class="amxx-symbol">bitId</span> = <span class="amxx-number">32</span>; <span class="amxx-symbol">bitId</span>--;)
+	{
+		<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>} = !!(<span class="amxx-symbol">value</span> & (<span class="amxx-number">1</span> << <span class="amxx-symbol">bitId</span>));
+		if (!<span class="amxx-symbol">started</span>)
+		{
+			if (!<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>}) continue;
+			<span class="amxx-symbol">started</span> = <span class="amxx-symbol">true</span>;
+		}
+		<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>} += <span class="amxx-string">'0'</span>;
+		<span class="amxx-symbol">byteId</span>++;
+	}
+	if (!<span class="amxx-symbol">byteId</span>) <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>++} += <span class="amxx-string">'0'</span>;
+	<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>} = <span class="amxx-symbol">EOS</span>;
+	
+	new <span class="amxx-symbol">padChar</span> = <span class="amxx-symbol">zeroPadding</span> ? <span class="amxx-string">'0'</span> : <span class="amxx-string">' '</span>;
+	if (<span class="amxx-symbol">rightPadding</span>)
+	{
+		for (new <span class="amxx-symbol">byteId2</span>; <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>} && <span class="amxx-symbol">byteId2</span> < <span class="amxx-symbol">byteId</span>; <span class="amxx-symbol">byteId2</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId2</span>] = <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>};
+		for (<span class="amxx-symbol">minWidth</span> -= <span class="amxx-symbol">byteId</span>; <span class="amxx-number">0</span> < <span class="amxx-symbol">minWidth</span>-- && <span class="amxx-symbol">byteId</span> < <span class="amxx-ds">charsmax</span>(<span class="amxx-symbol">buffer</span>); <span class="amxx-symbol">byteId</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId</span>] = <span class="amxx-symbol">padChar</span>;
+	}
+	else
+	{
+		for (<span class="amxx-symbol">minWidth</span> -= <span class="amxx-symbol">byteId</span>, <span class="amxx-symbol">byteId</span> = <span class="amxx-number">0</span>; <span class="amxx-number">0</span> < <span class="amxx-symbol">minWidth</span>-- && <span class="amxx-symbol">byteId</span> < <span class="amxx-ds">charsmax</span>(<span class="amxx-symbol">buffer</span>); <span class="amxx-symbol">byteId</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId</span>] = <span class="amxx-symbol">padChar</span>;
+		for (new <span class="amxx-symbol">byteId2</span>; <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>} && <span class="amxx-symbol">byteId</span> < <span class="amxx-ds">charsmax</span>(<span class="amxx-symbol">buffer</span>); <span class="amxx-symbol">byteId</span>++, <span class="amxx-symbol">byteId2</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId</span>] = <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>};
+	}
+	return <span class="amxx-symbol">buffer</span>;
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][二进制整数:11]
+[AMXX][二进制整数:100]
+[AMXX][二进制整数:101 110 111]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>若你使用AMXX1.8.2以上版本,在<span class="amxx-string">%</span>与<span class="amxx-string">b</span>中间,可以选择添加3种标志:宽度,右置,补零</p>
+
+<p>宽度标志表示字面量所化字符串的最低元素数量(纯英文情况下可视作字符数量),数量不足,在左边补充空格.</p>
+
+<p>宽度标志可以是任意正整数.</p>
+
+<p>右置标志表示将空格放右边.</p>
+
+<p>右置标志以 <span class="amxx-string">-</span> 负号表示.</p>
+
+<p>补零标志表示添加0而不是空格.</p>
+
+<p>补零标志以 <span class="amxx-string">0</span> 字符表示.</p>
+
+<p>宽度标志右边不能接补零标志.除此以外,不限制各标志的书写顺序.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%32b]"</span>,		<span class="amxx-number">0b10000000001</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%-32b]"</span>,		<span class="amxx-number">0b10000000001</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%32-b]"</span>,		<span class="amxx-number">0b10000000001</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%32-0b]"</span>,	<span class="amxx-number">0b10000000001</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%032-b]"</span>,	<span class="amxx-number">0b10000000001</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%032b]"</span>,		<span class="amxx-number">0b10000000001</span>);
+}</code></p>
+
+<p>若你使用AMXX1.8.3以下版本,需使用自定义的函数,实现类似的功能.</p>
+
+<p>示例(将数值转换为二进制格式的字符串,再用<span class="amxx-string">%s</span>格式占位符,写入能够打印文本的函数):</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b10000000001</span>, <span class="amxx-number">32</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b10000000001</span>, <span class="amxx-number">32</span>, <span class="amxx-symbol">true</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b10000000001</span>, .<span class="amxx-symbol">rightPadding</span> = <span class="amxx-symbol">true</span>, .<span class="amxx-symbol">minWidth</span> = <span class="amxx-number">32</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b10000000001</span>, <span class="amxx-number">32</span>, <span class="amxx-symbol">true</span>, <span class="amxx-symbol">true</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b10000000001</span>, .<span class="amxx-symbol">zeroPadding</span> = <span class="amxx-symbol">true</span>, .<span class="amxx-symbol">minWidth</span> = <span class="amxx-number">32</span>, .<span class="amxx-symbol">rightPadding</span> = <span class="amxx-symbol">true</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][二进制整数:%s]"</span>,	<span class="amxx-function">ValToSzBin</span>(<span class="amxx-number">0b10000000001</span>, .<span class="amxx-symbol">zeroPadding</span> = <span class="amxx-symbol">true</span>, .<span class="amxx-symbol">minWidth</span> = <span class="amxx-number">32</span>));
+}
+<span class="amxx-comment">/**
+ * 将一个数值转换为二进制格式的字符串.
+ *
+ * @note		使用方法:
+ *			server_print(ValToSzBin('A'));
+ *			server_print("%s",	ValToSzBin('A'));
+ * 
+ * @note		在AMXX1.8.2以上版本中,应使用格式占位符%b或%32-0b代替此函数.
+ *			其中,32等同于将参数1设为32, -等同于将参数2设为true, 0等同于将参数3设为true.
+ *
+ * @param value		待转换的数值
+ * @param minWidth	字符串的最低字数(最多255),若不足,在左侧补充空格
+ * @param rightPadding	false=在左侧补充空格,true=在右侧补充空格
+ * @param zeroPadding	false=用空格做补充,true=用0做补充
+ *
+ * @return		二进制格式的字符串
+*/</span>
+static <span class="amxx-function">ValToSzBin</span>(<span class="amxx-symbol">value</span>, <span class="amxx-symbol">minWidth</span> = <span class="amxx-number">0</span>, <span class="amxx-tag">bool:</span><span class="amxx-symbol">rightPadding</span> = <span class="amxx-symbol">false</span>, <span class="amxx-tag">bool:</span><span class="amxx-symbol">zeroPadding</span> = <span class="amxx-symbol">false</span>)
+{
+	new <span class="amxx-symbol">byteId</span>, <span class="amxx-symbol">binaryText</span>[<span class="amxx-number">33</span> char], <span class="amxx-symbol">buffer</span>[<span class="amxx-number">256</span>];
+	for (new <span class="amxx-tag">bool:</span><span class="amxx-symbol">started</span>, <span class="amxx-symbol">bitId</span> = <span class="amxx-number">32</span>; <span class="amxx-symbol">bitId</span>--;)
+	{
+		<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>} = !!(<span class="amxx-symbol">value</span> & (<span class="amxx-number">1</span> << <span class="amxx-symbol">bitId</span>));
+		if (!<span class="amxx-symbol">started</span>)
+		{
+			if (!<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>}) continue;
+			<span class="amxx-symbol">started</span> = <span class="amxx-symbol">true</span>;
+		}
+		<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>} += <span class="amxx-string">'0'</span>;
+		<span class="amxx-symbol">byteId</span>++;
+	}
+	if (!<span class="amxx-symbol">byteId</span>) <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>++} += <span class="amxx-string">'0'</span>;
+	<span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId</span>} = <span class="amxx-symbol">EOS</span>;
+	
+	new <span class="amxx-symbol">padChar</span> = <span class="amxx-symbol">zeroPadding</span> ? <span class="amxx-string">'0'</span> : <span class="amxx-string">' '</span>;
+	if (<span class="amxx-symbol">rightPadding</span>)
+	{
+		for (new <span class="amxx-symbol">byteId2</span>; <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>} && <span class="amxx-symbol">byteId2</span> < <span class="amxx-symbol">byteId</span>; <span class="amxx-symbol">byteId2</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId2</span>] = <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>};
+		for (<span class="amxx-symbol">minWidth</span> -= <span class="amxx-symbol">byteId</span>; <span class="amxx-number">0</span> < <span class="amxx-symbol">minWidth</span>-- && <span class="amxx-symbol">byteId</span> < <span class="amxx-ds">charsmax</span>(<span class="amxx-symbol">buffer</span>); <span class="amxx-symbol">byteId</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId</span>] = <span class="amxx-symbol">padChar</span>;
+	}
+	else
+	{
+		for (<span class="amxx-symbol">minWidth</span> -= <span class="amxx-symbol">byteId</span>, <span class="amxx-symbol">byteId</span> = <span class="amxx-number">0</span>; <span class="amxx-number">0</span> < <span class="amxx-symbol">minWidth</span>-- && <span class="amxx-symbol">byteId</span> < <span class="amxx-ds">charsmax</span>(<span class="amxx-symbol">buffer</span>); <span class="amxx-symbol">byteId</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId</span>] = <span class="amxx-symbol">padChar</span>;
+		for (new <span class="amxx-symbol">byteId2</span>; <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>} && <span class="amxx-symbol">byteId</span> < <span class="amxx-ds">charsmax</span>(<span class="amxx-symbol">buffer</span>); <span class="amxx-symbol">byteId</span>++, <span class="amxx-symbol">byteId2</span>++) <span class="amxx-symbol">buffer</span>[<span class="amxx-symbol">byteId</span>] = <span class="amxx-symbol">binaryText</span>{<span class="amxx-symbol">byteId2</span>};
+	}
+	return <span class="amxx-symbol">buffer</span>;
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][二进制整数:                     10000000001]
+[AMXX][二进制整数:10000000001                     ]
+[AMXX][二进制整数:10000000001                     ]
+[AMXX][二进制整数:10000000001000000000000000000000]
+[AMXX][二进制整数:10000000001000000000000000000000]
+[AMXX][二进制整数:00000000000000000000010000000001]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click6">6:十六进制整数</h1></p>
+
+<p>十六进制整数是满十六进1.参照十进制的满十进1.</p>
+
+<p>十六进制字面量的A至F用于表示10至15.不区分大小写.</p>
+
+<p>十六进制字面量能表示的最大值:<code>	<span class="amxx-number">0x7FFFFFFF</span></code>.</p>
+
+<p>十六进制字面量能表示的最小值:<code>	<span class="amxx-number">0x80000000</span></code>.</p>
+
+<p>十六进制字面量的正确写法:</p>
+
+<p>1:以0x开头,后续内容可以是任意数量的下划线或数字.</p>
+
+<p>2:数字从0至9,A至F,a至f中挑选.</p>
+
+<p>注意事项:</p>
+
+<p>1:只有末端的8个数字是有效的.</p>
+
+<p>2:常量<span class="amxx-symbol">cellmin</span>和<span class="amxx-symbol">cellmax</span>可以准确表示整数的最小值和最大值(具体数值由编译器决定).</p>
+
+<p>3:最大值+1会变为最小值.原因与二进制有关.详情查阅: <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/08_%E5%AD%97%E9%9D%A2%E9%87%8F.html#click5">08_字面量.html#click5</a></p>
+
+<p>4:十六进制0x0001与十进制0001类似,数值左边的0是可忽略,可省略的(0x0001等于0x1).</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>打印字符串时,若想将十六进制整数填充到某个位置,需要使用<span class="amxx-string">%x</span>或<span class="amxx-string">%X</span>格式占位符.<span class="amxx-string">%X</span>是打印大写,<span class="amxx-string">%x</span>是打印小写.</p>
+
+<p>字面量对应的数值,会被转化为字符串,被填入对应的占位符位置.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%X]"</span>,		<span class="amxx-number">0xAD</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%X]"</span>,		<span class="amxx-number">0xAE</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%X %X %X]"</span>,	<span class="amxx-number">0xAF</span>, <span class="amxx-number">0xB0</span>, <span class="amxx-number">0xB1</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][十六进制整数:AD]
+[AMXX][十六进制整数:AE]
+[AMXX][十六进制整数:AF B0 B1]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>在<span class="amxx-string">%</span>与<span class="amxx-string">x</span>或<span class="amxx-string">%</span>与<span class="amxx-string">X</span>中间,可以选择添加3种标志:宽度,右置,补零</p>
+
+<p>宽度标志表示字面量所化字符串的最低元素数量(纯英文情况下可视作字符数量),数量不足,在左边补充空格.</p>
+
+<p>宽度标志可以是任意正整数.</p>
+
+<p>右置标志表示将空格放右边.</p>
+
+<p>右置标志以 <span class="amxx-string">-</span> 负号表示.</p>
+
+<p>补零标志表示添加0而不是空格.</p>
+
+<p>补零标志以 <span class="amxx-string">0</span> 字符表示.</p>
+
+<p>宽度标志右边不能接补零标志.除此以外,不限制各标志的书写顺序.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%11X]"</span>,	<span class="amxx-number">0xFFDDAA</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%-11X]"</span>,	<span class="amxx-number">0xFFDDAA</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%11-X]"</span>,	<span class="amxx-number">0xFFDDAA</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%11-0X]"</span>,	<span class="amxx-number">0xFFDDAA</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%011-X]"</span>,	<span class="amxx-number">0xFFDDAA</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][十六进制整数:%011X]"</span>,	<span class="amxx-number">0xFFDDAA</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][十六进制整数:     FFDDAA]
+[AMXX][十六进制整数:FFDDAA     ]
+[AMXX][十六进制整数:FFDDAA     ]
+[AMXX][十六进制整数:FFDDAA00000]
+[AMXX][十六进制整数:FFDDAA00000]
+[AMXX][十六进制整数:00000FFDDAA]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click7">7:数组</h1></p>
+
+<p>数组由多个元素组成.元素可以是单值,也可以是其它数组.</p>
+
+<p>数组的长度或尺寸,通常是指元素数量.</p>
+
+<p>数组的容量,通常等于元素数量.动态数组(Dynamic Array)除外.</p>
+
+<p>多维数组(Multidimensional Array)由数组类型的元素组成.</p>
+
+<p>不规则数组(Irregular Array)由不同维度或不同长度的元素组成.</p>
+
+<p>在AMXX1.10.0以下版本中,数组字面量的最大维度是3,高版本是4.</p>
+
+<p>数组字面量通常有以下规律:</p>
+
+<p>4维数组字面量的元素是3维数组字面量.</p>
+
+<p>3维数组字面量的元素是2维数组字面量.</p>
+
+<p>2维数组字面量的元素是1维数组字面量.</p>
+
+<p>1维数组字面量的元素是单值.</p>
+
+<p>字符串是1维数组,字符串一般用1个元素储存1个ASCII字符,在UTF8编码中,用3个元素储存1个中文字符.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>1维数组字面量的正确写法:</p>
+
+<p>1:以 <code>{</code> 开头,以 <code>}</code> 结尾.</p>
+
+<p>2:中间填写任意数量的元素,注释,空白字符(空格,制表符,换行符等等).每个元素之间必须用 <code>,</code> 逗号隔开.</p>
+
+<p>3:元素可以是常量表达式,即任何类型的单值字面量或常量,或它们的运算式.</p>
+
+<p>4:为数组初始化时,单个常量表达式可被视作长度为1的1维数组字面量.</p>
+
+<p>5:为1维数组初始化时,若已设定数组长度.元素可以是 <code>...</code> 省略号.表示让编译器自动推测接下来的元素值.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>多维数组字面量的正确写法:</p>
+
+<p>1:类似1维数组字面量,但元素必须是低1个维度的数组字面量.比如2维数组字面量的元素必须是1维数组字面量.</p>
+
+<p>2:若元素也是多维数组字面量,这些元素的数组长度必须相同.</p>
+
+<p>3:若元素是1维数组字面量,这些元素的数组长度可以不同,这会组成不规则数组.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>不规则数组字面量的进阶写法:</p>
+
+<p>利用一个或多个<code>enum</code>设定的枚举结构体,使编译器允许同时将单值,1维数组,2维数组作为元素.是应用面较少的用法.</p>
+
+<p>需要学习变量,数组,枚举相关内容.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>注意事项:</p>
+
+<p>1:数组和数组字面量不同,数组的元素可以是任何对象.而数组字面量的元素只能是单值或低维数组字面量.</p>
+
+<p>2:拥有运算符重载的自定义标签,比如<span class="amxx-tag">Float:</span>标签.其运算式属于变量表达式.数组字面量中不可包含此类表达式.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>用<span class="amxx-string">%s</span>可以打印字符串类型的数组.字符串类型的数组内部必须有至少1个元素等于终止符(整数0, 字符<span class="amxx-string">'^0'</span>, 或 常量<span class="amxx-symbol">EOS</span>).</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-comment">// 整数0, 字符'^0', 或 常量EOS,都是终止符</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][1维数组:%s]"</span>, { <span class="amxx-string">'A'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'~'</span>, <span class="amxx-symbol">EOS</span> });
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][1维数组:%s]"</span>, { <span class="amxx-string">'A'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'Q'</span>,<span class="amxx-string"> '~'</span>, <span class="amxx-number">0</span>, <span class="amxx-number">0</span>, <span class="amxx-number">0</span> });
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][1维数组:%s]"</span>, { <span class="amxx-string">'A'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'~'</span>, <span class="amxx-symbol">EOS</span>, <span class="amxx-symbol">EOS</span>, <span class="amxx-symbol">EOS</span> });
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][1维数组:%s]"</span>, { <span class="amxx-string">'A'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'Q'</span>, <span class="amxx-string">'~'</span>, <span class="amxx-symbol">EOS</span>, <span class="amxx-symbol">EOS</span>, <span class="amxx-symbol">EOS</span>, <span class="amxx-string">'Z'</span>, <span class="amxx-string">'Z'</span> });
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][1维数组:%s]"</span>, { <span class="amxx-number">49</span>, <span class="amxx-number">50</span>, <span class="amxx-number">51</span>, <span class="amxx-number">52</span>, <span class="amxx-number">53</span>, <span class="amxx-number">54</span>, <span class="amxx-string">'F'</span>, <span class="amxx-string">'W'</span>, <span class="amxx-string">'^0'</span> });
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][1维数组:AQQ~]
+[AMXX][1维数组:AQQ~]
+[AMXX][1维数组:AQQ~]
+[AMXX][1维数组:AQQ~]
+[AMXX][1维数组:123456FW]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>若想以其它格式打印数组内容.需复制数组字面量,存入数组.再访问数组的每个元素,以单值形式打印.</p>
+
+<p>数组是变量,因此需要先学习变量相关内容,再学习数组变量相关内容.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click8">8:字符串</h1></p>
+
+<p>字符串是1维数组的一种,数组是多个数值的集合,这些数值被叫做元素.</p>
+
+<p>字符串中的每个字符,根据源码文件的编码格式,会占用1个或多个元素.</p>
+
+<p>当源码被储存为UTF8编码格式时,每个中文会占用3个元素,而英文或标点符号(ASCII码表中的字符)占用1个元素.</p>
+
+<p>字符串字面量的正确写法:</p>
+
+<p>1:以 <span class="amxx-string">"</span> 双引号作为开头和结尾.</p>
+
+<p>2:中间填写任意数量的ASCII字符(也可以写转义序列,参考字符字面量).</p>
+
+<p>3:若要填写中文.需将源码文件的编码设定为UTF8无BOM格式(不是UTF8 with BOM格式,with BOM表示含有BOM).</p>
+
+<p>注意事项:</p>
+
+<p>1:编译器会自动给字符串字面量的末端添加1个终止符.</p>
+
+<p>2:字符串可以拥有多个终止符.</p>
+
+<p>3:所有能打印文本的函数,都不会打印终止符和后续字符.</p>
+
+<p>4:字符串在UTF8编码下每个中文占用3个元素.ASCII码表中的字符占用1个元素(AMXX的每个数组元素需要4字节内存,3个元素即12字节).</p>
+
+<p>5:提到字符串的长度或宽度,一般指的是元素数量,而不是字符数.</p>
+
+<p>6:即便inc文件中的英文注释大量提到字符数,指的也是元素数量.因为英文全都是ASCII字符,1字符对应1元素.对英语者而言没区别.</p>
+
+<p>7:不论是元素数量还是字符数,一般都不包括第1个终止符和所有后续内容.</p>
+
+<p>8:若要打印 <span class="amxx-string">%</span> 字符,需用 <span class="amxx-string">%%</span> 将其替换,因为单个 <span class="amxx-string">%</span> 通常会被识别成格式占位符.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>打印字符串时,若想将其它字符串填充到某个位置,需要使用<span class="amxx-string">%s</span>格式占位符.</p>
+
+<p>字面量的内容中,除了终止符和后续字符,都会被填入占位符所在位置.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%s]"</span>,		<span class="amxx-string">"其它1"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%s]"</span>,		<span class="amxx-string">"其它2"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%s %s %s]"</span>,		<span class="amxx-string">"其它3"</span>, <span class="amxx-string">"其它4"</span>, <span class="amxx-string">"其它5"</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][字符串:其它1]
+[AMXX][字符串:其它2]
+[AMXX][字符串:其它3 其它4 其它5]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>在<span class="amxx-string">%</span>与<span class="amxx-string">s</span>中间,可以选择添加2种标志:宽度,精度</p>
+
+<p>宽度标志表示字面量所化字符串的最低元素数量(纯英文情况下可视作字符数量),数量不足,在左边补充空格.</p>
+
+<p>宽度标志可以是任意正整数.</p>
+
+<p>精度标志表示字面量所化字符串最多有多少元素,超出则裁剪(省略精度标志表示不裁剪).</p>
+
+<p>精度标志以 <span class="amxx-string">.</span> 小数点作为首字符,再以0或正整数结尾(省略结尾表示精度为0).</p>
+
+<p>宽度标志必须写在精度标志左边.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%30s]"</span>,	<span class="amxx-string">"这是一段中文"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%.9s]"</span>,	<span class="amxx-string">"这是一段中文"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%.8s]"</span>,	<span class="amxx-string">"这是一段中文"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][字符串:%30.9s]"</span>,	<span class="amxx-string">"这是一段中文"</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][字符串:这是一段中文            ]
+[AMXX][字符串:这是一]
+[AMXX][字符串:这是]
+[AMXX][字符串:这是一                     ]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>字符串字面量中,若要填写 <span class="amxx-string">"</span> 或 <span class="amxx-string">^</span> 字符,必须用转义字符表示.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][双引号字符:^" ^34; ^x22;]"</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][乘方字符:^^ ^94; ^x5E;]"</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][双引号字符:" " "]
+[AMXX][乘方字符:^ ^ ^]</span></code></p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+<p>能打印字符串的函数基本上都支持使用格式占位符填充内容.</p>
+
+<p>这种情况下若想打印 <span class="amxx-string">%</span> 字符,必须以 <span class="amxx-string">%%</span> 表示.单个 <span class="amxx-string">%</span> 会被识别为格式占位符.</p>
+
+<p>示例:</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX][百分号字符:%%]"</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX][百分号字符:%]</span></code></p>
+
+<p>若不用于打印,则不需要这么做.因为只有支持格式化字符串的函数会将单个 <span class="amxx-string">%</span> 字符识别为格式占位符.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+<p><h2 id="click8.1">8.1:压缩字符串</h2></p>
+
+<p>压缩字符串(Packed String)是字符串的一种.</p>
+
+<p>ASCII码表中每个字符仅需占用1字节内存.UTF8编码下的中文字符仅需占用3字节内存.</p>
+
+<p>普通字符串会用1个元素储存ASCII字符,用3个元素储存中文字符.浪费了不少内存空间(多余空间全部储存无用数据,导致AMXX1.8.3以下版本中文匹配出现异常).</p>
+
+<p>压缩字符串直接将4个有用字节(不足则在右边补0)的二进制值拼接为1个元素.避免浪费空间.</p>
+
+<p>压缩字符串字面量的正确写法:</p>
+
+<p>1:首字符为 ! 感叹号.</p>
+
+<p>2:后续跟随一个非压缩字符串.</p>
+
+<p>注意事项:</p>
+
+<p>1:当代计算机不差这点空间.压缩字符串没什么应用场景.</p>
+
+<p>2:AMX Mod X无法打印压缩字符串.需要解压才能打印.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+<p><h2 id="click8.2">8.2:原始字符串</h2></p>
+
+<p>原始字符串(Raw String)是字符串的一种.但不支持转义序列字符.因此所有字符都以原样表示.</p>
+
+<p>比如<span class="amxx-string">"^50^49^48"</span>不会被转换成<span class="amxx-string">"210"</span>.</p>
+
+<p>原始字符串字面量的正确写法:</p>
+
+<p>1:首字符为 ^ 转义字符(可更改).</p>
+
+<p>2:后续跟随一个普通字符串(Plain String).</p>
+
+<p>注意事项:</p>
+
+<p>由于转义序列无法使用,无法表示 " 双引号字符.</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click9">9:关于数值类型的底层知识</h1></p>
+
+<p>AMX Mod X 与其他编程语言不同,虽然标签(Tag)可以模拟<code>bool int float</code>等值类型,但其本质上只有一种数值类型,名为<code>cell</code>类型.</p>
+
+<p><code>cell</code>类型本质上是改了名字的<code>int32</code>,即拥有32个二进制位的整数(也有可能在未来,在其它平台被更改为<code>int16</code>或<code>int64</code>,具体可用<span class="amxx-symbol">cellbits</span>常量判断位数).</p>
+
+<p><code>cell</code>类型的每个数值都需占用4字节内存,虽然带来了方便,但也产生了一些问题.</p>
+
+<p>4字节储存容易产生浪费,用1个<code>cell</code>储存1个字符,就会浪费3个字节.不过这点内存无所谓,在意的话可以用位运算将4个字符合并.就像压缩字符串那样.</p>
+
+<p>4字节能表达的数值范围并不大,因此整数和浮点数都不能取太大的值.比如,用<code>cell</code>类型存储Unix时间戳,在2038年1月19日的凌晨3点14分07秒之后将会出现溢出错误.对于<code>int64</code>,溢出将在2千亿年之后发生.</p>
+
+<p>4字节的精确度并不高,比如:浮点数无法精确表示1天23时59分59秒999毫秒,即172799.999秒,若在源码中使用这个字面量,会变成172800(2天).</p>
+
+<p>需要记住的是,一个数值不论更换什么标签,本质上都是整数(<code>cell</code>类型).</p>
+
+<p>更换标签并不会让数值产生变化,只会让编译器更换计算方式或显示警告信息.</p>
+
+<p>比如1065353216 <code>+</code> 1065353216正常情况下等于2130706432.
+
+<p>但给整数1065353216加上<span class="amxx-tag">Float:</span>标签后,编译器会调用float.inc中的<code><span class="amxx-tag">Float:</span>operator+(<span class="amxx-tag">Float:</span><span class="amxx-symbol">oper1</span>, <span class="amxx-tag">Float:</span><span class="amxx-symbol">oper2</span>)</code>函数进行加法运算.</p>
+
+<p>像这样:<span class="amxx-tag">Float:</span>1065353216 <code>+</code> <span class="amxx-tag">Float:</span>1065353216</p>
+
+<p>整数1065353216会被当做浮点数1.0,两个1.0相加得到整数1073741824(对应浮点数中的2.0).</p>
+
+<p>----------------------------------------------------------------------------------------------------------</p>
+
+
+
+
+<p><h1 id="click10">10:关于数组字面量的底层知识</h1></p>
+
+<p>与整数,浮点数,字符等单值字面量不同,它们可以被视作不可更改的常量,而数组字面量和数组都是变量.</p>
+
+<p>因此,应该尽量避免将数组字面量充当没有<code>const</code>说明符的参数,这类参数所属的函数,有可能更改参数的元素值.</p>
+
+<p>错误示范如下(每次调用<span class="amxx-function">TestFunction2</span>函数,都在更改<span class="amxx-function">TestFunction1</span>函数中的数组或字符串字面量):</p>
+
+<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
+public <span class="amxx-function">plugin_init</span>()
+{
+	<span class="amxx-function">register_plugin</span>(<span class="amxx-string">"插件测试"</span>, <span class="amxx-string">"1.0.0"</span>, <span class="amxx-string">"偶萤蛉(Oinling)"</span>);
+	<span class="amxx-function">TestFunction1</span>();
+	<span class="amxx-function">TestFunction1</span>();
+	<span class="amxx-function">TestFunction1</span>();
+}
+static <span class="amxx-symbol">gCount</span>;
+static <span class="amxx-function">TestFunction1</span>()
+{
+	<span class="amxx-function">TestFunction2</span>({ <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span> }, <span class="amxx-string">"12345"</span>, { <span class="amxx-number">1</span>, <span class="amxx-number">2</span>, <span class="amxx-number">3</span> }, <span class="amxx-string">"12345"</span>);
+	<span class="amxx-symbol">gCount</span>++;
+}
+static <span class="amxx-function">TestFunction2</span>(<span class="amxx-symbol">origin</span>[<span class="amxx-number">3</span>], <span class="amxx-symbol">text</span>[], ...)
+{
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]第%d次:"</span>, <span class="amxx-symbol">gCount</span>);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]参数1 = [ %d, %d, %d ]"</span>, <span class="amxx-symbol">origin</span>[<span class="amxx-number">0</span>], <span class="amxx-symbol">origin</span>[<span class="amxx-number">1</span>], <span class="amxx-symbol">origin</span>[<span class="amxx-number">2</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]参数2 = [ %c, %c, %c, %c, %c ]"</span>, <span class="amxx-symbol">text</span>[<span class="amxx-number">0</span>], <span class="amxx-symbol">text</span>[<span class="amxx-number">1</span>], <span class="amxx-symbol">text</span>[<span class="amxx-number">2</span>], <span class="amxx-symbol">text</span>[<span class="amxx-number">3</span>], <span class="amxx-symbol">text</span>[<span class="amxx-number">4</span>], <span class="amxx-symbol">text</span>[<span class="amxx-number">5</span>]);
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]参数3 = [ %d, %d, %d ]"</span>, <span class="amxx-function">getarg</span>(<span class="amxx-number">2</span>, <span class="amxx-number">0</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">2</span>, <span class="amxx-number">1</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">2</span>, <span class="amxx-number">2</span>));
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]参数4 = [ %c, %c, %c, %c, %c ]"</span>, <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">0</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">1</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">2</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">3</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">4</span>), <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-number">5</span>));
+	for (new <span class="amxx-symbol">axisId</span>; <span class="amxx-symbol">axisId</span> < <span class="amxx-number">3</span>; <span class="amxx-symbol">axisId</span>++) <span class="amxx-symbol">origin</span>[<span class="amxx-symbol">axisId</span>] += <span class="amxx-number">1</span>;
+	for (new <span class="amxx-symbol">byteId</span>; <span class="amxx-symbol">text</span>[<span class="amxx-symbol">byteId</span>] != <span class="amxx-symbol">EOS</span>; <span class="amxx-symbol">byteId</span>++) <span class="amxx-symbol">text</span>[<span class="amxx-symbol">byteId</span>] += <span class="amxx-number">1</span>;
+	for (new <span class="amxx-symbol">axisId</span>; <span class="amxx-symbol">axisId</span> < <span class="amxx-number">3</span>; <span class="amxx-symbol">axisId</span>++) <span class="amxx-function">setarg</span>(<span class="amxx-number">2</span>, <span class="amxx-symbol">axisId</span>, <span class="amxx-function">getarg</span>(<span class="amxx-number">2</span>, <span class="amxx-symbol">axisId</span>) + <span class="amxx-number">2</span>);
+	for (new <span class="amxx-symbol">byteId</span>; <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-symbol">byteId</span>) != <span class="amxx-symbol">EOS</span>; <span class="amxx-symbol">byteId</span>++) <span class="amxx-function">setarg</span>(<span class="amxx-number">3</span>, <span class="amxx-symbol">byteId</span>, <span class="amxx-function">getarg</span>(<span class="amxx-number">3</span>, <span class="amxx-symbol">byteId</span>) + <span class="amxx-number">2</span>);
+}</code></p>
+
+<p>载入地图完毕之后,按 [~] 按键打开控制台.可以看见打印结果:</p>
+
+<p><code><span class="amxx-note">[AMXX]第0次:
+[AMXX]参数1 = [ 1, 2, 3 ]
+[AMXX]参数2 = [ 1, 2, 3, 4, 5 ]
+[AMXX]参数3 = [ 1, 2, 3 ]
+[AMXX]参数4 = [ 1, 2, 3, 4, 5 ]
+[AMXX]第1次:
+[AMXX]参数1 = [ 2, 3, 4 ]
+[AMXX]参数2 = [ 2, 3, 4, 5, 6 ]
+[AMXX]参数3 = [ 3, 4, 5 ]
+[AMXX]参数4 = [ 3, 4, 5, 6, 7 ]
+[AMXX]第2次:
+[AMXX]参数1 = [ 3, 4, 5 ]
+[AMXX]参数2 = [ 3, 4, 5, 6, 7 ]
+[AMXX]参数3 = [ 5, 6, 7 ]
+[AMXX]参数4 = [ 5, 6, 7, 8, 9 ]</span></code></p>
+
+<p>解决方法有两种.</p>
+
+<p>1是将字面量复制给局部变量,任由该函数修改局部变量储存的数据,而不会影响到字面量储存的数据.</p>
+
+<p>示例:</p>
+ 
+<p><code>static <span class="amxx-function">TestFunction1</span>()
+{
+	new <span class="amxx-symbol">localVariable</span>[] = <span class="amxx-string">"字符串字面量"</span>;
+	<span class="amxx-function">TestFunction2</span>(<span class="amxx-symbol">localVariable</span>);
+}
+static <span class="amxx-function">TestFunction2</span>(<span class="amxx-symbol">text</span>[]) { <span class="amxx-comment">/* ...省略 */</span> }</code></p>
+
+<p>2是选择参数拥有<code>const</code>说明符的其它函数.<code>const</code>说明符暗示了该函数不会修改这个数组或字符串类型的参数.</p>
+
+<p>示例:</p>
+
+<p><code>static <span class="amxx-function">TestFunction1</span>()
+{
+	<span class="amxx-function">TestFunction2</span>(<span class="amxx-string">"字符串字面量"</span>);
+}
+static <span class="amxx-function">TestFunction2</span>(const <span class="amxx-symbol">text</span>[]) { <span class="amxx-comment">/* ...省略 */</span> }</code></p>
+
+<p>总而言之,当看到数组或字符串类型的参数缺少cosnt说明符,该函数有极大可能会修改这个参数,应该小心应对.</p>
+
+<p><h1>下一篇教程:</h1></p>
+
+<p><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/09_%E4%BF%9D%E7%95%99%E8%AF%8D.html">09_保留词.html</a></p>
+
+</body>
+</html>
