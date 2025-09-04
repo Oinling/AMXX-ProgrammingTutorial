@@ -245,9 +245,9 @@
 
 	<h4>数组索引器标签：</h4>
 	<ul>
-		<li>用户在为数组赋值时，赋值运算符左右两个数组的索引器标签需相同</li>
-		<li>用户在使用索引访问数组元素时，索引标签需与索引器相同</li>
-		<li>索引器默认使用_标签，若填写小写开头的枚举类名，则以该类名作为索引器标签。编译器会灵活切换索引器和索引标签</li>
+		<li>用户在为数组赋值时，需填写索引器拥有相同标签的数组</li>
+		<li>用户在填写索引访问数组元素时，索引标签需与索引器相同</li>
+		<li>索引器默认使用_标签，若填写小写开头的枚举类名，编译器会灵活切换索引器和索引标签</li>
 		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
 	</ul>
 
@@ -269,10 +269,10 @@
 	<p>在任意表达式左边，可以使用标签覆盖表达式，临时更改表达式的标签。</p>
 	<p><strong>重点1：</strong>标签无实际意义，会在编译时被删除。标签覆盖<span class="highlight">不会改变表达式的数值</span>。</p>
 	<p><strong>重点2：</strong>复合表达式的操作数无论带有什么标签，默认情况下<span class="highlight">只会进行整数之间的运算</span>。但两操作数的标签不同可能触发警告。</p>
-	<p><strong>重点3：</strong>amxx插件默认情况下只能调用核心模块提供的float系列函数进行浮点数运算，参数数据（表达式）的标签<span class="highlight">不影响函数计算结果</span>。</p>
-	<p><strong>重点4：</strong><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a>关键字设置文本替换规则（运算符重载），<span class="highlight">将满足条件的复合表达式替换为函数调用（例如浮点数的复合表达式）</span>。</p>
-	<p><strong>重点5：</strong>覆盖标签可以主动满足或避开运算符重载定义的文本替换条件，或屏蔽某些标签不匹配的警告。</p>
-	<p><strong>重点6：</strong>一旦满足运算符重载的文本替换条件，就<span class="highlight">不会执行默认的整数运算</span>，而是使用特定函数进行运算、求值。</p>
+	<p><strong>重点3：</strong>amxx插件与AMX Mod X通过native或forward函数交换数据，数据（表达式）的标签<span class="highlight">不影响函数计算结果</span>。</p>
+	<p><strong>重点4：</strong><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a>关键字可定义文本替换规则（运算符重载），<span class="highlight">将满足规则的复合表达式替换为函数与参数</span>。</p>
+	<p><strong>重点5：</strong>覆盖标签可以主动满足或避开运算符重载定义的文本替换规则，或屏蔽某些标签不匹配的警告。</p>
+	<p><strong>重点6：</strong>一旦满足运算符重载的文本替换规则，替换成函数运算后，<span class="highlight">计算结果可能与预期不符</span>。</p>
 
 	<div class="note-box">
 	<h4>整数字面量默认带有_标签，若使用带有Float标签的常量或变量储存，将触发警告。</h4>
@@ -295,7 +295,7 @@ public <span class="amxx-function">PlayerPreThink_Post</span>(<span class="amxx-
 }</code>
 
 <code><span class="amxx-comment">// 假如我们制作了一个默认风格的native函数，接受队伍索引作为参数，返回值是敌方队伍的索引</span>
-native <span class="amxx-tag">CsTeams:</span><span class="amxx-function">GetEnemyTeam</span>(<span class="amxx-tag">CsTeams:</span><span class="amxx-identifier">team</span>);
+native <span class="amxx-function">GetEnemyTeam</span>(<span class="amxx-tag">CsTeams:</span><span class="amxx-identifier">team</span>);
 public <span class="amxx-tag">CsTeams:</span><span class="amxx-function">@GetEnemyTeam</span>()
 {
 	<span class="amxx-comment">// amxmodx.inc提供的get_param和get_param_f函数可根据号数获取非数组类型的传值参数值</span>
@@ -335,13 +335,13 @@ public <span class="amxx-function">plugin_precache</span>()
 	<span class="amxx-function">ArrayPushCell</span>(<span class="amxx-identifier">handle</span>, <span class="amxx-number">5.0</span>);
 
 	<span class="amxx-comment">// 假如我们想直接判断数组内的数据是否等于5.0（执行两个浮点数之间的相等比较）
-	// 必须对ArrayGetCell函数使用标签覆盖，确保其满足Float: == Float:这个运算符重载的文本替换条件
+	// 必须对ArrayGetCell函数使用标签覆盖，确保其满足Float: == Float:这个运算符重载的文本替换规则
 	// 这种情况下，括号内容会被替换为floatcmp(5.0, ArrayGetCell(handle, 0)) == 0并且计算结果为1，满足if条件
 	// 若不覆盖标签，将会满足Float: == any:的文本替换规则（实际没有这条规则，所以是Float: == _:）
 	// 这种情况下，括号内容会被替换为floatcmp(5.0, float(ArrayGetCell(handle, 0))) == 0并且计算结果为0，不满足if条件
-	// 因为数组内的浮点数数据5.0实际等于整数1084227584，会被float函数转换为1084227584.0对应的整数
+	// 因为数组内的浮点数数据5.0实际等于整数1084227584，会被float函数转换为1084227584.0
 	// 而5.0与1084227584.0不相等，不满足if条件</span>
-	if (<span class="amxx-number">5.0</span> == <span class="amxx-tag">Float:</span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-identifier">handle</span>, <span class="amxx-number">0</span>))
+	if (<span class="amxx-number">5.0</span> == <span class="amxx-enumname">Float:</span><span class="amxx-function">ArrayGetCell</span>(<span class="amxx-identifier">handle</span>, <span class="amxx-number">0</span>))
 	{
 		<span class="amxx-function">server_print</span>(<span class="amxx-string">"数组内的第一个元素等于浮点数5.0或整数1084227584"</span>);
 	}
@@ -362,13 +362,11 @@ stock <span class="amxx-tag">Float:</span><span class="amxx-of">operator++</span
 	return <span class="amxx-identifier">oper</span>+<span class="amxx-number">1.0</span>;</code>
 </div>
 
-	<p>AMX Mod X的float.inc文件提供了Float与Float数据、Float与_数据、_与Float数据做运算的运算符重载。</p>
+	<p>AMX Mod X的float.inc文件提供了Float与Float数据、Float与_数据、_与Float数据做运算的文本替换规则。</p>
 
 	<p>因此，当我们引用了float.inc或amxmodx.inc（它引用了float.inc)文件，须注意是否对复合表达式的操作数进行标签覆盖。</p>
 
 	<p>特别是其中一个操作数拥有Float标签而另一个没有的情况。</p>
-
-	<p>在AMX Mod X 1.8.2或更低版本的float.inc中没有整数与浮点数做运算的运算符重载（_与Float），此时需对左边表达式使用标签覆盖，或对调左右表达式位置，确保其执行浮点数运算。</p>
 
 </body>
 
