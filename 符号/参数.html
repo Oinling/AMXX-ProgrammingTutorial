@@ -185,7 +185,7 @@
 
 	<h2>1. 简介</h2>
 
-	<p>参数（Parameter）是<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数</a>与外部交互的接口，决定了函数如何接受输入数据。</p>
+	<p>参数（Parameter）是<a href="%E5%87%BD%E6%95%B0.html">函数</a>与外部交互的接口，决定了函数如何接受输入数据。</p>
 	
 	<h3>关键概念：</h3>
 	
@@ -252,7 +252,7 @@ public <span class="amxx-function">plugin_init</span>()
 		<p>3. 传值参数（Pass by Value）</p>
 		<ul>
 			<li>形参绝非数组，实参可以是任意单值表达式。</li>
-			<li>形参是实参的副本，属于<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#DataAndStack">栈变量（临时变量）</a>，在调用函数时创建，退出函数后销毁。</li>
+			<li>形参是实参的副本，属于<a href="%E5%8F%98%E9%87%8F.html#DataAndStack">栈变量（临时变量）</a>，在调用函数时创建，退出函数后销毁。</li>
 			<li>对形参的修改不会影响实参。</li>
 			<code><span class="amxx-comment">// 参数param是按值传递</span>
 static <span class="amxx-function">testfunc</span>(<span class="amxx-identifier">param</span>)
@@ -386,7 +386,7 @@ public <span class="amxx-function">plugin_init</span>()
 
 	<h2 id="Grammar">2. 参数声明语法</h2>
 
-	<p><span class="highlight">参数声明</span>必须写在<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数声明语句中的参数列表</a>内。</p>
+	<p><span class="highlight">参数声明</span>必须写在<a href="%E5%87%BD%E6%95%B0.html">函数声明语句中的参数列表</a>内。</p>
 
 	<p><strong>注意</strong>：下文中，（）表示必填项目，【】表示可选项目。</p>
 
@@ -430,14 +430,14 @@ public <span class="amxx-function">plugin_init</span>()
 			<p>编译器默认提供<span class="highlight">any:</span>、<span class="highlight">bool:</span>、<span class="highlight">_:</span>三种标签，其余皆为inc文件提供或用户自定义。</p>
 			<p>标签在一定程度上暗示了用户应该填写什么类型的实参，提高了代码的可读性。</p>
 			<p>默认inc文件很多参数要求填写枚举成员，但并未设置标签，导致用户得不到警告提示、感到迷茫，应引以为戒。</p>
-			<p>点击查看更多内容：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签指南</a></p>
+			<p>点击查看更多内容：<a href="%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签指南</a></p>
 		</ul>
 
 		<br>
 		
 		<p>【维度声明】注解：</p>
 		<ul>
-			<p>设置形参的维度、各个维度的尺寸，或者与枚举类名组合，设置形参为结构体。详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Struct">变量维度声明语法</a></p>
+			<p>设置形参的维度、各个维度的尺寸，或者与枚举类名组合，设置形参为结构体。详情查阅：<a href="%E5%8F%98%E9%87%8F.html#Struct">变量维度声明语法</a></p>
 			<p>约束实参必须是数组（数组字面量也是可以，因为其属于数据段匿名变量）。</p>
 			<p>若未填写维度声明，则形参是<span class="highlight">单值参数</span>，而非<span class="highlight">数组参数</span>。</p>
 			<p>若未填写某个维度的尺寸，表示不约束实参对应维度的尺寸。</p>
@@ -448,7 +448,7 @@ public <span class="amxx-function">plugin_init</span>()
 		
 		<p>【初始化表达式】注解：</p>
 		<ul>
-			<p>设置形参的<strong>默认值</strong>，让形参变为<span class="highlight">可选参数</span>。详情查阅：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Init">变量初始化语法</a></p>
+			<p>设置形参的<strong>默认值</strong>，让形参变为<span class="highlight">可选参数</span>。详情查阅：<a href="%E5%8F%98%E9%87%8F.html#Init">变量初始化语法</a></p>
 			<p>forward函数和公共函数不允许参数拥有默认值。</p>
 		</ul>
 

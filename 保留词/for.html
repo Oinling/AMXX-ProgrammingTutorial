@@ -147,7 +147,7 @@
 	
 	<p>for循环语句只能在函数体内使用。</p>
 	
-	<p><span class="highlight">初始化语句</span>可以是<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a>编写的变量声明语句，或任意表达式。</p>
+	<p><span class="highlight">初始化语句</span>可以是<a href="new.html">new</a>编写的变量声明语句，或任意表达式。</p>
 	
 	<p><span class="highlight">初始化语句</span>会被首先执行，作用通常是对计数器变量进行初始化，然后执行<span class="highlight">条件表达式</span>。</p>
 	
@@ -159,14 +159,14 @@
 	
 	<p><span class="highlight">初始化语句</span>、<span class="highlight">条件表达式</span>、<span class="highlight">循环体</span>都允许留空。</p>
 	
-	<p>若<span class="highlight">条件表达式</span>留空，会变成无限循环。除非<span class="highlight">循环体</span>含有可以停止循环的语句（如：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/break.html">break</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/return.html">return</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/goto.html">goto</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/assert.html">assert</a>、<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/exit.html">exit</a>）。</p>
+	<p>若<span class="highlight">条件表达式</span>留空，会变成无限循环。除非<span class="highlight">循环体</span>含有可以停止循环的语句（如：<a href="break.html">break</a>、<a href="return.html">return</a>、<a href="goto.html">goto</a>、<a href="assert.html">assert</a>、<a href="exit.html">exit</a>）。</p>
 	
 	<p>示例：</p>
 	<code>for (new <span class="amxx-identifier">i</span>; <span class="amxx-identifier">i</span> < <span class="amxx-number">10</span>; <span class="amxx-identifier">i</span>++)
 {
-	if (<span class="amxx-note">跳过剩余语句的条件</span>) <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/continue.html">continue</a>;
+	if (<span class="amxx-note">跳过剩余语句的条件</span>) <a href="continue.html">continue</a>;
 	
-	if (<span class="amxx-note">提前退出的条件</span>) <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/break.html">break</a>;
+	if (<span class="amxx-note">提前退出的条件</span>) <a href="break.html">break</a>;
 	
 	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]呃 ... "</span>);
 }</code>

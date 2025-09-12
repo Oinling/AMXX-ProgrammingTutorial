@@ -143,7 +143,7 @@
 	
 	<h2>1. 使用stock创建变量</h2>
 	
-	<p>stock关键字可用于声明、定义全局变量，点击查看：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html">变量指南</a>。</p>
+	<p>stock关键字可用于声明、定义全局变量，点击查看：<a href="../%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html">变量指南</a></p>
 	
 	<p>代码示例：</p>
 
@@ -159,7 +159,7 @@ public <span class="amxx-function">plugin_init</span>()
 	<span class="amxx-comment">// 不使用gDataVal1和gDataVal2变量，gDataVal2会触发警告，gDataVal1不会</span>
 }</code>
 
-	<p>单独使用stock声明全局变量几乎与<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a>相同，仅多出一个’备用‘特性。</p>
+	<p>单独使用stock声明全局变量几乎与<a href="new.html">new</a>相同，仅多出一个’备用‘特性。</p>
 	
 	<p>用stock声明的变量，可称呼为'备用变量'。</p>
 	
@@ -169,13 +169,13 @@ public <span class="amxx-function">plugin_init</span>()
 	
 	<p>例如用备用变量储存你的插件名称、模块名称、插件版本、作者名称等等。</p>
 	
-	<p>通常不应该声明备用单值变量，对于没有变化需求的单值，声明<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">常量</a>才是更优先的选择。</p>
+	<p>通常不应该声明备用单值变量，对于没有变化需求的单值，声明<a href="../%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">常量</a>才是更优先的选择。</p>
 	
 	<p>虽然amxconst.inc文件中有同时使用public stock const声明的公共备用只读单值变量，随时更改数值，</p>
 	
 	<p>但那是amxmodx核心模块用特殊手段（后门）制作的共享备用公共变量（amxmodx公共变量）。</p>
 	
-	<p>我们用amxx插件无法制作amxx插件公共变量或amxmodx模块公共变量，详情点击：<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/public.html">public变量指南</a></p>
+	<p>我们用amxx插件无法制作amxx插件公共变量或amxmodx模块公共变量，详情点击：<a href="public.html">public变量指南</a></p>
 	
 	<p>至少在AMX Mod X 1.10.0和旧版本中无法做到。</p>
 	
@@ -253,7 +253,7 @@ public <span class="amxx-function">plugin_init</span>()
 
 	<h2>2. 使用stock创建函数</h2>
 	
-	<p>stock关键字可用于声明、定义<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StaticStock">文件私有备用函数</a>和<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#InternalStock">插件私有备用函数</a>。</p>
+	<p>stock关键字可用于声明、定义<a href="../%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StaticStock">文件私有备用函数</a>和<a href="../%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#InternalStock">插件私有备用函数</a>。</p>
 	
 	<p>备用函数的设计初衷是按需编译，方便函数库（inc文件）的设计，确保未使用的函数不会增加插件的文件体积。</p>
 
@@ -277,7 +277,7 @@ stock <span class="amxx-function">TestFunc</span>()
 	return (T_T)
 }</code>
 
-	<p>对于插件自身需要使用的函数，应该使用<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Static">文件私有函数</a>或<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Internal">插件私有函数</a>。</p>
+	<p>对于插件自身需要使用的函数，应该使用<a href="../%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Static">文件私有函数</a>或<a href="../%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#Internal">插件私有函数</a>。</p>
 
 </body>
 </html>

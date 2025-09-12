@@ -213,9 +213,11 @@ public <span class="amxx-function">plugin_init</span>()
 }</span></code>
 
 	<div class="warning-box">
+		<ul>
 		<li>因解析器设计问题，若<span class="highlight">运算词表达式</span>右边是char，char不被视作运算符，<span class="highlight">运算词表达式</span>被视作<span class="highlight">语句</span>，需添括号预防</li>
 		<li>char运算优先级仅次于<span class="highlight">() [] {}</span>，与<span class="highlight">! ~ -(负号) ++ -- : defined sizeof tagof</span>同级，酌情给char左边表达式添加括号</li>
 		<li>AMX Mod X 1.10.0及旧版本没有提供打印压缩字符串的函数，要打印必须解压缩</li>
+		</ul>
 	</div>
 
 </body>

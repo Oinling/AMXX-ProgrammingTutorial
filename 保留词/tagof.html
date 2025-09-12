@@ -145,16 +145,20 @@
 	
 	<div class="note-box">
 		<p><strong>获取值类型标签uid的表达式示例：</strong></p>
+		<ul>
 		<li>访问值类型标签：tagof(标签名称:)、tagof 标签名称:</li>
 		<li>访问其它标识符：tagof(标识符名称)、tagof 标识符名称</li>
+		</ul>
 	</div>
 	
 	<div class="warning-box">
 		<p><strong>注意：</strong></p>
+		<ul>
 		<li>AMX Mod X 1.8.3以下版本无法直接获取值类型标签的uid，只能从跳转标签、常量、变量或函数获取</li>
 		<li>值类型标签是插件在编译时创建、编译后删除的。各插件的同名标签不一定有相同uid，不可检查外部插件的值类型</li>
 		<li>无法获取枚举成员的标签uid，但枚举成员与枚举类名的标签相同，可以从枚举类名获取</li>
 		<li>无法从枚举成员获取结构体属性标签uid，但可以访问结构体变量的属性，从变量属性获取</li>
+		</ul>
 	</div>
 	
 </body>

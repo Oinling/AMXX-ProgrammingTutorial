@@ -51,6 +51,22 @@
             font-size: 0.9em;
             color: #7f8c8d;
         }
+        .keyword-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .keyword-table th, .keyword-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .keyword-table th {
+            background-color: #f2f2f2;
+        }
+        .keyword-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
     </style>
 </head>
 <body>
@@ -66,35 +82,139 @@
     
     <div class="toc">
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/01_简介.html">01. 简介</a>
+            <a href="01_%E7%AE%80%E4%BB%8B.html ">01. 简介</a>
         </div>
         
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/02_AMXX开发环境安装指南.html">02. AMXX开发环境安装指南</a>
+            <a href="02_AMXX%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97.html">02. AMXX开发环境安装指南</a>
         </div>
         
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/03_如何编写AMXX插件源码.html">03. 如何编写AMXX插件源码</a>
+            <a href="03_%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99AMXX%E6%8F%92%E4%BB%B6%E6%BA%90%E7%A0%81.html">03. 如何编写AMXX插件源码</a>
         </div>
         
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/04_AMXX源码的注释.html">04. AMXX源码的注释</a>
+            <a href="04_AMXX%E6%BA%90%E7%A0%81%E7%9A%84%E6%B3%A8%E9%87%8A.html">04. AMXX源码的注释</a>
         </div>
         
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/05_编译器指令.html">05. 编译器指令</a>
+            <a href="05_%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4.html">05. 编译器指令</a>
         </div>
         
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/06_字面量、表达式、语句.html">06. 字面量、表达式、语句</a>
+            <a href="06_%E5%AD%97%E9%9D%A2%E9%87%8F%E3%80%81%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81%E8%AF%AD%E5%8F%A5.html">06. 字面量、表达式、语句</a>
         </div>
         
         <div class="toc-item">
-            <a href="https://oinling.github.io/AMXX-ProgrammingTutorial/07_符号指南.html">07. 符号指南</a>
+            <a href="07_%E7%AC%A6%E5%8F%B7%E6%8C%87%E5%8D%97.html">07. 符号指南</a>
         </div>
-
     </div>
     
+    <p><a href="%E8%BF%90%E7%AE%97%E7%AC%A6.html">运算符指南</a></p>
+    
+    <p>关键字大全：</p>
+
+    <table class="keyword-table">
+        <tr>
+            <th>运算符</th>
+            <th>声明说明符</th>
+            <th>流程控制</th>
+        </tr>
+        <tr>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/char.html">char</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/const.html">const</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/break.html">break</a></td>
+        </tr>
+        <tr>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/defined.html">defined</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">enum</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/case.html">case</a></td>
+        </tr>
+        <tr>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/forward.html">forward</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/continue.html">continue</a></td>
+        </tr>
+        <tr>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/sizeof.html">sizeof</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/native.html">native</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/default.html">default</a></td>
+        </tr>
+        <tr>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/tagof.html">tagof</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/new.html">new</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/do.html">do</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/public.html">public</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/else.html">else</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/static.html">static</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/for.html">for</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/stock.html">stock</a></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/if.html">if</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/return.html">return</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/switch.html">switch</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/while.html">while</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/goto.html">goto</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/state.html">state</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/assert.html">assert</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/exit.html">exit</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td><a href="%E4%BF%9D%E7%95%99%E8%AF%8D/sleep.html">sleep</a></td>
+        </tr>
+    </table>
+
+    <p>标识符大全：</p>
+
+    <ul>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%80%BC%E7%B1%BB%E5%9E%8B%E6%A0%87%E7%AD%BE.html">值类型标签 (Tag)</a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E8%B7%B3%E8%BD%AC%E6%A0%87%E7%AD%BE.html">跳转标签 (Label)</a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">常量 (Constant)</a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html">变量 (Variable)</a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">函数 (Function)</a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%8F%82%E6%95%B0.html">参数 (Parameter)</a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StateBind">插件状态 (State)</a></a></li>
+        <li><a href="%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html#StateBind">插件自动机 (Automaton)</a></li>
+    </ul>
+
     <div class="footer">
         <p>© 2025 AMXXPawn 语法教程 | 由 oinling 维护</p>
     </div>

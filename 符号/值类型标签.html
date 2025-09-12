@@ -187,7 +187,7 @@
 	<p>值类型标签（Tag）能在编译时为表达式提供类型检查，或匹配运算符重载，进行文本替换。</p>
 	<p>标签对开发者而言能增强语义区分，帮助开发者更安全地编写代码。</p>
 	<p>不同标签的表达式做运算，通常会触发警告，除非与某个运算符重载匹配，或其一拥有any标签。</p>
-	<p>标签拥有uid，可通过<a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/tagof.html">tagof</a>关键字获取。</p>
+	<p>标签拥有uid，可通过<a href="../%E4%BF%9D%E7%95%99%E8%AF%8D/tagof.html">tagof</a>关键字获取。</p>
 	<p>编译前AMX Mod X会自动生成3个默认标签：</p>
 	<table class="codetable">
 	<tr>
@@ -226,21 +226,21 @@
 	<ul>
 		<li>用户在设定常量值时，需填写拥有相同标签的表达式</li>
 		<li>常量被用于运算时，通常要求其它操作数拥有相同标签</li>
-		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%B8%B8%E9%87%8F.html">点击查看常量指南</a></li>
+		<li><a href="%E5%B8%B8%E9%87%8F.html">点击查看常量指南</a></li>
 	</ul>
 
 	<h4>结构体属性标签：</h4>
 	<ul>
 		<li>声明枚举常量时可以设置结构体属性标签，默认为_标签</li>
 		<li>用户用枚举常量当做索引获取数组元素时，通常要求其它操作数拥有相同标签</li>
-		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
+		<li><a href="../%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
 	</ul>
 
 	<h4>变量标签：</h4>
 	<ul>
 		<li>用户在赋值或设定默认值时，需填写拥有相同标签的表达式</li>
 		<li>变量被用于运算时，通常要求其它操作数拥有相同标签</li>
-		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%8F%98%E9%87%8F.html#Tag">点击变量指南</a></li>
+		<li><a href="%E5%8F%98%E9%87%8F.html#Tag">点击变量指南</a></li>
 	</ul>
 
 	<h4>数组索引器标签：</h4>
@@ -248,14 +248,14 @@
 		<li>用户在为数组赋值时，需填写索引器拥有相同标签的数组</li>
 		<li>用户在填写索引访问数组元素时，索引标签需与索引器相同</li>
 		<li>索引器默认使用_标签，若填写小写开头的枚举类名，编译器会灵活切换索引器和索引标签</li>
-		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
+		<li><a href="../%E4%BF%9D%E7%95%99%E8%AF%8D/enum.html">点击查看枚举指南</a></li>
 	</ul>
 
 	<h4>函数标签：</h4>
 	<ul>
 		<li>用户在设置返回值时，需填写拥有相同标签的表达式</li>
 		<li>函数被用于运算时，通常要求其它操作数拥有相同标签</li>
-		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E7%AC%A6%E5%8F%B7/%E5%87%BD%E6%95%B0.html">点击查看函数指南</a></li>
+		<li><a href="%E5%87%BD%E6%95%B0.html">点击查看函数指南</a></li>
 	</ul>
 
 	<h4>函数索引器标签：</h4>
@@ -270,7 +270,7 @@
 	<p><strong>重点1：</strong>标签无实际意义，会在编译时被删除。标签覆盖<span class="highlight">不会改变表达式的数值</span>。</p>
 	<p><strong>重点2：</strong>复合表达式的操作数无论带有什么标签，默认情况下<span class="highlight">只会进行整数之间的运算</span>。但两操作数的标签不同可能触发警告。</p>
 	<p><strong>重点3：</strong>amxx插件与AMX Mod X通过native或forward函数交换数据，数据（表达式）的标签<span class="highlight">不影响函数计算结果</span>。</p>
-	<p><strong>重点4：</strong><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a>关键字可定义文本替换规则（运算符重载），<span class="highlight">将满足规则的复合表达式替换为函数与参数</span>。</p>
+	<p><strong>重点4：</strong><a href="../%E4%BF%9D%E7%95%99%E8%AF%8D/operator.html">operator</a>关键字可定义文本替换规则（运算符重载），<span class="highlight">将满足规则的复合表达式替换为函数与参数</span>。</p>
 	<p><strong>重点5：</strong>覆盖标签可以主动满足或避开运算符重载定义的文本替换规则，或屏蔽某些标签不匹配的警告。</p>
 	<p><strong>重点6：</strong>一旦满足运算符重载的文本替换规则，替换成函数运算后，<span class="highlight">计算结果可能与预期不符</span>。</p>
 
