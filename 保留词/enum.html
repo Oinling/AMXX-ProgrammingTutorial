@@ -184,7 +184,7 @@
 	<p><值类型标签名称> <<span class="amxx-default">:</span>></p>
 
 	<h4>升值器语法拆解：</h4>
-	<p><<span class="amxx-default">(</span>> \<多字节赋值运算符> <常量表达式>/ <<span class="amxx-default">)</span>></p>
+	<p><<span class="amxx-default">(</span>> \<升值型赋值运算符> <常量表达式>/ <<span class="amxx-default">)</span>></p>
 
 	<h4>枚举常量声明语法拆解：</h4>
 	<p>\属性标签覆盖/ \枚举常量名称/ \属性尺寸声明/ \初始化表达式/ \<span class="amxx-default">,</span>/</p>
@@ -230,6 +230,7 @@
 	<div class="feature-list">
 	<ul>
 	<li>升值器决定如何给枚举常量和枚举类名自动初始化</li>
+	<li>可选的'升值型赋值运算符'有这三种：+= *= <<=</li>
 	<li>若未填写升值器，则以(+= 1)作为默认升值器</li>
 	<li>不要妄图填写浮点数字面量，浮点数运算在编译时无法执行，编译器会将其二进制表示为整数，执行整数运算</li>
 	<li>若以(<<= 1)作为升值器，通常需对第2或第1个枚举常量进行初始化，赋值为1</li>
@@ -346,7 +347,7 @@ new <span class="amxx-enumname">ObstacleAttribute</span>:<span class="amxx-ident
 
 	<div class="feature-list"><ul>
 		<li>用 | 组合多个标志，用 & 检查是否拥有某个权限。</li>
-		<li><a href="https://oinling.github.io/AMXX-ProgrammingTutorial/%E8%BF%90%E7%AE%97%E7%AC%A6.html">点击查看二进制运算指南</a></li>
+		<li><a href="../%E8%BF%90%E7%AE%97%E7%AC%A6.html">点击查看二进制运算指南</a></li>
 	</ul></div>
 	</div>
 
