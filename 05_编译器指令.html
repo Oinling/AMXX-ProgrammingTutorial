@@ -143,11 +143,60 @@
 	
 <p>编译器指令(Compiler Directive)也被叫做预处理指令(Preprocessor Directive).</p>
 
-<p>以下是所有指令的名称:</p>
+<table class="codetable">
+    <tr>
+        <th>指令标识</th>
+        <th>简介</th>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/assert.html">#assert</a></td>
+        <td>编译时断言</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/define.html">#define</a></td>
+        <td>宏定义</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/endinput-endscript.html">#endinput#endscript</a></td>
+        <td>脚本终点</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/error.html">#error</a></td>
+        <td>自设编译时报错</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/emit.html">#emit</a></td>
+        <td>内联汇编</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/file.html">#file</a></td>
+        <td>伪造当前脚本文件地址</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/if-elseif-else-endif.html">#if#elseif#else#endif</a></td>
+        <td>编译分支</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/include-tryinclude.html">#include#tryinclude</a></td>
+        <td>引用脚本、尝试引用脚本</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/line.html">#line</a></td>
+        <td>伪造当前行号</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/pragma.html">#pragma</a></td>
+        <td>编译指示</td>
+    </tr>
+    <tr>
+        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/undef.html">#undef</a></td>
+        <td>删除宏</td>
+    </tr>
+</table>
 
-<p><span class="amxx-di">#assert #define #else #elseif #emit #endif #endinput #endscript #error #file #if #include #line #pragma #tryinclude #undef</span></p>
+<p>编译器指令的左边必须是0至无限个空白字符.因此通常被写在行首.</p>
 
-<p>编译器指令要么写在行首,要么左边全部是空格或制表符.并且编译器指令不需要以<span class="highlight">;</span>分号结尾.</p>
+<p>编译器指令不需要以<span class="highlight">;</span>分号结尾.</p>
 
 <p>源码被编译时,有一个预处理期,专门用来执行这些指令,然后才是词法分析,语法分析,生成amxx文件.</p>
 
@@ -208,29 +257,7 @@ public <span class="amxx-function">plugin_init</span>()
 	<span class="amxx-function">register_plugin</span>(<span class="amxx-ds">PluginName</span>, <span class="amxx-ds">PluginVersion</span>, <span class="amxx-string">"作者"</span>);
 }</code></p>
 
-<p>更多详情,请查阅以下内容(其余指令不常用,建议初学者先跳过,优先学习其它内容):</p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/assert.html">#assert</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/define.html">#define</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/endinput-endscript.html">#endinput#endscript</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/error.html">#error</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/emit.html">#emit</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/file.html">#file</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/if-elseif-else-endif.html">#if#elseif#else#endif</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/include-tryinclude.html">#include#tryinclude</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/line.html">#line</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/pragma.html">#pragma</a></p>
-
-<p><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/undef.html">#undef</a></p>
+<p>其余指令不常用,建议初学者先跳过,优先学习其它内容.</p>
 
 <h2>下一篇教程:</h2>
 

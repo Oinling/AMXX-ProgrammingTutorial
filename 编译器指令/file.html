@@ -25,6 +25,7 @@
 	.amxx-ds {
 		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
 		-webkit-background-clip: text;
+		background-clip: text;
 		color: transparent;
 		font-weight: normal;
 	}
@@ -55,7 +56,7 @@
 		color: rgb(93,20,10);
 		font-weight: normal;
 	}
-	.amxx-symbol {
+	.amxx-identifier {
 		color: rgb(153,51,255);
 		font-weight: normal;
 	}
@@ -65,30 +66,40 @@
 
 <p><h1>AMXXPawn编译器指令#file</h1></p>
 
-<p><h2>#file文件名指令使用方法:</h2></p>
+<p><h2>#file指令使用方法：</h2></p>
 
 <p><span class="amxx-directive">#file</span> <span class="amxx-string">字符串字面量</span></p>
 
-<p>更改脚本文件名称.</p>
+<p>#file指令用于设置警告和报错时显示的当前脚本文件地址。</p>
 
-<p>从该指令所在行开始,若有导致报错的代码,在展示报错文件名称时,显示该指令设定的字符串字面量.</p>
+<p>从该指令所在行开始，若有导致编译时警告或报错的代码，在展示报错文件名称时，显示该指令设定的文件地址。</p>
 
-<p>示例:</p>
+<p>若是运行时报错，则仅显示文件名，不显示完整地址。</p>
 
-<p><code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
-<span class="amxx-directive">#file</span> <span class="amxx-string">"C:\MyPlugin.sma"</span>
+<p>示例：</p>
+
+<code><span class="amxx-directive">#include</span> <<span class="amxx-string">amxmodx</span>>
+<span class="amxx-directive">#file</span> <span class="amxx-string">"C:\BAD!!!Baka!!!.sma"</span>
 public <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-directive">#error</span> <span class="amxx-string">BAD!!! Baka !!!</span>
-}</code></p>
+	new <span class="amxx-identifier">vel</span>[<span class="amxx-number">3</span>];
+	<span class="amxx-function">velocity_by_aim</span>(<span class="amxx-number">1</span>, <span class="amxx-number">100</span>, <span class="amxx-identifier">vel</span>);
+}</code>
 
-<p>在编译这段源码时,将会看见以下报错:</p>
+<p>在编译这段源码时，将会显示这样的警告：</p>
 
-<p><code><span class="amxx-note">C:\MyPlugin.sma(5) : fatal error 111: user error: BAD!!! Baka !!!</span></code></p>
+<p><code><span class="amxx-note">C:\BAD!!!Baka!!!.sma(6) : warning 213: tag mismatch</span></code></p>
 
-<p>不论你将脚本保存为什么名称,报错时只会显示<span class="amxx-string">"C:\MyPlugin.sma"</span>这个名字.</p>
+<p>运行时将会显示这样的报错：</p>
 
-<p>这个指令在插件运行时依然有效.</p>
+<p><code><span class="amxx-note">L 09/21/2025 - 05:21:37: Invalid player 1 (not ingame)
+L 09/21/2025 - 05:21:37: [AMXX] Displaying debug trace (plugin "test.amxx")
+L 09/21/2025 - 05:21:37: [AMXX] Run time error 10: native error (native "velocity_by_aim")
+L 09/21/2025 - 05:21:37: [AMXX] [0] BAD!!!Baka!!!.sma::plugin_init (line 6)</span></code></p>
+
+<p>注意，该指令仅伪造当前脚本文件地址。</p>
+
+<p>如果是当前脚本引用的其它脚本触发警告或报错，会显示正确的文件地址。</p>
 
 </body>
 </html>

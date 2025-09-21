@@ -65,11 +65,13 @@
 
 <p><h1>AMXXPawn编译器指令#pragma</h1></p>
 
-<p><h2>#pragma实效指令使用方法:</h2></p>
+<p><h2>#pragma指令使用方法:</h2></p>
 
 <p><code><span class="amxx-directive">#pragma</span> 额外指令名称 额外信息</code></p>
 
-<p>该指令能要求编译器对某些代码进行非标准化的处理.例如改变编译器警告等级,优化等级.</p>
+<p>该指令能指示编译器对特定代码进行非标准化的处理,改变编译方式.</p>
+
+<p>例如改变编译器警告等级,优化等级,语句必须以分号结尾,切换字符串字面量的解析方式.</p>
 
 <p>不同版本的编译器,可能会有不同的额外指令.具体需要查阅编译器源码(去AMXX官网下载).</p>
 
@@ -127,11 +129,13 @@
 
 <p><h3>#pragma codepage</h3></p>
 
+<p>此指令只会导致报错,因为编译器源码中未能正确读取并使用该文件.</p>
+
 <code><span class="amxx-directive">#pragma codepage
 #pragma codepage <span class="amxx-string">文件名</span>
 #pragma codepage</span> <span class="amxx-string">"文件名"</span></code>
 
-<p>若填写文件名,从下一行开始,根据文件内容,替换所有字符串字面量内的编码数值.</p>
+<p>若填写文件名(字节数不得超过11),从下一行开始,根据文件内的编码映射,翻译所有字符串字面量.</p>
 
 <p>编译器会在以下地址读取代码页文件:</p>
 
@@ -139,14 +143,9 @@
 
 <p>文件名可以省略<code>cp</code>前缀和<code>.txt</code>后缀.也可以完整填写其它前缀或后缀.</p>
 
-<p>文件内容应该写上65533个原编码和新编码,中间用空格隔开.</p>
+<p>文件内容格式:</p>
 
-<p>格式可能是:</p>
-
-<p><code><span class="amxx-note">1 1
-2 2
-...
-65533 65533</span></code></p>
+<p><code><span class="amxx-note">键值 UNICODE</span></code></p>
 
 <p>若不填写文件名,从下一行开始,不替换字符串字面量内的编码数值.</p>
 
@@ -179,7 +178,7 @@ const <span class="amxx-symbol">gNewLineFeed</span> = <span class="amxx-string">
 <p><code><span class="amxx-directive">#pragma deprecated
 #pragma deprecated</span> <span class="amxx-note">警告文本</span></code></p>
 
-<p>从下一行开始,第一个拥有 <code>( )</code> 圆括号的符号被弃用.如果定义或引用了它,将在定义或引用位置触发编译器警告.</p>
+<p>弃用接下来被声明的第一个函数.如果定义或引用了它,编译时将在定义和所有引用位置触发警告.</p>
 
 <p><h3>#pragma dynamic</h3></p>
 

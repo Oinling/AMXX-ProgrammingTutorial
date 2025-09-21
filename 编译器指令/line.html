@@ -65,15 +65,15 @@
 
 <p><h1>AMXXPawn编译器指令#line</h1></p>
 
-<p><h2>#line行号指令使用方法:</h2></p>
+<p><h2>#line指令使用方法：</h2></p>
 
 <p><code><span class="amxx-directive">#line</span> <span class="amxx-number">单值字面量</span></code></p>
 
-<p>该指令将告诉编译器,当前行的行号.</p>
+<p>该指令将伪造当前行的行号。接下来的每一行都会重新计算行号。</p>
 
-<p>单值字面量可以是2进制,10进制,16进制整数字面量,还可以是字符字面量,若引用了<code>amxmodx.inc</code>或<code>float.inc</code>文件,还可以是浮点数字面量.</p>
+<p>编译时警告、编译时或运行时报错显示的行号会受此影响。</p>
 
-<p>编译器本身会自动识别行号,并不需要使用该指令进行设置.</p>
+<p>单值字面量可以是2进制，10进制，16进制整数字面量，还可以是字符字面量，若引用了<code>amxmodx.inc</code>或<code>float.inc</code>文件，还可以是浮点数字面量。</p>
 
 </body>
 </html>
