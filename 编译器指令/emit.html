@@ -207,135 +207,135 @@ code {
 		</tr>
 	</thead>
 	<tbody>
-		<tr><td>LOAD.pri</td><td>address</td><td>PRI = [address]，将数据段指定地址的值加载到主寄存器</td></tr>
-		<tr><td>LOAD.alt</td><td>address</td><td>ALT = [address]，将数据段指定地址的值加载到辅助寄存器</td></tr>
-		<tr><td>LOAD.S.pri</td><td>offset</td><td>PRI = [FRM + offset]，加载当前帧内偏移的值到主寄存器</td></tr>
-		<tr><td>LOAD.S.alt</td><td>offset</td><td>ALT = [FRM + offset]，加载当前帧内偏移的值到辅助寄存器</td></tr>
-		<tr><td>LREF.pri</td><td>address</td><td>PRI = [[address]]，间接加载</td></tr>
-		<tr><td>LREF.alt</td><td>address</td><td>ALT = [[address]]，间接加载</td></tr>
-		<tr><td>LREF.S.pri</td><td>offset</td><td>PRI = [[FRM + offset]]，帧内间接加载</td></tr>
-		<tr><td>LREF.S.alt</td><td>offset</td><td>ALT = [[FRM + offset]]，帧内间接加载</td></tr>
-		<tr><td>LOAD.I</td><td>无</td><td>PRI = [PRI]，主寄存器指向的地址加载</td></tr>
-		<tr><td>LODB.I</td><td>number</td><td>PRI = [PRI] 读取指定字节数（1/2/4）</td></tr>
-		<tr><td>CONST.pri</td><td>value/address</td><td>PRI = value 或 PRI = 变量地址</td></tr>
-		<tr><td>CONST.alt</td><td>value/address</td><td>ALT = value 或 ALT = 变量地址</td></tr>
-		<tr><td>ADDR.pri</td><td>offset</td><td>PRI = FRM + offset，获取局部变量地址</td></tr>
-		<tr><td>ADDR.alt</td><td>offset</td><td>ALT = FRM + offset</td></tr>
-		<tr><td>STOR.pri</td><td>address</td><td>[address] = PRI，将主寄存器值存入数据段</td></tr>
-		<tr><td>STOR.alt</td><td>address</td><td>[address] = ALT，将辅助寄存器值存入数据段</td></tr>
-		<tr><td>STOR.S.pri</td><td>offset</td><td>[FRM + offset] = PRI，存入当前帧</td></tr>
-		<tr><td>STOR.S.alt</td><td>offset</td><td>[FRM + offset] = ALT</td></tr>
-		<tr><td>SREF.pri</td><td>address</td><td>[[address]] = PRI，间接存储</td></tr>
-		<tr><td>SREF.alt</td><td>address</td><td>[[address]] = ALT</td></tr>
-		<tr><td>SREF.S.pri</td><td>offset</td><td>[[FRM + offset]] = PRI</td></tr>
-		<tr><td>SREF.S.alt</td><td>offset</td><td>[[FRM + offset]] = ALT</td></tr>
-		<tr><td>STOR.I</td><td>无</td><td>[ALT] = PRI，主寄存器值存入辅助寄存器指向的地址</td></tr>
-		<tr><td>STRB.I</td><td>number</td><td>将PRI的低number字节存入[ALT]</td></tr>
-		<tr><td>LIDX</td><td>无</td><td>PRI = [ALT + (PRI × cell size)]，数组索引加载</td></tr>
-		<tr><td>LIDX.B</td><td>shift</td><td>PRI = [ALT + (PRI << shift)]，变长索引</td></tr>
-		<tr><td>IDXADDR</td><td>无</td><td>PRI = ALT + (PRI × cell size)，计算索引地址</td></tr>
-		<tr><td>IDXADDR.B</td><td>shift</td><td>PRI = ALT + (PRI << shift)</td></tr>
-		<tr><td>ALIGN.pri</td><td>number</td><td>PRI ^= cell size - number，字节对齐</td></tr>
-		<tr><td>ALIGN.alt</td><td>number</td><td>ALT ^= cell size - number</td></tr>
-		<tr><td>LCTRL</td><td>index</td><td>PRI = 指定控制寄存器的值（0=COD, 1=DAT, 2=HEA, 3=STP, 4=STK, 5=FRM, 6=CIP）</td></tr>
-		<tr><td>SCTRL</td><td>index</td><td>设置控制寄存器（2=HEA, 4=STK, 5=FRM, 6=CIP）= PRI</td></tr>
-		<tr><td>MOVE.pri</td><td>无</td><td>PRI = ALT</td></tr>
-		<tr><td>MOVE.alt</td><td>无</td><td>ALT = PRI</td></tr>
-		<tr><td>XCHG</td><td>无</td><td>交换PRI和ALT</td></tr>
-		<tr><td>PUSH.pri</td><td>无</td><td>将PRI压入栈</td></tr>
-		<tr><td>PUSH.alt</td><td>无</td><td>将ALT压入栈</td></tr>
-		<tr><td>PUSH.R</td><td>number</td><td>重复压入PRI，number次</td></tr>
-		<tr><td>PUSH.C</td><td>value</td><td>压入常量</td></tr>
-		<tr><td>PUSH</td><td>address</td><td>压入数据段指定地址的值</td></tr>
-		<tr><td>PUSH.S</td><td>offset</td><td>压入帧内偏移的值</td></tr>
-		<tr><td>POP.pri</td><td>无</td><td>弹出栈顶到PRI</td></tr>
-		<tr><td>POP.alt</td><td>无</td><td>弹出栈顶到ALT</td></tr>
-		<tr><td>STACK</td><td>value</td><td>STK = STK + value，调整栈指针</td></tr>
-		<tr><td>HEAP</td><td>value</td><td>HEA = HEA + value，调整堆指针</td></tr>
-		<tr><td>PROC</td><td>无</td><td>函数调用帧设置</td></tr>
-		<tr><td>RET</td><td>无</td><td>返回，恢复帧和指令指针</td></tr>
-		<tr><td>RETN</td><td>无</td><td>返回并清理参数</td></tr>
-		<tr><td>CALL</td><td>offset</td><td>调用指定偏移的函数</td></tr>
-		<tr><td>CALL.pri</td><td>无</td><td>调用PRI指向的函数</td></tr>
-		<tr><td>JUMP</td><td>offset</td><td>无条件跳转到offset位置</td></tr>
-		<tr><td>JUMP.pri</td><td>无</td><td>跳转到PRI指向的地址</td></tr>
-		<tr><td>JZER</td><td>offset</td><td>PRI为0时跳转到offset位置</td></tr>
-		<tr><td>JNZ</td><td>offset</td><td>PRI不为0时跳转到offset位置</td></tr>
-		<tr><td>JEQ</td><td>offset</td><td>PRI==ALT时跳转到offset位置</td></tr>
-		<tr><td>JNEQ</td><td>offset</td><td>PRI!=ALT时跳转到offset位置</td></tr>
-		<tr><td>JLESS</td><td>offset</td><td>PRI<ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>JLEQ</td><td>offset</td><td>PRI≤ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>JGRTR</td><td>offset</td><td>PRI>ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>JGEQ</td><td>offset</td><td>PRI≥ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>JSLESS</td><td>offset</td><td>PRI<ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>JSLEQ</td><td>offset</td><td>PRI≤ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>JSGRTR</td><td>offset</td><td>PRI>ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>JSGEQ</td><td>offset</td><td>PRI≥ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>SHL</td><td>无</td><td>PRI = PRI << ALT</td></tr>
-		<tr><td>SHR</td><td>无</td><td>PRI = PRI >>> ALT</td></tr>
-		<tr><td>SSHR</td><td>无</td><td>PRI = PRI >> ALT</td></tr>
-		<tr><td>SHL.C.pri</td><td>value</td><td>PRI <<= value</td></tr>
-		<tr><td>SHL.C.alt</td><td>value</td><td>ALT <<= value</td></tr>
-		<tr><td>SHR.C.pri</td><td>value</td><td>PRI >>>= value</td></tr>
-		<tr><td>SHR.C.alt</td><td>value</td><td>ALT >>>= value</td></tr>
-		<tr><td>SMUL</td><td>无</td><td>PRI = PRI × ALT（有符号）</td></tr>
-		<tr><td>SDIV</td><td>无</td><td>PRI /= ALT，ALT = PRI原值 % ALT（有符号）</td></tr>
-		<tr><td>SDIV.alt</td><td>无</td><td>PRI = ALT / PRI，ALT = ALT % PRI原值（有符号）</td></tr>
-		<tr><td>UMUL</td><td>无</td><td>PRI = PRI × ALT（无符号）</td></tr>
-		<tr><td>UDIV</td><td>无</td><td>PRI = PRI / ALT，ALT = PRI mod ALT（无符号）</td></tr>
-		<tr><td>UDIV.alt</td><td>无</td><td>PRI = ALT / PRI，ALT = ALT mod PRI（无符号）</td></tr>
-		<tr><td>ADD</td><td>无</td><td>PRI = PRI + ALT</td></tr>
-		<tr><td>SUB</td><td>无</td><td>PRI = PRI - ALT</td></tr>
-		<tr><td>SUB.alt</td><td>无</td><td>PRI = ALT - PRI</td></tr>
-		<tr><td>AND</td><td>无</td><td>PRI = PRI & ALT</td></tr>
-		<tr><td>OR</td><td>无</td><td>PRI = PRI | ALT</td></tr>
-		<tr><td>XOR</td><td>无</td><td>PRI = PRI ^ ALT</td></tr>
-		<tr><td>NOT</td><td>无</td><td>PRI = !PRI</td></tr>
-		<tr><td>NEG</td><td>无</td><td>PRI = -PRI</td></tr>
-		<tr><td>INVERT</td><td>无</td><td>PRI = ~PRI</td></tr>
-		<tr><td>ADD.C</td><td>value</td><td>PRI = PRI + value</td></tr>
-		<tr><td>SMUL.C</td><td>value</td><td>PRI = PRI × value</td></tr>
-		<tr><td>ZERO.pri</td><td>无</td><td>PRI = 0</td></tr>
-		<tr><td>ZERO.alt</td><td>无</td><td>ALT = 0</td></tr>
-		<tr><td>ZERO</td><td>address</td><td>[address] = 0</td></tr>
-		<tr><td>ZERO.S</td><td>offset</td><td>[FRM + offset] = 0</td></tr>
-		<tr><td>SIGN.pri</td><td>无</td><td>PRI 字节符号扩展</td></tr>
-		<tr><td>SIGN.alt</td><td>无</td><td>ALT 字节符号扩展</td></tr>
-		<tr><td>EQ</td><td>无</td><td>PRI = (PRI == ALT) ? 1 : 0</td></tr>
-		<tr><td>NEQ</td><td>无</td><td>PRI = (PRI != ALT) ? 1 : 0</td></tr>
-		<tr><td>LESS</td><td>无</td><td>PRI = (PRI < ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>LEQ</td><td>无</td><td>PRI = (PRI ≤ ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>GRTR</td><td>无</td><td>PRI = (PRI > ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>GEQ</td><td>无</td><td>PRI = (PRI ≥ ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>SLESS</td><td>无</td><td>PRI = (PRI < ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>SLEQ</td><td>无</td><td>PRI = (PRI ≤ ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>SGRTR</td><td>无</td><td>PRI = (PRI > ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>SGEQ</td><td>无</td><td>PRI = (PRI ≥ ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>EQ.C.pri</td><td>value</td><td>PRI = (PRI == value) ? 1 : 0</td></tr>
-		<tr><td>EQ.C.alt</td><td>value</td><td>ALT = (ALT == value) ? 1 : 0</td></tr>
-		<tr><td>INC.pri</td><td>无</td><td>PRI = PRI + 1</td></tr>
-		<tr><td>INC.alt</td><td>无</td><td>ALT = ALT + 1</td></tr>
-		<tr><td>INC</td><td>address</td><td>[address] = [address] + 1</td></tr>
-		<tr><td>INC.S</td><td>offset</td><td>[FRM + offset] = [FRM + offset] + 1</td></tr>
-		<tr><td>INC.I</td><td>无</td><td>[PRI] = [PRI] + 1</td></tr>
-		<tr><td>DEC.pri</td><td>无</td><td>PRI = PRI - 1</td></tr>
-		<tr><td>DEC.alt</td><td>无</td><td>ALT = ALT - 1</td></tr>
-		<tr><td>DEC</td><td>address</td><td>[address] = [address] - 1</td></tr>
-		<tr><td>DEC.S</td><td>offset</td><td>[FRM + offset] = [FRM + offset] - 1</td></tr>
-		<tr><td>DEC.I</td><td>无</td><td>[PRI] = [PRI] - 1</td></tr>
-		<tr><td>MOVS</td><td>number</td><td>拷贝number字节内存（[PRI]→[ALT]）</td></tr>
-		<tr><td>CMPS</td><td>number</td><td>比较number字节内存（[PRI]与[ALT]）</td></tr>
-		<tr><td>FILL</td><td>number</td><td>用PRI填充[ALT]起始的number字节</td></tr>
-		<tr><td>HALT</td><td>value</td><td>终止执行，PRI为返回值</td></tr>
-		<tr><td>BOUNDS</td><td>value</td><td>if (pri < 0 || value < pri) abort(AMX_ERR_BOUNDS, "")</td></tr>
-		<tr><td>SYSREQ.pri</td><td>无</td><td>调用PRI指定的系统服务</td></tr>
-		<tr><td>SYSREQ.C</td><td>value</td><td>调用指定编号的系统服务</td></tr>
-		<tr><td>SWITCH</td><td>offset</td><td>跳转到case表</td></tr>
-		<tr><td>CASETBL</td><td>...</td><td>case表标记</td></tr>
-		<tr><td>SWAP.pri</td><td>无</td><td>交换PRI与栈顶</td></tr>
-		<tr><td>SWAP.alt</td><td>无</td><td>交换ALT与栈顶</td></tr>
-		<tr><td>PUSH.ADR</td><td>offset</td><td>压入帧内偏移的地址</td></tr>
-		<tr><td>NOP</td><td>无</td><td>无操作</td></tr>
+		<tr><td>load.pri</td><td>address</td><td>PRI = [address]，将数据段指定地址的值加载到主寄存器</td></tr>
+		<tr><td>load.alt</td><td>address</td><td>ALT = [address]，将数据段指定地址的值加载到辅助寄存器</td></tr>
+		<tr><td>load.s.pri</td><td>offset</td><td>PRI = [FRM + offset]，加载当前帧内偏移的值到主寄存器</td></tr>
+		<tr><td>load.s.alt</td><td>offset</td><td>ALT = [FRM + offset]，加载当前帧内偏移的值到辅助寄存器</td></tr>
+		<tr><td>lref.pri</td><td>address</td><td>PRI = [[address]]，间接加载</td></tr>
+		<tr><td>lref.alt</td><td>address</td><td>ALT = [[address]]，间接加载</td></tr>
+		<tr><td>lref.s.pri</td><td>offset</td><td>PRI = [[FRM + offset]]，帧内间接加载</td></tr>
+		<tr><td>lref.s.alt</td><td>offset</td><td>ALT = [[FRM + offset]]，帧内间接加载</td></tr>
+		<tr><td>load.i</td><td>无</td><td>PRI = [PRI]，主寄存器指向的地址加载</td></tr>
+		<tr><td>lodb.i</td><td>number</td><td>PRI = [PRI] 读取指定字节数（1/2/4）</td></tr>
+		<tr><td>const.pri</td><td>value/address</td><td>PRI = value 或 PRI = 变量地址</td></tr>
+		<tr><td>const.alt</td><td>value/address</td><td>ALT = value 或 ALT = 变量地址</td></tr>
+		<tr><td>addr.pri</td><td>offset</td><td>PRI = FRM + offset，获取局部变量地址</td></tr>
+		<tr><td>addr.alt</td><td>offset</td><td>ALT = FRM + offset</td></tr>
+		<tr><td>stor.pri</td><td>address</td><td>[address] = PRI，将主寄存器值存入数据段</td></tr>
+		<tr><td>stor.alt</td><td>address</td><td>[address] = ALT，将辅助寄存器值存入数据段</td></tr>
+		<tr><td>stor.s.pri</td><td>offset</td><td>[FRM + offset] = PRI，存入当前帧</td></tr>
+		<tr><td>stor.s.alt</td><td>offset</td><td>[FRM + offset] = ALT</td></tr>
+		<tr><td>sref.pri</td><td>address</td><td>[[address]] = PRI，间接存储</td></tr>
+		<tr><td>sref.alt</td><td>address</td><td>[[address]] = ALT</td></tr>
+		<tr><td>sref.s.pri</td><td>offset</td><td>[[FRM + offset]] = PRI</td></tr>
+		<tr><td>sref.s.alt</td><td>offset</td><td>[[FRM + offset]] = ALT</td></tr>
+		<tr><td>stor.i</td><td>无</td><td>[ALT] = PRI，主寄存器值存入辅助寄存器指向的地址</td></tr>
+		<tr><td>strb.i</td><td>number</td><td>将PRI的低number字节存入[ALT]</td></tr>
+		<tr><td>lidx</td><td>无</td><td>PRI = [ALT + (PRI × cell size)]，数组索引加载</td></tr>
+		<tr><td>lidx.b</td><td>shift</td><td>PRI = [ALT + (PRI << shift)]，变长索引</td></tr>
+		<tr><td>idxaddr</td><td>无</td><td>PRI = ALT + (PRI × cell size)，计算索引地址</td></tr>
+		<tr><td>idxaddr.b</td><td>shift</td><td>PRI = ALT + (PRI << shift)</td></tr>
+		<tr><td>align.pri</td><td>number</td><td>PRI ^= cell size - number，字节对齐</td></tr>
+		<tr><td>align.alt</td><td>number</td><td>ALT ^= cell size - number</td></tr>
+		<tr><td>lctrl</td><td>index</td><td>PRI = 指定控制寄存器的值（0=COD, 1=DAT, 2=HEA, 3=STP, 4=STK, 5=FRM, 6=CIP）</td></tr>
+		<tr><td>sctrl</td><td>index</td><td>设置控制寄存器（2=HEA, 4=STK, 5=FRM, 6=CIP）= PRI</td></tr>
+		<tr><td>move.pri</td><td>无</td><td>PRI = ALT</td></tr>
+		<tr><td>move.alt</td><td>无</td><td>ALT = PRI</td></tr>
+		<tr><td>xchg</td><td>无</td><td>交换PRI和ALT</td></tr>
+		<tr><td>push.pri</td><td>无</td><td>将PRI压入栈</td></tr>
+		<tr><td>push.alt</td><td>无</td><td>将ALT压入栈</td></tr>
+		<tr><td>push.r</td><td>number</td><td>重复压入PRI，number次</td></tr>
+		<tr><td>push.c</td><td>value</td><td>压入常量</td></tr>
+		<tr><td>push</td><td>address</td><td>压入数据段指定地址的值</td></tr>
+		<tr><td>push.s</td><td>offset</td><td>压入帧内偏移的值</td></tr>
+		<tr><td>pop.pri</td><td>无</td><td>弹出栈顶到PRI</td></tr>
+		<tr><td>pop.alt</td><td>无</td><td>弹出栈顶到ALT</td></tr>
+		<tr><td>stack</td><td>value</td><td>STK = STK + value，调整栈指针</td></tr>
+		<tr><td>heap</td><td>value</td><td>HEA = HEA + value，调整堆指针</td></tr>
+		<tr><td>proc</td><td>无</td><td>函数调用帧设置</td></tr>
+		<tr><td>ret</td><td>无</td><td>返回，恢复帧和指令指针</td></tr>
+		<tr><td>retn</td><td>无</td><td>返回并清理参数</td></tr>
+		<tr><td>call</td><td>offset</td><td>调用指定偏移的函数</td></tr>
+		<tr><td>call.pri</td><td>无</td><td>调用PRI指向的函数</td></tr>
+		<tr><td>jump</td><td>offset</td><td>无条件跳转到offset位置</td></tr>
+		<tr><td>jump.pri</td><td>无</td><td>跳转到PRI指向的地址</td></tr>
+		<tr><td>jzer</td><td>offset</td><td>PRI为0时跳转到offset位置</td></tr>
+		<tr><td>jnz</td><td>offset</td><td>PRI不为0时跳转到offset位置</td></tr>
+		<tr><td>jeq</td><td>offset</td><td>PRI==ALT时跳转到offset位置</td></tr>
+		<tr><td>jneq</td><td>offset</td><td>PRI!=ALT时跳转到offset位置</td></tr>
+		<tr><td>jless</td><td>offset</td><td>PRI<ALT（无符号）时跳转到offset位置</td></tr>
+		<tr><td>jleq</td><td>offset</td><td>PRI≤ALT（无符号）时跳转到offset位置</td></tr>
+		<tr><td>jgrtr</td><td>offset</td><td>PRI>ALT（无符号）时跳转到offset位置</td></tr>
+		<tr><td>jgeq</td><td>offset</td><td>PRI≥ALT（无符号）时跳转到offset位置</td></tr>
+		<tr><td>jsless</td><td>offset</td><td>PRI<ALT（有符号）时跳转到offset位置</td></tr>
+		<tr><td>jsleq</td><td>offset</td><td>PRI≤ALT（有符号）时跳转到offset位置</td></tr>
+		<tr><td>jsgrtr</td><td>offset</td><td>PRI>ALT（有符号）时跳转到offset位置</td></tr>
+		<tr><td>jsgeq</td><td>offset</td><td>PRI≥ALT（有符号）时跳转到offset位置</td></tr>
+		<tr><td>shl</td><td>无</td><td>PRI = PRI << ALT</td></tr>
+		<tr><td>shr</td><td>无</td><td>PRI = PRI >>> ALT</td></tr>
+		<tr><td>sshr</td><td>无</td><td>PRI = PRI >> ALT</td></tr>
+		<tr><td>shl.c.pri</td><td>value</td><td>PRI <<= value</td></tr>
+		<tr><td>shl.c.alt</td><td>value</td><td>ALT <<= value</td></tr>
+		<tr><td>shr.c.pri</td><td>value</td><td>PRI >>>= value</td></tr>
+		<tr><td>shr.c.alt</td><td>value</td><td>ALT >>>= value</td></tr>
+		<tr><td>smul</td><td>无</td><td>PRI = PRI × ALT（有符号）</td></tr>
+		<tr><td>sdiv</td><td>无</td><td>PRI /= ALT，ALT = PRI原值 % ALT（有符号）</td></tr>
+		<tr><td>sdiv.alt</td><td>无</td><td>PRI = ALT / PRI，ALT = ALT % PRI原值（有符号）</td></tr>
+		<tr><td>umul</td><td>无</td><td>PRI = PRI × ALT（无符号）</td></tr>
+		<tr><td>udiv</td><td>无</td><td>PRI = PRI / ALT，ALT = PRI mod ALT（无符号）</td></tr>
+		<tr><td>udiv.alt</td><td>无</td><td>PRI = ALT / PRI，ALT = ALT mod PRI（无符号）</td></tr>
+		<tr><td>add</td><td>无</td><td>PRI = PRI + ALT</td></tr>
+		<tr><td>sub</td><td>无</td><td>PRI = PRI - ALT</td></tr>
+		<tr><td>sub.alt</td><td>无</td><td>PRI = ALT - PRI</td></tr>
+		<tr><td>and</td><td>无</td><td>PRI = PRI & ALT</td></tr>
+		<tr><td>or</td><td>无</td><td>PRI = PRI | ALT</td></tr>
+		<tr><td>xor</td><td>无</td><td>PRI = PRI ^ ALT</td></tr>
+		<tr><td>not</td><td>无</td><td>PRI = !PRI</td></tr>
+		<tr><td>neg</td><td>无</td><td>PRI = -PRI</td></tr>
+		<tr><td>invert</td><td>无</td><td>PRI = ~PRI</td></tr>
+		<tr><td>add.c</td><td>value</td><td>PRI = PRI + value</td></tr>
+		<tr><td>smul.c</td><td>value</td><td>PRI = PRI × value</td></tr>
+		<tr><td>zero.pri</td><td>无</td><td>PRI = 0</td></tr>
+		<tr><td>zero.alt</td><td>无</td><td>ALT = 0</td></tr>
+		<tr><td>zero</td><td>address</td><td>[address] = 0</td></tr>
+		<tr><td>zero.s</td><td>offset</td><td>[FRM + offset] = 0</td></tr>
+		<tr><td>sign.pri</td><td>无</td><td>PRI 字节符号扩展</td></tr>
+		<tr><td>sign.alt</td><td>无</td><td>ALT 字节符号扩展</td></tr>
+		<tr><td>eq</td><td>无</td><td>PRI = (PRI == ALT) ? 1 : 0</td></tr>
+		<tr><td>neq</td><td>无</td><td>PRI = (PRI != ALT) ? 1 : 0</td></tr>
+		<tr><td>less</td><td>无</td><td>PRI = (PRI < ALT) ? 1 : 0（无符号）</td></tr>
+		<tr><td>leq</td><td>无</td><td>PRI = (PRI ≤ ALT) ? 1 : 0（无符号）</td></tr>
+		<tr><td>grtr</td><td>无</td><td>PRI = (PRI > ALT) ? 1 : 0（无符号）</td></tr>
+		<tr><td>geq</td><td>无</td><td>PRI = (PRI ≥ ALT) ? 1 : 0（无符号）</td></tr>
+		<tr><td>sless</td><td>无</td><td>PRI = (PRI < ALT) ? 1 : 0（有符号）</td></tr>
+		<tr><td>sleq</td><td>无</td><td>PRI = (PRI ≤ ALT) ? 1 : 0（有符号）</td></tr>
+		<tr><td>sgrtr</td><td>无</td><td>PRI = (PRI > ALT) ? 1 : 0（有符号）</td></tr>
+		<tr><td>sgeq</td><td>无</td><td>PRI = (PRI ≥ ALT) ? 1 : 0（有符号）</td></tr>
+		<tr><td>eq.c.pri</td><td>value</td><td>PRI = (PRI == value) ? 1 : 0</td></tr>
+		<tr><td>eq.c.alt</td><td>value</td><td>ALT = (ALT == value) ? 1 : 0</td></tr>
+		<tr><td>inc.pri</td><td>无</td><td>PRI = PRI + 1</td></tr>
+		<tr><td>inc.alt</td><td>无</td><td>ALT = ALT + 1</td></tr>
+		<tr><td>inc</td><td>address</td><td>[address] = [address] + 1</td></tr>
+		<tr><td>inc.s</td><td>offset</td><td>[FRM + offset] = [FRM + offset] + 1</td></tr>
+		<tr><td>inc.i</td><td>无</td><td>[PRI] = [PRI] + 1</td></tr>
+		<tr><td>dec.pri</td><td>无</td><td>PRI = PRI - 1</td></tr>
+		<tr><td>dec.alt</td><td>无</td><td>ALT = ALT - 1</td></tr>
+		<tr><td>dec</td><td>address</td><td>[address] = [address] - 1</td></tr>
+		<tr><td>dec.s</td><td>offset</td><td>[FRM + offset] = [FRM + offset] - 1</td></tr>
+		<tr><td>dec.i</td><td>无</td><td>[PRI] = [PRI] - 1</td></tr>
+		<tr><td>movs</td><td>number</td><td>拷贝number字节内存（[PRI]→[ALT]）</td></tr>
+		<tr><td>cmps</td><td>number</td><td>比较number字节内存（[PRI]与[ALT]）</td></tr>
+		<tr><td>fill</td><td>number</td><td>用PRI填充[ALT]起始的number字节</td></tr>
+		<tr><td>halt</td><td>value</td><td>终止执行，PRI为返回值</td></tr>
+		<tr><td>bounds</td><td>value</td><td>if (pri < 0 || value < pri) abort(AMX_ERR_BOUNDS, "")</td></tr>
+		<tr><td>sysreq.pri</td><td>无</td><td>调用PRI指定的系统服务</td></tr>
+		<tr><td>sysreq.c</td><td>value</td><td>调用指定编号的系统服务</td></tr>
+		<tr><td>switch</td><td>offset</td><td>跳转到case表</td></tr>
+		<tr><td>casetbl</td><td>...</td><td>case表标记</td></tr>
+		<tr><td>swap.pri</td><td>无</td><td>交换PRI与栈顶</td></tr>
+		<tr><td>swap.alt</td><td>无</td><td>交换ALT与栈顶</td></tr>
+		<tr><td>push.adr</td><td>offset</td><td>压入帧内偏移的地址</td></tr>
+		<tr><td>nop</td><td>无</td><td>无操作</td></tr>
 	</tbody>
 </table>
 
