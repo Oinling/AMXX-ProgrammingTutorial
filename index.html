@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AMXXPawn 语法教程索引</title>
     <style>
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        #bg-audio {
+            display: none; /* 隐藏音频元素 */
+        }
+
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -12,6 +27,11 @@
             margin: 0 auto;
             padding: 20px;
             color: #333;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h1 {
             color: #2c3e50;
@@ -67,12 +87,43 @@
         .keyword-table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        /* 音量控制按钮样式 */
+        .volume-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
+
+    <video id="bg-video" autoplay muted loop>
+        <source src="background.mp4" type="video/mp4">
+        您的浏览器不支持视频标签。
+    </video>
+    
+    <audio id="bg-audio" autoplay loop>
+        <source src="background.mp3" type="audio/mp3">
+        您的浏览器不支持音频标签。
+    </audio>
+    
+    <button class="volume-control" id="volume-btn">🔇</button>
+
     <h1>AMXXPawn 语法教程索引</h1>
     
-    <p>欢迎来到 AMXXPawn 语言的终极语法参考教程！</p>
+    <p>欢迎来到 AMXXPawn 语言的语法教程！</p>
     
     <p>本教程将会全面讲解 AMXXPawn 脚本中的所有组成部分：</p>
     
@@ -276,5 +327,44 @@
     <div class="footer">
         <p>© 2025 AMXXPawn 语法教程 | 由 oinling 维护</p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const video = document.getElementById('bg-video');
+            const audio = document.getElementById('bg-audio');
+            const volumeBtn = document.getElementById('volume-btn');
+            
+            // 尝试自动播放视频和音频
+            Promise.all([
+                video.play().catch(e => console.log('视频自动播放被阻止:', e)),
+                audio.play().catch(e => console.log('音频自动播放被阻止:', e))
+            ]);
+
+            // 音量控制按钮点击事件 - 同时控制视频和音频
+            volumeBtn.addEventListener('click', function() {
+                if (video.muted && audio.muted) {
+                    video.muted = false;
+                    audio.muted = false;
+                    volumeBtn.textContent = '🔊';
+                } else {
+                    video.muted = true;
+                    audio.muted = true;
+                    volumeBtn.textContent = '🔇';
+                }
+            });
+
+            // 用户交互后尝试取消静音（提升用户体验）
+            document.addEventListener('click', function() {
+                if (video.muted && audio.muted) {
+                    video.muted = false;
+                    audio.muted = false;
+                    volumeBtn.textContent = '🔊';
+                    
+                    // 重新尝试播放音频
+                    audio.play().catch(e => console.log('音频播放失败:', e));
+                }
+            }, { once: true }); // 只执行一次
+        });
+    </script>
 </body>
 </html>

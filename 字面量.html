@@ -435,6 +435,8 @@
 	
 	<h2 id="Array">7. 数组字面量</h2>
 	
+	<p>任何数组字面量都储存在数据段，并且相同内容的字面量储存在不同的数据段地址，每一个都是可修改的。</p>
+
 	<p><strong>多个<strong>单值常量表达式</strong>用逗号隔开，再用{ }包裹它们，就能形成一维数组字面量。</strong></p>
 	
 	<code><span class="amxx-di">#include</span> <<span class="amxx-string">float</span>>
@@ -455,6 +457,8 @@ static <span class="amxx-tag">Float:</span><span class="amxx-identifier">array2<
 	
 	<h2 id="Sz">8. 转义字符串字面量</h2>
 	
+	<p>任何字符串字面量都储存在数据段，并且相同内容的字面量储存在不同的数据段地址，每一个都是可修改的。</p>
+
 	<p>转义字符串字面量（普通字符串字面量）是最常用的字符串字面量，特点是像<a href="#Char">字符字面量</a>一样，内部允许填写转义字符。</p>
 
 	<p><strong>转义字符串字面量的正确写法：以"作为开头和结尾，中间填写任意数量的字符（包括转义字符），例如：<span class="amxx-string">"中文^t"</span></strong></p>
