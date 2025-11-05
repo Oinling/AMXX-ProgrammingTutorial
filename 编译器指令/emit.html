@@ -170,31 +170,44 @@ code {
 <h3>#emit指令的作用：</h3>
 <ul>
 <li><strong>插入底层指令</strong>：允许开发者绕过高级语法，直接插入 AMX 虚拟机指令，实现更底层的操作。</li>
-<li><strong>性能优化</strong>：在极端性能敏感的场景下，可以用 #emit 写出比普通 Pawn 代码更高效的字节码。</li>
-<li><strong>实现特殊功能</strong>：某些虚拟机特性或扩展，只有通过直接插入指令才能实现。</li>
+<li><strong>性能优化</strong>：没有，因为高级语法被编译后一样会转换为 AMX 虚拟机指令。</li>
 </ul>
 <p>该指令只能在函数体内使用。</p>
+
+<h3>需要提前了解的概念：</h3>
+<ul>
+<li><strong>COD寄存器</strong>：储存代码段基址</li>
+<li><strong>CIP寄存器</strong>：当前代码段地址偏移量，相对于COD</li>
+<li><strong>DAT寄存器</strong>：储存数据段基址</li>
+<li><strong>HEA寄存器</strong>：当前插件的堆地址</li>
+<li><strong>FRM寄存器</strong>：函数的当前栈地址（教科书称为栈栈，但是错，应该叫栈框或栈区）</li>
+<li><strong>STK寄存器</strong>：函数的当前最低栈地址（教科书称为栈顶，但是错错错）</li>
+<li><strong>STP寄存器</strong>：函数的当前最高栈地址（教科书称为栈底，但是错错错）</li>
+<li><strong>PRI寄存器</strong>：主寄存器（Primary Register）</li>
+<li><strong>ALT寄存器</strong>：辅助寄存器（Alternate Register）</li>
+<li><strong>address</strong>：绝对地址，不区分地址类型，因为代码段、数据段、堆、栈在同一空间，位置是线性的（代码段→数据段→堆→栈）</li>
+<li><strong>offset</strong>：栈的相对地址，frm+offset=绝对地址</li>
+<li><strong>[address]</strong>：访问address所指的连续4个字节（取值或赋值）</li>
+<li><strong>{..n}</strong>：连续访问左值低位的n个字节，n一般是1、2、4。其它数值触发未定义行为</li>
+<li><strong>形参</strong>：栈变量的一种，通过函数签名声明而得，传值形参储存了实参的值，穿引用形参储存了实参的address</li>
+<li><strong>实参</strong>：调用函数所输入的参数，称为实参，他的值或地址会被复制给形参</li>
+<li><strong>cellsize</strong>：等于4，表示amxxpawn脚本中每个数值的字节数。目前amxxpawn只存在32位版本，所以是4字节</li>
+</ul>
 
 <h3>#emit指令的语法格式：</h3>
 <ul>
 <p><span class="amxx-di">#emit</span> 操作码 操作数</p>
 <li><strong>操作码</strong>：必填，不区分大小写，详情点击：<a href="#OpCodes">操作码大全</a></li>
-<li><strong>操作数</strong>：可选，根据不同的操作码，操作数的数量和含义不同，每个操作数之间用空格分隔。</li>
-<li><strong>注意</strong>：操作数只能是原子表达式或函数名称，若操作数用于跳转，莫填十进制字面量（会被解析为十六进制）。</li>
-</ul>
-
-<h3>常用概念：</h3>
-<ul>
-<li><strong>PRI寄存器</strong>：主寄存器（Primary Register）</li>
-<li><strong>ALT寄存器</strong>：辅助寄存器（Alternate Register）</li>
-<li><strong>FRM寄存器</strong>：储存当前函数帧指针</li>
-<li><strong>STK寄存器</strong>：储存栈指针</li>
-<li><strong>HEA寄存器</strong>：储存堆指针</li>
-<li><strong>CIP寄存器</strong>：储存当前指令指针</li>
-<li><strong>DAT寄存器</strong>：储存数据段基址</li>
-<li><strong>COD寄存器</strong>：储存代码段基址</li>
-<li><strong>操作数类型</strong>：address（数据段偏移）、offset（栈帧内偏移）、value/number（立即数）、无（隐式操作）</li>
-<li><strong>[]</strong>解引用，取地址的值</li>
+<li><strong>操作数</strong>：由操作码决定是否填写。操作数来源于以下符号：<br>
+	正整数——包括二/十/十六进制字面量，将整数值当做操作数。<br>
+	浮点数——即浮点数字面量，需#pragma rational开启有理数支持，将浮点数的指针当做操作数。<br>
+	常量——const/enum声明的常量，将常量值当做操作数。<br>
+	数据段变量——即数组/结构体/字符串字面量，静态/全局变量，将其address当做操作数。<br>
+	栈变量——即形参和函数体内用new声明的变量，将其offset当做操作数。<br>
+	函数名——将其address当做操作数。<strong>必须确保函数声明语句在上。若是native函数，必须在上面被高级语法调用过。</strong><br>
+	Label标签——将其address当做操作数。<strong>必须确保标签声明语句在上。</strong>
+</li>
+<li><strong>注意</strong>：操作数绝不能是字符、字符串字面量、复合表达式等，例如'1'、"1"、-1、1+5、函数调用。<br>若操作数用于跳转，莫填十进制字面量（会被解析为十六进制）</li>
 </ul>
 
 <h2 id="OpCodes">2. 操作码表格</h2>
@@ -202,139 +215,139 @@ code {
 	<thead>
 		<tr>
 			<th>操作码</th>
-			<th>操作数类型</th>
+			<th>操作数</th>
 			<th>说明</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr><td>load.pri</td><td>address</td><td>PRI = [address]，将数据段指定地址的值加载到主寄存器</td></tr>
-		<tr><td>load.alt</td><td>address</td><td>ALT = [address]，将数据段指定地址的值加载到辅助寄存器</td></tr>
-		<tr><td>load.s.pri</td><td>offset</td><td>PRI = [FRM + offset]，加载当前帧内偏移的值到主寄存器</td></tr>
-		<tr><td>load.s.alt</td><td>offset</td><td>ALT = [FRM + offset]，加载当前帧内偏移的值到辅助寄存器</td></tr>
-		<tr><td>lref.pri</td><td>address</td><td>PRI = [[address]]，间接加载</td></tr>
-		<tr><td>lref.alt</td><td>address</td><td>ALT = [[address]]，间接加载</td></tr>
-		<tr><td>lref.s.pri</td><td>offset</td><td>PRI = [[FRM + offset]]，帧内间接加载</td></tr>
-		<tr><td>lref.s.alt</td><td>offset</td><td>ALT = [[FRM + offset]]，帧内间接加载</td></tr>
-		<tr><td>load.i</td><td>无</td><td>PRI = [PRI]，主寄存器指向的地址加载</td></tr>
-		<tr><td>lodb.i</td><td>number</td><td>PRI = [PRI] 读取指定字节数（1/2/4）</td></tr>
-		<tr><td>const.pri</td><td>value/address</td><td>PRI = value 或 PRI = 变量地址</td></tr>
-		<tr><td>const.alt</td><td>value/address</td><td>ALT = value 或 ALT = 变量地址</td></tr>
-		<tr><td>addr.pri</td><td>offset</td><td>PRI = FRM + offset，获取局部变量地址</td></tr>
-		<tr><td>addr.alt</td><td>offset</td><td>ALT = FRM + offset</td></tr>
-		<tr><td>stor.pri</td><td>address</td><td>[address] = PRI，将主寄存器值存入数据段</td></tr>
-		<tr><td>stor.alt</td><td>address</td><td>[address] = ALT，将辅助寄存器值存入数据段</td></tr>
-		<tr><td>stor.s.pri</td><td>offset</td><td>[FRM + offset] = PRI，存入当前帧</td></tr>
-		<tr><td>stor.s.alt</td><td>offset</td><td>[FRM + offset] = ALT</td></tr>
-		<tr><td>sref.pri</td><td>address</td><td>[[address]] = PRI，间接存储</td></tr>
-		<tr><td>sref.alt</td><td>address</td><td>[[address]] = ALT</td></tr>
-		<tr><td>sref.s.pri</td><td>offset</td><td>[[FRM + offset]] = PRI</td></tr>
-		<tr><td>sref.s.alt</td><td>offset</td><td>[[FRM + offset]] = ALT</td></tr>
-		<tr><td>stor.i</td><td>无</td><td>[ALT] = PRI，主寄存器值存入辅助寄存器指向的地址</td></tr>
-		<tr><td>strb.i</td><td>number</td><td>将PRI的低number字节存入[ALT]</td></tr>
-		<tr><td>lidx</td><td>无</td><td>PRI = [ALT + (PRI × cell size)]，数组索引加载</td></tr>
-		<tr><td>lidx.b</td><td>shift</td><td>PRI = [ALT + (PRI << shift)]，变长索引</td></tr>
-		<tr><td>idxaddr</td><td>无</td><td>PRI = ALT + (PRI × cell size)，计算索引地址</td></tr>
-		<tr><td>idxaddr.b</td><td>shift</td><td>PRI = ALT + (PRI << shift)</td></tr>
-		<tr><td>align.pri</td><td>number</td><td>PRI ^= cell size - number，字节对齐</td></tr>
-		<tr><td>align.alt</td><td>number</td><td>ALT ^= cell size - number</td></tr>
-		<tr><td>lctrl</td><td>index</td><td>PRI = 指定控制寄存器的值（0=COD, 1=DAT, 2=HEA, 3=STP, 4=STK, 5=FRM, 6=CIP）</td></tr>
-		<tr><td>sctrl</td><td>index</td><td>设置控制寄存器（2=HEA, 4=STK, 5=FRM, 6=CIP）= PRI</td></tr>
-		<tr><td>move.pri</td><td>无</td><td>PRI = ALT</td></tr>
-		<tr><td>move.alt</td><td>无</td><td>ALT = PRI</td></tr>
-		<tr><td>xchg</td><td>无</td><td>交换PRI和ALT</td></tr>
-		<tr><td>push.pri</td><td>无</td><td>将PRI压入栈</td></tr>
-		<tr><td>push.alt</td><td>无</td><td>将ALT压入栈</td></tr>
-		<tr><td>push.r</td><td>number</td><td>重复压入PRI，number次</td></tr>
-		<tr><td>push.c</td><td>value</td><td>压入常量</td></tr>
-		<tr><td>push</td><td>address</td><td>压入数据段指定地址的值</td></tr>
-		<tr><td>push.s</td><td>offset</td><td>压入帧内偏移的值</td></tr>
-		<tr><td>pop.pri</td><td>无</td><td>弹出栈顶到PRI</td></tr>
-		<tr><td>pop.alt</td><td>无</td><td>弹出栈顶到ALT</td></tr>
-		<tr><td>stack</td><td>value</td><td>STK = STK + value，调整栈指针</td></tr>
-		<tr><td>heap</td><td>value</td><td>HEA = HEA + value，调整堆指针</td></tr>
-		<tr><td>proc</td><td>无</td><td>函数调用帧设置</td></tr>
-		<tr><td>ret</td><td>无</td><td>返回，恢复帧和指令指针</td></tr>
+		<tr><td>const.pri</td><td>有</td><td>pri=操作数</td></tr>
+		<tr><td>const.alt</td><td>有</td><td>alt=操作数</td></tr>
+		<tr><td>load.pri</td><td>有</td><td>pri=[操作数]，常用于获取数据段变量的值</td></tr>
+		<tr><td>load.alt</td><td>有</td><td>alt=[操作数]，常用于获取数据段变量的值</td></tr>
+		<tr><td>load.s.pri</td><td>有</td><td>pri=[frm+操作数]，常用于获取栈变量的值（传引用形参的值是实参地址）</td></tr>
+		<tr><td>load.s.alt</td><td>有</td><td>alt=[frm+操作数]，常用于获取栈变量的值（传引用形参的值是实参地址）</td></tr>
+		<tr><td>lref.pri</td><td>有</td><td>pri=[[操作数]]<br>示例：<br>dataVar = get_var_addr(anyVar);<br>#emit lref.pri dataVar // pri = anyVar</td></tr>
+		<tr><td>lref.alt</td><td>有</td><td>alt=[[操作数]]<br>示例：<br>dataVar = get_var_addr(anyVar);<br>#emit lref.alt dataVar // alt = anyVar</td></tr>
+		<tr><td>lref.s.pri</td><td>有</td><td>pri=[[frm+操作数]]，常用于获取传引用形参所指实参的值</td></tr>
+		<tr><td>lref.s.alt</td><td>有</td><td>alt=[[frm+操作数]]，常用于获取传引用形参所指实参的值</td></tr>
+		<tr><td>load.i</td><td>无</td><td>pri=[pri]</td></tr>
+		<tr><td>lodb.i</td><td>有</td><td>pri=[pri]{..操作数}<br>示例：<br>dataVar = 0x44332211<br>#emit const.pri dataVar // pri = get_var_addr(dataVar)<br>#emit lodb.i 2 // pri = 0x00002211</td></tr>
+		<tr><td>addr.pri</td><td>有</td><td>pri=frm+操作数，常用于获取栈变量绝对地址</td></tr>
+		<tr><td>addr.alt</td><td>有</td><td>alt=frm+操作数，常用于获取栈变量绝对地址</td></tr>
+		<tr><td>stor.pri</td><td>有</td><td>[操作数]=pri</td></tr>
+		<tr><td>stor.alt</td><td>有</td><td>[操作数]=alt</td></tr>
+		<tr><td>stor.s.pri</td><td>有</td><td>[frm+操作数]=pri，常用于对栈变量赋值</td></tr>
+		<tr><td>stor.s.alt</td><td>有</td><td>[frm+操作数]=alt，常用于对栈变量赋值</td></tr>
+		<tr><td>sref.pri</td><td>有</td><td>[[操作数]]=pri<br>示例：<br>dataVar = get_var_addr(anyVar);<br>#emit sref.pri dataVar // anyVar = pri</td></tr>
+		<tr><td>sref.alt</td><td>有</td><td>[[操作数]]=alt<br>示例：<br>dataVar = get_var_addr(anyVar);<br>#emit sref.alt dataVar // anyVar = alt</td></tr>
+		<tr><td>sref.s.pri</td><td>有</td><td>[[frm+操作数]]=pri，常用于对传引用形参所指实参赋值</td></tr>
+		<tr><td>sref.s.alt</td><td>有</td><td>[[frm+操作数]]=alt，常用于对传引用形参所指实参赋值</td></tr>
+		<tr><td>stor.i</td><td>无</td><td>[alt]=pri</td></tr>
+		<tr><td>strb.i</td><td>有</td><td>[alt]{..操作数}=pri{..操作数}<br>示例：<br>dataVar = 0x44332211;<br>#emit const.pri 0x88776655 // pri = 0x88776655<br>#emit const.alt dataVar // alt = get_var_addr(dataVar)<br>#emit strb.i 2 // dataVar = 0x44336655</td></tr>
+		<tr><td>lidx</td><td>无</td><td>pri=[alt+pri*cellsize]<br>示例：<br>dataArr[3] = 0xFF;<br>#emit const.alt dataArr // alt = get_var_addr(dataArr)<br>#emit const.pri 3 // pri = 3<br>#emit lidx // pri = 0xFF，3*cellsize等于12，指向第12个字节，也就是[3]号元素</td></tr>
+		<tr><td>idxaddr</td><td>无</td><td>pri=alt+pri*cellsize</td></tr>
+		<tr><td>lidx.b</td><td>有</td><td>pri=[alt+pri&lt;&lt;操作数]<br>示例：<br>dataArr[2] = 0xFF;<br>#emit const.alt dataArr // alt = get_var_addr(dataArr)<br>#emit const.pri 1 // pri = 1<br>#emit lidx.b 3 // pri = 0xFF，1&lt;&lt;3等于8，指向第8个字节，也就是[2]号元素</td></tr>
+		<tr><td>idxaddr.b</td><td>有</td><td>pri=alt+pri&lt;&lt;操作数</td></tr>
+		<tr><td>align.pri</td><td>有</td><td>pri^=cellsize-操作数，该结果于对齐并无帮助，意义不明</td></tr>
+		<tr><td>align.alt</td><td>有</td><td>alt^=cellsize-操作数，该结果于对齐并无帮助，意义不明</td></tr>
+		<tr><td>lctrl</td><td>有</td><td>pri=操作数所指寄存器的值（0=cod, 1=dat, 2=hea, 3=stp, 4=stk, 5=frm, 6=cip）</td></tr>
+		<tr><td>sctrl</td><td>有</td><td>操作数所指寄存器=pri（2=HEA, 4=stk, 5=frm, 6=cip）</td></tr>
+		<tr><td>move.pri</td><td>无</td><td>pri=alt</td></tr>
+		<tr><td>move.alt</td><td>无</td><td>alt=pri</td></tr>
+		<tr><td>xchg</td><td>无</td><td>交换pri和alt的值</td></tr>
+		<tr><td>push.pri</td><td>无</td><td>stk=stk-cellsize, [stk]=pri 栈地址前进并赋值</td></tr>
+		<tr><td>push.alt</td><td>无</td><td>stk=stk-cellsize, [stk]=alt 栈地址前进并赋值</td></tr>
+		<tr><td>push.r</td><td>有</td><td>操作数决定多次执行push.pri 栈地址连续前进并赋值</td></tr>
+		<tr><td>push.c</td><td>有</td><td>stk=stk-cellsize, [stk]=操作数 栈地址前进并赋值</td></tr>
+		<tr><td>push</td><td>有</td><td>stk=stk-cellsize, [stk]=[操作数] 栈地址前进并赋值</td></tr>
+		<tr><td>push.s</td><td>有</td><td>stk=stk-cellsize, [stk]=[frm+操作数] 栈地址前进并赋值</td></tr>
+		<tr><td>pushaddr</td><td>有</td><td>stk=stk-cellsize, [stk]=frm+操作数 栈地址前进并赋值</td></tr>
+		<tr><td>pop.pri</td><td>无</td><td>pri=[stk], stk=stk+cellsize 栈地址取值并后退</td></tr>
+		<tr><td>pop.alt</td><td>无</td><td>alt=[stk], stk=stk+cellsize 栈地址取值并后退</td></tr>
+		<tr><td>stack</td><td>有</td><td>stk=stk+操作数，栈地址后退</td></tr>
+		<tr><td>heap</td><td>有</td><td>hea=hea+操作数，堆指针前进</td></tr>
+		<tr><td>proc</td><td>无</td><td>stk=stk-cellsize, [stk]=frm, frm=stk 定义过程的开始</td></tr>
+		<tr><td>ret</td><td>无</td><td>返回</td></tr>
 		<tr><td>retn</td><td>无</td><td>返回并清理参数</td></tr>
-		<tr><td>call</td><td>offset</td><td>调用指定偏移的函数</td></tr>
-		<tr><td>call.pri</td><td>无</td><td>调用PRI指向的函数</td></tr>
-		<tr><td>jump</td><td>offset</td><td>无条件跳转到offset位置</td></tr>
-		<tr><td>jump.pri</td><td>无</td><td>跳转到PRI指向的地址</td></tr>
-		<tr><td>jzer</td><td>offset</td><td>PRI为0时跳转到offset位置</td></tr>
-		<tr><td>jnz</td><td>offset</td><td>PRI不为0时跳转到offset位置</td></tr>
-		<tr><td>jeq</td><td>offset</td><td>PRI==ALT时跳转到offset位置</td></tr>
-		<tr><td>jneq</td><td>offset</td><td>PRI!=ALT时跳转到offset位置</td></tr>
-		<tr><td>jless</td><td>offset</td><td>PRI<ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>jleq</td><td>offset</td><td>PRI≤ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>jgrtr</td><td>offset</td><td>PRI>ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>jgeq</td><td>offset</td><td>PRI≥ALT（无符号）时跳转到offset位置</td></tr>
-		<tr><td>jsless</td><td>offset</td><td>PRI<ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>jsleq</td><td>offset</td><td>PRI≤ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>jsgrtr</td><td>offset</td><td>PRI>ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>jsgeq</td><td>offset</td><td>PRI≥ALT（有符号）时跳转到offset位置</td></tr>
-		<tr><td>shl</td><td>无</td><td>PRI = PRI << ALT</td></tr>
-		<tr><td>shr</td><td>无</td><td>PRI = PRI >>> ALT</td></tr>
-		<tr><td>sshr</td><td>无</td><td>PRI = PRI >> ALT</td></tr>
-		<tr><td>shl.c.pri</td><td>value</td><td>PRI <<= value</td></tr>
-		<tr><td>shl.c.alt</td><td>value</td><td>ALT <<= value</td></tr>
-		<tr><td>shr.c.pri</td><td>value</td><td>PRI >>>= value</td></tr>
-		<tr><td>shr.c.alt</td><td>value</td><td>ALT >>>= value</td></tr>
-		<tr><td>smul</td><td>无</td><td>PRI = PRI × ALT（有符号）</td></tr>
-		<tr><td>sdiv</td><td>无</td><td>PRI /= ALT，ALT = PRI原值 % ALT（有符号）</td></tr>
-		<tr><td>sdiv.alt</td><td>无</td><td>PRI = ALT / PRI，ALT = ALT % PRI原值（有符号）</td></tr>
-		<tr><td>umul</td><td>无</td><td>PRI = PRI × ALT（无符号）</td></tr>
-		<tr><td>udiv</td><td>无</td><td>PRI = PRI / ALT，ALT = PRI mod ALT（无符号）</td></tr>
-		<tr><td>udiv.alt</td><td>无</td><td>PRI = ALT / PRI，ALT = ALT mod PRI（无符号）</td></tr>
-		<tr><td>add</td><td>无</td><td>PRI = PRI + ALT</td></tr>
-		<tr><td>sub</td><td>无</td><td>PRI = PRI - ALT</td></tr>
-		<tr><td>sub.alt</td><td>无</td><td>PRI = ALT - PRI</td></tr>
-		<tr><td>and</td><td>无</td><td>PRI = PRI & ALT</td></tr>
-		<tr><td>or</td><td>无</td><td>PRI = PRI | ALT</td></tr>
-		<tr><td>xor</td><td>无</td><td>PRI = PRI ^ ALT</td></tr>
-		<tr><td>not</td><td>无</td><td>PRI = !PRI</td></tr>
-		<tr><td>neg</td><td>无</td><td>PRI = -PRI</td></tr>
-		<tr><td>invert</td><td>无</td><td>PRI = ~PRI</td></tr>
-		<tr><td>add.c</td><td>value</td><td>PRI = PRI + value</td></tr>
-		<tr><td>smul.c</td><td>value</td><td>PRI = PRI × value</td></tr>
-		<tr><td>zero.pri</td><td>无</td><td>PRI = 0</td></tr>
-		<tr><td>zero.alt</td><td>无</td><td>ALT = 0</td></tr>
-		<tr><td>zero</td><td>address</td><td>[address] = 0</td></tr>
-		<tr><td>zero.s</td><td>offset</td><td>[FRM + offset] = 0</td></tr>
-		<tr><td>sign.pri</td><td>无</td><td>PRI 字节符号扩展</td></tr>
-		<tr><td>sign.alt</td><td>无</td><td>ALT 字节符号扩展</td></tr>
-		<tr><td>eq</td><td>无</td><td>PRI = (PRI == ALT) ? 1 : 0</td></tr>
-		<tr><td>neq</td><td>无</td><td>PRI = (PRI != ALT) ? 1 : 0</td></tr>
-		<tr><td>less</td><td>无</td><td>PRI = (PRI < ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>leq</td><td>无</td><td>PRI = (PRI ≤ ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>grtr</td><td>无</td><td>PRI = (PRI > ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>geq</td><td>无</td><td>PRI = (PRI ≥ ALT) ? 1 : 0（无符号）</td></tr>
-		<tr><td>sless</td><td>无</td><td>PRI = (PRI < ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>sleq</td><td>无</td><td>PRI = (PRI ≤ ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>sgrtr</td><td>无</td><td>PRI = (PRI > ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>sgeq</td><td>无</td><td>PRI = (PRI ≥ ALT) ? 1 : 0（有符号）</td></tr>
-		<tr><td>eq.c.pri</td><td>value</td><td>PRI = (PRI == value) ? 1 : 0</td></tr>
-		<tr><td>eq.c.alt</td><td>value</td><td>ALT = (ALT == value) ? 1 : 0</td></tr>
-		<tr><td>inc.pri</td><td>无</td><td>PRI = PRI + 1</td></tr>
-		<tr><td>inc.alt</td><td>无</td><td>ALT = ALT + 1</td></tr>
-		<tr><td>inc</td><td>address</td><td>[address] = [address] + 1</td></tr>
-		<tr><td>inc.s</td><td>offset</td><td>[FRM + offset] = [FRM + offset] + 1</td></tr>
-		<tr><td>inc.i</td><td>无</td><td>[PRI] = [PRI] + 1</td></tr>
-		<tr><td>dec.pri</td><td>无</td><td>PRI = PRI - 1</td></tr>
-		<tr><td>dec.alt</td><td>无</td><td>ALT = ALT - 1</td></tr>
-		<tr><td>dec</td><td>address</td><td>[address] = [address] - 1</td></tr>
-		<tr><td>dec.s</td><td>offset</td><td>[FRM + offset] = [FRM + offset] - 1</td></tr>
-		<tr><td>dec.i</td><td>无</td><td>[PRI] = [PRI] - 1</td></tr>
-		<tr><td>movs</td><td>number</td><td>拷贝number字节内存（[PRI]→[ALT]）</td></tr>
-		<tr><td>cmps</td><td>number</td><td>比较number字节内存（[PRI]与[ALT]）</td></tr>
-		<tr><td>fill</td><td>number</td><td>用PRI填充[ALT]起始的number字节</td></tr>
-		<tr><td>halt</td><td>value</td><td>终止执行，PRI为返回值</td></tr>
-		<tr><td>bounds</td><td>value</td><td>if (pri < 0 || value < pri) abort(AMX_ERR_BOUNDS, "")</td></tr>
-		<tr><td>sysreq.pri</td><td>无</td><td>调用PRI指定的系统服务</td></tr>
-		<tr><td>sysreq.c</td><td>value</td><td>调用指定编号的系统服务</td></tr>
-		<tr><td>switch</td><td>offset</td><td>跳转到case表</td></tr>
-		<tr><td>casetbl</td><td>...</td><td>case表标记</td></tr>
-		<tr><td>swap.pri</td><td>无</td><td>交换PRI与栈顶</td></tr>
-		<tr><td>swap.alt</td><td>无</td><td>交换ALT与栈顶</td></tr>
-		<tr><td>push.adr</td><td>offset</td><td>压入帧内偏移的地址</td></tr>
+		<tr><td>call</td><td>有</td><td>调用操作数所指函数（不能是native/forward函数），经过测试，无法使用</td></tr>
+		<tr><td>call.pri</td><td>无</td><td>调用pri所指函数（不能是native/forward函数）</td></tr>
+		<tr><td>jump</td><td>有</td><td>向上跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jump.pri</td><td>无</td><td>跳转到pri所指地址</td></tr>
+		<tr><td>jzer</td><td>有</td><td>pri为0时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jnz</td><td>有</td><td>pri不为0时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jeq</td><td>有</td><td>pri==alt时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jneq</td><td>有</td><td>pri!=alt时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jless</td><td>有</td><td>pri&lt;alt （无符号）时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jsless</td><td>有</td><td>pri&lt;alt时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jleq</td><td>有</td><td>pri&lt;=alt （无符号）时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jsleq</td><td>有</td><td>pri&lt;=alt时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jgrtr</td><td>有</td><td>pri>alt （无符号）时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jsgrtr</td><td>有</td><td>pri>alt时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jgeq</td><td>有</td><td>pri>=alt （无符号）时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>jsgeq</td><td>有</td><td>pri>=alt时跳转到操作数（Label标签）位置</td></tr>
+		<tr><td>shl</td><td>无</td><td>pri&lt;&lt;=alt</td></tr>
+		<tr><td>shr</td><td>无</td><td>pri>>>=alt（无符号）</td></tr>
+		<tr><td>sshr</td><td>无</td><td>pri>>=alt</td></tr>
+		<tr><td>shl.c.pri</td><td>有</td><td>pri&lt;&lt;=操作数</td></tr>
+		<tr><td>shl.c.alt</td><td>有</td><td>alt&lt;&lt;=操作数</td></tr>
+		<tr><td>shr.c.pri</td><td>有</td><td>pri>>>=操作数</td></tr>
+		<tr><td>shr.c.alt</td><td>有</td><td>alt>>>=操作数</td></tr>
+		<tr><td>smul</td><td>无</td><td>pri*=alt</td></tr>
+		<tr><td>umul</td><td>无</td><td>pri*=alt （无符号）</td></tr>
+		<tr><td>sdiv</td><td>无</td><td>temp=pri%alt, pri/=alt, alt=temp</td></tr>
+		<tr><td>udiv</td><td>无</td><td>emp=pri%alt, pri/=alt, alt=temp （无符号）</td></tr>
+		<tr><td>sdiv.alt</td><td>无</td><td>temp=alt%pri, pri=alt/pri, alt=temp</td></tr>
+		<tr><td>udiv.alt</td><td>无</td><td>temp=alt%pri, pri=alt/pri, alt=temp （无符号）</td></tr>
+		<tr><td>add</td><td>无</td><td>pri+=alt</td></tr>
+		<tr><td>sub</td><td>无</td><td>pri-=alt</td></tr>
+		<tr><td>sub.alt</td><td>无</td><td>pri=alt-pri</td></tr>
+		<tr><td>and</td><td>无</td><td>pri&=alt</td></tr>
+		<tr><td>or</td><td>无</td><td>pri|=alt</td></tr>
+		<tr><td>xor</td><td>无</td><td>pri^=alt</td></tr>
+		<tr><td>not</td><td>无</td><td>pri=!pri</td></tr>
+		<tr><td>neg</td><td>无</td><td>pri=-pri</td></tr>
+		<tr><td>invert</td><td>无</td><td>pri=~pri</td></tr>
+		<tr><td>add.c</td><td>有</td><td>pri+=操作数</td></tr>
+		<tr><td>smul.c</td><td>有</td><td>pri*=操作数</td></tr>
+		<tr><td>zero.pri</td><td>无</td><td>pri=0</td></tr>
+		<tr><td>zero.alt</td><td>无</td><td>alt=0</td></tr>
+		<tr><td>zero</td><td>有</td><td>[操作数]=0</td></tr>
+		<tr><td>zero.s</td><td>有</td><td>[frm+操作数]=0</td></tr>
+		<tr><td>sign.pri</td><td>无</td><td>sign extend the byte in PRI to a cell</td></tr>
+		<tr><td>sign.alt</td><td>无</td><td>sign extend the byte in ALT to a cell</td></tr>
+		<tr><td>eq</td><td>无</td><td>pri=pri==alt</td></tr>
+		<tr><td>neq</td><td>无</td><td>pri=pri!=alt</td></tr>
+		<tr><td>less</td><td>无</td><td>pri=pri&lt;alt （无符号）</td></tr>
+		<tr><td>sless</td><td>无</td><td>pri=pri&lt;alt</td></tr>
+		<tr><td>leq</td><td>无</td><td>pri=pri&lt;=alt （无符号）</td></tr>
+		<tr><td>sleq</td><td>无</td><td>pri=pri&lt;=alt</td></tr>
+		<tr><td>grtr</td><td>无</td><td>pri=pri>alt （无符号）</td></tr>
+		<tr><td>sgrtr</td><td>无</td><td>pri=pri>alt</td></tr>
+		<tr><td>geq</td><td>无</td><td>pri=pri>=alt （无符号）</td></tr>
+		<tr><td>sgeq</td><td>无</td><td>pri=pri>=alt</td></tr>
+		<tr><td>eq.c.pri</td><td>有</td><td>pri=pri==操作数</td></tr>
+		<tr><td>eq.c.alt</td><td>有</td><td>alt=alt==操作数</td></tr>
+		<tr><td>inc.pri</td><td>无</td><td>pri++</td></tr>
+		<tr><td>dec.pri</td><td>无</td><td>pri--</td></tr>
+		<tr><td>inc.alt</td><td>无</td><td>alt++</td></tr>
+		<tr><td>dec.alt</td><td>无</td><td>alt--</td></tr>
+		<tr><td>inc</td><td>有</td><td>[操作数]++</td></tr>
+		<tr><td>dec</td><td>有</td><td>[操作数]--</td></tr>
+		<tr><td>inc.s</td><td>有</td><td>[frm+操作数]++</td></tr>
+		<tr><td>dec.s</td><td>有</td><td>[frm+操作数]--</td></tr>
+		<tr><td>inc.i</td><td>无</td><td>[pri]++</td></tr>
+		<tr><td>dec.i</td><td>无</td><td>[pri]--</td></tr>
+		<tr><td>movs</td><td>有</td><td>[alt]{..操作数}=[pri]{..操作数}</td></tr>
+		<tr><td>cmps</td><td>有</td><td>操作数决定在alt和pri地址连续比较多少个字节，pri储存返回值</td></tr>
+		<tr><td>fill</td><td>有</td><td>[alt..alt+操作数/4]=pri</td></tr>
+		<tr><td>halt</td><td>有</td><td>关闭游戏，据说操作数为0，据说退出码是pri</td></tr>
+		<tr><td>bounds</td><td>有</td><td>等同于：if (pri&lt;0 || 操作数&lt;pri) abort(AMX_ERR_BOUNDS, "")</td></tr>
+		<tr><td>sysreq.pri</td><td>无</td><td>调用pri所指native函数</td></tr>
+		<tr><td>sysreq.c</td><td>有</td><td>调用操作数所指native函数</td></tr>
+		<tr><td>switch</td><td>有</td><td>跳转到操作数所指case表</td></tr>
+		<tr><td>casetbl</td><td>无</td><td>case表标记</td></tr>
+		<tr><td>swap.pri</td><td>无</td><td>交换pri与stk</td></tr>
+		<tr><td>swap.alt</td><td>无</td><td>交换alt与stk</td></tr>
 		<tr><td>nop</td><td>无</td><td>无操作</td></tr>
 	</tbody>
 </table>
@@ -342,38 +355,42 @@ code {
 <h2 id="Codes">3. 代码示例</h2>
 
 <h3>修改变量值：</h3>
-<ul><code>static <span class="amxx-identifier">gVar</span>;
-public <span class="amxx-function">plugin_init</span>()
+<ul><code>public <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-di">#emit</span> const.pri <span class="amxx-number">100</span>	<span class="amxx-comment">// pri = 100</span>
-	<span class="amxx-di">#emit</span> stor.pri <span class="amxx-identifier">gVar</span>	<span class="amxx-comment">// gVar = pri</span>
+	<span class="amxx-comment">// 所有全局/静态变量、字符串/数组/结构体字面量都是数据段变量</span>
+	static <span class="amxx-identifier">dataV</span>;
+	<span class="amxx-di">#emit</span> const.pri <span class="amxx-number">100</span>	<span class="amxx-comment">// pri=100</span>
+	<span class="amxx-di">#emit</span> stor.pri <span class="amxx-number">dataV</span>	<span class="amxx-comment">// [dataV.address]=pri	:	dataV = 100</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]dataV : %d"</span>, <span class="amxx-identifier">dataV</span>); <span class="amxx-comment">// 显示dataV等于100</span>
 
-	new <span class="amxx-identifier">locVar</span>;
-	
-	<span class="amxx-di">#emit</span> const.pri <span class="amxx-number">200</span>	<span class="amxx-comment">// pri = 200</span>
-	<span class="amxx-di">#emit</span> addr.alt <span class="amxx-identifier">locVar</span>	<span class="amxx-comment">// alt = 取栈变量地址(locVar)</span>
-	<span class="amxx-di">#emit</span> stor.i		<span class="amxx-comment">// 取栈(alt)地址的值 = pri</span>
-	
-	<span class="amxx-comment">// gVar == 100, locVar == 200</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] gVar = %d, locVar = %d"</span>, <span class="amxx-identifier">gVar</span>, <span class="amxx-identifier">locVar</span>);
+	<span class="amxx-comment">// 所有形参、局部new变量都是栈变量</span>
+	new <span class="amxx-identifier">stackV</span>;
+	<span class="amxx-di">#emit</span> const.pri <span class="amxx-number">200</span>	<span class="amxx-comment">// pri=200</span>
+	<span class="amxx-di">#emit</span> stor.s.pri <span class="amxx-number">stackV</span>	<span class="amxx-comment">// [frm+stackV.offset]=pri	:	stackV = 200</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]stackV : %d"</span>, <span class="amxx-identifier">stackV</span>); <span class="amxx-comment">// 显示stackV等于200</span>
 }</code></ul>
 
 <h3>示例2：获取变量地址</h3>
-<ul><code>static <span class="amxx-identifier">gVar</span>;
-public <span class="amxx-function">plugin_init</span>()
+<ul><code>public <span class="amxx-function">plugin_init</span>()
 {
-	new <span class="amxx-identifier">locVar</span>;
+	<span class="amxx-comment">// 所有全局/静态变量、字符串/数组/结构体字面量都是数据段变量</span>
+	static <span class="amxx-identifier">dataV</span>;
+	<span class="amxx-di">#emit</span> const.pri <span class="amxx-identifier">dataV</span>	<span class="amxx-comment">// pri=dataV.address</span>
+	<span class="amxx-di">#emit</span> stor.pri <span class="amxx-identifier">dataV</span>	<span class="amxx-comment">// [dataV.address]=pri</span>
+	<span class="amxx-comment">// 数据段地址比较靠近0，例如400</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]dataV.address : %d == %d"</span>, <span class="amxx-identifier">dataV</span>, <span class="amxx-function">get_var_addr</span>(<span class="amxx-identifier">dataV</span>));
 
-	new <span class="amxx-identifier">gVarAddr</span>, <span class="amxx-identifier">locVarAddr</span>;
-	
-	<span class="amxx-di">#emit</span> const.pri <span class="amxx-identifier">gVar</span>		<span class="amxx-comment">// pri = 取数据段变量地址(gVar)</span>
-	<span class="amxx-di">#emit</span> stor.s.pri <span class="amxx-identifier">gVarAddr</span>	<span class="amxx-comment">// gVarAddr = pri</span>
+	<span class="amxx-comment">// 所有形参、局部new变量都是栈变量</span>
+	new <span class="amxx-identifier">stackV</span>;
+	<span class="amxx-di">#emit</span> const.pri <span class="amxx-identifier">stackV</span>	<span class="amxx-comment">// pri=stackV.offset</span>
+	<span class="amxx-di">#emit</span> stor.s.pri <span class="amxx-identifier">stackV</span>	<span class="amxx-comment">// [frm+stackV.offset]=pri</span>
+	<span class="amxx-comment">// 第一个栈变量offset通常是-4，第一个形参offset应该是12</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]stackV.offset : %d"</span>, <span class="amxx-identifier">stackV</span>);
 
-	<span class="amxx-di">#emit</span> addr.pri <span class="amxx-identifier">locVar</span>		<span class="amxx-comment">// pri = 取栈变量地址(locVar)</span>
-	<span class="amxx-di">#emit</span> stor.s.pri <span class="amxx-identifier">locVarAddr</span>	<span class="amxx-comment">// locVarAddr = pri</span>
-	
-	<span class="amxx-comment">// gVarAddr == get_var_addr(gVar), locVarAddr == get_var_addr(locVar)</span>
-	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX] gVarAddr = %d, locVarAddr = %d"</span>, <span class="amxx-identifier">gVarAddr</span>, <span class="amxx-identifier">locVarAddr</span>);
+	<span class="amxx-di">#emit</span> addr.pri <span class="amxx-identifier">stackV</span>	<span class="amxx-comment">// pri=frm+stackV.offset</span>
+	<span class="amxx-di">#emit</span> stor.s.pri <span class="amxx-identifier">stackV</span>	<span class="amxx-comment">// [frm+stackV.offset]=pri</span>
+	<span class="amxx-comment">// 栈地址通常破万，例如17016</span>
+	<span class="amxx-function">server_print</span>(<span class="amxx-string">"[AMXX]stackV.address : %d == %d"</span>, <span class="amxx-identifier">stackV</span>, <span class="amxx-function">get_var_addr</span>(<span class="amxx-identifier">stackV</span>));
 }</code></ul>
 
 <p>更多内容请参考：<a href="https://github.com/YashasSamaga/AMX-Assembly-Docs/blob/master/DOCUMENT.md">AMX Assembly</a></p>
