@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CS1.6 · AMXX 开发环境安装指南</title>
+	<!-- 使用柔和、现代的界面风格，保留全部原始文本内容 -->
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+			background: #f4f7fb;
+			color: #1a2639;
+			line-height: 1.6;
+			padding: 2rem 1.5rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.document-card {
+			max-width: 1000px;
+			width: 100%;
+			background: rgba(255,255,255,0.9);
+			backdrop-filter: blur(4px);
+			background: #ffffff;
+			border-radius: 32px;
+			box-shadow: 0 20px 40px -12px rgba(0,20,40,0.25), 0 8px 20px -8px rgba(0,32,64,0.15);
+			padding: 2.5rem 2.8rem;
+			transition: all 0.2s ease;
+			border: 1px solid #eef2f8;
+		}
+
+		/* 保留原版风格点缀，但更精致 */
+		h1 {
+			font-size: 2.4rem;
+			font-weight: 700;
+			letter-spacing: -0.02em;
+			background: linear-gradient(145deg, #0b1e33, #203a5e);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-clip: text;
+			margin-bottom: 0.25rem;
+			border-left: 6px solid #2b6c9e;
+			padding-left: 1.5rem;
+		}
+
+		.version-info {
+			background: #f0f6fe;
+			border-left: 6px solid #2e7fb8;
+			border-radius: 0 20px 20px 0;
+			padding: 1.2rem 2rem;
+			margin: 1.8rem 0 2.2rem 0;
+			box-shadow: inset 0 2px 4px rgba(0,30,60,0.02);
+		}
+
+		.version-info h2 {
+			font-size: 1.3rem;
+			font-weight: 600;
+			color: #0b3b5c;
+		}
+		.version-info strong {
+			font-weight: 700;
+			color: #104c7d;
+		}
+
+		h2 {
+			font-size: 1.9rem;
+			font-weight: 650;
+			margin: 2.5rem 0 1.2rem 0;
+			padding-bottom: 0.3rem;
+			border-bottom: 2px solid #dde5ed;
+			color: #153e5a;
+		}
+
+		h2:first-of-type {
+			margin-top: 0.5rem;
+		}
+
+		h3 {
+			font-size: 1.4rem;
+			font-weight: 600;
+			margin: 1.8rem 0 0.8rem 0;
+			color: #1e4c73;
+			display: inline-block;
+			background: #e7f0f9;
+			padding: 0.2rem 1.2rem 0.2rem 1rem;
+			border-radius: 30px 8px 8px 30px;
+		}
+
+		.step {
+			margin-bottom: 1.8rem;
+			background: #fafdff;
+			padding: 0.8rem 1.8rem 1.2rem 1.8rem;
+			border-radius: 24px;
+			border: 1px solid #e2eaf2;
+			transition: 0.1s ease;
+		}
+
+		.step:hover {
+			border-color: #b6d2e6;
+			background: #ffffff;
+		}
+
+		p, li {
+			font-size: 1.04rem;
+			color: #1f2e44;
+		}
+
+		a {
+			color: #1a68b0;
+			font-weight: 500;
+			text-decoration: none;
+			border-bottom: 1px solid #b3d2f0;
+		}
+
+		a:hover {
+			color: #09345c;
+			border-bottom: 2px solid #1a68b0;
+		}
+
+		/* 代码块 — 保留原配色但更加可读 */
+		code {
+			white-space: pre-wrap;
+			word-break: break-word;
+			background: #eef3f9;
+			color: #003c7c;
+			font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+			font-weight: 550;
+			font-size: 0.95rem;
+			padding: 0.2rem 0.5rem;
+			border-radius: 12px;
+			border: 1px solid #c7d9e9;
+			display: inline-block;
+			margin: 0.15rem 0;
+		}
+
+		/* 多行代码块样式 */
+		.step code:has(> br), code:only-child {
+			display: block;
+			background: #1e2b3c;
+			color: #ddf0ff;
+			border: 1px solid #2e4b70;
+			border-radius: 18px;
+			padding: 1rem 1.3rem;
+			margin: 1rem 0;
+			font-weight: 500;
+			box-shadow: inset 0 0 0 1px #3d5e7c;
+			white-space: pre-wrap;
+		}
+
+		/* 确保原来code内的换行被保留 */
+		code br {
+			display: none; /* 去除原有的换行干扰，white-space负责 */
+		}
+
+		/* 保留原有蓝色加粗风格，但融入卡片 */
+		.note {
+			color: #b12e3b;
+			font-weight: 700;
+			background: #ffeae9;
+			padding: 0.2rem 1rem;
+			border-radius: 30px;
+			display: inline-block;
+			border-left: 4px solid #c23b44;
+			font-size: 0.98rem;
+		}
+
+		ul, ol {
+			padding-left: 1.8rem;
+			margin: 0.6rem 0 1rem 0;
+		}
+
+		li {
+			margin: 0.3rem 0;
+		}
+
+		/* 对原始按钮链接模拟 */
+		.mock-button {
+			background: #e3edf5;
+			border-radius: 40px;
+			padding: 0.15rem 0.8rem;
+			font-weight: 500;
+			border: 1px solid #acc4db;
+			color: #104c7d;
+			white-space: nowrap;
+		}
+
+		.footer-nav {
+			margin-top: 3rem;
+			border-top: 2px dashed #b8cfec;
+			padding: 2rem 0 1rem;
+			text-align: center;
+		}
+
+		.footer-nav h1 {
+			font-size: 1.7rem;
+			border-left: none;
+			padding-left: 0;
+			margin-bottom: 1rem;
+			background: none;
+			-webkit-text-fill-color: #173f61;
+			color: #173f61;
+		}
+
+		.footer-nav a {
+			background: #1e5a88;
+			color: white;
+			padding: 0.8rem 2rem;
+			border-radius: 60px;
+			font-weight: 600;
+			border: none;
+			box-shadow: 0 4px 8px #abc0d3;
+			transition: 0.15s;
+		}
+
+		.footer-nav a:hover {
+			background: #0e3d60;
+			box-shadow: 0 8px 12px #8caac9;
+			border-bottom: none;
+		}
+
+		/* 小的元数据标签 */
+		.meta-chip {
+			background: #e1eaf2;
+			color: #1e4f73;
+			padding: 0.1rem 0.8rem;
+			border-radius: 30px;
+			font-size: 0.85rem;
+			font-weight: 600;
+			margin-left: 0.5rem;
+			letter-spacing: 0.3px;
+		}
+
+		/* 保留原始内容完全不变，只美化样式 */
+		.step .original-text {
+			all: inherit; /* 不改变文本本身 */
+		}
+
+		hr {
+			border: none;
+			height: 1px;
+			background: linear-gradient(to right, #cbdae9, transparent);
+			margin: 1.2rem 0;
+		}
+	</style>
+</head>
+<body>
+<div class="document-card">
+	<!-- 标题部分 完全保留原有文本 -->
+	<h1>CS1.6 amxx使用和开发环境安装指南</h1>
+
+	<div class="version-info">
+		<h2><strong>更新时间</strong>：2026年2月24日</h2>
+	</div>
+
+	<!-- metamod 部分 -->
+	<h2 id="MetamodInstall">1. 为CS安装metamod插件平台</h2>
+
+	<div class="step">
+		<h3>1.1 下载并安装metamod</h3>
+		<p>下载页面：<a href="https://www.amxmodx.org/downloads.php">https://www.amxmodx.org/downloads.php</a></p>
+		<p>下载地址：<a href="https://www.amxmodx.org/release/metamod-1.21.1-am.zip">metamod 1.21.1</a></p>
+		<p>下载并解压后得到addons文件夹，将其复制或剪切到cs客户端或服务端目录下的cstrike文件夹内。</p>
+		<p>客户端指的是即能玩游戏又能开服的“监听服务器Listen Server”。</p>
+		<p>服务端指的是仅能开服的“专用服务器Dedicated Server”。</p>
+		<p>寻找cstrike文件夹的方法：</p>
+		<ul>
+			<li>Windows系统的正版cs客户端的cstrike文件夹地址通常是：Steam\steamapps\common\Half-Life\cstrike</li>
+			<li>在Windows系统的steam平台的“库”页面里，右键点击Counter-Strike，再依次点击属性-已安装文件-浏览，便能打开客户端目录。</li>
+			<li>在Windows系统运行的服务端cstrike文件夹地址可能是：HLServer\cstrike</li>
+			<li>在Linux系统运行的服务端cstrike文件夹地址可能是：hlds_l/cstrike</li>
+		</ul>
+	</div>
+
+	<div class="step">
+		<h3>1.2 启动metamod插件平台</h3>
+		<p>用记事本打开cstrike/liblist.gam文件，找到以下内容（重点是gamedll开头）：</p>
+		<code>gamedll "dlls\mp.dll"
+gamedll_linux "dlls/cs.so"
+gamedll_osx "dlls/cs.dylib"</code>
+		<p>改成以下内容：</p>
+		<code>gamedll "addons/metamod/dlls/metamod.dll"
+gamedll_linux "addons/metamod/dlls/metamod.so"
+gamedll_osx "addons/metamod/dlls/metamod.dylib"</code>
+	</div>
+
+	<div class="step">
+		<h3>1.3 确认启动是否成功</h3>
+		<p>启动客户端或服务端，载入游戏地图后，打开控制台，发送：metamod_version</p>
+		<p>正常情况下，控制台会反馈："metamod_version" is "1.21.1-am"</p>
+	</div>
+
+	<!-- amxmodx 安装部分 -->
+	<h2 id="AmxmodxInstall">2. 为metamod安装amxmodx插件平台</h2>
+
+	<div class="step">
+		<h3>2.1 下载并安装amxmodx</h3>
+		<p>请前往下载页面或构建页面，自行确认是否有新版。你需要下载<strong>Base基础包</strong>和<strong>cs模组附加包</strong>。</p>
+		<p>你也可以根据自身需求直接点击下方的按钮下载，但不一定是最新版。</p>
+		<p>下载页面：<a href="https://www.amxmodx.org/downloads.php">https://www.amxmodx.org/downloads.php</a></p>
+		<p>构建页面：<a href="https://www.amxmodx.org/downloads-new.php">https://www.amxmodx.org/downloads-new.php</a></p>
+		<p>Windows系统：</p>
+		<ul>
+			<li>基础包下载地址：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5474-base-windows.zip">amxmodx-1.10.0-git5474-base-windows.zip</a></li>
+			<li>cs模组附加包下载地址：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5474-cstrike-windows.zip">amxmodx-1.10.0-git5474-cstrike-windows.zip</a></li>
+		</ul>
+		<p>Linux系统：</p>
+		<ul>
+			<li>基础包下载地址：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5474-base-linux.tar.gz">amxmodx-1.10.0-git5474-base-linux.tar.gz</a></li>
+			<li>cs模组附加包下载地址：<a href="https://www.amxmodx.org/amxxdrop/1.10/amxmodx-1.10.0-git5474-cstrike-linux.tar.gz">amxmodx-1.10.0-git5474-cstrike-linux.tar.gz</a></li>
+		</ul>
+		<p>下载并解压后得到addons文件夹，同样放入cstrike文件夹，注意：先放基础包，再放附加包，并确认替换文件。</p>
+	</div>
+
+	<div class="step">
+		<h3>2.2 启动amxmodx插件平台</h3>
+		<p>Windows系统必须先启用“显示文件扩展名”功能。具体开启方法，自行上网查询。</p>
+		<p>打开cstrike/addons/metamod文件夹，创建plugins.ini文本文件。</p>
+		<p>用任意文本编辑器打开plugins.ini文件（例如Windows系统的记事本），另起一行，输入以下内容：</p>
+		<code>win32 addons/amxmodx/dlls/amxmodx_mm.dll
+linux addons/amxmodx/dlls/amxmodx_mm_i386.so</code>
+		<p>保存并关闭文件。</p>
+	</div>
+
+	<div class="step">
+		<h3>2.3 确认启动是否成功</h3>
+		<p>启动客户端或服务端，载入游戏地图后，打开控制台，发送：amxx version</p>
+		<p>正常情况下，控制台会反馈大量文字，其第1行类似这样：AMX Mod X 1.10.0.5467 (http://www.amxmodx.org)</p>
+
+		<p>若需要将amxmodx切换为中文：</p>
+		<ul>
+			<li>打开cstrike/addons/amxmodx/configs/amxx.cfg - 找到amx_language "en"改为amx_language "cn"</li>
+			<li>进入游戏地图，在控制台发送：setinfo lang cn</li>
+		</ul>
+	</div>
+
+	<!-- 安装amxx插件 -->
+	<h2 id="AmxxInstall">3. 为amxmodx安装amxx插件</h2>
+
+	<div class="step">
+		<h3>3.1 制作或下载，并安装amxx</h3>
+		<p>制作方法请继续看下一步教程：<a href="#ProgrammingToolInstall">4. 安装编程工具</a></p>
+		<p>通常可以去官方论坛下载amxx插件：<a href="https://forums.alliedmods.net/index.php">https://forums.alliedmods.net/index.php</a></p>
+	   
+		<p>安装须知（有些插件拥有或需要资源文件）：</p>
+		<ul>
+			<li>amxx插件安装（存放）位置：cstrike/addons/amxmodx/plugins</li>
+			<li>ini插件初始化文件位置：cstrike/addons/amxmodx/configs</li>
+			<li>cfg插件配置文件位置：cstrike/addons/amxmodx/configs</li>
+			<li>多语言翻译文件位置：cstrike/addons/amxmodx/data/lang</li>
+			<li>天空tga图片文件安装（存放）位置：cstrike/gfx/env</li>
+			<li>bsp地图文件安装（存放）位置：cstrike/maps</li>
+			<li>mp3音乐文件安装（存放）位置：cstrike/media</li>
+			<li>mdl模型文件安装（存放）位置：cstrike/models</li>
+			<li>wav音效文件安装（存放）位置：cstrike/sound</li>
+			<li>spr精灵图片文件安装（存放）位置：cstrike/sprites</li>
+			<li>wad地图纹理文件安装（存放）位置：cstrike</li>
+		</ul>
+		<p>举个例子，如果你下载的amxx插件，同时拥有models、sound文件夹。</p>
+		<p>把amxx文件放入plugins文件夹，把models、sound文件夹放入cstrike文件夹即可。</p>
+	</div>
+
+	<div class="step">
+		<h3>3.2 启动amxx插件</h3>
+		<p>打开cstrike/addons/amxmodx/configs/plugins.ini文件，或其他名字以plugins开头的ini文件。</p>
+		<p>另起一行，输入amxx文件的相对地址，例如：</p>
+		<code>; 启动绝对地址为cstrike/addons/amxmodx/plugins/zp43/zp43_core.amxx的插件
+zp43/zp43_core.amxx
+; 启动绝对地址为cstrike/addons/amxmodx/plugins/zp43_core.amxx的插件
+zp43_core.amxx</code>
+		<p>修改后，保存并关闭文件。</p>
+
+		<p>启动顺序须知：</p>
+		<ul>
+			<li>有些amxx插件要求启动必须晚于另一个amxx插件，这种情况下必须将其相对地址写在另一个的下方。</li>
+			<li>plugins.ini文件里填写的插件，比其他plugins***.ini更早被启动。</li>
+			<li>有多个plugins***.ini文件时，根据名称字符编码顺序决定优先级，例如pluginsA.ini早于pluginsB.ini。</li>
+		</ul>
+	</div>
+
+	<div class="step">
+		<h3>3.3 确认启动是否成功</h3>
+		<p>启动客户端或服务端，载入游戏地图后，打开控制台，发送：amxx plugins</p>
+		<p>正常情况下，控制台会反馈所有已启动的amxx插件信息——名称、版本、作者、相对地址、运行状态等。</p>
+		<p>在这些信息中寻找是否有你想启动的amxx插件。</p>
+	</div>
+
+	<!-- 编程工具安装 -->
+	<h2 id="ProgrammingToolInstall">4. 安装编程工具</h2>
+
+	<div class="step">
+		<h3>4.1 下载、安装代码编辑器（Windows系统）</h3>
+		<p>amxx插件的源码是通常是sma文本文件，用任何文本编辑器都可以打开并编辑，包括记事本。</p>
+		<p>推荐使用：</p>
+		<ul>
+			<li>Visual Studio Code</li>
+			<li>Notepad++</li>
+			<li>AMX Mod X Studio</li>
+		</ul>
+		<p class="note">注意：保存源码前，需要设置UTF-8无BOM编码</p>
+	</div>
+
+	<div class="step">
+		<h3>4.2 修改编程工具配置，使编程更方便，更自动化</h3>
+		<p>Visual Studio Code或Notepad++需要安装amxmodx语言或amxxpawn语言拓展。AMX Mod X Studio不需要。</p>
+		<p>代码编辑器可以设置编程语言相关的配置，设置越详细，对编程帮助越大。</p>
+		<p>可参考以下内容进行设置：</p>
+		<ul>
+			<li>addons/amxmodx - amxmodx插件平台目录</li>
+			<li>addons/amxmodx/scripting - 源码和编译器所在位置</li>
+			<li>addons/amxmodx/scripting/amxxpc.exe - 编译器，用于把sma转变为amxx文件</li>
+			<li>addons/amxmodx/scripting/include - inc头文件所在位置，源码的一种，作用是被其它源码引用</li>
+			<li>addons/amxmodx/plugins - amxx插件文件存放位置</li>
+			<li>addons/amxmodx/logs - 插件运行日志，游戏中插件出问题会在这里留下提示</li>
+			<li>addons/amxmodx/configs - 插件配置文件位置</li>
+			<li>addons/amxmodx/data/lang - 多语言翻译文件位置</li>
+			<li>addons/amxmodx/modules - dll插件文件位置（amxmodx拥有amxx和dll两种插件）</li>
+			<li>可填写-?作为编译器启动选项（也叫参数或Options），编译时会反馈所有可填写选项。</li>
+			<li>Half-Life可执行文件，通常指cs1.6/hl.exe或者hlds/hlds.exe，在启动选项填写-game cstrike切换为cs（默认启动半条命）</li>
+		</ul>
+		<p>这些代码编辑器都拥有编译源码的按钮或快捷键。编译产生的.amxx文件位于你设置的“输出位置”。</p>
+	</div>
+
+	<div class="step">
+		<h3>4.3 不使用代码编辑器的编译方法</h3>
+		<p>将源码文件拖动到amxxpc.exe文件或快捷方式图标上，即可在源码旁边生成.amxx文件。</p>
+		<p>但在未添加启动选项的情况下，amxxpc.exe只会在源码所在目录寻找引用的头文件。</p>
+		<p>所以最好将源码放在addons/amxmodx/scripting目录下，确保编译器能找到头文件。</p>
+		<p>scripting目录下的compile.exe是个批量编译小程序，由于编译scripting目录所有sma源码。</p>
+		<p>其生成的.amxx文件位于scripting/compiled文件夹内。</p>
+	</div>
+
+	<div class="footer-nav">
+		<h1>下一篇教程:</h1>
+		<p><a href="03_%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99AMXX%E6%8F%92%E4%BB%B6%E6%BA%90%E7%A0%81.html">03. 如何编写AMXX插件源码</a></p>
+	</div>
+</div>
+</body>
+</html>
