@@ -1,268 +1,315 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<title>AMXX源码的注释</title>
-<style>
-	code {
-		white-space: pre;
-		color: rgb(0,0,255);
-		background-color: #f1f1f1;
-		font-family: Consolas, monospace;
-		font-weight: bold;
-	}
-	.amxx-note {
-		color: rgb(0,0,0);
-		font-weight: normal;
-	}
-	.amxx-comment {
-		color: rgb(63,159,63);
-		font-weight: normal;
-	}
-	.amxx-directive {
-		color: rgb(111,111,107);
-		font-weight: normal;
-	}
-	.amxx-ds {
-		background: linear-gradient(to right, rgb(111,111,107), rgb(153,51,255));
-		-webkit-background-clip: text;
-		color: transparent;
-		font-weight: normal;
-	}
-	.amxx-df {
-		background: linear-gradient(to right, rgb(91,111,117), rgb(83,1,165));
-		-webkit-background-clip: text;
-		color: transparent;
-		font-weight: normal;
-	}
-	.amxx-string {
-		color: rgb(193,61,41);
-		font-weight: normal;
-	}
-	.amxx-number {
-		color: rgb(0,0,0);
-		font-weight: normal;
-	}
-	.amxx-enumname {
-		background: linear-gradient(to right, rgb(93,20,10), rgb(153,51,255));
-		-webkit-background-clip: text;
-		color: transparent;
-	}
-	.amxx-function {
-		color: rgb(113,31,195);
-		font-weight: bold;
-	}
-	.amxx-tag {
-		color: rgb(93,20,10);
-		font-weight: normal;
-	}
-	.amxx-symbol {
-		color: rgb(153,51,255);
-		font-weight: normal;
-	}
-</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>AMXX源码的注释</title>
+	<style>
+		/* 与第一个文件保持完全一致的样式 */
+		:root {
+			--bg-body: #f4f7fb;
+			--bg-code: #1e1e2f;
+			--text-primary: #2c3e50;
+			--text-code: #e4e4e4;
+			--accent-blue: #4a90e2;
+			--accent-purple: #9b59b6;
+			--comment-green: #6a9955;
+			--string-red: #ce9178;
+			--number-dark: #b5cea8;
+			--tag-brown: #d4d4d4;
+			--function-purple: #dcdcaa;
+			--directive-gray: #808080;
+			--border-light: #e0e0e0;
+			--shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+		}
+		* { box-sizing: border-box; margin: 0; padding: 0; }
+		body {
+			font-family: 'Inter', -apple-system, sans-serif;
+			background: var(--bg-body);
+			color: var(--text-primary);
+			line-height: 1.7;
+			padding: 2rem 1rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		.container {
+			max-width: 1000px;
+			width: 100%;
+			background: white;
+			border-radius: 28px;
+			box-shadow: var(--shadow-sm);
+			padding: 2.5rem;
+			margin: 1rem 0;
+		}
+		h1 {
+			font-size: 2.2rem;
+			font-weight: 600;
+			background: linear-gradient(135deg, #1e2b3a, #2c3e50);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			margin-bottom: 1.5rem;
+			border-bottom: 2px solid var(--accent-blue);
+			padding-bottom: 0.5rem;
+		}
+		h2 {
+			font-size: 1.6rem;
+			font-weight: 500;
+			margin: 2rem 0 1rem;
+			color: #1e2b3a;
+		}
+		p { margin: 1.2rem 0; font-size: 1.05rem; }
+		a {
+			color: var(--accent-blue);
+			text-decoration: none;
+			font-weight: 500;
+		}
+		a:hover { color: var(--accent-purple); text-decoration: underline; }
+
+		.code-block {
+			background: var(--bg-code);
+			border-radius: 18px;
+			padding: 1.5rem;
+			margin: 1.5rem 0;
+			overflow-x: auto;
+			box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 20px rgba(0,0,0,0.3);
+		}
+		code {
+			display: block;
+			font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+			font-size: 0.95rem;
+			color: var(--text-code);
+			white-space: pre;
+			line-height: 1.6;
+		}
+
+		/* 语法高亮类名完全一致 */
+		.amxx-comment  { color: #6a9955; font-style: italic; }
+		.amxx-directive{ color: #569cd6; font-weight: 500; }
+		.amxx-ds	   { color: #9cdcfe; }
+		.amxx-df	   { color: #d4d4d4; }
+		.amxx-string   { color: #ce9178; }
+		.amxx-number   { color: #b5cea8; }
+		.amxx-enumname { color: #4ec9b0; }
+		.amxx-function { color: #dcdcaa; font-weight: 500; }
+		.amxx-tag	  { color: #9cdcfe; }
+		.amxx-symbol   { color: #c586c0; }
+		.amxx-note	 { color: #d4d4d4; }
+
+		.inline-code {
+			background: #eef2f5;
+			color: #d14;
+			font-family: monospace;
+			padding: 0.2rem 0.5rem;
+			border-radius: 8px;
+			font-size: 0.95rem;
+			border: 1px solid #d0d7de;
+		}
+
+		.filename-tag {
+			display: inline-block;
+			background: #1e2b3a;
+			color: white;
+			font-size: 0.85rem;
+			padding: 0.2rem 0.8rem;
+			border-radius: 30px;
+			margin-right: 0.5rem;
+			letter-spacing: 0.3px;
+		}
+		.note-box {
+			background: #e8f0fe;
+			border-left: 5px solid var(--accent-blue);
+			padding: 1rem 1.8rem;
+			border-radius: 16px;
+			margin: 1.8rem 0;
+		}
+	</style>
 </head>
 <body>
+<div class="container">
+	<h1>📘 AMXX源码的注释</h1>
 
-<p><h1>AMXX源码的注释</h1></p>
+	<p>注释用来解释代码，不影响功能。主要分为四种：注释块、文档注释块、单行注释、单行文档注释。</p>
 
-<p>注释用来解释代码,其内容不会影响代码功能,因此可以是中文或日语等等.</p>
-
-<p>注释主要分为4种:普通注释,文档注释,单行注释,单行文档注释</p>
-
-<p>普通注释也可被称呼为多行注释,它以 <span class="amxx-comment">/*</span> 开始,以 <span class="amxx-comment">*/</span> 结束,中间填写包括换行符在内的任意内容.</p>
-
-<p>主要用来对下方一段代码进行整体性的说明或者描述.</p>
-
-<p>示例:</p>
-
-<p><code><span class="amxx-comment">/* #include amxmodx表示按照"当前文件所在目录"->"-i参数所指目录"->"编译器目录下的include文件夹"顺序寻找amxmodx.inc文件,
- * 从这一行开始引用amxmodx.inc文件的所有内容,包括它内部引用的其它文件内容.
- * public plugin_init() { }表示声明一个名为plugin_init的公共函数.
- * 只要引用了amxmodx.inc文件,游戏启动,载入地图并缓存所有资源文件之后,就会执行plugin_init函数的 { } 花括号内所有代码.
+	<h2>/* 注释块（多行注释） */</h2>
+	<p>以 <span class="inline-code">/*</span> 开始，<span class="inline-code">*/</span> 结束，可跨行。</p>
+	<div class="code-block">
+<code><span class="amxx-comment">/* #include &lt;amxmodx&gt;表示按照以下顺序尝试寻找amxmodx.inc文件：
+ * "当前文件所在目录"->"-i参数所指目录"->"编译器目录下的include文件夹"
+ * 若找到就从这一行开始引用amxmodx.inc文件的所有内容，包括它内部引用的其它文件内容。
 */</span>
-<span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
-public <span class="amxx-function">plugin_init</span>()
-{
-}</code></p>
+<span class="amxx-directive">#include</span> <span class="amxx-string">&lt;amxmodx&gt;</span>
+<span class="amxx-comment">/* public plugin_init() { }表示声明、定义一个名为plugin_init的公共函数。
+ * 只要引用了amxmodx.inc文件，游戏启动，载入地图并缓存所有资源文件之后，
+ * 就会执行plugin_init函数的定义（花括号内容）。
+*/</span>
+<span class="amxx-directive">public</span> <span class="amxx-function">plugin_init</span>() { }</code>
+	</div>
 
-<p>文档注释是普通注释的变种.通常以 <span class="amxx-comment">/**</span> 开始,以 <span class="amxx-comment">*/</span> 结束,中间填写的内容有固定的格式.</p>
-
-<p>文档注释常见于inc文件中.用于详细描述各种标识符的使用方法.</p>
-
-<p>其中通常含有<span class="amxx-comment">@deprecated @note @param @return @noreturn @error</span>等标识.</p>
-
-<p>示例:</p>
-
-<p><code><span class="amxx-comment">/**
- * 这里对某物进行介绍.
+<h2>2. /** 文档注释块 */</h2>
+<p>文档注释块是注释块的一种特殊形式，以 <span class="inline-code">/**</span> 开头，以 <span class="inline-code">*/</span> 结尾。</p>
+<p>里面通常包含一些固定标签，比如：<span class="inline-code">@param</span>、<span class="inline-code">@return</span>、<span class="inline-code">@note</span> 等，用于详细描述函数、常量、变量的用途。</p>
+<p>这种注释主要出现在.inc文件中，供代码编辑器自动显示函数注释用。</p>
+<p>文档注释块的正常格式示例:</p>
+<div class="code-block"><code><span class="amxx-comment">/**
+ * 这里对函数或其他标识符进行介绍。
  *
- * @deprecated			这里解释某物为什么已经被弃用.
- *				无则省略.
+ * @deprecated			这里解释其为什么已经被弃用。若未弃用则则省略。
  *
- * @note			这里写第一类注意事项.
- *				无则省略.
+ * @note			这里写使用该标识符的注意事项。无则省略。
  *
- * @note			这里写第二类注意事项.
- *				无则省略.
+ * @note			可继续写更多不同类的注意事项。
  *
- * @note			以此类推...
+ * @param 参数1名称		函数的参数1应该输入什么，什么情况下会输出什么，无或非函数则省略
+ * @param 参数2名称		可继续写更多参数介绍。
  *
- * @param 参数1名称		函数的参数1应该输入什么,什么情况下会输出什么,无则省略
- * @param 参数2名称		函数的参数2应该输入什么,什么情况下会输出什么,无则省略
- * @param 以此类推...
- *
- * @return			这里解释函数什么情况下提供什么返回值.
- * @noreturn			@noreturn标识表示函数没有返回值.@noreturn与@return二选一.
- * @error			介绍函数报错的情况1.
- *				介绍函数报错的情况2.
- *				以此类推...
- *				无则省略
-*/</span></code></p>
+ * @return			这里解释函数所有情况下会提供什么返回值。
+ * @noreturn			表示函数没有返回值，@noreturn与@return二选一，非函数则省略
+ * @error			介绍函数所有可能会出现的报错和原因，无或非函数则省略
+*/</span></code></div>
 
-<p>想看懂inc文件的内容,必须学会阅读文档注释.</p>
+<p><strong>请记住接下来的内容，因为你无法在其他地方找到如此正确详细的注释。教程通常会默认你已经学习过，跳过这些内容。</strong></p>
+<p><strong>从 amxmodx.inc 中摘取并翻译、修正的文档注释块示例：</strong></p>
 
-<p>以下提供<code>amxmodx.inc</code>文件中部分常用函数的文档注释翻译.接下来的教程中也会大量使用这些函数作为例子.</p>
-
-<p><code><span class="amxx-comment">/**
- * 预声明插件初始化函数.有了此声明,服务器启动,缓存资源文件之后会调用所有插件定义的同名公共函数.
+<div class="code-block"><code><span class="amxx-comment">/**
+ * 预声明插件初始化函数。有了此声明，缓存资源文件之后会调用所有插件定义的同名公共函数。
  *
- * @note	需要在源码中用public说明符定义名为plugin_init的公共函数.像这样:
+ * @note	需要在源码中用public声明符定义名为plugin_init的公共函数。像这样:
  *		public plugin_init()
  *		{
  *		}
  *
- * @note	公共函数内是大部分插件进行初始化的好地方,例如设定插件信息,添加控制台变量,控制台/服务端/控制台命令,添加挂钩,生成默认数据等等.
+ * @note	这个函数内是大部分插件进行初始化的好地方，例如设定插件信息，
+ *		添加控制台变量或命令，添加事件挂钩，生成初始数据等等。
  *
  * @noreturn
- */</span>
-forward <span class="amxx-function">plugin_init</span>();
+*/</span>
+<span class="amxx-directive">forward</span> <span class="amxx-function">plugin_init</span>();
 
 <span class="amxx-comment">/**
- * 设置有关当前插件的信息.
+ * 设置当前插件的信息。
  *
- * @note		常见使用方法:
- *			register_plugin("插件名称", "插件版本", "插件作者");
+ * @note	设置后，可在控制台发送以下4种命令查看效果：
+ *		amxx plugins		- 显示所有已初始化插件简介（索引号、名称、版本、作者、文件地址等等）
+ *		amxx plugins 作者名称	- 查询该作者的所有已初始化插件简介
+ *		amxx plugins 关键词	- 查询文件地址包含关键词的所有已初始化插件简介
+ *		amxx plugin 插件索引号	- 查询特定插件的完整信息
  *
  * @param plugin_name	插件名称
  * @param version	插件版本
- * @param author	插件作者名称
+ * @param author	插件作者
+ * @param url		插件的URL地址
+ * @param description	插件介绍
  *
- * @return		插件索引
-*/</span>
-native <span class="amxx-function">register_plugin</span>(const <span class="amxx-symbol">plugin_name</span>[], const <span class="amxx-symbol">version</span>[], const <span class="amxx-symbol">author</span>[]);
+ * @return	返回当前插件的索引号
+ */</span>
+<span class="amxx-directive">native</span> <span class="amxx-function">register_plugin</span>(const <span class="amxx-symbol">plugin_name</span>[], const <span class="amxx-symbol">version</span>[], const <span class="amxx-symbol">author</span>[], const <span class="amxx-symbol">url</span>[] = <span class="amxx-string">""</span>, const <span class="amxx-symbol">description</span>[] = <span class="amxx-string">""</span>);
 
 <span class="amxx-comment">/**
- * 发送一段文本到服务端控制台(为服务端显示,除非玩家是服务端拥有者,否则看不见).
+ * 让服务器发送一段文本到控制台（所有人能看见）。
  *
- * @note	常见使用方法:
- *		new var1 = 10, var2 = 9;
- *		server_print("[AMXX]我今天几岁了? %d 岁或 %d 岁了", var1, var2);
+ * @note	使用方法示例：
+ *		new var1 = 10， var2 = 9;
+ *		server_print("[AMXX]我今天几岁了? %d 岁或 %d 岁了"， var1， var2);
  *
- * @param message	被发送的文本,支持格式占位符.
- *			格式化字符串支持包含 %b %c %d %i %u %f %X %x %a %s %L %l %N %n %% % 等格式占位符.
- *			格式占位符表示将后续参数转换为某一样式的字符串,填充到自身位置.
- *			%b 需要1个单值参数,二进制样式. AMXX1.8.3以下版本没有这个占位符.
- *			%c 需要1个单值参数,字符样式.
- *			%d 和 %i 完全相同,需要1个单值参数,十进制样式.
- *			%u 需要1个单值参数,无符号十进制样式.
- *			%f 需要1个单值参数,浮点数样式.
- *			%X 需要1个单值参数,大写十六进制样式.
- *			%x 需要1个单值参数,小写十六进制样式.
- *			%a 需要1个单值参数(字符串指针),字符串样式.
- *			%s 需要1个数组参数(字符串).不转换.
- *			%L 需要1个单值参数(LANG_SERVER/LANGE_PLAYER/玩家实体索引)和1个数组参数(预设的可翻译字符串).
- *			LANG_SERVER表示"使用服务端设定的语言".
- *			LANGE_PLAYER表示"显示给谁就使用谁设定的语言".
- *			玩家实体索引表示"使用索引所指玩家设定的语言".
- *			预设的可翻译字符串来自register_dictionary函数.
- *			将字符串转换为翻译后的内容.
- *			%l 需要1个数组参数(预设的可翻译字符串),显示给谁就使用谁设定的语言,将字符串转换为翻译后的内容. AMXX1.8.3以下版本没有这个占位符.
- *			%N 需要1个单值参数(玩家实体索引),"玩家名称<userid><steamId><队伍名称>"样式. AMXX1.8.3以下版本没有这个占位符.
- *			%n 需要1个单值参数(玩家实体索引),转换为玩家名称. AMXX1.8.3以下版本没有这个占位符.
- *			%% 不需要参数,而是将自身转换为 % 字符.
- *			% 不需要参数,而是会被删除.
- * @param ...		这是可变参数,允许输入输出任何类型的参数.但这里要求按照顺序填写格式占位符所需的参数
+ * @param message	被发送的文本。
+ *			格式化字符串支持包含 %b %c %d %i %u %f %X %x %a %s %L %l %N %n %% % 等格式占位符。
+ *			格式占位符表示将后续参数转换为某一样式的字符串，填充到自身位置。
+ *			%b 需要1个单值参数，二进制样式。
+ *			%c 需要1个单值参数，字符样式。
+ *			%d 和 %i 完全相同，需要1个单值参数，十进制样式。
+ *			%u 需要1个单值参数，无符号十进制样式。
+ *			%f 需要1个单值参数，浮点数样式。
+ *			%X 需要1个单值参数，大写十六进制样式。
+ *			%x 需要1个单值参数，小写十六进制样式。
+ *			%a 需要1个单值参数(字符串指针)，字符串样式。
+ *			%s 需要1个数组参数(字符串)。不转换。
+ *			%L 需要1个单值参数(LANG_SERVER/LANGE_PLAYER/玩家实体索引)和1个数组参数(预设的可翻译字符串)。
+ *			LANG_SERVER表示"使用服务端设定的语言"。
+ *			LANGE_PLAYER表示"显示给谁就使用谁设定的语言"。
+ *			玩家实体索引表示"使用索引所指玩家设定的语言"。
+ *			预设的可翻译字符串来自register_dictionary函数。
+ *			将字符串转换为翻译后的内容。
+ *			%l 需要1个数组参数(预设的可翻译字符串)，显示给谁就使用谁设定的语言，将字符串转换为翻译后的内容。
+ *			%N 需要1个单值参数(玩家实体索引)，"玩家名称<userid><steamId><队伍名称>"样式。
+ *			%n 需要1个单值参数(玩家实体索引)，转换为玩家名称。
+ *			%% 不需要参数，而是将自身转换为 % 字符。
+ *			% 不需要参数，而是会被删除。
+ * @param ...		这是可变参数，要求按照顺序填写格式占位符所需的参数
  *
- * @return		服务端接收的字符串元素数量
- * @error		可变参数的数量不足预期.
- *			可变参数为 %a 提供了无效的玩家实体索引.
- *			可变参数为 %n 或 %N 提供了无效的玩家实体索引.
+ * @return		实际发送的字符串元素数量
+ * @error		可变参数的数量不足预期。
+ *			可变参数为 %a 提供了无效的玩家实体索引。
+ *			可变参数为 %n 或 %N 提供了无效的玩家实体索引。
 */</span>
-native <span class="amxx-function">server_print</span>(const <span class="amxx-symbol">message</span>[], ...);
+<span class="amxx-directive">native</span> <span class="amxx-function">server_print</span>(const <span class="amxx-symbol">message</span>[], ...);
 
 <span class="amxx-comment">/**
- * 发送一段文本给指定客户端(玩家).
+ * 让特定玩家发送文本。
  *
- * @note	常见使用方法:
+ * @note	使用方法示例:
  *		new var1 = 10, var2 = 9;
  *		client_print(playerEntityIndex, print_chat, "[AMXX]我今天几岁了? %d 岁或 %d 岁了", var1, var2);
  *
- * @param index		0=发送给所有玩家,玩家实体索引=发送给指定玩家
- * @param type		消息类型,详情查阅amxconst.inc文件中名称以print_开头的枚举成员.
- *			print_notify=在开发者模式控制台显示.
- *			print_console=在控制台显示.
- *			print_chat=在聊天框显示.
- *			print_center=以准星为地面,以游戏窗口顶部天空,在3成高度位置居中显示.
- *			print_radio=在聊天框显示,若发送的是游戏预设文本,翻译为游戏设定语言.
- * @param message	被发送的文本,支持格式占位符
- * @param ...		这是可变参数,允许输入输出任何类型的参数.但这里要求按照顺序填写格式占位符所需的参数
+ * @param index		0=发送给所有玩家，玩家实体索引=发送给指定玩家
+ * @param type		消息类型，需填写amxconst.inc文件提供的名称以print_开头的枚举常量。
+ *			print_notify=在开发者模式控制台发送。
+ *			print_console=在控制台发送。
+ *			print_chat=在聊天框发送。
+ *			print_center=在窗口中心到顶部路径的3成位置居中发送。
+ *			print_radio=在聊天框发送，若发送的是游戏预设文本，翻译为游戏设定语言。
+ * @param message	被发送的文本，支持格式占位符
+ * @param ...		这是可变参数，允许输入输出任何类型的参数。但这里要求按照顺序填写格式占位符所需的参数
  *
- * @return		客户端接收的字符串元素数量(若发送给所有玩家,返回最后一个玩家接收的元素数量)
- * @error		index非0且不是有效的玩家实体索引.
- *			可变参数的数量不足预期.
- *			可变参数为 %n 或 %N 提供了无效的玩家实体索引.
+ * @return	客户端接收的字符串元素数量(若发送给所有玩家，返回最后一个玩家接收的元素数量)
+ * @error	index非0且不是有效的玩家实体索引。
+ *		可变参数的数量不足预期。
+ *		可变参数为 %n 或 %N 提供了无效的玩家实体索引。
 */</span>
-native <span class="amxx-function">client_print</span>(<span class="amxx-symbol">index</span>, <span class="amxx-symbol">type</span>, const <span class="amxx-symbol">message</span>[], <span class="amxx-tag">any:</span>...);</code></p>
+<span class="amxx-directive">native</span> <span class="amxx-function">client_print</span>(<span class="amxx-symbol">index</span>, <span
+	class="amxx-symbol">type</span>, const <span class="amxx-symbol">message</span>[], <span
+	class="amxx-tag">any:</span>...);</code>
+</div>
 
-<p>单行注释以 <span class="amxx-comment">//</span> 开始,到一行的末尾结束,中间不允许填写响铃符,换行符,回车符.行尾左边不能有\反斜杠.</p>
-
-<p>编译器在进入预处理阶段之前,会以\续行符为起点,到下一行首个非空白字符位置为终点,进行删除,将上下两行拼接一起,再将所有注释改为同等字节数的空格.</p>
-
-<p>但若单行注释中存在\续行符,他会变为响铃符并触发报错.因此响铃符和续行符都不允许出现在单行注释内.</p>
-
-<p>单行注释主要用来对左边或下方一行代码进行解释.</p>
-
-<p>示例:</p>
-
-<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
-const <span class="amxx-symbol">gConstant</span> = <span class="amxx-number">10</span>;	<span class="amxx-comment">// 定义一个值为10,从这一行开始能在任何表达式中使用的全局常量gConstant</span>
-public <span class="amxx-function">plugin_init</span>()
+	<h2>// 单行注释</h2>
+	<p>单行注释以 <span class="inline-code">//</span> 开头，在 <span class="inline-code">行尾</span> 结束。</p>
+	<p>不可以在末尾出现\符号，因为这是续行符，而单行注释不允许被续行。</p>
+	<div class="code-block">
+<code><span class="amxx-directive">#include</span> <span class="amxx-string">&lt;amxmodx&gt;</span>
+const <span class="amxx-symbol">gConstant</span> = <span class="amxx-number">10</span>;   <span class="amxx-comment">// 全局常量</span>
+<span class="amxx-directive">public</span> <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-comment">// 定义一个值为20,从这一行开始能在plugin_init函数内的表达式中使用的局部常量constant</span>
-	const <span class="amxx-symbol">constant</span> = <span class="amxx-number">20</span>;
-}</code></p>
+	const <span class="amxx-symbol">localConst</span> = <span class="amxx-number">20</span>;  <span class="amxx-comment">// 局部常量</span>
+}</code>
+	</div>
 
-<p>单行文档注释以 <span class="amxx-comment">///</span> 开始,到一行的末尾结束,中间不允许填写,响铃符,换行符,回车符.行尾左边不能有\反斜杠.</p>
-
-<p>通常写在某个全局常量声明或函数声明的上一行,用来简单介绍该常量或函数.</p>
-
-<p>示例:</p>
-
-<p><code><span class="amxx-directive">#include</span> <span class="amxx-string">amxmodx</span>
-<span class="amxx-comment">/// 服务器最多能允许多少个玩家加入</span>
+	<h2>/// 单行文档注释</h2>
+	<p>单行文档注释是单行注释的一种特殊形式，以 <span class="inline-code">//</span> 开头，在 <span class="inline-code">行尾</span> 结束。</p>
+	<p>通常用于简单描述全局常量、备用只读变量。同样不允许被续行。</p>
+	<div class="code-block">
+<code><span class="amxx-comment">/// 服务器能为玩家预留的实体槽最大数额</span>
 const <span class="amxx-symbol">MAX_PLAYERS</span> = <span class="amxx-number">32</span>;
-<span class="amxx-comment">/// 插件初始化事件</span>
-public <span class="amxx-function">plugin_init</span>()
-{
-}</code></p>
 
-<p>以下提供数个在线翻译网站,如果有看不懂的英文注释,可以用这些网站进行翻译.</p>
+<span class="amxx-comment">/// 插件初始化入口</span>
+<span class="amxx-directive">public</span> <span class="amxx-function">plugin_init</span>() { }</code>
+	</div>
 
-<p><a href="https://fanyi.baidu.com/#en/zh/">百度在线翻译</a></p>
+	<hr>
 
-<p><a href="https://cn.bing.com/translator/?h_text=msn_ctxt&setlang=zh-cn">必应在线翻译</a></p>
+	<h2>🌐 翻译工具推荐</h2>
+	<p>遇到英文注释可使用ai或在线翻译网站进行翻译：</p>
+	<ul style="margin-left: 2rem;">
+		<li><a href="https://fanyi.baidu.com/#en/zh/" target="_blank">百度翻译</a></li>
+		<li><a href="https://cn.bing.com/translator" target="_blank">必应翻译</a></li>
+		<li><a href="http://fanyi.youdao.com/" target="_blank">有道翻译</a></li>
+	</ul>
 
-<p><a href="http://fanyi.youdao.com/">有道在线翻译</a></p>
+	<div class="note-box">
+		<strong>⚠️ 注意：</strong> 注释可能包含错误或不完整，尤其低版本 AMXX。最终要以实际行为或源码为准。
+	</div>
 
-<p>另外,注释所写不一定是实话,AMX Mod X提供的inc文件含有少量错误信息,低版本(1.8.3以下)更是有很多注释说话说半截.不要轻信注释.要时刻保留怀疑态度.</p>
-
-<p>想要真正了解一段代码的作用,还必须学会看懂每一个编译器指令,每一个语句和表达式.</p>
-
-<p>最好还得能看懂AMX Mod X的C/C++源码,找到inc文件中函数的定义,从中解读真正完整的用法.</p>
-
-<p><h1>下一篇教程:</h1></p>
-
-<p><a href="05_%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4.html">05. 编译器指令</a></p>
-
+	<h2>📖 下一篇</h2>
+	<p><a href="05_编译器指令.html">📄 05. 编译器指令 &rarr;</a></p>
+</div>
 </body>
 </html>

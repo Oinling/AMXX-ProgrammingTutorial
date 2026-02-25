@@ -1,267 +1,303 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
-	<meta charset="utf-8">
-	<title>AMXXPawn 编译器指令</title>
-	<style>
-		:root {
-			--primary-color: #3498db;
-			--secondary-color: #2c3e50;
-			--accent-color: #e74c3c;
-			--light-bg: #f8f9fa;
-			--dark-bg: #eaecef;
-			--code-color: #0000ff;
-			--border-color: #ddd;
-		}
-		body {
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			line-height: 1.6;
-			color: #333;
-			max-width: 900px;
-			margin: 0 auto;
-			padding: 20px;
-			background-color: #f9f9f9;
-		}
-		h1 {
-			color: #2c3e50;
-			border-bottom: 2px solid #3498db;
-			padding-bottom: 10px;
-			text-align: center;
-		}
-		h2, h3 {
-			color: #2c3e50;
-			border-bottom: 1px solid #eee;
-			padding-bottom: 10px;
-		}
-		p {
-			margin: 15px 0;
-		}
-		code {
-			display: block;
-			white-space: pre;
-			background-color: #f5f5f5;
-			border: 1px solid #ddd;
-			border-radius: 4px;
-			color: #0000ff;
-			padding: 15px;
-			overflow-x: auto;
-			font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-			line-height: 1.5;
-			margin: 15px 0;
-			box-shadow: 0 1px 3px #0000001a;
-		}
-		.amxx-default {
-			color: #0000ff;
-		}
-		.amxx-note {
-			color: #000000;
-		}
-		.amxx-comment {
-			color: #3f9f3f;
-		}
-		.amxx-di {
-			color: #6f6f6b;
-		}
-		.amxx-ds {
-			background: linear-gradient(to right, #6f6f6b, #9933ff);
-			background-clip: text;
-			-webkit-background-clip: text;
-			color: transparent;
-		}
-		.amxx-string {
-			color: #c0392b;
-		}
-		.amxx-number {
-			color: #000000;
-			font-weight: bold;
-		}
-		.amxx-function {
-			color: #711fc3;
-			font-weight: bold;
-		}
-		.amxx-tag {
-			color: #5d140a;
-		}
-		.amxx-identifier {
-			color: #9933ff;
-			font-weight: bold;
-		}
-		.highlight {
-			background-color: #fffde7;
-			padding: 2px 4px;
-			border-radius: 3px;
-		}
-		.note-box {
-			background-color: #e3f2fd;
-			border-left: 4px solid #2196f3;
-			padding: 15px;
-			margin: 20px 0;
-			border-radius: 0 4px 4px 0;
-		}
-		.warning-box {
-			background-color: #ffebee;
-			border-left: 4px solid #f44336;
-			padding: 15px;
-			margin: 20px 0;
-			border-radius: 0 4px 4px 0;
-		}
-		.feature-list {
-			background-color: #e8f5e9;
-			border-left: 4px solid #4caf50;
-			padding: 15px;
-			margin: 20px 0;
-			border-radius: 0 4px 4px 0;
-		}
-		.codetable {
-			width: 100%;
-			border-collapse: collapse;
-			margin: 20px 0;
-			box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-		}
-		.codetable th, 
-		.codetable td {
-			border: 1px solid var(--border-color);
-			padding: 12px 15px;
-			text-align: left;
-		}
-		.codetable th {
-			background-color: var(--secondary-color);
-			color: white;
-			font-weight: bold;
-		}
-		.codetable tr:nth-child(even) {
-			background-color: var(--light-bg);
-		}
-		.codetable tr:hover {
-			background-color: var(--dark-bg);
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AMXXPawn 编译器指令</title>
+    <style>
+        /* 完全沿用前两页的统一样式 */
+        :root {
+            --bg-body: #f4f7fb;
+            --bg-code: #1e1e2f;
+            --text-primary: #2c3e50;
+            --text-code: #e4e4e4;
+            --accent-blue: #4a90e2;
+            --accent-purple: #9b59b6;
+            --comment-green: #6a9955;
+            --string-red: #ce9178;
+            --number-dark: #b5cea8;
+            --tag-brown: #d4d4d4;
+            --function-purple: #dcdcaa;
+            --directive-gray: #808080;
+            --border-light: #e0e0e0;
+            --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.7;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: var(--shadow-sm);
+            padding: 2.5rem;
+            margin: 1rem 0;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e2b3a, #2c3e50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--accent-blue);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 500;
+            margin: 2rem 0 1rem;
+            color: #1e2b3a;
+        }
+
+        p {
+            margin: 1.2rem 0;
+            font-size: 1.05rem;
+        }
+
+        a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: var(--accent-purple);
+            text-decoration: underline;
+        }
+
+        .code-block {
+            background: var(--bg-code);
+            border-radius: 18px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            display: block;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.95rem;
+            color: var(--text-code);
+            white-space: pre;
+            line-height: 1.6;
+        }
+
+        /* 语法高亮 */
+        .amxx-comment {
+            color: #6a9955;
+            font-style: italic;
+        }
+
+        .amxx-directive {
+            color: #569cd6;
+            font-weight: 500;
+        }
+
+        .amxx-ds {
+            color: #9cdcfe;
+        }
+
+        .amxx-df {
+            color: #d4d4d4;
+        }
+
+        .amxx-string {
+            color: #ce9178;
+        }
+
+        .amxx-number {
+            color: #b5cea8;
+        }
+
+        .amxx-enumname {
+            color: #4ec9b0;
+        }
+
+        .amxx-function {
+            color: #dcdcaa;
+            font-weight: 500;
+        }
+
+        .amxx-tag {
+            color: #9cdcfe;
+        }
+
+        .amxx-symbol {
+            color: #c586c0;
+        }
+
+        .amxx-note {
+            color: #d4d4d4;
+        }
+
+        .inline-code {
+            background: #eef2f5;
+            color: #d14;
+            font-family: monospace;
+            padding: 0.2rem 0.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            border: 1px solid #d0d7de;
+        }
+
+        .codetable {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .codetable th {
+            background-color: #1e2b3a;
+            color: white;
+            font-weight: 600;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .codetable td {
+            background-color: white;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eaeef2;
+        }
+
+        .codetable tr:hover td {
+            background-color: #f6f9fc;
+        }
+
+        .feature-list {
+            background: #e8f0fe;
+            border-left: 5px solid var(--accent-blue);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            margin: 1.8rem 0;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="container">
+        <h1>⚙️ AMXXPawn 编译器指令</h1>
 
-<h1>AMXXPawn 编译器指令</h1>
-	
-<p>编译器指令(Compiler Directive)也被叫做预处理指令(Preprocessor Directive).</p>
+        <p>编译器指令（预处理指令）以 <span class="inline-code">#</span> 开头，位于行首（前面允许空白或注释块），不需要分号结尾。</p>
+        <p>编译源码时有一个预处理期，优先执行大部分指令，过后才会分析其他代码语句、表达式等等。</p>
 
-<table class="codetable">
-    <tr>
-        <th>指令标识</th>
-        <th>简介</th>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/assert.html">#assert</a></td>
-        <td>编译时断言</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/define.html">#define</a></td>
-        <td>宏定义</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/endinput-endscript.html">#endinput#endscript</a></td>
-        <td>脚本终点</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/error.html">#error</a></td>
-        <td>自设编译时报错</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/emit.html">#emit</a></td>
-        <td>内联汇编</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/file.html">#file</a></td>
-        <td>伪造当前脚本文件地址</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/if-elseif-else-endif.html">#if#elseif#else#endif</a></td>
-        <td>编译分支</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/include-tryinclude.html">#include#tryinclude</a></td>
-        <td>引用脚本、尝试引用脚本</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/line.html">#line</a></td>
-        <td>伪造当前行号</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/pragma.html">#pragma</a></td>
-        <td>编译指示</td>
-    </tr>
-    <tr>
-        <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/undef.html">#undef</a></td>
-        <td>删除宏</td>
-    </tr>
-</table>
+        <table class="codetable">
+            <tr>
+                <th>指令标识</th>
+                <th>简介</th>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/assert.html">#assert</a></td>
+                <td>编译时断言</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/define.html">#define</a></td>
+                <td>宏定义</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/endinput-endscript.html">#endinput#endscript</a></td>
+                <td>脚本终点</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/error.html">#error</a></td>
+                <td>自设编译时报错</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/emit.html">#emit</a></td>
+                <td>内联汇编</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/file.html">#file</a></td>
+                <td>伪造当前脚本文件地址</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/if-elseif-else-endif.html">#if#elseif#else#endif</a>
+                </td>
+                <td>编译分支</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/include-tryinclude.html">#include#tryinclude</a></td>
+                <td>引用脚本、尝试引用脚本</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/line.html">#line</a></td>
+                <td>伪造当前行号</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/pragma.html">#pragma</a></td>
+                <td>编译指示</td>
+            </tr>
+            <tr>
+                <td><a href="%E7%BC%96%E8%AF%91%E5%99%A8%E6%8C%87%E4%BB%A4/undef.html">#undef</a></td>
+                <td>删除宏</td>
+            </tr>
+        </table>
 
-<p>编译器指令的左边必须是0至无限个空白字符.因此通常被写在行首.</p>
+        <p>一些常用指令示例：</p>
 
-<p>编译器指令不需要以<span class="highlight">;</span>分号结尾.</p>
+        <div class="code-block">
+            <code><span class="amxx-comment">// 引用核心文件</span>
+<span class="amxx-directive">#include</span> <span class="amxx-string">&lt;amxmodx&gt;</span>
 
-<p>源码被编译时,有一个预处理期,专门用来执行这些指令,然后才是词法分析,语法分析,生成amxx文件.</p>
+<span class="amxx-comment">// 定义宏</span>
+<span class="amxx-directive">#define</span> <span class="amxx-ds">PluginName</span> <span class="amxx-string">"测试插件"</span>
 
-<p>最常见的有以下几种:</p>
+<span class="amxx-comment">// 条件编译：根据 AMXX 版本选择不同版本号</span>
+<span class="amxx-directive">#if</span> (<span class="amxx-ds">AMXX_VERSION_NUM</span> < <span class="amxx-number">183</span>)
+    <span class="amxx-directive">#define</span> <span class="amxx-ds">PluginVersion</span> <span class="amxx-string">"1.0.0"</span>
+<span class="amxx-directive">#elseif</span> (<span class="amxx-ds">AMXX_VERSION_NUM</span> < <span class="amxx-number">200</span>)
+    <span class="amxx-directive">#define</span> <span class="amxx-ds">PluginVersion</span> <span class="amxx-string">"1.0.1"</span>
+<span class="amxx-directive">#else</span>
+    <span class="amxx-directive">#endinput</span>        <span class="amxx-comment">// 停止编译（通常用在inc而不是sma文件）</span>
+<span class="amxx-directive">#endif</span>
 
-<p><code><span class="amxx-comment">// 引用指令,将指定的文件内容插入该指令位置.</span>
-<span class="amxx-di">#include</span>	<<span class="amxx-string">被引用文件的名称</span>>
-
-<span class="amxx-comment">// 宏定义指令,从下一行开始将所有同名标识符替换为其它文本.</span>
-<span class="amxx-di">#define</span>		<span class="amxx-note">宏定义标识符	其它文本</span>
-
-<span class="amxx-comment">// 编译分支指令,根据表达式结果判断是否编译某段代码.</span>
-<span class="amxx-di">#if</span>		<span class="amxx-note">常量表达式</span>
-<span class="amxx-di">#elseif</span>		<span class="amxx-note">常量表达式</span>
-<span class="amxx-di">#else</span>
-<span class="amxx-di">#endif</span>
-
-<span class="amxx-comment">// 停止输入指令,该指令一旦被执行,下方所有内容都会被舍弃.</span>
-<span class="amxx-di">#endinput</span></code></p>
-
-<p>示例:</p>
-
-<p><code><span class="amxx-di">#include</span> <<span class="amxx-string">amxmodx</span>>			<span class="amxx-comment">// 从这一行开始,引用amxmodx.inc文件的所有内容</span>
-
-<span class="amxx-di">#define</span> <span class="amxx-ds">PluginName</span>	<span class="amxx-string">"测试插件"</span>	<span class="amxx-comment">// 从这一行开始,将源码中所有的PluginName替换为"测试插件"</span>
-
-<span class="amxx-comment">// 若AMXX_VERSION_NUM宏常量对应的值小于183,说明当前使用的AMX Mod X低于1.8.3版本</span>
-<span class="amxx-di">#if</span> (<span class="amxx-ds">AMXX_VERSION_NUM</span> < <span class="amxx-number">183</span>)
-<span class="amxx-comment">// 若满足if条件,舍弃#elseif至#else和#else至#endif中间的代码.并将#endif下所有PluginVersion替换为"1.0.0",</span>
-<span class="amxx-di">#define</span> <span class="amxx-ds">PluginVersion</span>	<span class="amxx-string">"1.0.0"</span>
-
-<span class="amxx-comment">// 否则,若AMXX_VERSION_NUM宏常量对应的值小于200,说明当前使用的AMX Mod X高于1.8.2版本,低于1.10.0版本</span>
-<span class="amxx-di">#elseif</span> (<span class="amxx-ds">AMXX_VERSION_NUM</span> < <span class="amxx-number">200</span>)
-<span class="amxx-comment">// 若满足elseif条件,舍弃#if至#elseif和#else至#endif中间的代码.并将#endif下所有PluginVersion替换为"1.0.1"</span>
-<span class="amxx-di">#define</span> <span class="amxx-ds">PluginVersion</span>	<span class="amxx-string">"1.0.1"</span>
-
-<span class="amxx-comment">// 否则,说明当前使用的AMX Mod X可能是1.10.0或更高版本</span>
-<span class="amxx-di">#else</span>
-<span class="amxx-comment">// 若满足#else条件,舍弃#if至#else中间的代码.并使用#endinput指令停止编译下文.这个指令常见于头文件,防止重复引用,而不是像这样用来停止编译插件</span>
-<span class="amxx-di">#endinput</span>
-
-<span class="amxx-di">#endif</span>
-<span class="amxx-comment">// 一旦使用了#if指令,可以没有#elseif或#else,但必须有#endif结尾</span>
-
-<span class="amxx-comment">/*
- * 由于引用了amxmodx.inc文件中的forward plugin_init()预声明,
- * 因此这里的plugin_init公共函数会在合适时机自动运行.
- * 按照amxmodx.inc文件中的注释所示,所有插件的plugin_init公共函数都会在服务器启动,缓存资源文件之后执行一次.
-*/</span>
-public <span class="amxx-function">plugin_init</span>()
+<span class="amxx-directive">public</span> <span class="amxx-function">plugin_init</span>()
 {
-	<span class="amxx-comment">/*
-	* 由于引用了amxmodx.inc文件中的native register_plugin...函数声明,
-	* 因此可以在大部分函数的 { } 花括号内执行register_plugin函数,设定插件信息.
-	* 按照amxmodx.inc文件中的注释所示,该函数需要在 ( ) 圆括号内填写3个字符串参数.依次表示插件名称,版本,作者
-	* 在游戏中按下 [~] 按键打开控制台,发送amxx plugins即可看见当前插件的插件名称,版本,作者
-	*/</span>
-	<span class="amxx-function">register_plugin</span>(<span class="amxx-ds">PluginName</span>, <span class="amxx-ds">PluginVersion</span>, <span class="amxx-string">"作者"</span>);
-}</code></p>
+    <span class="amxx-function">register_plugin</span>(<span class="amxx-ds">PluginName</span>, <span class="amxx-ds">PluginVersion</span>, <span class="amxx-string">"作者"</span>);
+}</code>
+        </div>
 
-<p>其余指令不常用,建议初学者先跳过,优先学习其它内容.</p>
+        <div class="feature-list">
+            <strong>📌 要点：</strong>
+            <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                <li>#include 将文件内容插入当前位置。</li>
+                <li>#define 执行文本替换（宏）。</li>
+                <li>#if / #else / #endif 控制哪些代码参与编译。</li>
+                <li>#endinput 让编译器忽略之后的内容（常用于头文件防止重复包含）。</li>
+            </ul>
+        </div>
 
-<h2>下一篇教程:</h2>
+        <p>其他指令如 #pragma、#emit 较为进阶，初学者可暂缓学习。</p>
 
-<p><a href="06_%E5%AD%97%E9%9D%A2%E9%87%8F%E3%80%81%E8%A1%A8%E8%BE%BE%E5%BC%8F%E3%80%81%E8%AF%AD%E5%8F%A5.html">06. 字面量、表达式、语句</a></p>
+        <hr>
 
+        <h2>📚 下一篇教程</h2>
+        <p><a href="06_字面量、表达式、语句.html">📄 06. 字面量、表达式、语句 &rarr;</a></p>
+    </div>
 </body>
+
 </html>
